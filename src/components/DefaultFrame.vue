@@ -30,17 +30,21 @@
       slot="footer"
       class="bottomNav"
     >
-
+      <BottomNavItem title="首页" icon=":icon-home"></BottomNavItem>
+      <BottomNavItem title="熊论" icon=":icon-flag"></BottomNavItem>
+      <BottomNavItem title="实习" icon=":icon-rocket1"></BottomNavItem>
+      <BottomNavItem title="我的" icon=":icon-user"></BottomNavItem>
     </BottomNav>
   </UIFrame>
 </template>
 
 <script>
 import { Icon, Button, BottomNav } from 'muse-ui';
+import { BottomNavItem } from 'muse-ui/lib/BottomNav';
+
 import UIFrame from './UIFrame';
 import UIHeader from './UIHeader';
 
-console.log(BottomNav.BottomNavItem);
 export default {
   props: {
     title: {
@@ -49,6 +53,7 @@ export default {
     }
   },
   components: {
+    BottomNavItem,
     BottomNav,
     UIFrame,
     UIHeader,
@@ -59,6 +64,24 @@ export default {
   mounted () { }
 };
 </script>
+<style lang="less">
+.mu-bottom-item{
+    .mu-bottom-item-icon{
+      font-size: 18px;
+    }
+}
+  .mu-bottom-item-active{
+    .mu-bottom-item-text{
+      font-size: 10px;
+    }
+    color:#fff;
+    background-color: rgb(11, 137, 240)
+  }
+  .mu-bottom-item-text{
+    font-size:10px;
+  }
+</style>
+
 <style lang="less" scoped>
 .header{
   height: 50px;
@@ -68,6 +91,11 @@ export default {
   }
 }
 .bottomNav{
-  background-color: #067BDA
+  background-color: #067BDA;
+  color:#fff;
+  height: 50px;
+  // {
+  //   color:#fff;
+  // }
 }
 </style>
