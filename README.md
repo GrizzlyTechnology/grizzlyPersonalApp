@@ -14,10 +14,7 @@
   │   ├─ components/    // vue 组件
   │   ├─ utils/         // 工具方法
   │   └─ views/         // 工具方法
-  │       ├─ common     // 页面的组件
-  │       ├─ pages      // 页面
-  │       ├─ index.html // 入口页面模板
-  │       └─ index.js   // 入口页面 js
+  │       └─ pages      // 页面
   ├─ .babelrc           // 代码风格配置
   ├─ .editorconfig      // 代码风格配置
   ├─ .eslintrc          // eslint 配置
@@ -30,9 +27,8 @@
 ```
 ## 页面的组件和页面目录结构
 ```
-/common or pages
-  └─ namespace/         // 命名空间
-      ├─ app.html       // 页面模板（一般不用编辑）
-      ├─ app.js         // 入口 js（一般不用编辑）
-      └─ app.vue        // 页面业务
+/namespace           // 命名空间
+  ├─ app.html       // 页面模板（一般不用编辑）
+  ├─ app.js         // 入口 js（一般不用编辑）
+  └─ app.vue        // 页面业务
 ```
