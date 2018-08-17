@@ -1,6 +1,6 @@
- <widget id="A6946737892297"  version="0.0.1">
+<widget id="A6074289893572" version="0.0.1">
 
-    <name>vue示例</name>
+    <name>grizzly</name>
 
     <description>
 
@@ -14,49 +14,82 @@
 
     </author>
 
-    <content src="index.html" />
+    <content src="index.html"/>
 
-    <access origin="*" />
+    <access origin="*"/>
 
     <preference name="pageBounce" value="false"/>
 
-	<preference name="appBackground" value="rgba(0,0,0,0.0)"/>
+    <preference name="appBackground" value="rgba(0,0,0,0.0)"/>
 
-	<preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
+    <preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
 
-	<preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
+    <preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
 
-	<preference name="hScrollBarEnabled" value="true"/>
+    <preference name="hScrollBarEnabled" value="false"/>
 
-	<preference name="vScrollBarEnabled" value="true"/>
+    <preference name="vScrollBarEnabled" value="false"/>
 
-	<preference name="autoLaunch" value="true"/>
+    <preference name="autoLaunch" value="true"/>
 
-	<preference name="fullScreen" value="false"/>
+    <preference name="fullScreen" value="false"/>
 
-	<preference name="autoUpdate" value="true" />
+    <preference name="autoUpdate" value="true"/>
 
-	<preference name="smartUpdate" value="false" />
+    <preference name="smartUpdate" value="false"/>
 
-	<preference name="debug" value="true"/>
+    <preference name="debug" value="true"/>
 
-	<preference name="statusBarAppearance" value="true"/>
+    <preference name="statusBarAppearance" value="true"/>
 
-	<permission name="readPhoneState" />
+    <permission name="readPhoneState"/>
 
-	<permission name="camera" />
+    <permission name="camera"/>
 
-	<permission name="record" />
+    <permission name="record"/>
 
-	<permission name="location" />
+    <permission name="location"/>
 
-	<permission name="fileSystem" />
+    <permission name="fileSystem"/>
 
-	<permission name="internet" />
+    <permission name="internet"/>
 
-	<permission name="bootCompleted" />
+    <permission name="bootCompleted"/>
 
-	<permission name="hardware" />
+    <permission name="hardware"/>
+
+    <feature name="wx">
+
+        <param name="urlScheme" value="wx3eaba3c52bd4d691"/>
+
+        <param name="apiKey" value="wx3eaba3c52bd4d691"/>
+
+        <param name="apiSecret" value="a0d6013ddabb1ff9119ff8ee62c4ab59"/>
+
+    </feature>
+
+    <feature name="QQPlus">
+
+        <param name="urlScheme" value="tencent1107019404"/>
+
+        <param name="apiKey" value="1107019404"/>
+
+    </feature>
+
+    <feature name="ajpush">
+
+        <param name="app_key" value="5d33bd137a8ea0a5a3565bb9"/>
+
+        <param name="channel" value="all"/>
+
+    </feature>
+
+    <feature name="bMap">
+
+        <param name="android_api_key" value="oX2dz2U0BMwtRpgG3nAMntGZxR8nLHGk"/>
+
+        <param name="ios_api_key" value="OwGiOszXTayDRgsOa5789pCB0524BzsP"/>
+
+    </feature>
 
 </widget>
-
