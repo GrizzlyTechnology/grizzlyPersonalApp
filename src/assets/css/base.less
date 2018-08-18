@@ -98,7 +98,7 @@
 }
 
 /* 清除浮动，貌似最完美的解决方案 */
-.clearFix {
+.clearFix (){
     &:after {
         clear: both;
         content: '.';
@@ -118,32 +118,32 @@
 }
 
 /* 使用纯CSS现实三角形，兼容所有浏览器；使用了三个参数，第一个是"方向"，第二个是"大小"，第三个是"颜色"，省得每次都写一大堆代码，非常方便啦； */
-.arrow(@direction, @size, @color) {
-    width: 0;
-    height: 0;
-    line-height: 0;
-    font-size: 0;
-    overflow: hidden;
-    border-width: @size;
-    cursor: pointer;
-@if @direction = = top {
-    border-style: dashed dashed solid dashed;
-    border-color: transparent transparent @color transparent;
-    border-top: none;
-} @else if @direction = = bottom {
-    border-style: solid dashed dashed dashed;
-    border-color: @color transparent transparent transparent;
-    border-bottom: none;
-} @else if @direction = = right {
-    border-style: dashed dashed dashed solid;
-    border-color: transparent transparent transparent @color;
-    border-right: none;
-} @else if @direction = = left {
-    border-style: dashed solid dashed dashed;
-    border-color: transparent @color transparent transparent;
-    border-left: none;
-}
-}
+// .arrow(@direction, @size, @color) {
+//     width: 0;
+//     height: 0;
+//     line-height: 0;
+//     font-size: 0;
+//     overflow: hidden;
+//     border-width: @size;
+//     cursor: pointer;
+// @if @direction = = top {
+//     border-style: dashed dashed solid dashed;
+//     border-color: transparent transparent @color transparent;
+//     border-top: none;
+// } @else if @direction = = bottom {
+//     border-style: solid dashed dashed dashed;
+//     border-color: @color transparent transparent transparent;
+//     border-bottom: none;
+// } @else if @direction = = right {
+//     border-style: dashed dashed dashed solid;
+//     border-color: transparent transparent transparent @color;
+//     border-right: none;
+// } @else if @direction = = left {
+//     border-style: dashed solid dashed dashed;
+//     border-color: transparent @color transparent transparent;
+//     border-left: none;
+// }
+// }
 
 /* 一个区块 */
 .rectangle(@width, @height) {
@@ -152,18 +152,18 @@
 }
 
 /* 整体居中 */
-.center {
+.center (){
     margin-left: auto;
     margin-right: auto;
 }
 
-// .bodyCenter {
-// @include rectangle(@maxWidth, auto);
-// @include center();
+// .bodyCenter (@maxWidth){
+//   @include rectangle(@maxWidth, auto);
+//   @include center();
 // }
 
 /* 垂直居中 */
-.centerMiddle {
+.centerMiddle () {
     display: table-cell;
     vertical-align: middle;
 }
