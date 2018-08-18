@@ -123,10 +123,7 @@ let config = {
     new CommonsChunkPlugin({
       name: 'vendor',
       minChunks: module => {
-        if (/css&/.test(module.resource)) {
-          console.log(module.resource);
-        }
-        return module.resource && /node_modules/.test(module.resource);
+        return module.resource && (/node_modules/.test(module.resource) || /assets/.test(module.resource));
       }
     }),
     new CommonsChunkPlugin({
