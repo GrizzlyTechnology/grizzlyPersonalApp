@@ -52,7 +52,7 @@ let config = {
               {
                 loader: 'css-loader',
                 options: {
-                  minimize: true
+                  minimize: process.env.NODE_ENV === 'production'
                 }
               },
               'autoprefixer-loader',
@@ -73,7 +73,7 @@ let config = {
           use: {
             loader: 'css-loader',
             options: {
-              minimize: true
+              minimize: process.env.NODE_ENV === 'production'
             }
           }
         })
@@ -94,7 +94,7 @@ let config = {
             {
               loader: 'css-loader',
               options: {
-                minimize: true
+                minimize: process.env.NODE_ENV === 'production'
               }
             },
             'autoprefixer-loader',
