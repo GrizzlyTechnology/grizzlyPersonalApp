@@ -126,14 +126,15 @@ let config = {
         return module.resource && (/node_modules/.test(module.resource) || /assets/.test(module.resource));
       }
     }),
-    new CommonsChunkPlugin({
-      name: 'client',
-      async: 'chunk-vendor',
-      children: true,
-      minChunks: (module, count) => {
-        return count >= 3;
-      }
-    }),
+    // 应该是异步加载的资源的chunk
+    // new CommonsChunkPlugin({
+    //   name: 'client',
+    //   async: 'chunk-vendor',
+    //   children: true,
+    //   minChunks: (module, count) => {
+    //     return count >= 3;
+    //   }
+    // }),
     new CommonsChunkPlugin({
       name: 'runtime',
       minChunks: Infinity
