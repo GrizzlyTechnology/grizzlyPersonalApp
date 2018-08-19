@@ -4,12 +4,12 @@
   >
    <h1>ccc</h1>
   <Button color="primary">Primary</Button>
-  <Button color="primary">2222</Button>
+  <Button color="primary">11111</Button>
   </UIFrame>
 </template>
 
 <script>
-import { LoadMore , Button} from 'muse-ui';
+import { LoadMore, Button } from 'muse-ui';
 import { DefaultFrame } from 'components';
 export default {
   data () {
