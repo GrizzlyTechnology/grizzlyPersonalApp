@@ -2,9 +2,13 @@
   <UIFrame
     title="this is a title just for demo"
   >
-   <h1>ccc</h1>
-  <Button color="primary">Primary</Button>
-  <Button color="primary">44444</Button>
+    <ul>
+      <li v-for="team in list" :key="team" @click="()=>{delList(team)}">{{team}}</li>
+    </ul>
+   <h1 v-if="isShow">ccc</h1>
+  <Button color="primary" @click="addList">add</Button>
+  <Button color="primary" @click="changIsShow">Primary</Button>
+
   </UIFrame>
 </template>
 
@@ -14,6 +18,8 @@ import { DefaultFrame } from 'components';
 export default {
   data () {
     return {
+      list:[1,2,3,4,5,6,7],
+      isShow:true,
       num: 10,
       refreshing: false,
       loading: false,
@@ -26,6 +32,17 @@ export default {
     Button
   },
   methods: {
+    addList(){
+      this.list.push(this.list.length + 1);
+    },
+    delList(index){
+      this.list= this.list.filter((r,  i)=>{
+       return ( index !== i);
+      });
+    },
+    changIsShow(){
+      this.isShow = !this.isShow;
+    },
     refresh () {
       this.refreshing = true;
       this.$refs.container.scrollTop = 0;
