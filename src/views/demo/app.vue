@@ -4,7 +4,7 @@
   >
    <h1>ccc</h1>
   <Button color="primary">Primary</Button>
-  <Button color="primary">11111</Button>
+  <Button color="primary">333</Button>
   </UIFrame>
 </template>
 
