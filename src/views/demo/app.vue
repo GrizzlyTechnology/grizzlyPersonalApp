@@ -4,7 +4,11 @@
   >
    <h1>ccc</h1>
   <Button color="primary">Primary</Button>
+<<<<<<< HEAD
   <Button color="primary">333</Button>
+=======
+  <Button color="primary">44444</Button>
+>>>>>>> 7ae6fe857a70a7db7dc3dd7ba7154523578d06ef
   </UIFrame>
 </template>
 
