@@ -35,6 +35,7 @@
       <BottomNavItem title="实习" icon=":icon-rocket1"></BottomNavItem>
       <BottomNavItem title="我的" icon=":icon-user"></BottomNavItem>
     </BottomNav>
+    <slot slot="modalCon" name="modalCon"></slot>
   </UIFrame>
 </template>
 
