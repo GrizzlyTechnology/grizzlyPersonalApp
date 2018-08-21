@@ -31,7 +31,7 @@
             <TextField v-model="startDateTimeText" @focus="openStartDateTime"></TextField>
           </FormItem>
         </Form>
-        <Button color="#067BDA" textColor="#ffffff" :full-width="true" large >下一步</Button>
+        <Button color="#19AD17" textColor="#ffffff" :full-width="true" large >下一步</Button>
       </div>
       <div v-if="step===2">2</div>
       <div v-if="step===3">3</div>
