@@ -1,7 +1,5 @@
 <template>
-  <DefaultFrame
-    title="学生信息"
-  >
+  <div>
     <div class="formCon">
       <div v-if="step===1">
         <Form ref="step1Form" :model="step1Form" >
@@ -49,7 +47,7 @@
       >
       </DatetimePicker>
     </div>
-  </DefaultFrame>
+  </div>
 </template>
 
 <script>
@@ -57,7 +55,6 @@ import moment from 'moment';
 import { Button, TextField, Radio } from 'muse-ui';
 import { DatetimePicker } from 'mint-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
-import { DefaultFrame } from 'components';
 
 export default {
   data () {
@@ -80,7 +77,6 @@ export default {
     };
   },
   components: {
-    DefaultFrame,
     Button,
     Form,
     FormItem,
@@ -103,7 +99,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('../../assets/css/base.less');
+@import url('../../../assets/css/base.less');
 .formCon{padding: 15px}
 .startDateTime{
   bottom: 50px;
