@@ -2,8 +2,8 @@
   <UIFrame>
     <UIHeader
       slot="header"
-      color="#067BDA"
-      textColor="#ffffff"
+      color="#ffffff"
+      textColor="#000000"
       :z-depth="1"
       :title="title">
       <Button
@@ -12,6 +12,7 @@
       >
         <Icon
           value=":icon-left"
+          color="#19AD17"
           :size="24"
         />
       </Button>
@@ -66,17 +67,24 @@ export default {
 };
 </script>
 <style lang="less">
+@import url('../assets/css/base.less');
 .mu-bottom-item{
     .mu-bottom-item-icon{
       font-size: 18px;
+      color: #666;
+    }
+    .mu-bottom-item-text{
+      color: #666;
     }
 }
   .mu-bottom-item-active{
     .mu-bottom-item-text{
       font-size: 10px;
+      color: @baseColor;
     }
-    color:#fff;
-    background-color: rgb(11, 137, 240)
+    .mu-bottom-item-icon{
+      color: @baseColor;
+    }
   }
   .mu-bottom-item-text{
     font-size:10px;
@@ -84,6 +92,7 @@ export default {
 </style>
 
 <style lang="less" scoped>
+@import url('../assets/css/base.less');
 .header{
   height: 50px;
   .left{
@@ -92,7 +101,7 @@ export default {
   }
 }
 .bottomNav{
-  background-color: #067BDA;
+  background-color:  #fff;
   color:#fff;
   height: 50px;
   // {
