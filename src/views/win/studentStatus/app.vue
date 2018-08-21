@@ -8,7 +8,7 @@
 <script>
 import moment from 'moment';
 import { DefaultFrame } from 'components';
-import apic from 'util/api';
+import tool from 'util/tools';
 export default {
   data () {
     return {
@@ -22,7 +22,7 @@ export default {
     
   },
   mounted () {
-      var headerH=apic.fixStatusBar(apic.dom("header"));
+      var headerH=tool.fixStatusBar(tool.dom("header"));
       var heightF=window.api.frameHeight;
       window.api.openFrame({
           name: 'studentStatus_f',
