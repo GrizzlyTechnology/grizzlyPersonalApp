@@ -1,2 +1,4 @@
 node_modules
 dist
+src/util/public.js
+src/util/tools.js
