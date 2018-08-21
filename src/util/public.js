@@ -21,8 +21,8 @@ export const fixStatusBar = function (t) {
 
 export const fixContent = function (t) {
   var e = window.api.systemType;
-  if (e == 'ios') t.style.top = '3.2rem';
-  else if (e == 'android') {
+  if (e === 'ios') t.style.top = '3.2rem';
+  else if (e === 'android') {
     var a = window.api.systemVersion;
     a = parseFloat(a), a >= 4.4 && (t.style.top = '3.56rem');
   }
@@ -33,7 +33,7 @@ export const getHeight = function (id) {
 };
 
 export const showLoading = function (state) {
-  if (state == 'on') {
+  if (state === 'on') {
     window.api.showProgress({
       style: 'default',
       animationType: 'fade',
