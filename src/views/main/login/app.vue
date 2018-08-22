@@ -1,38 +1,39 @@
 <template>
-  <DefaultFrame
-    :title="title"
-  >
-  </DefaultFrame>
+    <UIHeader
+      color="#ffffff"
+      textColor="#000000"
+      :z-depth="1"
+      class="header"
+      title="用户登录">
+    </UIHeader>
 </template>
 
 <script>
-import moment from 'moment';
-import { DefaultFrame } from 'components';
 import tool from 'util/tools';
+import UIHeader from 'components/UIHeader';
+
 export default {
   data () {
     return {
-      title:'我的信息',
     };
   },
   components: {
-    DefaultFrame,
+   UIHeader
   },
   methods: {
     
   },
   mounted () {
-      var headerH=tool.fixStatusBar(tool.dom("header"));
-      var heightF=window.api.frameHeight;
+      var headerH=tool.fixStatusBar(tool.dom(".header"));
       window.api.openFrame({
-          name: 'studentStatus_f',
-          url: '../frame/studentStatus.html',
+          name: 'loginF',
+          url: './frame/login.html',
           bounces: true,
           rect: {
               x: 0,
               y: headerH,
               w: 'auto',
-              h: heightF-100
+              h: 'auto'
           }
       });
   }
@@ -40,8 +41,7 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url('../../../assets/css/base.less');
-.formCon{padding: 15px}
-.startDateTime{
-  bottom: 50px;
+.header{
+    height: 50px;
 }
 </style>

@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import tool from "util/tools";
 export default {
   data () {
     return {
@@ -17,14 +18,21 @@ export default {
     
   },
   mounted () {
-      window.api.openWin({
-          name: 'studentStatus',
-          url: './win/studentStatus.html',
+      var userInfo=tool.getStorage('STUserInfo');
+      if(!!userInfo){
+        window.api.openWin({
+          name: 'main',
+          url: './main/main.html',
           bounces: false,
-          pageParam: {
-              key : 'value'
-              }
-      });
+        });
+      }else{
+        window.api.openWin({
+          name: 'login',
+          url: './main/login.html',
+          bounces: false
+        });
+      }
+      
   }
 };
 </script>

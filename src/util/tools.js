@@ -481,7 +481,7 @@ u.fixStatusBar = function (el) {
     return 0;
   }
   el.style.paddingTop = window.api.safeArea.top + 'px';
-  el.height=(window.api.safeArea.top+el.offsetHeight)+'px';
+  el.style.height=(window.api.safeArea.top+el.offsetHeight)+'px';
   return el.offsetHeight;
 };
 u.fixTabBar = function (el) {
