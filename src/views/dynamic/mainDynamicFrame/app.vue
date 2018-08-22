@@ -55,11 +55,8 @@ import moment from 'moment';
 import { Button, TextField, Radio } from 'muse-ui';
 import { DatetimePicker } from 'mint-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
-<<<<<<< HEAD:src/views/dynamic/mainDynamicFrame/app.vue
-=======
 import { DefaultFrame } from 'components';
 import regexps from 'util/regexps';
->>>>>>> 4d1884dc345fdfc956bdcc1c1f2046f9b8950e26:src/views/studentStatus/app.vue
 
 export default {
   data () {
