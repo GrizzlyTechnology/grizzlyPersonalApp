@@ -28,10 +28,10 @@
             label="入学时间"
             prop="startDateTime"
           >
-            <TextField v-model="startDateTimeText" @focus="openStartDateTime"></TextField>
+            <TextField readonly="readonly" v-model="startDateTimeText" @focus="openStartDateTime"></TextField>
           </FormItem>
         </Form>
-        <Button color="#19AD17" textColor="#ffffff" :full-width="true" large >下一步</Button>
+        <Button color="#19AD17" textColor="#ffffff" :full-width="true" large @click="step1Submit">下一步</Button>
       </div>
       <div v-if="step===2">2</div>
       <div v-if="step===3">3</div>
@@ -55,6 +55,11 @@ import moment from 'moment';
 import { Button, TextField, Radio } from 'muse-ui';
 import { DatetimePicker } from 'mint-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
+<<<<<<< HEAD:src/views/dynamic/mainDynamicFrame/app.vue
+=======
+import { DefaultFrame } from 'components';
+import regexps from 'util/regexps';
+>>>>>>> 4d1884dc345fdfc956bdcc1c1f2046f9b8950e26:src/views/studentStatus/app.vue
 
 export default {
   data () {
@@ -69,10 +74,10 @@ export default {
         startDateTime: (new Date()).valueOf()
       },
       nameRules: [
-        { validate: val => !!val, message: '必须填写用户名' }
+        { validate: val => !!val, message: '必须填写姓名' }
       ],
       personIdRules: [
-        { validate: val => !!val, message: '填写正确的身份证信息' }
+        { validate: val => regexps.IdCard.test(val), message: '填写正确的身份证信息' }
       ]
     };
   },
@@ -85,6 +90,15 @@ export default {
     DatetimePicker
   },
   methods: {
+    async checkUser () {},
+    step1Submit () {
+      this.$refs.step1Form.validate().then((result) => {
+        if (result === true) {
+          // 远端验证 checkUser
+          this.step = 2;
+        }
+      });
+    },
     openStartDateTime () {
       this.$refs.startDateTime.open();
     },
@@ -94,14 +108,13 @@ export default {
       this.step1Form.startDateTime = (this.startDateTime).valueOf();
     }
   },
-  mounted () {
-  }
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>
 @import url('../../../assets/css/base.less');
 .formCon{padding: 15px}
-.startDateTime{
-  bottom: 50px;
-}
+// .startDateTime{
+//   bottom: 50px;
+// }
 </style>
