@@ -33,7 +33,7 @@
       >
       </Checkbox>
     </FormItem>
-    <Button full-width round class="buttom" @click="submit">立即登录</Button>
+    <Button full-width large class="buttom" color="teal" @click="submit">立即登录</Button>
   </Form>
 </div>
 </template>
@@ -41,8 +41,6 @@
 <script>
 import { Button, TextField, Checkbox } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
-
-import UIHeader from 'components/UIHeader';
 
 export default {
   data () {
@@ -65,7 +63,6 @@ export default {
     };
   },
   components: {
-   UIHeader,
    Button,
    TextField,
    Checkbox,
@@ -83,7 +80,6 @@ export default {
     }
   },
   mounted () {
-      tool.fixStatusBar(tool.dom("#app"));
   }
 };
 </script>
@@ -91,7 +87,7 @@ export default {
 @import url('../../../../assets/css/base.less');
 .formCon{padding: 20px}
 .buttom{
-    background-color: green;
     color:#FFF;
+    font-size: 16px;
 }
 </style>
