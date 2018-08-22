@@ -9,7 +9,17 @@ export const fixIos7Bar = function (t) {
     n >= 7 && !i && o && (t.style.paddingTop = '1rem', t.style.height = '3.2rem');
   }
 };
-
+export const dom = function(el, selector){
+    if(arguments.length === 1 && typeof arguments[0] == 'string'){
+        if(document.querySelector){
+            return document.querySelector(arguments[0]);
+        }
+    }else if(arguments.length === 2){
+        if(el.querySelector){
+            return el.querySelector(selector);
+        }
+    }
+};
 export const fixStatusBar = function (t) {
   var e = window.api.systemType;
   if (e === 'ios') fixIos7Bar(t);

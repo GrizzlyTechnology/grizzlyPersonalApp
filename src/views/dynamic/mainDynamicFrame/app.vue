@@ -1,7 +1,5 @@
 <template>
-  <DefaultFrame
-    title="学生信息"
-  >
+  <div>
     <div class="formCon">
       <div v-if="step===1">
         <Form ref="step1Form" :model="step1Form" >
@@ -49,7 +47,7 @@
       >
       </DatetimePicker>
     </div>
-  </DefaultFrame>
+  </div>
 </template>
 
 <script>
@@ -81,7 +79,6 @@ export default {
     };
   },
   components: {
-    DefaultFrame,
     Button,
     Form,
     FormItem,
@@ -112,7 +109,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('../../assets/css/base.less');
+@import url('../../../assets/css/base.less');
 .formCon{padding: 15px}
 // .startDateTime{
 //   bottom: 50px;
