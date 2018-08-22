@@ -1,10 +1,10 @@
 <template>
     <div class="footer" :style="{height:footerHeight}">
         <BottomNav class="bottomNav" :value="bottomNavValue" @change="changeIteam">
-            <BottomNavItem :value="0" title="首页" icon=":icon-guanyuwomen"></BottomNavItem>
-            <BottomNavItem :value="1" title="动态" icon=":icon-flag"></BottomNavItem>
-            <BottomNavItem :value="2" title="应用" icon=":icon-rocket1"></BottomNavItem>
-            <BottomNavItem :value="3" title="我的" icon=":icon-user"></BottomNavItem>
+            <BottomNavItem :value="0" title="首页" icon=":icon-zhaopin1"></BottomNavItem>
+            <BottomNavItem :value="1" title="动态" icon=":icon-guanli"></BottomNavItem>
+            <BottomNavItem :value="2" title="应用" icon=":icon-chanpin"></BottomNavItem>
+            <BottomNavItem :value="3" title="我的" icon=":icon-icon-"></BottomNavItem>
         </BottomNav>
     </div>
 </template>
@@ -76,19 +76,19 @@ export default {
 .mu-bottom-item {
   .mu-bottom-item-icon {
     font-size: 18px;
-    color: #666;
+    color: #cccccc;
   }
   .mu-bottom-item-text {
-    color: #666;
+    color: #cccccc;
   }
 }
 .mu-bottom-item-active {
   .mu-bottom-item-text {
     font-size: 10px;
-    color: @baseColor;
+    color: #FFF;
   }
   .mu-bottom-item-icon {
-    color: @baseColor;
+    color: #FFF;
   }
 }
 .mu-bottom-item-text {
@@ -105,11 +105,7 @@ export default {
   left: 0;
 }
 .bottomNav {
-  background-color: #fff;
-  color: #fff;
+  background-color:@baseColor;
   height: 50px;
-  // {
-  //   color:#fff;
-  // }
 }
 </style>
