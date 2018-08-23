@@ -1,11 +1,13 @@
 <template>
-<div class="formCon">
-      <img src="assets/images/headpic.png">
+<Container class="formCon">
+    <Row class="hpic" justify-content="center">
+    <Avatar size="100" color="teal">M</Avatar>
+    </Row>
   <Form ref="form" :model="validateForm" class="mu-demo-form">
     <FormItem 
     prop="username" 
     :rules="usernameRules"
-    label="用户名"
+    label="用户名(手机号码)"
     >
       <TextField 
       v-model="validateForm.username" 
@@ -16,7 +18,7 @@
     <FormItem 
     prop="password" 
     :rules="passwordRules"
-    label="密码"
+    label="密 码"
     >
         <TextField 
         v-model="validateForm.password" 
@@ -36,13 +38,14 @@
     </FormItem>
     <Button full-width large class="buttom" color="teal" @click="submit">立即登录</Button>
   </Form>
-</div>
+</Container>
 </template>
 
 <script>
 import { Button, TextField, Checkbox,Avatar } from 'muse-ui';
-import Row from "muse-ui/lib/Grid"
+import {Row,Container} from "muse-ui/lib/Grid";
 import { Form, FormItem } from 'muse-ui/lib/Form';
+import srvaass from 'service';
 
 export default {
   data () {
@@ -61,7 +64,8 @@ export default {
         password: '',
         isAgree: true
       },
-      visibility: false
+      visibility: false,
+      demo: 'demo',
     };
   },
   components: {
@@ -71,13 +75,30 @@ export default {
    Row,
    Avatar,
    Form,
-   FormItem
+   FormItem,
+   Container
   },
   methods: {
+      async query () {
+        //   const response = await srvaass.demo({demo: 'this is a demo'});
+
+      //test===============
+     const url='http://test.mangotmall.com/api/index/ceshi.html'
+     const response = await fetch(url,{
+         method: "POST",
+         body: "firstName=Nikhil&favColor=blue&password=easytoguess"
+     }).then(function(res){
+         return res.json();
+     });
+     //-=====================
+     
+     alert(JSON.stringify(response));
+
+    },
      submit () {
       this.$refs.form.validate().then((result) => {
         if(result){
-            alert(JSON.stringify(this.validateForm));
+            this.query();
         }
       });
       return;
@@ -87,11 +108,20 @@ export default {
   }
 };
 </script>
+<style lang="less">
+@import url('../../../../assets/css/base.less');
+.mu-form-item-label{
+    font-size: 18px;
+}
+</style>
 <style lang="less" scoped>
 @import url('../../../../assets/css/base.less');
 .formCon{padding: 20px}
+.hpic{
+    padding: 40px 0;
+}
 .buttom{
-    color:#FFF;
-    font-size: 16px;
+    color:@white;
+    font-size: 18px;
 }
 </style>
