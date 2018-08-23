@@ -7,7 +7,7 @@
   url('iconfont.svg?t=1534941249358#iconfont') format('svg'); /* iOS 4.1- */
 }
 .mu-icon{
-    font-family:"anticon" !important;
+    font-family:"iconfont" !important;
     font-style:normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
