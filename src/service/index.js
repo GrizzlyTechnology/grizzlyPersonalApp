@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { isMock } from './mock';
-import tool from 'util/tools'
+import tool from 'util/tools';
 
 const ENV = process.env;
 let BASEURL = '';
 
-const TOKEN=tool.getStorage('token');
+const TOKEN = tool.getStorage('token');
 switch (ENV) {
   case 'development':
     BASEURL = 'test.mangotmall.com';
@@ -19,10 +19,10 @@ axios.defaults.timeout = 20000;
 axios.interceptors.request.use((config) => {
   // Do something with request
   config.headers['X-Requested-With'] = 'XMLHttpRequest';
-  config.headers['MG_code']='5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O';
-  config.headers['MG_key']='5b10fed636fcf';
-  if(TOKEN){
-    config.headers['MG_token']=TOKEN;
+  config.headers['MG_code'] = '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O';
+  config.headers['MG_key'] = '5b10fed636fcf';
+  if (TOKEN) {
+    config.headers['MG_token'] = TOKEN;
   }
   return config;
 }, (error) => {
@@ -55,7 +55,7 @@ function fetch ({host = '', version = '', url, params, method = 'get'}) {
         url += '?_=' + tk;
       }
 
-      axios[method](host === '' ? url : `//${host}${url}`, data).then(
+      axios[method](host === '' ? url : `http://${host}${url}`, data).then(
         response => {
           // TODO 这里做数据的验证
           resolve(response.data);
@@ -70,8 +70,8 @@ function fetch ({host = '', version = '', url, params, method = 'get'}) {
 export default {
   demo (params) {
     return fetch({
-      host:'test.mangotmall.com',
-      //host: '127.0.0.1',
+      host: 'test.mangotmall.com',
+      // host: '127.0.0.1',
       url: '/api/index/ceshi.html',
       params,
       method: 'post'

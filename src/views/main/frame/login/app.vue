@@ -4,34 +4,34 @@
     <Avatar size="100" color="teal">M</Avatar>
     </Row>
   <Form ref="form" :model="validateForm" class="mu-demo-form">
-    <FormItem 
-    prop="username" 
+    <FormItem
+    prop="username"
     :rules="usernameRules"
     label="用户名(手机号码)"
     >
-      <TextField 
-      v-model="validateForm.username" 
+      <TextField
+      v-model="validateForm.username"
       prop="username"
       >
       </TextField>
     </FormItem>
-    <FormItem 
-    prop="password" 
+    <FormItem
+    prop="password"
     :rules="passwordRules"
     label="密 码"
     >
-        <TextField 
-        v-model="validateForm.password" 
-        prop="password" 
-        :action-icon="visibility ? ':icon-bukejian2' : ':icon-kejian'" 
-        :action-click="() => (visibility = !visibility)" 
+        <TextField
+        v-model="validateForm.password"
+        prop="password"
+        :action-icon="visibility ? ':icon-bukejian2' : ':icon-kejian'"
+        :action-click="() => (visibility = !visibility)"
         :type="visibility ? 'text' : 'password'"
         >
         </TextField>
     </FormItem>
     <FormItem>
-      <Checkbox 
-      label="记住用户名" 
+      <Checkbox
+      label="记住用户名"
       v-model="validateForm.isAgree"
       >
       </Checkbox>
@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import { Button, TextField, Checkbox,Avatar } from 'muse-ui';
-import {Row,Container} from "muse-ui/lib/Grid";
+import { Button, TextField, Checkbox, Avatar } from 'muse-ui';
+import {Row, Container} from 'muse-ui/lib/Grid';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import srvaass from 'service';
 
@@ -51,57 +51,44 @@ export default {
   data () {
     return {
       usernameRules: [
-        { validate: (val) => !!val, message: '必须填写用户名'},
-        { validate: (val) => val.length >= 3, message: '用户名长度大于3'}
+        { validate: (val) => !!val, message: '必须填写用户名' },
+        { validate: (val) => val.length >= 3, message: '用户名长度大于3' }
       ],
       passwordRules: [
-        { validate: (val) => !!val, message: '必须填写密码'},
-        { validate: (val) => val.length >= 3 && val.length <= 10, message: '密码长度大于3小于10'}
+        { validate: (val) => !!val, message: '必须填写密码' },
+        { validate: (val) => val.length >= 3 && val.length <= 10, message: '密码长度大于3小于10' }
       ],
-      argeeRules: [{ validate: (val) => !!val, message: '必须同意用户协议'}],
+      argeeRules: [{ validate: (val) => !!val, message: '必须同意用户协议' }],
       validateForm: {
         username: '',
         password: '',
         isAgree: true
       },
       visibility: false,
-      demo: 'demo',
+      demo: 'demo'
     };
   },
   components: {
-   Button,
-   TextField,
-   Checkbox,
-   Row,
-   Avatar,
-   Form,
-   FormItem,
-   Container
+    Button,
+    TextField,
+    Checkbox,
+    Row,
+    Avatar,
+    Form,
+    FormItem,
+    Container
   },
   methods: {
-      async query () {
-        //   const response = await srvaass.demo({demo: 'this is a demo'});
-
-      //test===============
-     const url='http://test.mangotmall.com/api/index/ceshi.html'
-     const response = await fetch(url,{
-         method: "POST",
-         body: "firstName=Nikhil&favColor=blue&password=easytoguess"
-     }).then(function(res){
-         return res.json();
-     });
-     //-=====================
-     
-     alert(JSON.stringify(response));
-
+    async query () {
+      const response = await srvaass.demo({demo: 'this is a demo'});
+      alert(22222 + JSON.stringify(response));
     },
-     submit () {
+    submit () {
       this.$refs.form.validate().then((result) => {
-        if(result){
-            this.query();
+        if (result) {
+          this.query();
         }
       });
-      return;
     }
   },
   mounted () {
