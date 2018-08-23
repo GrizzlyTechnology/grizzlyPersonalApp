@@ -65,7 +65,6 @@ export default {
         isAgree: true
       },
       visibility: false,
-      demo: 'demo'
     };
   },
   components: {
@@ -80,8 +79,11 @@ export default {
   },
   methods: {
     async query () {
-      const response = await srvaass.demo({demo: 'this is a demo'});
-      alert(22222 + JSON.stringify(response));
+      const response = await srvaass.demo({
+          userName: this.validateForm.username,
+          passWord: this.validateForm.password
+          });
+      alert(JSON.stringify(response));
     },
     submit () {
       this.$refs.form.validate().then((result) => {
