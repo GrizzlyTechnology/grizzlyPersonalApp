@@ -37,7 +37,25 @@ axios.interceptors.response.use(function (response) {
   return Promise.reject(error);
 });
 
-function fetch ({host = '', version = '', url, params, method = 'get'}) {
+function delEmptyAttr (arg) {
+  const params = Object.assign({}, arg);
+
+  Object.keys(arg).forEach((key) => {
+    if (
+      arg[key] === '' ||
+          arg[key] === null ||
+          arg[key] === undefined ||
+          (Array.isArray(arg[key]) && arg[key].length === 0) ||
+          (typeof arg[key] === 'object' && arg[key].length === undefined)
+    ) {
+      delete params[key];
+    }
+  });
+
+  return params;
+}
+
+function request ({host = '', version = '', url, params, method = 'get'}) {
   const mock = isMock({ host, version, url, params, method });
 
   if (ENV !== 'production' && mock.isMock === true) {
@@ -49,8 +67,7 @@ function fetch ({host = '', version = '', url, params, method = 'get'}) {
     return new Promise((resolve, reject) => {
       let data = params;
       if (method === 'get') {
-        params = { ...params, '_': tk };
-        data = { params: params };
+        data = { params: { ...delEmptyAttr(params), '_': tk } };
       } else {
         url += '?_=' + tk;
       }
@@ -69,7 +86,7 @@ function fetch ({host = '', version = '', url, params, method = 'get'}) {
 
 export default {
   demo (params) {
-    return fetch({
+    return request({
       host: 'test.mangotmall.com',
       // host: '127.0.0.1',
       url: '/api/index/ceshi.html',
