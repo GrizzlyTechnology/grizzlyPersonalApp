@@ -1,5 +1,6 @@
 <template>
 <div class="formCon">
+      <img src="assets/images/headpic.png">
   <Form ref="form" :model="validateForm" class="mu-demo-form">
     <FormItem 
     prop="username" 
@@ -39,7 +40,8 @@
 </template>
 
 <script>
-import { Button, TextField, Checkbox } from 'muse-ui';
+import { Button, TextField, Checkbox,Avatar } from 'muse-ui';
+import Row from "muse-ui/lib/Grid"
 import { Form, FormItem } from 'muse-ui/lib/Form';
 
 export default {
@@ -66,6 +68,8 @@ export default {
    Button,
    TextField,
    Checkbox,
+   Row,
+   Avatar,
    Form,
    FormItem
   },
