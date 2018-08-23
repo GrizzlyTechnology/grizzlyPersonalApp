@@ -22,13 +22,13 @@ export default {
       if(!!userInfo){
         window.api.openWin({
           name: 'main',
-          url: './main/main.html',
+          url: './index/main.html',
           bounces: false,
         });
       }else{
         window.api.openWin({
           name: 'login',
-          url: './main/login.html',
+          url: './index/login.html',
           bounces: false
         });
       }
