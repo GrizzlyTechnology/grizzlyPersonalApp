@@ -40,43 +40,43 @@ import UIHeader from 'components/UIHeader';
 export default {
   data () {
     return {
-        wtitle:window.api.pageParam.wtitle,
-        fname:window.api.pageParam.fname,
-        furl:window.api.pageParam.furl,
-        hasLeft:window.api.pageParam.hasLeft,
-        hasRight:window.api.pageParam.hasRight,
+      wtitle: window.api.pageParam.wtitle,
+      fname: window.api.pageParam.fname,
+      furl: window.api.pageParam.furl,
+      hasLeft: window.api.pageParam.hasLeft,
+      hasRight: window.api.pageParam.hasRight
     };
   },
   components: {
-      Button,
-      Icon,
-      UIHeader
+    Button,
+    Icon,
+    UIHeader
   },
   methods: {
-    clickLeft(){
-        window.api.closeWin();
-        // window.api.execScript({
-        //     frameName: this.fname,
-        //     script:'window.clickLeft();'
-        // });
+    clickLeft () {
+      window.api.closeWin();
+      // window.api.execScript({
+      //     frameName: this.fname,
+      //     script:'window.clickLeft();'
+      // });
     },
-    clickRight(){
-        alert("right");
+    clickRight () {
+      alert('right');
     }
   },
   mounted () {
-      var headerH=tool.fixStatusBar(tool.dom(".header"));
-      window.api.openFrame({
-          name: this.fname,
-          url: this.furl,
-          bounces: true,
-          rect: {
-              x: 0,
-              y: headerH,
-              w: 'auto',
-              h: 'auto'
-          }
-      });
+    var headerH = tool.fixStatusBar(tool.dom('.header'));
+    window.api.openFrame({
+      name: this.fname,
+      url: this.furl,
+      bounces: true,
+      rect: {
+        x: 0,
+        y: headerH + 5,
+        w: 'auto',
+        h: 'auto'
+      }
+    });
   }
 };
 </script>

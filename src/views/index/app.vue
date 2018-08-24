@@ -18,28 +18,27 @@ export default {
 
   },
   mounted () {
-      var userInfo=tool.getStorage('STUserInfo');
-      if(!!userInfo){
-        window.api.openWin({
-          name: 'main',
-          url: './index/main.html',
-          bounces: false,
-        });
-      }else{
-        window.api.openWin({
-            name: 'login',
-            url: './index/win.html',
-            bounces: false,
-            pageParam: {
-                wtitle : '登录',
-                fname:'login_f',
-                furl:'./login.html',
-                hasLeft:0,
-                hasRight:0,
-                }
-        });
-      }
-      
+    var userInfo = tool.getStorage('STUserInfo');
+    if (userInfo) {
+      window.api.openWin({
+        name: 'main',
+        url: './index/main.html',
+        bounces: false
+      });
+    } else {
+      window.api.openWin({
+        name: 'login',
+        url: './index/win.html',
+        bounces: false,
+        pageParam: {
+          wtitle: '登录',
+          fname: 'login_f',
+          furl: './login.html',
+          hasLeft: 0,
+          hasRight: 0
+        }
+      });
+    }
   }
 };
 </script>
