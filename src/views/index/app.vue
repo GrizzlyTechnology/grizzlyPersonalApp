@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import tool from "util/tools";
+import tool from 'util/tools';
 export default {
   data () {
     return {
@@ -15,24 +15,23 @@ export default {
 
   },
   methods: {
-    
+
   },
   mounted () {
-      var userInfo=tool.getStorage('STUserInfo');
-      if(!!userInfo){
-        window.api.openWin({
-          name: 'main',
-          url: './index/main.html',
-          bounces: false,
-        });
-      }else{
-        window.api.openWin({
-          name: 'login',
-          url: './index/login.html',
-          bounces: false
-        });
-      }
-      
+    var userInfo = tool.getStorage('STUserInfo');// 还要判断是否有效 还是要走api
+    if (userInfo) {
+      window.api.openWin({
+        name: 'main',
+        url: './index/main.html',
+        bounces: false
+      });
+    } else {
+      window.api.openWin({
+        name: 'login',
+        url: './index/login.html',
+        bounces: false
+      });
+    }
   }
 };
 </script>

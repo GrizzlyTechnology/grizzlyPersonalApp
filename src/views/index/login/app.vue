@@ -18,24 +18,24 @@ export default {
     };
   },
   components: {
-   UIHeader
+    UIHeader
   },
   methods: {
-    
+
   },
   mounted () {
-      var headerH=tool.fixStatusBar(tool.dom(".header"));
-      window.api.openFrame({
-          name: 'loginF',
-          url: './frame/login.html',
-          bounces: true,
-          rect: {
-              x: 0,
-              y: headerH,
-              w: 'auto',
-              h: 'auto'
-          }
-      });
+    var headerH = tool.fixStatusBar(tool.dom('.header'));
+    window.api.openFrame({
+      name: 'loginF',
+      url: './frame/login.html',
+      bounces: true,
+      rect: {
+        x: 0,
+        y: headerH,
+        w: 'auto',
+        h: 'auto'
+      }
+    });
   }
 };
 </script>
