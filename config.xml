@@ -14,7 +14,11 @@
 
     </author>
 
+<<<<<<< HEAD
+    <content src="index.html"/>
+=======
     <content src="index/testWin.html"/>
+>>>>>>> 933a3bcebda6851ba11dca025967abc4371af285
 
     <access origin="*"/>
 
