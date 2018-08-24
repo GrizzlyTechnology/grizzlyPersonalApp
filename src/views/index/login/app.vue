@@ -38,6 +38,7 @@
     </FormItem>
     <Button full-width large class="buttom" color="teal" @click="submit">立即登录</Button>
   </Form>
+  <div style="padding-top:50px;" @click="gowin">打开win</div>
 </Container>
 </template>
 
@@ -94,6 +95,14 @@ export default {
     },
     clickLeft(){
         alert("nnnn");
+    },
+    gowin(){
+        window.api.openWin({
+            name: 'mywin',
+            url: './testWin.html',
+            bounces: false,
+            pageParam: {num : 0}
+        });
     }
   },
   mounted () {
