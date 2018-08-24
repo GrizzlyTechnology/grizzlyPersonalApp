@@ -9,6 +9,9 @@
     <div v-if="hasFooter" class="footer" :style="{height:footerHeight}">
       <slot name="footer"></slot>
     </div>
+    <div v-if="hasModalCon" class="modalCon">
+      <slot name="modalCon"></slot>
+    </div>
   </div>
 </template>
 
@@ -30,6 +33,9 @@ export default {
     },
     hasFooter () {
       return !!this.$slots.footer;
+    },
+    hasModalCon () {
+      return !!this.$slots.modalCon;
     }
   },
   methods: {},
@@ -41,11 +47,17 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  .header,.content,.footer{
+  .header,.content,.footer,.modalCon{
     position: relative;
   }
-  .header,.footer{
+  .header{
     z-index: 2;
+  }
+  .footer{
+    z-index: 4;
+  }
+  .modalCon{
+    z-index: 3;
   }
   .content{
     flex: 1;

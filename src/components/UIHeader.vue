@@ -5,11 +5,8 @@
     :z-depth="zDepth"
     v-bind="$attrs"
     :style="{height}"
-  >
+    :title="title">
     <slot name="left" slot="left"></slot>
-    <div v-if="!hasSlot" :style="{lineHeight:height}">
-      {{title}}
-    </div>
     <div v-if="hasSlot">
       <slot></slot>
     </div>

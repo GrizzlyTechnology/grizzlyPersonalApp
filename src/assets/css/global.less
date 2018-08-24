@@ -2,17 +2,195 @@
 /*
 ui调整
 */
-.mu-appbar{
-  padding: 0px;
-}
-.mu-appbar-left {
-  padding-right: 0px;
+body{
+  .mu-appbar{
+    padding: 0px;
+  }
+  .mu-appbar-left {
+    padding-right: 0px;
+  }
+  .mu-appbar-title{
+    text-align: center
+  }
+  .mu-raised-button,.mu-raised-button:active{
+    box-shadow: 0 0 0;
+  }
+
+  .mu-radio.disabled  {
+    color: rgba(0, 0, 0, 0.38);
+  }
+  .mu-radio-checked {
+    color: #19AD17;
+  }
+  .mu-radio-label {
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .mu-radio.disabled .mu-radio-label {
+    color: rgba(0, 0, 0, 0.38);
+  }
+
+  .mu-input {
+    color: rgba(0, 0, 0, 0.54);
+  }
+  .mu-input__focus {
+    color: #19AD17;
+  }
+  .mu-input__error {
+    color: #E50112;
+  }
+  .mu-input.disabled .mu-input-content {
+    color: rgba(0, 0, 0, 0.38);
+  }
+  .mu-input-help {
+    color: rgba(0, 0, 0, 0.54);
+  }
+  .mu-input__error .mu-input-help {
+    color: #E50112;
+  }
+  .mu-input.has-label .mu-input-label.float {
+    color: rgba(0, 0, 0, 0.38);
+  }
+  .mu-input-line {
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+  .mu-input-line.disabled{
+    border-bottom-color: rgba(0, 0, 0, 0.38);
+  }
+  .mu-input-suffix-text,
+  .mu-input-prefix-text {
+    color: rgba(0, 0, 0, 0.54);
+  }
+  .mu-text-field-input {
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .mu-text-field-suffix {
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  .mu-raised-button {
+    background-color: undefined;
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .mu-raised-button.disabled{
+    color: rgba(0, 0, 0, 0.3);
+    background-color: rgb(229, 229, 229);
+  }
+  .mu-flat-button {
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .mu-flat-button.disabled {
+    color: rgba(0, 0, 0, 0.38);
+  }
+  .mu-icon-button {
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .mu-icon-button.disabled {
+    color: rgba(0, 0, 0, 0.38);
+  }
+  .mu-fab-button {
+    background-color: #19AD17;
+    color: #ffffff;
+  }
+  .mu-fab-button.disabled {
+    color: rgba(0, 0, 0, 0.3);
+    background-color: rgb(229, 229, 229);
+  }
+
+  .mu-form-item {
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  .mu-form-item__focus {
+    color: #19AD17;
+  }
+
+  .mu-form-item__error {
+    color: #E50112;
+  }
+  .mu-form-item-help {
+    color: rgba(0, 0, 0, 0.54);
+  }
+  .mu-form-item__error .mu-form-item-help {
+    color: #E50112;
+  }
+
+    .mu-appbar {
+      background-color: #f5f5f5;
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+  .mu-bottom-nav{
+    background-color: undefined;
+  }
+
+  .mu-bottom-nav-shift{
+    background-color: #19AD17;
+  }
+  .mu-bottom-item {
+    color: rgba(0, 0, 0, 0.54);
+  }
+  .mu-bottom-nav-shift .mu-bottom-item {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .mu-bottom-item-active .mu-bottom-item-icon,
+  .mu-bottom-item-active .mu-bottom-item-text {
+    color: #19AD17;
+  }
+  .mu-bottom-nav-shift .mu-bottom-item-active .mu-bottom-item-icon,
+  .mu-bottom-nav-shift .mu-bottom-item-active .mu-bottom-item-text {
+    color: #ffffff;
+  }
+
+  .mu-primary-color {
+    background-color: #19AD17;
+  }
+  .mu-secondary-color {
+    background-color: #ff4081;
+  }
+  .mu-success-color {
+    background-color: #4caf50;
+  }
+  .mu-warning-color {
+    background-color: #fdd835;
+  }
+  .mu-info-color {
+    background-color: #2196f3;
+  }
+  .mu-error-color {
+    background-color: #E50112;
+  }
+  .mu-inverse {
+    color: #fff;
+  }
+  .mu-primary-text-color {
+    color: #19AD17;
+  }
+  .mu-secondary-text-color {
+    color: #ff4081;
+  }
+  .mu-success-text-color {
+    color: #4caf50;
+  }
+  .mu-warning-text-color {
+    color: #fdd835;
+  }
+  .mu-info-text-color {
+    color: #2196f3;
+  }
+  .mu-error-text-color {
+    color: #E50112;
+  }
 }
 /*
 全局样式
 */
 html,body{
   background-color: @grayBodyBackground;
-  color: @baseGray;
+  color: @black;
   height: 100%;
+}
+
+
+a{
+  color: #ff4081;
 }

@@ -37,83 +37,103 @@ let config = {
     // { MYAPP: "window.APP" }
   ],
   module: {
-    rules: [{
-      test: /\.vue$/,
-      use: 'vue-loader'
-    },
-    {
-      test: /\.js$/,
-      use: 'babel-loader',
-      exclude: /node_modules/
-    },
-    {
-      test: /\.css$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: {
-          loader: 'css-loader',
-          options: {
-            minimize: true
-          }
-        }
-      })
-    },
-    // {
-    //   test: /\.less$/,
-    //   use: [
-    //     'style-loader',
-    //     { loader: 'css-loader', options: { importLoaders: 1 } },
-    //     'less-loader'
-    //   ]
-    // },
-    {
-      test: /\.less$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: [
-          {
+    rules: [
+      // {
+      //   test: /\.vue$/,
+      //   use: 'vue-loader'
+      // },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {loaders: {
+          less: ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  minimize: process.env.NODE_ENV === 'production'
+                }
+              },
+              'autoprefixer-loader',
+              'less-loader'
+            ]
+          })
+        }}
+      },
+      {
+        test: /\.js$/,
+        use: 'babel-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: {
             loader: 'css-loader',
             options: {
-              minimize: true
+              minimize: process.env.NODE_ENV === 'production'
             }
-          },
-          'autoprefixer-loader',
-          'less-loader'
-        ]
-      })
-    },
-    {
-      test: /\.html$/,
-      use: [{
-        loader: 'html-loader',
-        options: {
-          root: resolve(__dirname, 'src'),
-          attrs: ['img:src', 'link:href']
-        }
-      }]
-    },
-    {
-      test: /\.(png|jpe?g|gif|svg|svgz)(\?.+)?$/,
-      exclude: /iconfont\.svg/,
-      use: [{
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: 'assets/img/[name].[ext]'
-        }
-      }]
-    },
-    {
-      test: /\.(eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
-      include: /fonts/,
-      use: [{
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: 'assets/fonts/[name].[ext]'
-        }
-      }]
-    }
+          }
+        })
+      },
+      // {
+      //   test: /\.less$/,
+      //   use: [
+      //     'style-loader',
+      //     { loader: 'css-loader', options: { importLoaders: 1 } },
+      //     'less-loader'
+      //   ]
+      // },
+      {
+        test: /\.less$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                minimize: process.env.NODE_ENV === 'production'
+              }
+            },
+            'autoprefixer-loader',
+            'less-loader'
+          ]
+        })
+      },
+      {
+        test: /\.html$/,
+        use: [{
+          loader: 'html-loader',
+          options: {
+            root: resolve(__dirname, 'src'),
+            attrs: ['img:src', 'link:href']
+          }
+        }]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg|svgz)(\?.+)?$/,
+        exclude: /iconfont\.svg/,
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            name: 'assets/img/[name].[ext]'
+          }
+        }]
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
+        include: /assets/,
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            name: 'assets/fonts/[name].[ext]'
+          }
+        }]
+      }
     ]
   },
   plugins: [
@@ -123,17 +143,18 @@ let config = {
     new CommonsChunkPlugin({
       name: 'vendor',
       minChunks: module => {
-        return module.resource && /node_modules/.test(module.resource);
+        return module.resource && (/node_modules/.test(module.resource) || /assets/.test(module.resource));
       }
     }),
-    new CommonsChunkPlugin({
-      name: 'client',
-      async: 'chunk-vendor',
-      children: true,
-      minChunks: (module, count) => {
-        return count >= 3;
-      }
-    }),
+    // 应该是异步加载的资源的chunk
+    // new CommonsChunkPlugin({
+    //   name: 'client',
+    //   async: 'chunk-vendor',
+    //   children: true,
+    //   minChunks: (module, count) => {
+    //     return count >= 3;
+    //   }
+    // }),
     new CommonsChunkPlugin({
       name: 'runtime',
       minChunks: Infinity
@@ -146,7 +167,7 @@ let config = {
   ],
   devServer: {
     host: '127.0.0.1',
-    port: 8010,
+    port: 8880,
     historyApiFallback: false,
     noInfo: true
     // proxy: {
@@ -183,6 +204,7 @@ pages.forEach(function (pathname) {
     conf.hash = true;
   }
   config.plugins.push(new HtmlWebpackPlugin(conf));
+  // config.plugins.push(new ExtractTextPlugin(fileBasename + '.css'));
 });
 
 // function getCommonChunks (chunks) {
