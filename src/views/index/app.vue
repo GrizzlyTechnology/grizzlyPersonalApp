@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import tool from "util/tools";
+import tool from 'util/tools';
 export default {
   data () {
     return {
@@ -15,7 +15,7 @@ export default {
 
   },
   methods: {
-    
+
   },
   mounted () {
       var userInfo=tool.getStorage('STUserInfo');

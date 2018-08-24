@@ -14,7 +14,7 @@
 
     </author>
 
-    <content src="index.html"/>
+    <content src="index/registered.html"/>
 
     <access origin="*"/>
 
