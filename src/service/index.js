@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { isMock } from './mock';
-import tool from 'util/tools';
+import tools from 'util/tools';
 
 const ENV = process.env;
 let BASEURL = '';
 
-const TOKEN = tool.getStorage('token');
+// const TOKEN = tools.getStorage('token');
 switch (ENV) {
   case 'development':
     BASEURL = 'test.mangotmall.com';
@@ -21,9 +21,9 @@ axios.interceptors.request.use((config) => {
   config.headers['X-Requested-With'] = 'XMLHttpRequest';
   config.headers['MG_code'] = '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O';
   config.headers['MG_key'] = '5b10fed636fcf';
-  if (TOKEN) {
-    config.headers['MG_token'] = TOKEN;
-  }
+  // if (TOKEN) {
+  config.headers['MG_token'] = tools.getStorage('token') || '';
+  // }
   return config;
 }, (error) => {
   return Promise.reject(error);
@@ -92,6 +92,20 @@ export default {
       url: '/api/index/ceshi.html',
       params,
       method: 'post'
+    });
+  },
+  registered (params) {
+    return request({
+      host: 'test.mangotmall.com',
+      url: '/api/index/ceshi.html',
+      params,
+      method: 'post'
+    });
+  },
+  getVerificationCode () {
+    return request({
+      host: 'test.mangotmall.com',
+      url: '/api/index/ceshi.html'
     });
   }
 };

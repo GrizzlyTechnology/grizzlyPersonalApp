@@ -579,6 +579,13 @@ u.get = function (/* url,fnSuc,dataType */) {
   );
 };
 
+u.sleep =  function (times) {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      resolve("ok");
+    }, times);
+  });
+};
 /* end */
 
 export default u;

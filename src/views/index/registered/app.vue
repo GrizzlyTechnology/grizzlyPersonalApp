@@ -14,14 +14,23 @@
         :rules="verificationImgRules"
       >
         <TextField v-model="form.verificationImg" class="verificationCode"></TextField>
-        <img class="verificationCodeImg" src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png"/>
+        <img @click="changeVerificationImg" class="verificationCodeImg" :src="'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png?' + reVerificationImg"/>
       </FormItem>
       <FormItem
         label="短信验证码"
         prop="verificationCode"
         :rules="verificationCodeRules"
       >
-        <TextField v-model="form.verificationCode" class="verificationCode"></TextField><Button color="#19AD17" textColor="#ffffff" class="getVerificationCode">发送验证码</Button>
+        <TextField v-model="form.verificationCode" class="verificationCode"></TextField>
+        <Button
+          color="#19AD17"
+          textColor="#ffffff"
+          class="getVerificationCode"
+          :disabled="verificationCodeBtnText !=='获取验证码'"
+          @click="getVerificationCode"
+        >
+          {{verificationCodeBtnText}}
+        </Button>
       </FormItem>
       <FormItem
         label="密码"
@@ -40,7 +49,7 @@
         <TextField v-model="form.rePassword" type="password"></TextField>
       </FormItem>
     </Form>
-    <Button color="#19AD17" textColor="#ffffff" :full-width="true" large @click="step1Submit">注册</Button>
+    <Button color="#19AD17" textColor="#ffffff" :style="{marginTop:'30px'}" :full-width="true" large @click="submit">注册</Button>
     <div class="registeredDescription">
       注册即代表您同意并遵守《大灰熊用户协议》
     </div>
@@ -48,18 +57,18 @@
 </template>
 
 <script>
-import moment from 'moment';
-import { Button, TextField, Radio } from 'muse-ui';
-import { DatetimePicker } from 'mint-ui';
+import { Button, TextField } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
-import { DefaultFrame } from 'components';
 import regexps from 'util/regexps';
+import tools from 'util/tools';
+import service from 'service';
+
 export default {
   data () {
     return {
-      startDateTimeText: moment().format('YYYY年MM月DD日'),
-      startDateTime: new Date(),
-
+      maxTime: 10,
+      verificationCodeBtnText: '获取验证码',
+      reVerificationImg: (new Date().getTime()) + '_' + Math.random(),
       form: {
         mobilePhone: '',
         verificationImg: '',
@@ -86,34 +95,50 @@ export default {
     };
   },
   components: {
-    DefaultFrame,
     Button,
     Form,
     FormItem,
-    TextField,
-    Radio,
-    DatetimePicker
+    TextField
   },
   methods: {
-    async checkUser () {},
-    step1Submit () {
+    async registered () {
+      const response = await service.registered(this.form);
+      switch (response.codo) {
+        case 0:
+          // 注册好了的动作
+          break;
+        default:
+          break;
+      }
+    },
+    async getVerificationCode () {
+      // 发送验证码请求
+      const response = await service.getVerificationCode(this.form);
+      switch (response.codo) {
+        case 0:
+          this.verificationCodeBtnText = 10 + ' (s)';
+          for (let i = 1; i <= this.maxTime; i++) {
+            await tools.sleep(1000);
+            this.verificationCodeBtnText = (this.maxTime - i) + '(s)';
+          }
+          this.verificationCodeBtnText = '获取验证码';
+          break;
+
+        default:
+          break;
+      }
+    },
+    submit () {
       this.$refs.form.validate().then((result) => {
         if (result === true) {
-          // 远端验证 checkUser
-          this.step = 2;
+          this.registered();
         }
       });
     },
-    openStartDateTime () {
-      this.$refs.startDateTime.open();
-    },
-    changeStartDateTime (date) {
-      console.log('1');
-      this.startDateTimeText = moment(date).format('YYYY年MM月DD日');
-      this.form.startDateTime = (this.startDateTime).valueOf();
+    changeVerificationImg () {
+      this.reVerificationImg = (new Date().getTime()) + '_' + Math.random();
     }
-  },
-  mounted () {}
+  }
 };
 </script>
 <style lang="less" scoped>

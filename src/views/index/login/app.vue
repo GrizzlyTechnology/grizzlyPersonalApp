@@ -65,7 +65,7 @@ export default {
         password: '',
         isAgree: true
       },
-      visibility: false,
+      visibility: false
     };
   },
   components: {
@@ -81,9 +81,9 @@ export default {
   methods: {
     async query () {
       const response = await srvaass.demo({
-          userName: this.validateForm.username,
-          passWord: this.validateForm.password
-          });
+        userName: this.validateForm.username,
+        passWord: this.validateForm.password
+      });
       alert(JSON.stringify(response));
     },
     submit () {
@@ -93,16 +93,16 @@ export default {
         }
       });
     },
-    clickLeft(){
-        alert("nnnn");
+    clickLeft () {
+      alert('nnnn');
     },
-    gowin(){
-        window.api.openWin({
-            name: 'mywin',
-            url: './testWin.html',
-            bounces: false,
-            pageParam: {num : 0}
-        });
+    gowin () {
+      window.api.openWin({
+        name: 'mywin',
+        url: './testWin.html',
+        bounces: false,
+        pageParam: {num: 0}
+      });
     }
   },
   mounted () {

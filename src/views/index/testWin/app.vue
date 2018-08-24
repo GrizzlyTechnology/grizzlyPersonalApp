@@ -9,23 +9,29 @@
 export default {
   data () {
     return {
-        num:api.pageParam.num+1,
+      num: window.api.pageParam.num + 1
     };
   },
   components: {
 
   },
   methods: {
-    openSelf(n){
-        window.api.openWin({
-            name: 'winname'+n,
-            url: './testWin.html',
-            bounces: false,
-            pageParam: {num : n}
-        });
+    openSelf (n) {
+      window.api.openWin({
+        name: 'registered',
+        url: './win.html',
+        bounces: false,
+        pageParam: {
+          wtitle: '用户注册',
+          fname: 'registered_f',
+          furl: './registered.html',
+          hasLeft: 0,
+          hasRight: 0
+        }
+      });
     },
-    close(){
-        window.api.closeWin();
+    close () {
+      window.api.closeWin();
     }
   },
   mounted () {
