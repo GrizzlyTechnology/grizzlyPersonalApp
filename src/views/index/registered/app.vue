@@ -61,6 +61,8 @@ import { Button, TextField } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
 import tools from 'util/tools';
+import service from 'service';
+
 export default {
   data () {
     return {
@@ -99,27 +101,44 @@ export default {
     TextField
   },
   methods: {
+    async registered () {
+      const response = await service.registered(this.form);
+      switch (response.codo) {
+        case 0:
+          // 注册好了的动作
+          break;
+        default:
+          break;
+      }
+    },
     async getVerificationCode () {
       // 发送验证码请求
-      this.verificationCodeBtnText = 10 + ' (s)';
-      for (let i = 1; i <= this.maxTime; i++) {
-        await tools.sleep(1000);
-        this.verificationCodeBtnText = (this.maxTime - i) + '(s)';
+      const response = await service.getVerificationCode(this.form);
+      switch (response.codo) {
+        case 0:
+          this.verificationCodeBtnText = 10 + ' (s)';
+          for (let i = 1; i <= this.maxTime; i++) {
+            await tools.sleep(1000);
+            this.verificationCodeBtnText = (this.maxTime - i) + '(s)';
+          }
+          this.verificationCodeBtnText = '获取验证码';
+          break;
+
+        default:
+          break;
       }
-      this.verificationCodeBtnText = '获取验证码';
     },
     submit () {
       this.$refs.form.validate().then((result) => {
         if (result === true) {
-          // 远端验证
+          this.registered();
         }
       });
     },
     changeVerificationImg () {
       this.reVerificationImg = (new Date().getTime()) + '_' + Math.random();
     }
-  },
-  mounted () {}
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -93,5 +93,19 @@ export default {
       params,
       method: 'post'
     });
+  },
+  registered (params) {
+    return request({
+      host: 'test.mangotmall.com',
+      url: '/api/index/ceshi.html',
+      params,
+      method: 'post'
+    });
+  },
+  getVerificationCode () {
+    return request({
+      host: 'test.mangotmall.com',
+      url: '/api/index/ceshi.html'
+    });
   }
 };
