@@ -22,7 +22,7 @@ export default {
   number: /^\d+$/,
   unEmpty: /^\S+$/,
   username: /^[a-z_0-9]{2,16}$/,
-  password: /^.{6,32}$/,
+  password: /^[a-zA-Z_0-9]{6,32}$/,
   mobPhone: /^0?(13|14|15|16|17|18|19)\d{9}$/,
   captcha: /^\d{4}$/,
   smsVerify: /^\d{4}$/,

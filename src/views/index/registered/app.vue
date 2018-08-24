@@ -8,28 +8,42 @@
       >
         <TextField v-model="form.mobilePhone"></TextField>
       </FormItem>
-        <FormItem
-        label="性别"
-        prop="sex"
+      <FormItem
+        label="验证码"
+        prop="verificationImg"
+        :rules="verificationImgRules"
       >
-        <Radio v-model="form.sex" :value="0" label="男"></Radio>
-        <Radio v-model="form.sex" :value="1" label="女"></Radio>
+        <TextField v-model="form.verificationImg" class="verificationCode"></TextField>
+        <img class="verificationCodeImg" src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png"/>
       </FormItem>
       <FormItem
-        label="身份证"
-        prop="personId"
-        :rules="personIdRules"
+        label="短信验证码"
+        prop="verificationCode"
+        :rules="verificationCodeRules"
       >
-        <TextField v-model="form.personId"></TextField>
+        <TextField v-model="form.verificationCode" class="verificationCode"></TextField><Button color="#19AD17" textColor="#ffffff" class="getVerificationCode">发送验证码</Button>
       </FormItem>
       <FormItem
-        label="入学时间"
-        prop="startDateTime"
+        label="密码"
+        prop="password"
+        help-text="密码规则6-32位0-9大小写字母"
+        :rules="passwordRules"
       >
-        <TextField readonly="readonly" v-model="startDateTimeText" @focus="openStartDateTime"></TextField>
+        <TextField v-model="form.password" type="password"></TextField>
+      </FormItem>
+      <FormItem
+        label="确认密码"
+        prop="rePassword"
+        help-text="密码规则6-32位0-9大小写字母"
+        :rules="rePasswordRules"
+      >
+        <TextField v-model="form.rePassword" type="password"></TextField>
       </FormItem>
     </Form>
     <Button color="#19AD17" textColor="#ffffff" :full-width="true" large @click="step1Submit">注册</Button>
+    <div class="registeredDescription">
+      注册即代表您同意并遵守《大灰熊用户协议》
+    </div>
   </div>
 </template>
 
@@ -45,17 +59,29 @@ export default {
     return {
       startDateTimeText: moment().format('YYYY年MM月DD日'),
       startDateTime: new Date(),
+
       form: {
-        mobilePhoneRules: '',
-        sex: 0,
-        personId: '',
-        startDateTime: (new Date()).valueOf()
+        mobilePhone: '',
+        verificationImg: '',
+        verificationCode: '',
+        password: '',
+        rePassword: ''
       },
       mobilePhoneRules: [
-        { validate: val => !!val, message: '必须填写姓名' }
+        { validate: val => regexps.mobPhone.test(val), message: '请填写正确的手机号码' }
       ],
-      personIdRules: [
-        { validate: val => regexps.IdCard.test(val), message: '填写正确的身份证信息' }
+      verificationImgRules: [
+        { validate: val => !!val, message: '请填写验证码' }
+      ],
+      verificationCodeRules: [
+        { validate: val => !!val, message: '请填写验证码' }
+      ],
+      passwordRules: [
+        { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' }
+      ],
+      rePasswordRules: [
+        { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' },
+        { validate: val => this.form.password === this.form.rePassword, message: '两次密码输入不一致' }
       ]
     };
   },
@@ -93,7 +119,20 @@ export default {
 <style lang="less" scoped>
 @import url('../../../assets/css/base.less');
 .content{padding: 15px}
-// .startDateTime{
-//   bottom: 50px;
-// }
+.verificationCode{
+  width: 66.666%
+}
+.verificationCodeImg{
+  width: 33.333%;
+  height: 32px;
+}
+.getVerificationCode{
+  width: 33.3333%;
+  margin: 0 !important;
+}
+.registeredDescription{
+  text-align: center;
+  font-size: 12px;
+  margin-top: 30px;
+}
 </style>
