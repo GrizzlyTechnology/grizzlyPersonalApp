@@ -34,7 +34,8 @@ export default {
                 wtitle : '登录',
                 fname:'login_f',
                 furl:'./login.html',
-                hasLeft:1,
+                hasLeft:0,
+                hasRight:0,
                 }
         });
       }
