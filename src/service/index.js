@@ -38,21 +38,24 @@ axios.interceptors.response.use(function (response) {
 });
 
 function delEmptyAttr (arg) {
-  const params = Object.assign({}, arg);
+  let rObj = {};
+  if (Array.isArray(arg) && arg.length === 0) {
+    const params = Object.assign({}, arg);
+    Object.keys(arg).forEach((key) => {
+      if (
+        arg[key] === '' ||
+            arg[key] === null ||
+            arg[key] === undefined ||
+            (Array.isArray(arg[key]) && arg[key].length === 0) ||
+            (typeof arg[key] === 'object' && arg[key].length === undefined)
+      ) {
+        delete params[key];
+      }
+    });
+    rObj = params;
+  }
 
-  Object.keys(arg).forEach((key) => {
-    if (
-      arg[key] === '' ||
-          arg[key] === null ||
-          arg[key] === undefined ||
-          (Array.isArray(arg[key]) && arg[key].length === 0) ||
-          (typeof arg[key] === 'object' && arg[key].length === undefined)
-    ) {
-      delete params[key];
-    }
-  });
-
-  return params;
+  return rObj;
 }
 
 function request ({host = '', version = '', url, params, method = 'get'}) {
@@ -88,7 +91,6 @@ export default {
   demo (params) {
     return request({
       host: 'test.mangotmall.com',
-      // host: '127.0.0.1',
       url: '/api/index/ceshi.html',
       params,
       method: 'post'
