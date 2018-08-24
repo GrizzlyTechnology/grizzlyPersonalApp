@@ -37,7 +37,7 @@
 import { Button, TextField, Checkbox, Avatar } from "muse-ui";
 import { Container, Row, Col } from "muse-ui/lib/Grid";
 import { Form, FormItem } from "muse-ui/lib/Form";
-import srvaass from "service";
+import serv from "service";
 
 export default {
   data() {
@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     async query() {
-      const response = await srvaass.demo({
+      const response = await serv.login({
         userName: this.validateForm.username,
         passWord: this.validateForm.password
       });
