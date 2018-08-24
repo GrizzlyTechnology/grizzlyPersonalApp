@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui';
 import { Button, TextField } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
@@ -103,18 +104,21 @@ export default {
   methods: {
     async registered () {
       const response = await service.registered(this.form);
-      switch (response.codo) {
+      switch (response.code) {
         case 0:
           // 注册好了的动作
           break;
         default:
+          // Toast({
+          //   position: 'top',
+          //   message: '验证码获取失败'
+          // });
           break;
       }
     },
     async getVerificationCode () {
-      // 发送验证码请求
-      const response = await service.getVerificationCode(this.form);
-      switch (response.codo) {
+      const response = await service.getVerificationCode();
+      switch (response.code) {
         case 0:
           this.verificationCodeBtnText = 10 + ' (s)';
           for (let i = 1; i <= this.maxTime; i++) {
@@ -125,6 +129,10 @@ export default {
           break;
 
         default:
+          Toast({
+            position: 'top',
+            message: '验证码获取失败'
+          });
           break;
       }
     },
