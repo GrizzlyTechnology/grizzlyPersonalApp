@@ -22,18 +22,19 @@ export default {
       if(!!userInfo){
         window.api.openWin({
           name: 'main',
-          url: './index/win.html',
+          url: './index/main.html',
           bounces: false,
         });
       }else{
-        api.api.openWin({
+        window.api.openWin({
             name: 'login',
             url: './index/win.html',
             bounces: false,
             pageParam: {
                 wtitle : '登录',
                 fname:'login_f',
-                furl:'./frame/login.html'
+                furl:'./login.html',
+                hasLeft:1,
                 }
         });
       }
