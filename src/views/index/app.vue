@@ -15,11 +15,9 @@ export default {
 
   },
   methods: {
-
-  },
-  mounted () {
-    var userInfo = tool.getStorage('STUserInfo');
-    if (userInfo) {
+      init(){
+          var token = tool.getStorage('token');
+    if (token) {
       window.api.openWin({
         name: 'main',
         url: './index/main.html',
@@ -39,6 +37,16 @@ export default {
         }
       });
     }
+      }
+  },
+  mounted () {
+      var obj=this;
+      obj.init();
+    window.api.addEventListener({
+        name: 'login'
+    }, function(ret, err){
+        obj.init()
+    });
   }
 };
 </script>
