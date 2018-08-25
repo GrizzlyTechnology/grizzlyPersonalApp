@@ -2,7 +2,7 @@
     <UIHeader
       color="#ffffff"
       textColor="#000000"
-      :z-depth="1"
+      :z-depth="0"
       class="header"
       :title="wtitle">
       <Button
