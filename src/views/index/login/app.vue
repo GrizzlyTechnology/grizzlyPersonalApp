@@ -38,6 +38,7 @@ import { Button, TextField, Checkbox, Avatar } from "muse-ui";
 import { Container, Row, Col } from "muse-ui/lib/Grid";
 import { Form, FormItem } from "muse-ui/lib/Form";
 import serv from "service";
+import tool from "util/tools";
 
 export default {
   data() {
@@ -77,9 +78,23 @@ export default {
     async query() {
       const response = await serv.login({
         userName: this.validateForm.username,
-        passWord: this.validateForm.password
+        passWord: this.validateForm.password,
+        deviceId: window.api.deviceId
       });
-      alert(JSON.stringify(response));
+      switch (response.code) {
+          case 0:
+            tool.setStorage('token', response.result.token);
+            tool.setStorage('phone', response.result.userinfo.phone);
+            tool.setStorage('userInfo', response.result.userinfo);
+            window.api.sendEvent({
+                name: 'login'
+            });
+            window.api.closeWin();
+              break;
+          default:
+            alert("nono");
+              break;
+      }
     },
     submit() {
       this.$refs.form.validate().then(result => {
