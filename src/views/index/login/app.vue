@@ -100,12 +100,12 @@ export default {
     regNewUser () {
       window.api.openWin({
         name: 'registered',
-        url: './win.html',
+        url: '../win.html',
         bounces: false,
         pageParam: {
           wtitle: '用户注册',
           fname: 'registered_f',
-          furl: './registered.html',
+          furl: './userCenter/userInfo.html',
           hasLeft: 1,
           hasRight: 0
         }

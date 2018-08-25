@@ -28,12 +28,12 @@ export default {
     } else {
       window.api.openWin({
         name: 'login',
-        url: './index/win.html',
+        url: './win.html',
         bounces: false,
         pageParam: {
           wtitle: '登录',
           fname: 'login_f',
-          furl: './login.html',
+          furl: './index/login.html',
           hasLeft: 0,
           hasRight: 0
         }
@@ -43,6 +43,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('../../assets/css/base.less');
+// @import url('../../assets/css/base.less');
 
 </style>

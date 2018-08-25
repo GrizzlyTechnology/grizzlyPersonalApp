@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content bg">
     <Form ref="form" :model="form" >
       <FormItem
         label="姓名"
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
+// import { Toast } from 'mint-ui';
 import service from 'service';
 import moment from 'moment';
 import { Button, TextField, Radio, DateInput } from 'muse-ui';
@@ -127,6 +127,9 @@ export default {
 <style lang="less" scoped>
 @import url('../../../assets/css/base.less');
 .content{padding: 15px}
+.bg{
+  background: url('../../../assets/img/headpic.png')
+}
 // .startDateTime{
 //   bottom: 50px;
 // }

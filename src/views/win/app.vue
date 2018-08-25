@@ -66,22 +66,22 @@ export default {
   },
   mounted () {
     var headerH = tool.fixStatusBar(tool.dom('.header'));
-    window.api.openFrame({
-      name: this.fname,
-      url: this.furl,
-      bounces: true,
-      rect: {
-        x: 0,
-        y: headerH + 5,
-        w: 'auto',
-        h: 'auto'
-      }
-    });
+    // window.api.openFrame({
+    //   name: this.fname,
+    //   url: this.furl,
+    //   bounces: true,
+    //   rect: {
+    //     x: 0,
+    //     y: headerH + 5,
+    //     w: 'auto',
+    //     h: 'auto'
+    //   }
+    // });
   }
 };
 </script>
 <style lang="less" scoped>
-@import url('../../../assets/css/base.less');
+@import url('../../assets/css/base.less');
 .header{
     height: 50px;
 }
