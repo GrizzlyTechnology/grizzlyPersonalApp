@@ -116,5 +116,13 @@ export default {
       host: hostList.test,
       url: '/api/index/ceshi.html'
     });
+  },
+  checkUser (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/index/ceshi.html',
+      params,
+      method: 'post'
+    });
   }
 };
