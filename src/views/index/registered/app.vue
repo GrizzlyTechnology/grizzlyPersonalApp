@@ -126,10 +126,10 @@ export default {
           }
           break;
         default:
-          // Toast({
-          //   position: 'top',
-          //   message: '验证码获取失败'
-          // });
+          Toast({
+            position: 'top',
+            message: response.message
+          });
           break;
       }
     },
