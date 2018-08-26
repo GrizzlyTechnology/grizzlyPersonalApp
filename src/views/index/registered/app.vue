@@ -8,14 +8,14 @@
       >
         <TextField v-model="form.mobilePhone"></TextField>
       </FormItem>
-      <FormItem
+      <!-- <FormItem
         label="验证码"
         prop="verificationImg"
         :rules="verificationImgRules"
       >
         <TextField v-model="form.verificationImg" class="verificationCode"></TextField>
         <img @click="changeVerificationImg" class="verificationCodeImg" :src="'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png?' + reVerificationImg"/>
-      </FormItem>
+      </FormItem> -->
       <FormItem
         label="短信验证码"
         prop="verificationCode"
@@ -23,7 +23,7 @@
       >
         <TextField v-model="form.verificationCode" class="verificationCode"></TextField>
         <Button
-          color="#19AD17"
+          color="#009688"
           textColor="#ffffff"
           class="getVerificationCode"
           :disabled="verificationCodeBtnText !=='获取验证码'"
@@ -49,7 +49,7 @@
         <TextField v-model="form.rePassword" type="password"></TextField>
       </FormItem>
     </Form>
-    <Button color="#19AD17" textColor="#ffffff" :style="{marginTop:'30px'}" :full-width="true" large @click="submit">注册</Button>
+    <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">注册</Button>
     <div class="registeredDescription">
       注册即代表您同意并遵守《大灰熊用户协议》
     </div>
@@ -162,6 +162,7 @@ export default {
 .getVerificationCode{
   width: 33.3333%;
   margin: 0 !important;
+  box-shadow: 0 0 0;
 }
 .registeredDescription{
   text-align: center;
