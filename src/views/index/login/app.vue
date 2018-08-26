@@ -21,7 +21,7 @@
             <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
             </Col>
         </Row>
-            <Button full-width large class="buttom" color="teal" @click="submit">立即登录</Button>
+            <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">注册</Button>
         <Row class="row-reg" gutter>
             <Col span="6">
             <div class="grid-cell" @click="msgCode">短信验证码登录</div>
@@ -38,7 +38,7 @@ import { Button, TextField, Checkbox, Avatar } from 'muse-ui';
 import { Row, Col } from 'muse-ui/lib/Grid';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 // import OtherLogin from "components/OtherLogin";
-import serv from 'service';
+import service from 'service';
 import tool from 'util/tools';
 
 export default {
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     async query () {
-      const response = await serv.login({
+      const response = await service.login({
         userName: this.validateForm.username,
         passWord: this.validateForm.password,
         deviceId: window.api.deviceId
