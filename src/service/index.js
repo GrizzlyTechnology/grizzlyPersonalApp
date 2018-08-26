@@ -58,7 +58,7 @@ function delEmptyAttr (arg) {
   return rObj;
 }
 
-function request ({ host = '', version = '', url, params, method = 'get' }) {
+function request ({ host = '', version = '', url, params, method = 'post' }) {
   const mock = isMock({ host, version, url, params, method });
 
   if (ENV !== 'production' && mock.isMock === true) {
@@ -90,7 +90,7 @@ export default {
   demo (params) {
     return request({
       host: hostList.test,
-      url: '/api/index/ceshi.html',
+      url: '/api/index/ceshi',
       params,
       method: 'post'
     });
@@ -98,31 +98,29 @@ export default {
   login (params) {
     return request({
       host: hostList.test,
-      url: '/api/Userinfo/login.html',
-      params,
-      method: 'post'
+      url: '/api/Userinfo/login',
+      params
     });
   },
   registered (params) {
     return request({
       host: hostList.test,
-      url: '/api/index/ceshi.html',
-      params,
-      method: 'post'
+      url: '/api/userinfo/register',
+      params
     });
   },
-  getVerificationCode () {
+  getVerificationCode (params) {
     return request({
       host: hostList.test,
-      url: '/api/index/ceshi.html'
+      url: '/api/sms/send_code',
+      params
     });
   },
   checkUser (params) {
     return request({
       host: hostList.test,
       url: '/api/index/ceshi.html',
-      params,
-      method: 'post'
+      params
     });
   }
 };
