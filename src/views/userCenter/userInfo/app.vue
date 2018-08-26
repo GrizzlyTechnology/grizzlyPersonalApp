@@ -1,5 +1,5 @@
 <template>
-  <div class="content bg">
+  <div class="content">
     <Form ref="form" :model="form" >
       <FormItem
         label="姓名"
@@ -127,9 +127,6 @@ export default {
 <style lang="less" scoped>
 @import url('../../../assets/css/base.less');
 .content{padding: 15px}
-.bg{
-  background: url('../../../assets/img/headpic.png')
-}
 // .startDateTime{
 //   bottom: 50px;
 // }

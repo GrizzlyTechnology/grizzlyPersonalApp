@@ -18,26 +18,26 @@
 </template>
 
 <script>
-import tool from "util/tools";
-import { Container, Row, Col ,Flex} from "muse-ui/lib/Grid";
+import tool from 'util/tools';
+import { Container, Row, Col, Flex} from 'muse-ui/lib/Grid';
 import Paper from 'muse-ui/lib/Paper';
 
 export default {
   data () {
     return {
-      userInfo:tool.getStorage('userInfo'),
+      userInfo: tool.getStorage('userInfo')
     };
   },
   components: {
-   Container,
-   Row,
-   Col,
-   Flex,
-   Paper
+    Container,
+    Row,
+    Col,
+    Flex,
+    Paper
   },
   methods: {
-    systemSet(){
-        window.api.openWin({
+    systemSet () {
+      window.api.openWin({
         name: 'systemSet',
         url: '../index/win.html',
         bounces: false,
@@ -52,8 +52,7 @@ export default {
     }
   },
   mounted () {
-      tool.fixStatusBar(tool.dom('.container'));
-      
+    tool.fixStatusBar(tool.dom('.container'));
   }
 };
 </script>
@@ -97,6 +96,6 @@ export default {
                 }
             }
         }
-        
+
     }
 </style>
