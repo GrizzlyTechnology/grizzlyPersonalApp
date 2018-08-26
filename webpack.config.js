@@ -118,8 +118,8 @@ let config = {
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 10000,
-            name: '../../../../../../../../../../../../assets/img/[name].[ext]'
+            limit: 100000,
+            name: 'assets/img/[name].[ext]'
           }
         }]
       },
