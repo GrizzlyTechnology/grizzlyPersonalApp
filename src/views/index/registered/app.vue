@@ -3,10 +3,10 @@
     <Form ref="form" :model="form" >
       <FormItem
         label="手机"
-        prop="mobilePhone"
-        :rules="mobilePhoneRules"
+        prop="phone"
+        :rules="phoneRules"
       >
-        <TextField v-model="form.mobilePhone"></TextField>
+        <TextField v-model="form.phone"></TextField>
       </FormItem>
       <!-- <FormItem
         label="验证码"
@@ -34,11 +34,11 @@
       </FormItem>
       <FormItem
         label="密码"
-        prop="password"
+        prop="passWord"
         help-text="密码规则6-32位0-9大小写字母"
-        :rules="passwordRules"
+        :rules="passWordRules"
       >
-        <TextField v-model="form.password" type="password"></TextField>
+        <TextField v-model="form.passWord" type="password"></TextField>
       </FormItem>
       <FormItem
         label="确认密码"
@@ -71,13 +71,13 @@ export default {
       verificationCodeBtnText: '获取验证码',
       reVerificationImg: (new Date().getTime()) + '_' + Math.random(),
       form: {
-        mobilePhone: '',
-        verificationImg: '',
+        phone: '',
+        // verificationImg: '',
         verificationCode: '',
-        password: '',
+        passWord: '',
         rePassword: ''
       },
-      mobilePhoneRules: [
+      phoneRules: [
         { validate: val => regexps.mobPhone.test(val), message: '请填写正确的手机号码' }
       ],
       verificationImgRules: [
@@ -86,12 +86,12 @@ export default {
       verificationCodeRules: [
         { validate: val => !!val, message: '请填写验证码' }
       ],
-      passwordRules: [
-        { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' }
+      passWordRules: [
+        { validate: val => regexps.passWord.test(val), message: '密码规则6-32位0-9大小写字母' }
       ],
       rePasswordRules: [
         { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' },
-        { validate: val => this.form.password === this.form.rePassword, message: '两次密码输入不一致' }
+        { validate: val => this.form.passWord === this.form.rePassword, message: '两次密码输入不一致' }
       ]
     };
   },

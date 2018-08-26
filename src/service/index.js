@@ -106,7 +106,7 @@ export default {
   registered (params) {
     return request({
       host: hostList.test,
-      url: '/api/index/ceshi.html',
+      url: '/api/userinfo/register.html',
       params,
       method: 'post'
     });
