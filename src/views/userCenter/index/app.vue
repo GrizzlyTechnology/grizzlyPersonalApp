@@ -68,7 +68,7 @@ export default {
             .paper{
                 height: 80px;
                 width: 80px;
-                background-image: url('../../../assets/images/headpic.png');
+                // background-image: url('../../../assets/images/headpic.png');
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: cover;
