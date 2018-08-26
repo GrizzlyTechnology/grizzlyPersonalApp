@@ -34,30 +34,30 @@
 </template>
 
 <script>
-import { Button, TextField, Checkbox, Avatar } from "muse-ui";
-import { Container, Row, Col } from "muse-ui/lib/Grid";
-import { Form, FormItem } from "muse-ui/lib/Form";
-import serv from "service";
-import tool from "util/tools";
+import { Button, TextField, Checkbox, Avatar } from 'muse-ui';
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { Form, FormItem } from 'muse-ui/lib/Form';
+import serv from 'service';
+import tool from 'util/tools';
 
 export default {
-  data() {
+  data () {
     return {
       usernameRules: [
-        { validate: val => !!val, message: "必须填写用户名" },
-        { validate: val => val.length == 11, message: "用户名长度为11位手机号码" }
+        { validate: val => !!val, message: '必须填写用户名' },
+        { validate: val => val.length === 11, message: '用户名长度为11位手机号码' }
       ],
       passwordRules: [
-        { validate: val => !!val, message: "必须填写密码" },
+        { validate: val => !!val, message: '必须填写密码' },
         {
           validate: val => val.length >= 6 && val.length <= 18,
-          message: "密码长度大于6小于18"
+          message: '密码长度大于6小于18'
         }
       ],
-      argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
+      argeeRules: [{ validate: val => !!val, message: '必须同意用户协议' }],
       validateForm: {
-        username: "",
-        password: "",
+        username: '',
+        password: '',
         isAgree: true
       },
       visibility: false
@@ -75,59 +75,59 @@ export default {
     Container
   },
   methods: {
-    async query() {
+    async query () {
       const response = await serv.login({
         userName: this.validateForm.username,
         passWord: this.validateForm.password,
         deviceId: window.api.deviceId
       });
       switch (response.code) {
-          case 0:
-            tool.setStorage('token', response.result.token);
-            tool.setStorage('phone', response.result.userinfo.phone);
-            tool.setStorage('userInfo', response.result.userinfo);
-            window.api.sendEvent({
-                name: 'login'
-            });
-            window.api.closeWin();
-              break;
-          default:
-            alert("nono");
-              break;
+        case 0:
+          tool.setStorage('token', response.result.token);
+          tool.setStorage('phone', response.result.userinfo.phone);
+          tool.setStorage('userInfo', response.result.userinfo);
+          window.api.sendEvent({
+            name: 'login'
+          });
+          window.api.closeWin();
+          break;
+        default:
+          alert('nono');
+          break;
       }
     },
-    submit() {
+    submit () {
       this.$refs.form.validate().then(result => {
         if (result) {
           this.query();
         }
       });
     },
-    clickLeft() {
-      alert("nnnn");
+    clickLeft () {
+      alert('nnnn');
     },
-    remanberPWD() {
-      alert("sss");
+    remanberPWD () {
+      alert('sss');
     },
-    msgCode(){
-        alert("msgcode login");
+    msgCode () {
+      alert('msgcode login');
     },
-    regNewUser(){
-        window.api.openWin({
-            name: 'registered',
-            url: './win.html',
-            bounces: false,
-            pageParam: {
-                wtitle : '用户注册',
-                fname:'registered_f',
-                furl:'./registered.html',
-                hasLeft:1,
-                hasRight:0,
-                }
-        });
+    regNewUser () {
+      window.api.openWin({
+        name: 'registered',
+        url: '../win.html',
+        bounces: false,
+        pageParam: {
+          wtitle: '用户注册',
+          fname: 'registered_f',
+          furl: './userCenter/userInfo.html',
+          hasLeft: 1,
+          hasRight: 0
+        }
+      });
     }
   },
-  mounted() {}
+  mounted () {}
 };
 </script>
 <style lang="less">

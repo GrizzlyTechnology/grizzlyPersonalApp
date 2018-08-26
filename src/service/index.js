@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { isMock } from './mock';
+import { isMock, hostList } from './mock';
 import tools from 'util/tools';
 
 const ENV = process.env;
@@ -7,12 +7,12 @@ let BASEURL = '';
 
 // const TOKEN = tools.getStorage('token');
 switch (ENV) {
-    case 'development':
-        BASEURL = 'test.mangotmall.com';
-        break;
-    default:
-        BASEURL = '';
-        break;
+  case 'development':
+    BASEURL = 'test.mangotmall.com';
+    break;
+  default:
+    BASEURL = '';
+    break;
 }
 axios.defaults.baseURL = BASEURL;
 axios.defaults.timeout = 20000;
@@ -26,15 +26,15 @@ axios.interceptors.request.use((config) => {
   // }
   return config;
 }, (error) => {
-    return Promise.reject(error);
+  return Promise.reject(error);
 });
 
 axios.interceptors.response.use(function (response) {
-    // Do something with response
-    return response;
+  // Do something with response
+  return response;
 }, function (error) {
-    // Do something with response error
-    return Promise.reject(error);
+  // Do something with response error
+  return Promise.reject(error);
 });
 
 function delEmptyAttr (arg) {
@@ -58,55 +58,54 @@ function delEmptyAttr (arg) {
   return rObj;
 }
 
-function request({ host = '', version = '', url, params, method = 'get' }) {
-    const mock = isMock({ host, version, url, params, method });
+function request ({ host = '', version = '', url, params, method = 'get' }) {
+  const mock = isMock({ host, version, url, params, method });
 
-    if (ENV !== 'production' && mock.isMock === true) {
-        return new Promise((resolve) => {
-            resolve(mock.mock);
-        });
-    } else {
-        const tk = new Date().getTime();
-        return new Promise((resolve, reject) => {
-            let data = params;
-            if (method === 'get') {
-                data = { params: { ...delEmptyAttr(params), '_': tk } };
-            } else {
-                url += '?_=' + tk;
-            }
+  if (ENV !== 'production' && mock.isMock === true) {
+    return new Promise((resolve) => {
+      resolve(mock.mock);
+    });
+  } else {
+    const tk = new Date().getTime();
+    return new Promise((resolve, reject) => {
+      let data = params;
+      if (method === 'get') {
+        data = { params: { ...delEmptyAttr(params), '_': tk } };
+      } else {
+        url += '?_=' + tk;
+      }
 
-            axios[method](host === '' ? url : `http://${host}${url}`, data).then(
-                response => {
-                    // TODO 这里做数据的验证
-                    resolve(response.data);
-                }).catch(
-                    (error) => {
-                        reject(error);
-                    });
+      axios[method](host === '' ? url : `http://${host}${url}`, data).then(
+        response => {
+          // TODO 这里做数据的验证
+          resolve(response.data);
+        }).catch(
+        (error) => {
+          reject(error);
         });
-    }
+    });
+  }
 }
-const apihost = "test.mangotmall.com";
 export default {
   demo (params) {
     return request({
-      host: 'test.mangotmall.com',
+      host: hostList.test,
       url: '/api/index/ceshi.html',
       params,
       method: 'post'
     });
   },
-  login(params) {
+  login (params) {
     return request({
-        host: apihost,
-        url: '/api/Userinfo/login.html',
-        params,
-        method: 'post'
+      host: hostList.test,
+      url: '/api/Userinfo/login.html',
+      params,
+      method: 'post'
     });
-},
+  },
   registered (params) {
     return request({
-      host: 'test.mangotmall.com',
+      host: hostList.test,
       url: '/api/index/ceshi.html',
       params,
       method: 'post'
@@ -114,8 +113,16 @@ export default {
   },
   getVerificationCode () {
     return request({
-      host: 'test.mangotmall.com',
+      host: hostList.test,
       url: '/api/index/ceshi.html'
+    });
+  },
+  checkUser (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/index/ceshi.html',
+      params,
+      method: 'post'
     });
   }
 };
