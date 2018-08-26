@@ -1,80 +1,47 @@
 <template>
- <List textline="three-line">
-    <ListItem avatar :ripple="false" button>
-      <ListAction>
-        <Avatar>
-          <img src="../../assets/images/avatar1.jpg">
-        </Avatar>
+ <List textline="three-line" >
+   <template  v-for='raiders in raidersList'>
+    <ListItem avatar :ripple="false" button class='listBg'>
+      <ListAction class='listAction'>
+        <Paper class="imgSpace" :z-depth="5">
+          <img :src="raiders.path" class='raidersImg'>
+        </Paper>
       </ListAction>
       <ListItemContent>
-        <ListItemTitle>这个周末一起吃饭么?</ListItemTitle>
+        <ListItemTitle>{{raiders.title}}</ListItemTitle>
         <ListItemSubTitle>
-          <span style="color: rgba(0, 0, 0, .87)">Myron Liu -</span> 周末要来你这里出差，要不要一起吃个饭呀，实在编不下去了,哈哈哈哈哈哈
+         {{raiders.content}}
         </ListItemSubTitle>
       </ListItemContent>
     </ListItem>
     <Divider></Divider>
-    <ListItem avatar :ripple="false" button>
-      <ListAction>
-        <Avatar>
-          <img src="../../assets/images/avatar2.jpg">
-        </Avatar>
-      </ListAction>
-      <ListItemContent>
-        <ListItemTitle>Alex Qin</ListItemTitle>
-        <ListItemSubTitle>
-          <span style="color: rgba(0, 0, 0, .87)">看电影啊</span><br/>
-          我们去看电影，最近有部烂片上映，又有吐槽的了
-        </ListItemSubTitle>
-      </ListItemContent>
-    </ListItem>
-    <Divider></Divider>
-    <ListItem avatar :ripple="false" button>
-      <ListAction>
-        <Avatar>
-          <img src="../../assets/images/avatar3.jpg">
-        </Avatar>
-      </ListAction>
-      <ListItemContent>
-        <ListItemTitle>LOL</ListItemTitle>
-        <ListItemSubTitle>
-          <span style="color: rgba(0, 0, 0, .87)">去打游戏啊</span><br/>
-          周末一起 LOL
-        </ListItemSubTitle>
-      </ListItemContent>
-    </ListItem>
-    <Divider></Divider>
-    <ListItem avatar :ripple="false" button>
-      <ListAction>
-        <Avatar>
-          <img src="../../assets/images/uicon.jpg">
-        </Avatar>
-      </ListAction>
-      <ListItemContent>
-        <ListItemTitle>LOL</ListItemTitle>
-        <ListItemSubTitle>
-          <span style="color: rgba(0, 0, 0, .87)">哇去</span><br/>
-          实在编不下去，这就是个demo
-        </ListItemSubTitle>
-      </ListItemContent>
-    </ListItem>
+    </template>
   </List>
 </template>
 
 <script>
-import { Avatar,Divider} from 'muse-ui';
+import { Paper,Divider} from 'muse-ui';
 import { List, ListItem, ListAction, ListItemContent, ListItemTitle, ListItemSubTitle } from 'muse-ui/lib/List';
-// import { DefaultFrame } from 'components';
 export default {
   data () {
+    return {
+      raidersList:[
+        {path:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',title:'初次面试，为啥企业要求带简历后还得再写一个简历？',content:'昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....'},
+        {path:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',title:'初次面试，为啥企业要求带简历后还得再写一个简历？',content:'昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....'},
+        {path:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',title:'初次面试，为啥企业要求带简历后还得再写一个简历？',content:'昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....'},
+        {path:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',title:'初次面试，为啥企业要求带简历后还得再写一个简历？',content:'昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....'},
+        ]
+    };
   },
   components: {
     List,
     ListItem,
     ListAction,
     ListItemContent,
-    Avatar,
-    Divider
+    Paper,
+    Divider,
+    ListItemTitle,
+    ListItemSubTitle
   },
   methods: {
 
@@ -85,5 +52,17 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url('../../../assets/css/base.less');
-
+.listBg{
+  background: #fff;
+}
+.listAction{
+  min-width: 70px;
+}
+.imgSpace{
+padding: 5px;
+}
+.raidersImg{
+  width: 50px;
+  display: block;
+}
 </style>
