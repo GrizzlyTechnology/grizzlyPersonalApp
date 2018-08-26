@@ -1,7 +1,7 @@
 <template>
  <List textline="three-line" >
    <template  v-for='raiders in raidersList'>
-    <ListItem avatar :ripple="false" button class='listBg'>
+    <ListItem :ripple="false" button class='listBg' @click="raidersArticle">
       <ListAction class='listAction'>
         <Paper class="imgSpace" :z-depth="5">
           <img :src="raiders.path" class='raidersImg'>
@@ -22,6 +22,7 @@
 <script>
 import { Paper,Divider} from 'muse-ui';
 import { List, ListItem, ListAction, ListItemContent, ListItemTitle, ListItemSubTitle } from 'muse-ui/lib/List';
+import tool from 'util/tools';
 export default {
   data () {
     return {
@@ -44,7 +45,15 @@ export default {
     ListItemSubTitle
   },
   methods: {
-
+    raidersArticle(){
+      tool.openWin({
+          name: 'raidersArticle',
+          url: '../win.html',
+          title: '',
+          fname: 'raidersArticle_f',
+          furl: './hr/raidersArticle.html'
+        });
+    }
   },
   mounted () {
   }
