@@ -586,6 +586,26 @@ u.sleep =  function (times) {
     }, times);
   });
 };
+u.openWin=function({name, url,title = '',fname,furl,hasLeft=false,hasRight=false}){
+  let op = {
+    name,
+    url,
+    bounces: false,
+  };
+
+  if(fname !== undefined){
+    op.pageParam ={
+      wtitle:title,
+      fname,
+      furl,
+      hasLeft,
+      hasRight
+    }
+  }
+  setTimeout(function(){
+    window.api.openWin(op);
+   },350)
+}
 /* end */
 
 export default u;

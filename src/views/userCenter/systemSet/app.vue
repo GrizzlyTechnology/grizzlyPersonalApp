@@ -26,15 +26,10 @@ export default {
     submit() {
       tool.clearStorage("token");
       window.api.sendEvent({
-        name: "logout"
+        name: "event"
       });
       window.api.closeToWin({
         name: "root",
-        animation: {
-          type: "flip",
-          subType: "from_bottom",
-          duration: 500
-        }
       });
     }
   },

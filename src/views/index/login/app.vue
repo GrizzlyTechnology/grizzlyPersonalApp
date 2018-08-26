@@ -57,7 +57,7 @@ export default {
       ],
       argeeRules: [{ validate: val => !!val, message: '必须同意用户协议' }],
       validateForm: {
-        username: '',
+        username:  tool.getStorage('phone'),
         password: '',
         isAgree: true
       },
@@ -89,7 +89,7 @@ export default {
           tool.setStorage('phone', response.result.userinfo.phone);
           tool.setStorage('userInfo', response.result.userinfo);
           window.api.sendEvent({
-            name: 'login'
+            name: 'event'
           });
           window.api.closeWin();
           break;
