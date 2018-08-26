@@ -13,7 +13,7 @@ export default {
   methods: {
     init () {
       var token = tool.getStorage('token');
-      if (!token) {
+      if (token) {
         window.api.openWin({
           name: 'main',
           url: './index/main.html',

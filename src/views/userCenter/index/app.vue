@@ -18,33 +18,33 @@
 </template>
 
 <script>
-import tool from "util/tools";
-import { Container, Row, Col ,Flex} from "muse-ui/lib/Grid";
+import tool from 'util/tools';
+import { Container, Row, Col, Flex} from 'muse-ui/lib/Grid';
 import Paper from 'muse-ui/lib/Paper';
 
 export default {
   data () {
     return {
-      userInfo:tool.getStorage('userInfo'),
+      userInfo: tool.getStorage('userInfo')
     };
   },
   components: {
-   Container,
-   Row,
-   Col,
-   Flex,
-   Paper
+    Container,
+    Row,
+    Col,
+    Flex,
+    Paper
   },
   methods: {
-    systemSet(){
-        window.api.openWin({
+    systemSet () {
+      window.api.openWin({
         name: 'systemSet',
-        url: '../index/win.html',
+        url: '../win.html',
         bounces: false,
         pageParam: {
           wtitle: '系统设置',
           fname: 'systemSet_f',
-          furl: '../userCenter/systemSet.html',
+          furl: './userCenter/systemSet.html',
           hasLeft: 1,
           hasRight: 0
         }
@@ -52,8 +52,7 @@ export default {
     }
   },
   mounted () {
-      tool.fixStatusBar(tool.dom('.container'));
-      
+    tool.fixStatusBar(tool.dom('.container'));
   }
 };
 </script>
@@ -69,7 +68,7 @@ export default {
             .paper{
                 height: 80px;
                 width: 80px;
-                background-image: url('../../../assets/images/headpic.png');
+                // background-image: url('../../../assets/images/headpic.png');
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: cover;
@@ -97,6 +96,6 @@ export default {
                 }
             }
         }
-        
+
     }
 </style>
