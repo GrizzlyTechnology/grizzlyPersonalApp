@@ -30,6 +30,10 @@
             <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
             </Col>
         </Row>
+        <Row>
+            <OtherLogin>
+            </OtherLogin>
+        </Row>
     </Container>
 </template>
 
@@ -37,6 +41,7 @@
 import { Button, TextField, Checkbox, Avatar } from "muse-ui";
 import { Container, Row, Col } from "muse-ui/lib/Grid";
 import { Form, FormItem } from "muse-ui/lib/Form";
+import OtherLogin from "components/OtherLogin";
 import serv from "service";
 import tool from "util/tools";
 
@@ -72,7 +77,8 @@ export default {
     Avatar,
     Form,
     FormItem,
-    Container
+    Container,
+    OtherLogin
   },
   methods: {
     async query() {
