@@ -39,12 +39,12 @@ export default {
     systemSet () {
       window.api.openWin({
         name: 'systemSet',
-        url: '../index/win.html',
+        url: '../win.html',
         bounces: false,
         pageParam: {
           wtitle: '系统设置',
           fname: 'systemSet_f',
-          furl: '../userCenter/systemSet.html',
+          furl: './userCenter/systemSet.html',
           hasLeft: 1,
           hasRight: 0
         }
