@@ -9,7 +9,7 @@ const body = {
   }
 };
 
-const hostList = {
+export const hostList = {
   default: '',
   test: 'test.mangotmall.com'
 };
