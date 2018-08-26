@@ -34,12 +34,12 @@
 </template>
 
 <script>
-import { Button, TextField, Checkbox, Avatar } from "muse-ui";
-import { Container, Row, Col } from "muse-ui/lib/Grid";
-import { Form, FormItem } from "muse-ui/lib/Form";
-//import OtherLogin from "components/OtherLogin";
-import serv from "service";
-import tool from "util/tools";
+import { Button, TextField, Checkbox, Avatar } from 'muse-ui';
+import { Row, Col } from 'muse-ui/lib/Grid';
+import { Form, FormItem } from 'muse-ui/lib/Form';
+// import OtherLogin from "components/OtherLogin";
+import serv from 'service';
+import tool from 'util/tools';
 
 export default {
   data () {
@@ -57,7 +57,7 @@ export default {
       ],
       argeeRules: [{ validate: val => !!val, message: '必须同意用户协议' }],
       validateForm: {
-        username:  tool.getStorage('phone'),
+        username: tool.getStorage('phone'),
         password: '',
         isAgree: true
       },
@@ -72,9 +72,7 @@ export default {
     Col,
     Avatar,
     Form,
-    FormItem,
-    Container,
-    //OtherLogin
+    FormItem
   },
   methods: {
     async query () {
@@ -115,17 +113,13 @@ export default {
       alert('msgcode login');
     },
     regNewUser () {
-      window.api.openWin({
+      tool.openWin({
         name: 'registered',
         url: '../win.html',
-        bounces: false,
-        pageParam: {
-          wtitle: '用户注册',
-          fname: 'registered_f',
-          furl: './userCenter/userInfo.html',
-          hasLeft: 1,
-          hasRight: 0
-        }
+        title: '用户注册',
+        fname: 'registered_f',
+        furl: './index/registered.html',
+        hasLeft: true
       });
     }
   },

@@ -4,39 +4,39 @@
 </template>
 
 <script>
-import tool from "util/tools";
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {};
   },
   components: {},
   methods: {
-    init() {
-      var token = tool.getStorage("token");
+    init () {
+      var token = tool.getStorage('token');
       if (token) {
-         tool.openWin({
-          name:'main',
-          url:'./index/main.html',
+        tool.openWin({
+          name: 'main',
+          url: './index/main.html'
         });
       } else {
-         tool.openWin({
-          name:'login',
-          url:'./win.html',
-          title : '登录',
-          fname:'login_f',
-          furl:'./index/login.html'
+        tool.openWin({
+          name: 'login',
+          url: './win.html',
+          title: '登录',
+          fname: 'login_f',
+          furl: './index/login.html'
         });
       }
     }
   },
-  mounted() {
+  mounted () {
     var obj = this;
     obj.init();
     window.api.addEventListener(
       {
-        name: "event"
+        name: 'event'
       },
-      function(ret, err) {
+      function (ret, err) {
         obj.init();
       }
     );
