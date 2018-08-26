@@ -118,7 +118,7 @@ let config = {
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 100000,
+            limit: 10000,
             name: 'assets/img/[name].[ext]'
           }
         }]
