@@ -54,11 +54,11 @@ export default {
   },
   methods: {
     clickLeft () {
-      window.api.closeWin();
-      // window.api.execScript({
-      //     frameName: this.fname,
-      //     script:'window.clickLeft();'
-      // });
+      //window.api.closeWin();
+      window.api.execScript({
+          frameName: this.fname,
+          script:'ssss()'
+      });
     },
     clickRight () {
       alert('right');

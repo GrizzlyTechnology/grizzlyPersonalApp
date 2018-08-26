@@ -23,6 +23,9 @@ export default {
     Button
   },
   methods: {
+    clickLeft(){
+      alert(444444);
+    },
     submit() {
       tool.clearStorage("token");
       window.api.sendEvent({
@@ -33,7 +36,9 @@ export default {
       });
     }
   },
-  mounted() {}
+  mounted() {
+        window.ssss =  this.clickLeft;
+  }
 };
 </script>
 <style lang="less" scoped>
