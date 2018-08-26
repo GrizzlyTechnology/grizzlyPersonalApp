@@ -9,7 +9,7 @@
 </template>
 
 <script>
-
+import tool from 'util/tools'
 export default {
   data () {
     return {
@@ -21,17 +21,13 @@ export default {
   },
   methods: {
     zcgl(){
-      window.api.openWin({
+      tool.openWin({
           name: 'zcgl',
           url: '../win.html',
-          bounces: false,
-          pageParam: {
-            wtitle: '职场攻略',
+            title: '职场攻略',
             fname: 'zcgl_f',
             furl: './hr/raidersList.html',
-            hasLeft: 1,
-            hasRight: 0
-          }
+            hasLeft: 1
         });
     }
 
