@@ -18,10 +18,10 @@
       </FormItem> -->
       <FormItem
         label="短信验证码"
-        prop="verificationCode"
+        prop="messageCode"
         :rules="verificationCodeRules"
       >
-        <TextField v-model="form.verificationCode" class="verificationCode"></TextField>
+        <TextField v-model="form.messageCode" class="verificationCode"></TextField>
         <Button
           color="#009688"
           textColor="#ffffff"
@@ -67,13 +67,13 @@ import service from 'service';
 export default {
   data () {
     return {
-      maxTime: 10,
+      maxTime: 60,
       verificationCodeBtnText: '获取验证码',
       reVerificationImg: (new Date().getTime()) + '_' + Math.random(),
       form: {
         phone: '',
         // verificationImg: '',
-        verificationCode: '',
+        messageCode: '',
         passWord: '',
         rePassword: ''
       },
@@ -87,7 +87,7 @@ export default {
         { validate: val => !!val, message: '请填写验证码' }
       ],
       passWordRules: [
-        { validate: val => regexps.passWord.test(val), message: '密码规则6-32位0-9大小写字母' }
+        { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' }
       ],
       rePasswordRules: [
         { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' },
@@ -106,7 +106,24 @@ export default {
       const response = await service.registered(this.form);
       switch (response.code) {
         case 0:
-          // 注册好了的动作
+          const login = await service.login({
+            phone: this.form.phone,
+            passWord: this.form.passWord,
+            deviceId: window.api.deviceId
+          });
+          switch (login.code) {
+            case 0:
+              tools.setStorage('token', login.result.token);
+              tools.setStorage('phone', login.result.userinfo.phone);
+              tools.setStorage('userInfo', login.result.userinfo);
+              window.api.sendEvent({
+                name: 'event'
+              });
+              window.api.closeToWin({
+                name: 'root'
+              });
+              break;
+          }
           break;
         default:
           // Toast({
@@ -117,10 +134,12 @@ export default {
       }
     },
     async getVerificationCode () {
-      const response = await service.getVerificationCode();
+      const response = await service.getVerificationCode({
+        phone: this.form.phone
+      });
       switch (response.code) {
         case 0:
-          this.verificationCodeBtnText = 10 + ' (s)';
+          this.verificationCodeBtnText = 60 + ' (s)';
           for (let i = 1; i <= this.maxTime; i++) {
             await tools.sleep(1000);
             this.verificationCodeBtnText = (this.maxTime - i) + '(s)';

@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import tool from "util/tools";
-import { Container, Row, Col, Flex } from "muse-ui/lib/Grid";
-import { Button } from "muse-ui";
-import Paper from "muse-ui/lib/Paper";
+import tool from 'util/tools';
+import { Container, Row, Col, Flex } from 'muse-ui/lib/Grid';
+import { Button } from 'muse-ui';
+import Paper from 'muse-ui/lib/Paper';
 
 export default {
-  data() {
+  data () {
     return {};
   },
   components: {
@@ -23,17 +23,17 @@ export default {
     Button
   },
   methods: {
-    submit() {
-      tool.clearStorage("token");
+    submit () {
+      tool.clearStorage('token');
       window.api.sendEvent({
-        name: "event"
+        name: 'event'
       });
       window.api.closeToWin({
-        name: "root",
+        name: 'root'
       });
     }
   },
-  mounted() {
+  mounted () {
 
   }
 };
