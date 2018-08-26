@@ -51,16 +51,16 @@ export default {
               index: 0,
               frames: [{
                   name: 'hr', 
-                  url: '../hr/mainHrFrame.html'
+                  url: '../hr/index.html'
               },{
                   name: 'dynamic', 
-                  url: '../dynamic/mainDynamicFrame.html'
+                  url: '../dynamic/index.html'
               },{
                   name: 'application', 
-                  url: '../application/mainAppFrame.html'
+                  url: '../application/index.html'
               },{
                   name: 'userCenter', 
-                  url: '../userCenter/mainUserFrame.html'
+                  url: '../userCenter/index.html'
               }]
           });
       }
