@@ -122,5 +122,14 @@ export default {
       url: '/api/index/ceshi.html',
       params
     });
+  },
+  getSchoolListByAreaId (id) {
+    return request({
+      host: hostList.test,
+      url: '/api/index/ceshi.html',
+      params: {
+        id
+      }
+    });
   }
 };
