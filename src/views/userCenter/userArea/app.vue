@@ -1,7 +1,8 @@
 <template>
   <div class="content">
     <div class="areaHead">
-      当前定位：{{selectedText}}
+      <div  class="textLabel">当前定位：</div>
+      <div class="textCon">{{selectedText}}</div>
       <Icon
         class="cleanBtn"
         v-if="selected.length>0"
@@ -68,6 +69,14 @@ export default {
 }
 .areaHead{
   padding: 15px;
+  overflow: auto;
+  & > .textCon {
+    margin-left: 75px;
+    margin-right: 20px;
+  }
+  & > .textLabel{
+    float: left;
+  }
 }
 // .areaFoot{
 //   padding-top: 15px;
