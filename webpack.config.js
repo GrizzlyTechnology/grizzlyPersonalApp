@@ -16,7 +16,7 @@ let config = {
   // vendor: ['vue'],
   output: {
     path: resolve(__dirname, './dist'),
-    filename: process.env.NODE_ENV === 'production' ? 'assets/js/[id]_[chunkhash:8].js' : '[name].js'
+    filename: process.env.NODE_ENV === 'production' ? 'assets/js/[id].[chunkhash:8].js' : '[name].js'
     // filename: 'script/[id].js',
     // publicPath: process.env.NODE_ENV === 'development' ? '/' : 'widget://'
   },
@@ -162,7 +162,7 @@ let config = {
       minChunks: Infinity
     }),
     new ExtractTextPlugin({
-      filename: process.env.NODE_ENV === 'production' ? 'assets/css/[id]_[contenthash:8].css' : '[name].css',
+      filename: process.env.NODE_ENV === 'production' ? 'assets/css/[id].[contenthash:8].css' : '[name].css',
       allChunks: true
     })
 
