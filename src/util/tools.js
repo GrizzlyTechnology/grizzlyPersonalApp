@@ -586,20 +586,23 @@ u.sleep =  function (times) {
     }, times);
   });
 };
-u.openWin=function({name, url,title = '',fname,furl,hasLeft=false,hasRight=false}){
+u.openWin=function({name, url,title = '',fname,furl,hasLeft=false,hasRight=false,data={}}){
   let op = {
     name,
     url,
     bounces: false,
   };
-
+  op.pageParam ={
+    data
+  }
   if(fname !== undefined){
     op.pageParam ={
       wtitle:title,
       fname,
       furl,
       hasLeft,
-      hasRight
+      hasRight,
+      data
     }
   }
   setTimeout(function(){
