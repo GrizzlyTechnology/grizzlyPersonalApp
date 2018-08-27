@@ -1,5 +1,5 @@
 <template>
-    <div class="formCon bg">
+    <div class="formCon">
         <Row class="hpic" justify-content="center">
             <Avatar size="100" color="teal">M</Avatar>
         </Row>
@@ -158,9 +158,6 @@ export default {
 @import url("../../../assets/css/base.less");
 .formCon {
   padding: 20px;
-}
-.bg{
-background-image: url('../../../assets/img/headpic.png');
 }
 .hpic {
   padding: 30px 0;

@@ -36,7 +36,7 @@
         ></DateInput>
       </FormItem>
     </Form>
-    <Button color="#19AD17" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="step1Submit">下一步</Button>
+    <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="step1Submit">下一步</Button>
   </div>
 </template>
 
