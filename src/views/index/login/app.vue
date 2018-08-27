@@ -1,5 +1,5 @@
 <template>
-    <Container class="formCon">
+    <div class="formCon">
         <Row class="hpic" justify-content="center">
             <Avatar size="100" color="teal">M</Avatar>
         </Row>
@@ -30,7 +30,7 @@
             <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
             </Col>
         </Row>
-    </Container>
+    </div>
 </template>
 
 <script>
@@ -159,7 +159,6 @@ export default {
 .formCon {
   padding: 20px;
 }
-
 .hpic {
   padding: 30px 0;
 }
