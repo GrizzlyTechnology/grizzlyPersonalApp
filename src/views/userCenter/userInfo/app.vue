@@ -36,7 +36,7 @@
         ></DateInput>
       </FormItem>
     </Form>
-    <Button color="#19AD17" textColor="#ffffff" :full-width="true" large @click="step1Submit">下一步</Button>
+    <Button color="#19AD17" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="step1Submit">下一步</Button>
   </div>
 </template>
 
@@ -46,7 +46,6 @@ import service from 'service';
 import moment from 'moment';
 import { Button, TextField, Radio, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
-import { DefaultFrame } from 'components';
 import regexps from 'util/regexps';
 export default {
   data () {
@@ -72,7 +71,6 @@ export default {
     }
   },
   components: {
-    DefaultFrame,
     Button,
     Form,
     FormItem,
