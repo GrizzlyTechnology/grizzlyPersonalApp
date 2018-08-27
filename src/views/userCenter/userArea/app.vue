@@ -19,20 +19,21 @@
       />
     </div>
     <div class="areaFoot">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">下一步</Button>
+      <Button color="#009688" textColor="#ffffff" :disabled="!isEnd" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">下一步</Button>
     </div>
   </div>
 </template>
 
 <script>
 import { Toast } from 'mint-ui';
-import service from 'service';
+// import service from 'service';
 import { Button, Icon } from 'muse-ui';
 import AreaSelected from 'components/AreaSelected';
 export default {
   data () {
     return {
-      selected: []
+      selected: [],
+      isEnd: false
     };
   },
   computed: {
@@ -43,16 +44,20 @@ export default {
   components: {
     Button,
     Icon,
-    AreaSelected
+    AreaSelected,
+    Toast
   },
   methods: {
     cleanSelected () {
       this.selected = [];
+      this.isEnd = false;
     },
     setSelected (data) {
       this.selected = data.selected;
+      this.isEnd = data.isEnd;
     },
     submit () {
+
     }
   },
   mounted () {

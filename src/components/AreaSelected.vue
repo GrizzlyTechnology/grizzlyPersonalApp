@@ -11,6 +11,8 @@
 
 <script>
 import areaData from 'util/areaData';
+import { Toast } from 'mint-ui';
+import service from 'service';
 
 export default {
   data () {
