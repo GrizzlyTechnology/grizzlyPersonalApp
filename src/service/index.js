@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { isMock, hostList } from './mock';
 import tools from 'util/tools';
+import { Toast } from 'mint-ui';
 
 const ENV = process.env;
 let BASEURL = '';
@@ -21,9 +22,7 @@ axios.interceptors.request.use((config) => {
   config.headers['X-Requested-With'] = 'XMLHttpRequest';
   config.headers['MG_code'] = '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O';
   config.headers['MG_key'] = '5b10fed636fcf';
-  // if (TOKEN) {
   config.headers['MG_token'] = tools.getStorage('token') || '';
-  // }
   return config;
 }, (error) => {
   return Promise.reject(error);
@@ -33,7 +32,10 @@ axios.interceptors.response.use(function (response) {
   // Do something with response
   return response;
 }, function (error) {
-  // Do something with response error
+  Toast({
+    position: 'top',
+    message: '网络错误，请稍后重试！！'
+  });
   return Promise.reject(error);
 });
 
@@ -54,7 +56,6 @@ function delEmptyAttr (arg) {
     });
     rObj = params;
   }
-
   return rObj;
 }
 
@@ -80,7 +81,7 @@ function request ({ host = '', version = '', url, params, method = 'post' }) {
           resolve(response.data);
         }).catch(
         (error) => {
-          reject(error);
+          return Promise.reject(error);
         });
     });
   }
@@ -115,17 +116,7 @@ export default {
       params
     });
   },
-  getAreaByAreaId (areaId = '') {
-    return request({
-      host: hostList.test,
-      url: '/api/area',
-      params: {
-        areaId: areaId
-      },
-      method: 'get'
-    });
-  },
-  checkUser (params) {
+  checkStudent (params) {
     return request({
       host: hostList.test,
       url: '/api/student',
@@ -133,22 +124,32 @@ export default {
       method: 'get'
     });
   },
-  getSchoolListByAreaId (id) {
+  getAreaByAreaId (areaId = '') {
     return request({
       host: hostList.test,
-      url: '/api/school',
+      url: '/api/area',
       params: {
-        areaId: id
+        areaId
       },
       method: 'get'
     });
   },
-  getSessionListBySchoolId (id) {
+  getSchoolListByAreaId (areaId = '') {
+    return request({
+      host: hostList.test,
+      url: '/api/school',
+      params: {
+        areaId
+      },
+      method: 'get'
+    });
+  },
+  getSessionListBySchoolId (schoolId) {
     return request({
       host: hostList.test,
       url: '/api/session',
       params: {
-        schoolId: id
+        schoolId
       },
       method: 'get'
     });
