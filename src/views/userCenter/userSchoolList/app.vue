@@ -93,6 +93,7 @@ export default {
     }
   },
   mounted () {
+    alert(this.data.selected);
   }
 };
 </script>
