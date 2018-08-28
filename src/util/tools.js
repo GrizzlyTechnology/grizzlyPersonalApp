@@ -592,9 +592,7 @@ u.openWin=function({name, url,title = '',fname,furl,hasLeft=false,hasRight=false
     url,
     bounces: false,
   };
-  op.pageParam ={
-    data
-  }
+
   if(fname !== undefined){
     op.pageParam ={
       wtitle:title,
@@ -605,6 +603,7 @@ u.openWin=function({name, url,title = '',fname,furl,hasLeft=false,hasRight=false
       data
     }
   }
+  op.pageParam.data = data;
   setTimeout(function(){
     window.api.openWin(op);
    },350)

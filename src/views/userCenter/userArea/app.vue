@@ -51,35 +51,38 @@ export default {
   },
   methods: {
     async getSchool () {
-      // const response = await service.getSchoolListByAreaId({id: this.selected[this.selected.length - 1].value});
-      // switch (response.code) {
-      //   case 0:
-      //     if (response.result.schoolList.length === 0) {
-      //       Toast({
-      //         position: 'top',
-      //         message: '该地区下暂无学校，请重新选择！'
-      //       });
-      //     } else {
-      tools.openWin({
-        name: 'userSchoolList',
-        url: '../win.html',
-        title: '选择学校',
-        fname: 'userSchoolList_f',
-        furl: './userCenter/userSchoolList.html',
-        data: {
-          pageName: 'userSchoolList',
-          schoolList: 'ok'
-        }
-      });
-      // }
-      //     break;
-      //   default:
-      //     Toast({
-      //       position: 'top',
-      //       message: '学校信息获取失败，请重新尝试！'
-      //     });
-      //     break;
-      // }
+      const response = await service.getSchoolListByAreaId({id: this.selected[this.selected.length - 1].value});
+      switch (response.code) {
+        case 0:
+          if (response.result.schoolList.length === 0) {
+            Toast({
+              position: 'top',
+              message: '该地区下暂无学校，请重新选择！'
+            });
+          } else {
+            tools.openWin({
+              name: 'userSchoolList',
+              url: '../win.html',
+              title: '选择学校',
+              fname: 'userSchoolList_f',
+              furl: './userCenter/userSchoolList.html',
+              data: {
+                nameSpace: 'userSchoolList',
+                schoolList: response.result.schoolList
+              }
+            });
+            const userInfo = tools.getStorage('userCenter/userInfo');
+            userInfo.area = this.selected;
+            tools.setStorage('userCenter/userInfo', userInfo);
+          }
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '学校信息获取失败，请重新尝试！'
+          });
+          break;
+      }
     },
     cleanSelected () {
       this.selected = [];

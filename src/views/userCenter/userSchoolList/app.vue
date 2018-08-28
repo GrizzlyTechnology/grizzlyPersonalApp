@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="areaHead">
-      <div  class="textLabel">当前定位：</div>
+      <div  class="textLabel">当前选择：</div>
       <div class="textCon">{{selectedText}}</div>
       <Icon
         class="cleanBtn"
@@ -13,10 +13,15 @@
       />
     </div>
     <div class="areaBody">
-      <AreaSelected
-        :selected="selected"
-        @change="setSelected"
-      />
+      <div
+        class="areaRow"
+        v-for="team in list"
+        :key="team.value" @click="()=>{
+          selectedRow(team);
+        }"
+      >
+        {{team.label}}
+      </div>
     </div>
     <div class="areaFoot">
       <Button color="#009688" textColor="#ffffff" :disabled="!isEnd" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">下一步</Button>
@@ -29,23 +34,26 @@ import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button, Icon } from 'muse-ui';
-import AreaSelected from 'components/AreaSelected';
+// import AreaSelected from 'components/AreaSelected';
 export default {
+  name: 'userSchoolList',
   data () {
     return {
-      selected: [],
-      isEnd: false
+      isEnd: false,
+      list: [{value: 0, label: '学校一'}, {value: 1, label: '学校二'}],
+      selected: {},
+      selectedText: ''
     };
   },
-  computed: {
-    selectedText () {
-      return this.selected.map(row => row.label).join(' / ');
-    }
-  },
+  // computed: {
+  //   selectedText () {
+  //     return this.selected.map(row => row.label).join(' / ');
+  //   }
+  // },
   components: {
     Button,
     Icon,
-    AreaSelected,
+    // AreaSelected,
     Toast
   },
   methods: {
@@ -64,11 +72,7 @@ export default {
               url: '../win.html',
               title: '选择学校',
               fname: 'userSchoolList_f',
-              furl: './userCenter/userSchoolList.html',
-              data: {
-                pageName: 'userSchoolList',
-                schoolList: response.result.schoolList
-              }
+              furl: './userCenter/userSchoolList.html'
             });
           }
           break;
@@ -93,7 +97,9 @@ export default {
     }
   },
   mounted () {
-    alert(this.data.selected);
+    if (window.api.pageParam.nameSpace === 'userSchoolList') {
+      this.list = window.api.pageParam.schoolList;
+    }
   }
 };
 </script>

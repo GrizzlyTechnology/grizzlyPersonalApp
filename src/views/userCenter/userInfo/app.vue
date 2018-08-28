@@ -41,12 +41,13 @@
 </template>
 
 <script>
-// import { Toast } from 'mint-ui';
+import { Toast } from 'mint-ui';
 import service from 'service';
 import moment from 'moment';
 import { Button, TextField, Radio, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
+import tools from 'util/tools';
 export default {
   data () {
     return {
@@ -85,7 +86,7 @@ export default {
         case 0:
           window.api.openWin({
             name: 'userArea',
-            url: './win.html',
+            url: '../win.html',
             bounces: false,
             pageParam: {
               wtitle: '选择地区',
@@ -95,12 +96,13 @@ export default {
               hasRight: 0
             }
           });
+          tools.setStorage('userCenter/userInfo', this.form);
           break;
         default:
-          // Toast({
-          //   position: 'top',
-          //   message: '验证码获取失败'
-          // });
+          Toast({
+            position: 'top',
+            message: '学生信息创建失败，请重新尝试！'
+          });
           break;
       }
     },
@@ -108,6 +110,7 @@ export default {
       this.$refs.form.validate().then((result) => {
         if (result === true) {
           // 远端验证 checkUser
+          this.checkUser();
         }
       });
     },
