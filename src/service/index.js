@@ -22,9 +22,7 @@ axios.interceptors.request.use((config) => {
   config.headers['X-Requested-With'] = 'XMLHttpRequest';
   config.headers['MG_code'] = '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O';
   config.headers['MG_key'] = '5b10fed636fcf';
-  // if (TOKEN) {
   config.headers['MG_token'] = tools.getStorage('token') || '';
-  // }
   return config;
 }, (error) => {
   return Promise.reject(error);
@@ -38,7 +36,6 @@ axios.interceptors.response.use(function (response) {
     position: 'top',
     message: '网络错误，请稍后重试！！'
   });
-  // Do something with response error
   return Promise.reject(error);
 });
 
@@ -59,7 +56,6 @@ function delEmptyAttr (arg) {
     });
     rObj = params;
   }
-
   return rObj;
 }
 
@@ -85,7 +81,7 @@ function request ({ host = '', version = '', url, params, method = 'post' }) {
           resolve(response.data);
         }).catch(
         (error) => {
-          reject(error);
+          return Promise.reject(error);
         });
     });
   }
