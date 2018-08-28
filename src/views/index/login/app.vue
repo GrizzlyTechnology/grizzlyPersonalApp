@@ -32,16 +32,20 @@
             <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
             </Col>
         </Row>
-        </div>
+        <Row>
+            <OtherLogin>
+            </OtherLogin>
+        </Row>
+        </Container>
 </template>
 
 <script>
-import { Button, TextField, Checkbox, Avatar } from "muse-ui";
 import { Container, Row, Col } from "muse-ui/lib/Grid";
 import { Form, FormItem } from "muse-ui/lib/Form";
-// import OtherLogin from "components/OtherLogin";
+import { Button, TextField, Checkbox, Avatar } from "muse-ui";
+import { OtherLogin } from "components/OtherLogin";
 import service from "service";
-import tool from "util/tools";
+import tools from "util/tools";
 
 export default {
   data() {
@@ -62,7 +66,7 @@ export default {
       ],
       argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
       validateForm: {
-        phone: tool.getStorage("phone"),
+        phone: tools.getStorage("phone"),
         password: "",
         isAgree: true
       },
@@ -78,7 +82,8 @@ export default {
     Col,
     Avatar,
     Form,
-    FormItem
+    FormItem,
+    OtherLogin
   },
   methods: {
     async query() {
@@ -89,9 +94,9 @@ export default {
       });
       switch (response.code) {
         case 0:
-          tool.setStorage("token", response.result.token);
-          tool.setStorage("phone", response.result.userinfo.phone);
-          tool.setStorage("userInfo", response.result.userinfo);
+          tools.setStorage("token", response.result.token);
+          tools.setStorage("phone", response.result.userinfo.phone);
+          tools.setStorage("userInfo", response.result.userinfo);
           window.api.sendEvent({
             name: "event"
           });
@@ -116,7 +121,7 @@ export default {
       alert("msgcode login");
     },
     regNewUser() {
-      tool.openWin({
+      tools.openWin({
         name: "registered",
         url: "../win.html",
         title: "用户注册",

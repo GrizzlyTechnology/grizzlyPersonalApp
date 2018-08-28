@@ -1,14 +1,12 @@
 <template>
-  <div>
-      <br/>
-      <br/>
-      <br/>
-      这是应用页面
-    </div>
+        <Flex>
+            <OtherLogin/>
+        </Flex>
 </template>
 
 <script>
-
+import { Container, Row, Flex } from "muse-ui/lib/Grid";
+import OtherLogin from "components/OtherLogin"
 export default {
   data () {
     return {
@@ -16,7 +14,10 @@ export default {
     };
   },
   components: {
-   
+    Container,
+    Row,
+    Flex,
+    OtherLogin
   },
   methods: {
     

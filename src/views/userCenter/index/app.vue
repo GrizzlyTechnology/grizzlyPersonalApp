@@ -10,7 +10,7 @@
             <Paper class="paper" circle :z-depth="1"></Paper>
         </Flex>
     <Flex class="info" justify-content="center" fill>
-        <div class="nickname">{{userInfo.nickname}}</div>
+        <div class="nickname">sdfsfs</div>
         <div class="atter">无锡职业技术学院<span class="atter-more">计算机32102班</span></div>
     </Flex>
   </Row>
@@ -19,7 +19,7 @@
 
 <script>
 import tool from 'util/tools';
-// import { Container, Row, Col, Flex} from 'muse-ui/lib/Grid';
+import { Container, Row, Col, Flex} from 'muse-ui/lib/Grid';
 import Paper from 'muse-ui/lib/Paper';
 
 export default {
@@ -29,10 +29,10 @@ export default {
     };
   },
   components: {
-    // Container,
-    // Row,
-    // Col,
-    // Flex,
+    Container,
+    Row,
+    Col,
+    Flex,
     Paper
   },
   methods: {
