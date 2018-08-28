@@ -60,7 +60,6 @@ function delEmptyAttr (arg) {
 
 function request ({ host = '', version = '', url, params, method = 'post' }) {
   const mock = isMock({ host, version, url, params, method });
-
   if (ENV !== 'production' && mock.isMock === true) {
     return new Promise((resolve) => {
       resolve(mock.mock);

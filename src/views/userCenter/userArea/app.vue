@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     async getSchool () {
-      const response = await service.getSchoolListByAreaId({id: this.selected[this.selected.length - 1].value});
+      const response = await service.getSchoolListByAreaId(this.selected[this.selected.length - 1].value);
       switch (response.code) {
         case 0:
           if (response.result.list.length === 0) {
