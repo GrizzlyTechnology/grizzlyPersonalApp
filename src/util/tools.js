@@ -592,19 +592,19 @@ u.openWin = function (params) {
     name,
     url,
     bounces: false,
+    pageParam:{
+      ...winData,
+    }
   };
 
   if (fname !== undefined) {
-    op.pageParam = {
-      ...winData,
-      wtitle: title,
-      fname,
-      furl,
-      hasLeft,
-      hasRight
-    }
+    op.pageParam.wtitle =title;
+    op.pageParam.fname =fname;
+    op.pageParam.furl =furl;
+    op.pageParam.hasLeft =hasLeft;
+    op.pageParam.hasRight =hasRight;
+    op.pageParam.data = data;
   }
-  op.pageParam.data = data;
   setTimeout(function () {
     window.api.openWin(op);
   }, 350)
