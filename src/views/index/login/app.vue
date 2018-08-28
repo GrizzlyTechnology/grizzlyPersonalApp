@@ -1,5 +1,5 @@
 <template>
-    <Container class="formCon">
+    <Container>
         <Row class="hpic" justify-content="center">
             <Avatar size="100" color="teal">M</Avatar>
         </Row>
@@ -21,7 +21,9 @@
             <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
             </Col>
         </Row>
+        <Row>
             <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">注册</Button>
+        </Row>
         <Row class="row-reg" gutter>
             <Col span="6">
             <div class="grid-cell" @click="msgCode">短信验证码登录</div>
@@ -34,37 +36,41 @@
 </template>
 
 <script>
-import { Button, TextField, Checkbox, Avatar } from 'muse-ui';
-import { Row, Col } from 'muse-ui/lib/Grid';
-import { Form, FormItem } from 'muse-ui/lib/Form';
+import { Button, TextField, Checkbox, Avatar } from "muse-ui";
+import { Container, Row, Col } from "muse-ui/lib/Grid";
+import { Form, FormItem } from "muse-ui/lib/Form";
 // import OtherLogin from "components/OtherLogin";
-import service from 'service';
-import tool from 'util/tools';
+import service from "service";
+import tool from "util/tools";
 
 export default {
-  data () {
+  data() {
     return {
       usernameRules: [
-        { validate: val => !!val, message: '必须填写用户名' },
-        { validate: val => val.length === 11, message: '用户名长度为11位手机号码' }
-      ],
-      passwordRules: [
-        { validate: val => !!val, message: '必须填写密码' },
+        { validate: val => !!val, message: "必须填写用户名" },
         {
-          validate: val => val.length >= 6 && val.length <= 18,
-          message: '密码长度大于6小于18'
+          validate: val => val.length === 11,
+          message: "用户名长度为11位手机号码"
         }
       ],
-      argeeRules: [{ validate: val => !!val, message: '必须同意用户协议' }],
+      passwordRules: [
+        { validate: val => !!val, message: "必须填写密码" },
+        {
+          validate: val => val.length >= 6 && val.length <= 18,
+          message: "密码长度大于6小于18"
+        }
+      ],
+      argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
       validateForm: {
-        username: tool.getStorage('phone'),
-        password: '',
+        username: tool.getStorage("phone"),
+        password: "",
         isAgree: true
       },
       visibility: false
     };
   },
   components: {
+    Container,
     Button,
     TextField,
     Checkbox,
@@ -75,7 +81,7 @@ export default {
     FormItem
   },
   methods: {
-    async query () {
+    async query() {
       const response = await service.login({
         userName: this.validateForm.username,
         passWord: this.validateForm.password,
@@ -83,88 +89,63 @@ export default {
       });
       switch (response.code) {
         case 0:
-          tool.setStorage('token', response.result.token);
-          tool.setStorage('phone', response.result.userinfo.phone);
-          tool.setStorage('userInfo', response.result.userinfo);
+          tool.setStorage("token", response.result.token);
+          tool.setStorage("phone", response.result.userinfo.phone);
+          tool.setStorage("userInfo", response.result.userinfo);
           window.api.sendEvent({
-            name: 'event'
+            name: "event"
           });
           window.api.closeWin();
           break;
         default:
-          alert('nono');
+          alert("nono");
           break;
       }
     },
-    submit () {
+    submit() {
       this.$refs.form.validate().then(result => {
         if (result) {
           this.query();
         }
       });
     },
-    clickLeft () {
-      alert('nnnn');
+    remanberPWD() {
+      alert("sss");
     },
-    remanberPWD () {
-      alert('sss');
+    msgCode() {
+      alert("msgcode login");
     },
-    msgCode () {
-      alert('msgcode login');
-    },
-    regNewUser () {
+    regNewUser() {
       tool.openWin({
-        name: 'registered',
-        url: '../win.html',
-        title: '用户注册',
-        fname: 'registered_f',
-        furl: './index/registered.html',
+        name: "registered",
+        url: "../win.html",
+        title: "用户注册",
+        fname: "registered_f",
+        furl: "./index/registered.html",
         hasLeft: true
       });
     }
   },
-  mounted () {}
+  mounted() {}
 };
 </script>
-<style lang="less">
-@import url("../../../assets/css/base.less");
-.mu-form-item-label {
-  font-size: 18px;
-}
-.formCon {
-  .row {
-    margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-  .row-reg {
-    margin-top: 20px;
-  }
-  .grid-cell {
-    border-radius: 4px;
-    height: 36px;
-    line-height: 24px;
-  }
-  .grid-cell-reg {
-    border-radius: 4px;
-    height: 36px;
-    line-height: 24px;
-    text-align: right;
-  }
-}
-</style>
+
 <style lang="less" scoped>
 @import url("../../../assets/css/base.less");
-.formCon {
-  padding: 20px;
-}
-
+.container {
+  padding: @gap;
 .hpic {
-  padding: 30px 0;
+    padding: 30px 0;
+  }
+.row .grid-cell-reg {
+  text-align: right;
+}
+.row-reg {
+  padding-top: 30px;
+}
 }
 .buttom {
   color: @white;
-  font-size: 18px;
+  font-size: @h2;
 }
 </style>
