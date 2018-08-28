@@ -47,6 +47,19 @@ export default {
     }
   },
   methods: {
+    async checkUser () {
+      const response = await service.getAreaByAreaId();
+      switch (response.code) {
+        case 0:
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '地区信息创建失败'
+          });
+          break;
+      }
+    },
     selectedRow (row) {
       if (row.children && row.children.length > 0) {
         this.selectedAreaList = row.children;
