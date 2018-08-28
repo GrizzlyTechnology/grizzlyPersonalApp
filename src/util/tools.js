@@ -11,7 +11,7 @@ var uzStorage = function () {
   }
   return ls;
 };
-function parseArguments (url, data, fnSuc, dataType) {
+function parseArguments(url, data, fnSuc, dataType) {
   if (typeof (data) === 'function') {
     dataType = fnSuc;
     fnSuc = data;
@@ -481,7 +481,7 @@ u.fixStatusBar = function (el) {
     return 0;
   }
   el.style.paddingTop = window.api.safeArea.top + 'px';
-  el.style.height=(window.api.safeArea.top+el.offsetHeight)+'px';
+  el.style.height = (window.api.safeArea.top + el.offsetHeight) + 'px';
   return el.offsetHeight;
 };
 u.fixTabBar = function (el) {
@@ -579,43 +579,36 @@ u.get = function (/* url,fnSuc,dataType */) {
   );
 };
 
-u.sleep =  function (times) {
+u.sleep = function (times) {
   return new Promise(function (resolve, reject) {
     setTimeout(function () {
       resolve("ok");
     }, times);
   });
 };
-u.openWin=function({
-    name,
-    url,
-    title = '',
-    fname,
-    furl,
-    hasLeft=false,
-    hasRight=false,
-    data={}
-}){
+u.openWin = function (params) {
+  const { name, url, title = '', fname, furl, hasLeft = false, hasRight = false, data = {} , ...winData} = params
   let op = {
     name,
     url,
     bounces: false,
   };
 
-  if(fname !== undefined){
-    op.pageParam ={
-      wtitle:title,
+  if (fname !== undefined) {
+    op.pageParam = {
+      ...winData,
+      wtitle: title,
       fname,
       furl,
       hasLeft,
-      hasRight,
-      data
+      hasRight
     }
     op.pageParam.data = data;
   }
-  setTimeout(function(){
+  op.pageParam.data = data;
+  setTimeout(function () {
     window.api.openWin(op);
-   },350)
+  }, 350)
 }
 /* end */
 

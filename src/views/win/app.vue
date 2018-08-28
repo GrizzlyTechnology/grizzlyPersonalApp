@@ -70,7 +70,7 @@ export default {
       name: this.fname,
       url: this.furl,
       bounces: false,
-      pageParam: this.data,
+      pageParam: this.data || {},
       rect: {
         x: 0,
         y: headerH + 2,

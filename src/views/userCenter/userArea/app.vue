@@ -79,7 +79,7 @@ export default {
         default:
           Toast({
             position: 'top',
-            message: '学校信息获取失败，请重新尝试！'
+            message: '学校信息获取失败，请稍后重试！！'
           });
           break;
       }
