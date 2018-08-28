@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import areaData from 'util/areaData';
 import { Toast } from 'mint-ui';
 import service from 'service';
 
@@ -18,8 +17,8 @@ export default {
   data () {
     return {
       isEnd: false,
-      allArea: areaData,
-      selectedAreaList: areaData
+      allArea: [],
+      selectedAreaList: []
     };
   },
   props: {
@@ -47,10 +46,12 @@ export default {
     }
   },
   methods: {
-    async checkUser () {
+    async getAllArea () {
       const response = await service.getAreaByAreaId();
       switch (response.code) {
         case 0:
+          this.allArea = response.result.list;
+          this.selectedAreaList = response.result.list;
           break;
         default:
           Toast({
@@ -81,6 +82,7 @@ export default {
   },
   mounted () {
     // todo 获取地区信息
+    this.getAllArea();
   }
 };
 </script>

@@ -1,6 +1,6 @@
 import pathToRegexp from 'path-to-regexp';
 import mockjs from 'mockjs';
-// import regexps from 'util/regexps';
+import areaData from 'util/areaData';
 
 const body = {
   code: 0, // 状态码
@@ -38,6 +38,18 @@ const mockRouterMap = {
         }
       };
     }
+  }, {
+    isMock: true, // 对应url的数据mock的开关
+    method: 'GET',
+    router: '/api/area',
+    result (params) {
+      return {
+        ...body,
+        result: {
+          list: areaData
+        }
+      };
+    }
   }]
 };
 
@@ -45,6 +57,7 @@ export const isMock = ({ url, method, params = {}, host = '', version = '' }) =>
   let hasMock = {
     isMock: false
   };
+
   if (mockRouterMap[host] !== undefined) {
     mockRouterMap[host].forEach(routerObject => {
       if (routerObject.method.toUpperCase() === method.toUpperCase() && routerObject.isMock === true) {
