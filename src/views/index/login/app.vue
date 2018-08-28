@@ -22,7 +22,7 @@
             </Col>
         </Row>
         <Row>
-            <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">注册</Button>
+            <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">登录</Button>
         </Row>
         <Row class="row-reg" gutter>
             <Col span="6">

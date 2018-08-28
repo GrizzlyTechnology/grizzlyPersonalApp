@@ -586,7 +586,16 @@ u.sleep =  function (times) {
     }, times);
   });
 };
-u.openWin=function({name, url,title = '',fname,furl,hasLeft=false,hasRight=false}){
+u.openWin=function({
+    name,
+    url,
+    title = '',
+    fname,
+    furl,
+    hasLeft=false,
+    hasRight=false,
+    data={}
+}){
   let op = {
     name,
     url,
@@ -599,8 +608,10 @@ u.openWin=function({name, url,title = '',fname,furl,hasLeft=false,hasRight=false
       fname,
       furl,
       hasLeft,
-      hasRight
+      hasRight,
+      data
     }
+    op.pageParam.data = data;
   }
   setTimeout(function(){
     window.api.openWin(op);

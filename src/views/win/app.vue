@@ -44,7 +44,8 @@ export default {
       fname: window.api.pageParam.fname,
       furl: window.api.pageParam.furl,
       hasLeft: window.api.pageParam.hasLeft,
-      hasRight: window.api.pageParam.hasRight
+      hasRight: window.api.pageParam.hasRight,
+      data: window.api.pageParam.data
     };
   },
   components: {
@@ -69,6 +70,7 @@ export default {
       name: this.fname,
       url: this.furl,
       bounces: false,
+      pageParam: this.data,
       rect: {
         x: 0,
         y: headerH + 2,

@@ -10,14 +10,15 @@
 </template>
 
 <script>
-import areaData from 'util/areaData';
+import { Toast } from 'mint-ui';
+import service from 'service';
 
 export default {
   data () {
     return {
       isEnd: false,
-      allArea: areaData,
-      selectedAreaList: areaData
+      allArea: [],
+      selectedAreaList: []
     };
   },
   props: {
@@ -45,6 +46,21 @@ export default {
     }
   },
   methods: {
+    async getAllArea () {
+      const response = await service.getAreaByAreaId();
+      switch (response.code) {
+        case 0:
+          this.allArea = response.result.list;
+          this.selectedAreaList = response.result.list;
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '地区信息创建失败'
+          });
+          break;
+      }
+    },
     selectedRow (row) {
       if (row.children && row.children.length > 0) {
         this.selectedAreaList = row.children;
@@ -66,6 +82,7 @@ export default {
   },
   mounted () {
     // todo 获取地区信息
+    this.getAllArea();
   }
 };
 </script>

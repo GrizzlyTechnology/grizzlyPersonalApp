@@ -60,7 +60,6 @@ function delEmptyAttr (arg) {
 
 function request ({ host = '', version = '', url, params, method = 'post' }) {
   const mock = isMock({ host, version, url, params, method });
-
   if (ENV !== 'production' && mock.isMock === true) {
     return new Promise((resolve) => {
       resolve(mock.mock);
@@ -116,11 +115,42 @@ export default {
       params
     });
   },
+  getAreaByAreaId (areaId = '') {
+    return request({
+      host: hostList.test,
+      url: '/api/area',
+      params: {
+        areaId: areaId
+      },
+      method: 'get'
+    });
+  },
   checkUser (params) {
     return request({
       host: hostList.test,
-      url: '/api/index/ceshi.html',
-      params
+      url: '/api/student',
+      params,
+      method: 'get'
+    });
+  },
+  getSchoolListByAreaId (id) {
+    return request({
+      host: hostList.test,
+      url: '/api/school',
+      params: {
+        areaId: id
+      },
+      method: 'get'
+    });
+  },
+  getSessionListBySchoolId (id) {
+    return request({
+      host: hostList.test,
+      url: '/api/session',
+      params: {
+        schoolId: id
+      },
+      method: 'get'
     });
   }
 };
