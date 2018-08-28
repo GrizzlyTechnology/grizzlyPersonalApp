@@ -131,5 +131,14 @@ export default {
         id
       }
     });
+  },
+  getSessionListBySchoolId (id) {
+    return request({
+      host: hostList.test,
+      url: '/api/index/ceshi.html',
+      params: {
+        id
+      }
+    });
   }
 };

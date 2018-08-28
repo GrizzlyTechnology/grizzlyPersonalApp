@@ -5,7 +5,7 @@
       <div class="textCon">{{selectedText}}</div>
       <Icon
         class="cleanBtn"
-        v-if="selected.length>0"
+        v-if="selectedText.length>0"
         :size="24"
         @click="cleanSelected"
         value=":icon-qingchu"
@@ -45,52 +45,52 @@ export default {
       selectedText: ''
     };
   },
-  // computed: {
-  //   selectedText () {
-  //     return this.selected.map(row => row.label).join(' / ');
-  //   }
-  // },
   components: {
     Button,
     Icon,
-    // AreaSelected,
     Toast
   },
   methods: {
     async getSchool () {
-      const response = await service.getSchoolListByAreaId(this.setSelected[this.setSelected.length - 1].value);
+      const response = await service.getSessionListBySchoolId({id: this.setSelected.value});
       switch (response.code) {
         case 0:
-          if (response.result.schoolList.length === 0) {
+          if (response.result.list.length === 0) {
             Toast({
               position: 'top',
-              message: '该地区下暂无学校，请重新选择！'
+              message: '该学校下暂无学年，请重新选择！'
             });
           } else {
             tools.openWin({
-              name: 'userSchoolList',
+              name: 'userSessionList',
               url: '../win.html',
-              title: '选择学校',
-              fname: 'userSchoolList_f',
-              furl: './userCenter/userSchoolList.html'
+              title: '选择学年',
+              fname: 'userSessionList_f',
+              furl: './userCenter/userSessionList.html',
+              data: {
+                nameSpace: 'userSessionList',
+                schoolList: response.result.list
+              }
             });
           }
           break;
         default:
           Toast({
             position: 'top',
-            message: '学校信息获取失败，请重新尝试！'
+            message: '学年信息获取失败，请重新尝试！'
           });
           break;
       }
     },
     cleanSelected () {
-      this.selected = [];
+      this.selected = {};
+      this.selectedText = '';
       this.isEnd = false;
     },
-    setSelected (data) {
-      this.selected = data.selected;
-      this.isEnd = data.isEnd;
+    selectedRow (data) {
+      this.selected = data;
+      this.selectedText = data.label;
+      this.isEnd = true;
     },
     submit () {
       this.getSchool();
@@ -128,11 +128,19 @@ export default {
 .areaBody{
   flex: 1;
   background-color: #fff;
-  overflow: hidden;
+  overflow: auto;
 }
 .cleanBtn{
   position: absolute;
   top: 9px;
   right: 12px;
+}
+.areaRow {
+  padding: 15px;
+  border-bottom: 1px @grayLine solid;
+  position: relative;
+  &:active {
+    background-color: #eee;
+  }
 }
 </style>

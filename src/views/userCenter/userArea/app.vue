@@ -54,7 +54,7 @@ export default {
       const response = await service.getSchoolListByAreaId({id: this.selected[this.selected.length - 1].value});
       switch (response.code) {
         case 0:
-          if (response.result.schoolList.length === 0) {
+          if (response.result.list.length === 0) {
             Toast({
               position: 'top',
               message: '该地区下暂无学校，请重新选择！'
@@ -68,7 +68,7 @@ export default {
               furl: './userCenter/userSchoolList.html',
               data: {
                 nameSpace: 'userSchoolList',
-                schoolList: response.result.schoolList
+                schoolList: response.result.list
               }
             });
             const userInfo = tools.getStorage('userCenter/userInfo');
