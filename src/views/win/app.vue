@@ -58,8 +58,8 @@ export default {
     },
     clickRight () {
       window.api.execScript({
-          frameName: this.fname,
-          script:'clickRight()'
+        frameName: this.fname,
+        script: 'clickRight()'
       });
     }
   },
@@ -68,7 +68,7 @@ export default {
     window.api.openFrame({
       name: this.fname,
       url: this.furl,
-      bounces: true,
+      bounces: false,
       rect: {
         x: 0,
         y: headerH + 2,
