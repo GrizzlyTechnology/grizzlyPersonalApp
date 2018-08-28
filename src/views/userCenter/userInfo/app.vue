@@ -36,7 +36,7 @@
         ></DateInput>
       </FormItem>
     </Form>
-    <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="step1Submit">下一步</Button>
+    <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="submit">下一步</Button>
   </div>
 </template>
 
@@ -80,37 +80,31 @@ export default {
     DateInput
   },
   methods: {
-    async checkUser () {
-      const response = await service.checkUser(this.form);
+    async check () {
+      const response = await service.checkStudent(this.form);
       switch (response.code) {
         case 0:
-          window.api.openWin({
+          tools.openWin({
             name: 'userArea',
             url: '../win.html',
-            bounces: false,
-            pageParam: {
-              wtitle: '选择地区',
-              fname: 'userArea',
-              furl: './userArea.html',
-              hasLeft: 1,
-              hasRight: 0
-            }
+            title: '选择地区',
+            fname: 'userArea_f',
+            furl: './userCenter/userArea.html'
           });
           tools.setStorage('userCenter/userInfo', this.form);
           break;
         default:
           Toast({
             position: 'top',
-            message: '学生信息创建失败，请重新尝试！'
+            message: '学生信息创建失败，请稍后重试！！'
           });
           break;
       }
     },
-    step1Submit () {
+    submit () {
       this.$refs.form.validate().then((result) => {
         if (result === true) {
-          // 远端验证 checkUser
-          this.checkUser();
+          this.check();
         }
       });
     },
