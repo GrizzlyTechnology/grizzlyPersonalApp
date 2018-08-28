@@ -4,8 +4,8 @@
             <Avatar size="100" color="teal">M</Avatar>
         </Row>
         <Form ref="form" :model="validateForm" class="mu-demo-form">
-            <FormItem prop="username" :rules="usernameRules" label="用户名(手机号码)">
-                <TextField v-model="validateForm.username" type="number" prop="username">
+            <FormItem prop="phone" :rules="phoneRules" label="用户名(手机号码)">
+                <TextField v-model="validateForm.phone" type="number" prop="phone">
                 </TextField>
             </FormItem>
             <FormItem prop="password" :rules="passwordRules" label="密 码">
@@ -32,7 +32,7 @@
             <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
             </Col>
         </Row>
-    </Container>
+        </div>
 </template>
 
 <script>
@@ -46,7 +46,7 @@ import tool from "util/tools";
 export default {
   data() {
     return {
-      usernameRules: [
+      phoneRules: [
         { validate: val => !!val, message: "必须填写用户名" },
         {
           validate: val => val.length === 11,
@@ -62,7 +62,7 @@ export default {
       ],
       argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
       validateForm: {
-        username: tool.getStorage("phone"),
+        phone: tool.getStorage("phone"),
         password: "",
         isAgree: true
       },
@@ -83,7 +83,7 @@ export default {
   methods: {
     async query() {
       const response = await service.login({
-        userName: this.validateForm.username,
+        phone: this.validateForm.phone,
         passWord: this.validateForm.password,
         deviceId: window.api.deviceId
       });
@@ -134,15 +134,15 @@ export default {
 @import url("../../../assets/css/base.less");
 .container {
   padding: @gap;
-.hpic {
+  .hpic {
     padding: 30px 0;
   }
-.row .grid-cell-reg {
-  text-align: right;
-}
-.row-reg {
-  padding-top: 30px;
-}
+  .row .grid-cell-reg {
+    text-align: right;
+  }
+  .row-reg {
+    padding-top: 30px;
+  }
 }
 .buttom {
   color: @white;

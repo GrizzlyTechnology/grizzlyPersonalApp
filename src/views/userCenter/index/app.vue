@@ -19,7 +19,7 @@
 
 <script>
 import tool from 'util/tools';
-import { Container, Row, Col, Flex} from 'muse-ui/lib/Grid';
+// import { Container, Row, Col, Flex} from 'muse-ui/lib/Grid';
 import Paper from 'muse-ui/lib/Paper';
 
 export default {
@@ -29,10 +29,10 @@ export default {
     };
   },
   components: {
-    Container,
-    Row,
-    Col,
-    Flex,
+    // Container,
+    // Row,
+    // Col,
+    // Flex,
     Paper
   },
   methods: {
