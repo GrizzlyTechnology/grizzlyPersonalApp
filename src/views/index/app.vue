@@ -25,7 +25,7 @@ export default {
           title: '登录',
           fname: 'login_f',
           // furl: './index/login.html'
-          furl: './userCenter/userInfo.html'
+          furl: './userCenter/userArea.html'
         });
       }
     }

@@ -1,11 +1,11 @@
 <template>
   <div class="content">
     <div class="areaHead">
-      <div  class="textLabel">当前定位：</div>
+      <div  class="textLabel">当前选择：</div>
       <div class="textCon">{{selectedText}}</div>
       <Icon
         class="cleanBtn"
-        v-if="selected.length>0"
+        v-if="selectedText.length>0"
         :size="24"
         @click="cleanSelected"
         value=":icon-qingchu"
@@ -13,10 +13,15 @@
       />
     </div>
     <div class="areaBody">
-      <AreaSelected
-        :selected="selected"
-        @change="setSelected"
-      />
+      <div
+        class="areaRow"
+        v-for="team in list"
+        :key="team.value" @click="()=>{
+          selectedRow(team);
+        }"
+      >
+        {{team.label}}
+      </div>
     </div>
     <div class="areaFoot">
       <Button color="#009688" textColor="#ffffff" :disabled="!isEnd" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">下一步</Button>
@@ -29,74 +34,75 @@ import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button, Icon } from 'muse-ui';
-import AreaSelected from 'components/AreaSelected';
+// import AreaSelected from 'components/AreaSelected';
 export default {
-  name: 'userCenterArea',
+  name: 'userSchool',
   data () {
     return {
-      selected: [],
-      isEnd: false
+      isEnd: false,
+      list: [],
+      selected: {},
+      selectedText: ''
     };
-  },
-  computed: {
-    selectedText () {
-      return this.selected.map(row => row.label).join(' / ');
-    }
   },
   components: {
     Button,
     Icon,
-    AreaSelected,
     Toast
   },
   methods: {
     async getSchool () {
-      const response = await service.getSchoolList({areaId: this.selected[this.selected.length - 1].value});
+      const response = await service.getSessionList({schoolId: this.setSelected.value});
       switch (response.code) {
         case 0:
           if (response.result.list.length === 0) {
             Toast({
               position: 'top',
-              message: '该地区下暂无学校，请重新选择！'
+              message: '该学校下暂无学年，请重新选择！'
             });
           } else {
             tools.openWin({
-              name: 'userSchool',
+              name: 'userSession',
               url: '../win.html',
-              title: '选择学校',
-              fname: 'userSchool_f',
-              furl: './userCenter/userSchool.html',
+              title: '选择学年',
+              fname: 'userSession_f',
+              furl: './userCenter/userSession.html',
               data: {
-                nameSpace: 'userSchool',
+                nameSpace: 'userSession',
                 list: response.result.list
               }
             });
-            const userInfo = tools.getStorage('userCenter/userInfo');
-            userInfo.area = this.selected;
-            tools.setStorage('userCenter/userInfo', userInfo);
           }
+          const userInfo = tools.getStorage('userCenter/userInfo');
+          userInfo.school = this.selected;
+          tools.setStorage('userCenter/userInfo', userInfo);
           break;
         default:
           Toast({
             position: 'top',
-            message: '学校信息获取失败，请稍后重试！！'
+            message: '学年信息获取失败，请稍后重试！！'
           });
           break;
       }
     },
     cleanSelected () {
-      this.selected = [];
+      this.selected = {};
+      this.selectedText = '';
       this.isEnd = false;
     },
-    setSelected (data) {
-      this.selected = data.selected;
-      this.isEnd = data.isEnd;
+    selectedRow (data) {
+      this.selected = data;
+      this.selectedText = data.label;
+      this.isEnd = true;
     },
     submit () {
       this.getSchool();
     }
   },
   mounted () {
+    if (window.api.pageParam.nameSpace === 'userSchool') {
+      this.list = window.api.pageParam.list;
+    }
   }
 };
 </script>
@@ -125,11 +131,20 @@ export default {
 .areaBody{
   flex: 1;
   background-color: #fff;
-  overflow: hidden;
+  overflow: auto;
 }
 .cleanBtn{
   position: absolute;
   top: 9px;
   right: 12px;
+}
+.areaRow {
+  font-size: 16px;
+  padding: 14px 15px;
+  border-bottom: 1px @grayLine solid;
+  position: relative;
+  &:active {
+    background-color: #eee;
+  }
 }
 </style>
