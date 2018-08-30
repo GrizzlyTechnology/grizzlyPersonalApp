@@ -98,14 +98,14 @@ export default {
   login (params) {
     return request({
       host: hostList.test,
-      url: '/api/Userinfo/login',
+      url: '/api/User/login',
       params
     });
   },
   registered (params) {
     return request({
       host: hostList.test,
-      url: '/api/userinfo/register',
+      url: '/api/user/create',
       params
     });
   },
