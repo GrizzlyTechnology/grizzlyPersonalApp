@@ -50,8 +50,8 @@ export default {
       const response = await service.getAreaByAreaId();
       switch (response.code) {
         case 0:
-          this.allArea = response.result.list;
-          this.selectedAreaList = response.result.list;
+          this.allArea = response.result.areaList;
+          this.selectedAreaList = response.result.areaList;
           break;
         default:
           Toast({
@@ -93,7 +93,8 @@ export default {
   overflow: auto;
 }
 .areaRow {
-  padding: 15px;
+  padding: 14px 15px;
+  font-size: 16px;
   border-bottom: 1px @grayLine solid;
   position: relative;
   & > i {

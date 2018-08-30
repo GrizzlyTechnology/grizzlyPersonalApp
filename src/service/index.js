@@ -102,10 +102,16 @@ export default {
       params
     });
   },
+  logout () {
+    return request({
+      host: hostList.test,
+      url: '/api/User/logout'
+    });
+  },
   registered (params) {
     return request({
       host: hostList.test,
-      url: '/api/userinfo/register',
+      url: '/api/User/create',
       params
     });
   },
@@ -127,7 +133,7 @@ export default {
   getAreaByAreaId (areaId = '') {
     return request({
       host: hostList.test,
-      url: '/api/area',
+      url: '/api/Area',
       params: {
         areaId
       },
