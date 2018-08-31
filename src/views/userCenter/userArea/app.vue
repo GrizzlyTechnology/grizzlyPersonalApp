@@ -1,17 +1,5 @@
 <template>
   <div class="content">
-    <div class="areaHead">
-      <div  class="textLabel">当前定位：</div>
-      <div class="textCon">{{selectedText}}</div>
-      <Icon
-        class="cleanBtn"
-        v-if="selected.length>0"
-        :size="24"
-        @click="cleanSelected"
-        value=":icon-qingchu"
-        color="#ccc"
-      />
-    </div>
     <div class="areaBody">
       <AreaSelected
         :selected="selected"

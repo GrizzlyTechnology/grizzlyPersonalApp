@@ -1,12 +1,27 @@
 <template>
-  <div class="con" ref="con">
-    <div class="areaRow" v-for="area in selectedAreaList" :key="area.value" @click="()=>{
-        selectedRow(area);
-      }">
-      {{area.label}}
-      <i class="mu-icon icon-left" v-if="area.children&&area.children.length>0"></i>
+  <div class="areaCon">
+    <div class="areaHead">
+      <div  class="textLabel">当前定位：</div>
+      <div class="textCon">{{selectedText}}</div>
+      <Icon
+        class="cleanBtn"
+        v-if="selected.length>0"
+        :size="24"
+        @click="cleanSelected"
+        value=":icon-qingchu"
+        color="#ccc"
+      />
+    </div>
+    <div class="con" ref="con">
+      <div class="areaRow" v-for="area in selectedAreaList" :key="area.value" @click="()=>{
+          selectedRow(area);
+        }">
+        {{area.label}}
+        <i class="mu-icon icon-left" v-if="area.children&&area.children.length>0"></i>
+      </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -107,5 +122,10 @@ export default {
   &:active {
     background-color: #eee;
   }
+}
+.areaCon{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>
