@@ -58,7 +58,7 @@ const mockRouterMap = {
       return {
         ...body,
         result: {
-          list: []
+          list: [{label: '111', value: 1111}, {label: '222', value: 222}]
         }
       };
     }
