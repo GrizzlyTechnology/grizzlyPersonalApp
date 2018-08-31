@@ -17,7 +17,7 @@
           selectedRow(area);
         }">
         {{area.label}}
-        <i class="mu-icon icon-left" v-if="area.children&&area.children.length>0"></i>
+        <i class="mu-icon icon-left" v-if="area.children&&area.children.length>0 && levelNow!==level"></i>
       </div>
     </div>
   </div>
@@ -26,6 +26,8 @@
 
 <script>
 import { Toast } from 'mint-ui';
+import { Icon } from 'muse-ui';
+
 import service from 'service';
 
 export default {
@@ -33,24 +35,35 @@ export default {
     return {
       isEnd: false,
       allArea: [],
-      selectedAreaList: []
+      selectedAreaList: [],
+      selected: [],
+      levelNow: 1
     };
   },
+  computed: {
+    selectedText () {
+      return this.selected.map(row => row.label).join(' / ');
+    }
+  },
   props: {
-    selected: {
+    value: {
       type: Array,
       default: function () {
         return [];
       }
     },
-
-    toEnd: {
-      type: Boolean,
-      default: true
+    level: {
+      type: Number,
+      default: 9999
     }
+    // toEnd: {
+    //   type: Boolean,
+    //   default: true
+    // }
   },
-  components: {},
-  computed: {},
+  components: {
+    Icon
+  },
   watch: {
     selected () {
       if (this.selected.length === 0) {
@@ -76,26 +89,30 @@ export default {
           break;
       }
     },
+    cleanSelected () {
+      this.selected = [];
+      this.isEnd = false;
+      this.levelNow = 1;
+    },
     selectedRow (row) {
-      if (row.children && row.children.length > 0) {
-        this.selectedAreaList = row.children;
-      }
-      if (!(!row.children || row.children.length === 0)) {
-        this.$refs.con.scrollTop = 0;
-      }
       if (this.isEnd === false) {
         this.selected.push({ value: row.value, label: row.label });
-        const isEnd = !row.children || row.children.length === 0;
-        this.$emit('change', { selected: this.selected, isEnd });
-        this.isEnd = isEnd;
       } else if (row.value !== this.selected[this.selected.length - 1].value) {
         this.selected[this.selected.length - 1].value = row.value;
         this.selected[this.selected.length - 1].label = row.label;
-        this.$emit('change', { selected: this.selected, isEnd: true });
+      }
+      if (this.levelNow === this.level || !row.children || row.children.length === 0) {
+        this.isEnd = true;
+        this.$emit('change', { selected: this.selected, isEnd: this.isEnd });
+      } else {
+        this.levelNow = this.levelNow + 1;
+        this.selectedAreaList = row.children;
+        this.$refs.con.scrollTop = 0;
       }
     }
   },
   mounted () {
+    this.selected = this.value;
     // todo 获取地区信息
     this.getAllArea();
   }
@@ -127,5 +144,21 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+.areaHead{
+  padding: 15px;
+  overflow: auto;
+  & > .textCon {
+    margin-left: 75px;
+    margin-right: 20px;
+  }
+  & > .textLabel{
+    float: left;
+  }
+}
+.cleanBtn{
+  position: absolute;
+  top: 9px;
+  right: 12px;
 }
 </style>

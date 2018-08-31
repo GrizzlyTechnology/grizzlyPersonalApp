@@ -2,7 +2,8 @@
   <div class="content">
     <div class="areaBody">
       <AreaSelected
-        :selected="selected"
+        :value="selected"
+        :level="2"
         @change="setSelected"
       />
     </div>
@@ -16,7 +17,7 @@
 import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
-import { Button, Icon } from 'muse-ui';
+import { Button } from 'muse-ui';
 import AreaSelected from 'components/AreaSelected';
 export default {
   name: 'userCenterArea',
@@ -26,16 +27,9 @@ export default {
       isEnd: false
     };
   },
-  computed: {
-    selectedText () {
-      return this.selected.map(row => row.label).join(' / ');
-    }
-  },
   components: {
     Button,
-    Icon,
-    AreaSelected,
-    Toast
+    AreaSelected
   },
   methods: {
     async getSchool () {
@@ -72,10 +66,6 @@ export default {
           break;
       }
     },
-    cleanSelected () {
-      this.selected = [];
-      this.isEnd = false;
-    },
     setSelected (data) {
       this.selected = data.selected;
       this.isEnd = data.isEnd;
@@ -96,17 +86,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.areaHead{
-  padding: 15px;
-  overflow: auto;
-  & > .textCon {
-    margin-left: 75px;
-    margin-right: 20px;
-  }
-  & > .textLabel{
-    float: left;
-  }
-}
+
 // .areaFoot{
 //   padding-top: 15px;
 // }
@@ -114,10 +94,5 @@ export default {
   flex: 1;
   background-color: #fff;
   overflow: hidden;
-}
-.cleanBtn{
-  position: absolute;
-  top: 9px;
-  right: 12px;
 }
 </style>
