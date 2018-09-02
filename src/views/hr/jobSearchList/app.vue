@@ -23,8 +23,8 @@
       </template>
       <div class='p16'>
         <Checkbox v-model='checked' v-on:change='checkedAll' label='全选'></Checkbox>
-        <Button color="info" class='collection'>收藏</Button>
-        <Button color="primary" class='deliveryButton'>立即投递</Button>
+        <Button color="info" class='collection' @click="collectionBtn">收藏</Button>
+        <Button color="primary" class='deliveryButton' @click="deliveryBtn">立即投递</Button>
       </div>
     </Form>
   </List>
@@ -181,6 +181,12 @@ export default {
         hasLeft: 1,
         hasRight: 1
       });
+    },
+    collectionBtn() {
+      this.addToCollection();
+    },
+    deliveryBtn() {
+      this.postJob();
     }
   },
   watch: {
