@@ -72,10 +72,11 @@ export default {
                 list: response.result.list
               }
             });
+            const userInfo = tools.getStorage('userCenter/userInfo');
+            userInfo.department = this.selected;
+            tools.setStorage('userCenter/userInfo', userInfo);
           }
-          const userInfo = tools.getStorage('userCenter/userInfo');
-          userInfo.department = this.selected;
-          tools.setStorage('userCenter/userInfo', userInfo);
+
           break;
         default:
           Toast({
@@ -101,7 +102,11 @@ export default {
   },
   mounted () {
     if (window.api.pageParam.nameSpace === 'userDepartment') {
-      this.list = window.api.pageParam.list;
+      this.list = window.api.pageParam.list.map(row => {
+        row.label = row.title;
+        row.value = row.id;
+        return row;
+      });
     }
   }
 };

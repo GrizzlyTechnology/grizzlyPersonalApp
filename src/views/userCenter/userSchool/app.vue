@@ -55,7 +55,7 @@ export default {
       const response = await service.getSessionList({schoolId: this.setSelected.value});
       switch (response.code) {
         case 0:
-          if (response.result.list.length === 0) {
+          if (response.result.years.length === 0) {
             Toast({
               position: 'top',
               message: '该学校下暂无学年，请重新选择！'
@@ -69,13 +69,13 @@ export default {
               furl: './userCenter/userSession.html',
               data: {
                 nameSpace: 'userSession',
-                list: response.result.list
+                list: response.result.years
               }
             });
+            const userInfo = tools.getStorage('userCenter/userInfo');
+            userInfo.school = this.selected;
+            tools.setStorage('userCenter/userInfo', userInfo);
           }
-          const userInfo = tools.getStorage('userCenter/userInfo');
-          userInfo.school = this.selected;
-          tools.setStorage('userCenter/userInfo', userInfo);
           break;
         default:
           Toast({

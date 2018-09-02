@@ -52,10 +52,13 @@ export default {
   },
   methods: {
     async getDepartment () {
-      const response = await service.getDepartmentList({sessionId: this.setSelected.value});
+      const response = await service.getDepartmentList({
+        schoolId: tools.getStorage('userCenter/userInfo').school.value,
+        year: this.setSelected.value
+      });
       switch (response.code) {
         case 0:
-          if (response.result.list.length === 0) {
+          if (response.result.collegeInfo.length === 0) {
             Toast({
               position: 'top',
               message: '该学年下暂无院系，请重新选择！'
@@ -69,13 +72,13 @@ export default {
               furl: './userCenter/userDepartment.html',
               data: {
                 nameSpace: 'userDepartment',
-                list: response.result.list
+                list: response.result.collegeInfo
               }
             });
+            const userInfo = tools.getStorage('userCenter/userInfo');
+            userInfo.year = this.selected;
+            tools.setStorage('userCenter/userInfo', userInfo);
           }
-          const userInfo = tools.getStorage('userCenter/userInfo');
-          userInfo.session = this.selected;
-          tools.setStorage('userCenter/userInfo', userInfo);
           break;
         default:
           Toast({
@@ -101,7 +104,12 @@ export default {
   },
   mounted () {
     if (window.api.pageParam.nameSpace === 'userSession') {
-      this.list = window.api.pageParam.list;
+      this.list = window.api.pageParam.years.map(row => {
+        return {
+          label: row.years,
+          value: row.years
+        };
+      });
     }
   }
 };

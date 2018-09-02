@@ -2,6 +2,7 @@
   <div class="content">
     <div class="areaBody">
       <AreaSelected
+        :data="allArea"
         :value="selected"
         :level="2"
         @change="setSelected"
@@ -18,20 +19,35 @@ import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button } from 'muse-ui';
-import AreaSelected from 'components/AreaSelected';
+import SelectedRecursive from 'components/SelectedRecursive';
 export default {
   name: 'userCenterArea',
   data () {
     return {
+      allArea: [],
       selected: [],
       isEnd: false
     };
   },
   components: {
     Button,
-    AreaSelected
+    AreaSelected: SelectedRecursive
   },
   methods: {
+    async getAllArea () {
+      const response = await service.getAreaByAreaId();
+      switch (response.code) {
+        case 0:
+          this.allArea = response.result.areaList;
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '地区信息创建失败'
+          });
+          break;
+      }
+    },
     async getSchool () {
       const response = await service.getSchoolList({cityCode: this.selected[this.selected.length - 1].cityCode});
       switch (response.code) {
@@ -76,6 +92,7 @@ export default {
     }
   },
   mounted () {
+    this.getAllArea();
   }
 };
 </script>

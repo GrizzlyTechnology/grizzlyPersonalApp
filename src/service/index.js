@@ -160,7 +160,7 @@ export default {
   getSessionList (params) {
     return request({
       host: hostList.test,
-      url: '/api/session',
+      url: '/api/School/getYear',
       params,
       method: 'get'
     });
@@ -168,7 +168,7 @@ export default {
   getDepartmentList (params) {
     return request({
       host: hostList.test,
-      url: '/api/Department',
+      url: '/api/College/collegeBySchool',
       params,
       method: 'get'
     });
@@ -189,7 +189,7 @@ export default {
       method: 'get'
     });
   },
-  addToCollection (params){
+  addToCollection (params) {
     return request({
       host: hostList.test,
       url: '/api/Collection',
@@ -197,12 +197,12 @@ export default {
       method: 'get'
     });
   },
-  postJob (params){
+  postJob (params) {
     return request({
       host: hostList.test,
       url: '/api/postJob',
       params,
       method: 'get'
     });
-  },
+  }
 };
