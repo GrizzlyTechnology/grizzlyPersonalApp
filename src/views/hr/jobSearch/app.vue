@@ -1,7 +1,6 @@
 <template>
   <div class="content">
     <Search v-model="value" cancel-text="取消" placeholder="搜索"></Search>
-
     <Form ref="form" :model="form">
       <FormItem
         label="地区"
@@ -63,6 +62,7 @@ export default {
 @import url("../../../assets/css/base.less");
 .content {
   padding: 15px;
+  background: #fff;
 }
 
 .mint-search{
