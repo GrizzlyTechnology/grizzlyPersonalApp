@@ -2,9 +2,9 @@
   <List textline="two-line">
     <Form :model="{}">
       <template v-for='list in lists'>
-        <ListItem avatar :ripple="false" button class='listItem'>
+        <ListItem avatar :ripple="false" button class='listItem' @click='jobDetail()'>
           <ListAction>
-            <Checkbox v-model="checkboxModel" :value='list.id' ></Checkbox>
+            <Checkbox v-model="checkboxModel" :value='list.id'></Checkbox>
           </ListAction>
           <ListItemContent>
             <ListItemTitle>{{list.position}}
@@ -47,7 +47,7 @@ export default {
     return {
       lists: [
         {
-          id:'1',
+          id: "1",
           position: "产品经理",
           claim: "3年/大专/镇江",
           salaryRange: "6K-8K",
@@ -55,7 +55,7 @@ export default {
           date: "2018-08-06"
         },
         {
-          id:'2',
+          id: "2",
           position: "产品经理",
           claim: "3年/大专/镇江",
           salaryRange: "6K-8K",
@@ -63,7 +63,7 @@ export default {
           date: "2018-08-06"
         },
         {
-          id:'3',
+          id: "3",
           position: "产品经理",
           claim: "3年/大专/镇江",
           salaryRange: "6K-8K",
@@ -71,7 +71,7 @@ export default {
           date: "2018-08-06"
         },
         {
-          id:'4',
+          id: "4",
           position: "产品经理",
           claim: "3年/大专/镇江",
           salaryRange: "6K-8K",
@@ -79,7 +79,7 @@ export default {
           date: "2018-08-06"
         },
         {
-          id:'5',
+          id: "5",
           position: "产品经理",
           claim: "3年/大专/镇江",
           salaryRange: "6K-8K",
@@ -87,7 +87,7 @@ export default {
           date: "2018-08-06"
         }
       ],
-      checkboxModel: [ ],
+      checkboxModel: [],
       checked: false
     };
   },
@@ -109,32 +109,40 @@ export default {
   },
   methods: {
     checkedAll: function() {
-      var _this = this;
       if (!this.checked) {
         //实现反选
-        _this.checkboxModel = [];
+        this.checkboxModel = [];
       } else {
         //实现全选
-        _this.checkboxModel = [];
-        _this.lists.forEach(function(item) {
-          _this.checkboxModel.push(item.id);
-        });
+        this.checkboxModel = [];
+        this.lists.forEach(item => this.checkboxModel.push(item.id));
       }
+    },
+    jobDetail: function() {
+      tool.openWin({
+        name: "zcgl",
+        url: "../win.html",
+        title: "职位详情",
+        fname: "zwxq_f",
+        furl: "./hr/jobDetails.html",
+        hasLeft: 1,
+        hasRight: 1
+      });
     }
   },
-   watch: {
-      //深度 watcher
-      checkboxModel: {
-        handler: function(val, oldVal) {
-          if (this.checkboxModel.length === this.lists.length) {
-            this.checked = true;
-          } else {
-            this.checked = false;
-          }
-        },
-        deep: true
-      }
+  watch: {
+    //深度 watcher
+    checkboxModel: {
+      handler: function(val, oldVal) {
+        if (this.checkboxModel.length === this.lists.length) {
+          this.checked = true;
+        } else {
+          this.checked = false;
+        }
+      },
+      deep: true
     }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -165,7 +173,7 @@ export default {
   background: #fff;
 }
 
-.collection{
+.collection {
   margin: 0 10px;
 }
 </style>

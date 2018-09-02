@@ -51,7 +51,9 @@ export default {
           url: '../win.html',
           title: '',
           fname: 'raidersArticle_f',
-          furl: './hr/raidersArticle.html'
+          furl: './hr/raidersArticle.html',
+          hasLeft:1,
+          hasRight:1
         });
     }
   },
