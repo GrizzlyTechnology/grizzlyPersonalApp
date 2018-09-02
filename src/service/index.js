@@ -188,5 +188,21 @@ export default {
       params,
       method: 'get'
     });
-  }
+  },
+  addToCollection (params){
+    return request({
+      host: hostList.test,
+      url: '/api/Collection',
+      params,
+      method: 'get'
+    });
+  },
+  postJob (params){
+    return request({
+      host: hostList.test,
+      url: '/api/postJob',
+      params,
+      method: 'get'
+    });
+  },
 };
