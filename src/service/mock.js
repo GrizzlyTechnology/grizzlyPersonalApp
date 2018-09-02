@@ -41,12 +41,12 @@ const mockRouterMap = {
   }, {
     isMock: true, // 对应url的数据mock的开关
     method: 'GET',
-    router: '/api/area',
+    router: '/api/Area',
     result (params) {
       return {
         ...body,
         result: {
-          list: areaData
+          areaList: areaData
         }
       };
     }
@@ -58,7 +58,7 @@ const mockRouterMap = {
       return {
         ...body,
         result: {
-          list: []
+          list: [{label: '111', value: 1111}, {label: '222', value: 222}]
         }
       };
     }

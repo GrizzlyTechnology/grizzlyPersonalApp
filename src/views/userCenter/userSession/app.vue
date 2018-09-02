@@ -36,11 +36,11 @@ import service from 'service';
 import { Button, Icon } from 'muse-ui';
 // import AreaSelected from 'components/AreaSelected';
 export default {
-  name: 'userSchoolList',
+  name: 'userSession',
   data () {
     return {
       isEnd: false,
-      list: [{value: 0, label: '学校一'}, {value: 1, label: '学校二'}],
+      list: [],
       selected: {},
       selectedText: ''
     };
@@ -51,33 +51,36 @@ export default {
     Toast
   },
   methods: {
-    async getSchool () {
-      const response = await service.getSessionListBySchoolId({id: this.setSelected.value});
+    async getDepartment () {
+      const response = await service.getDepartmentList({sessionId: this.setSelected.value});
       switch (response.code) {
         case 0:
           if (response.result.list.length === 0) {
             Toast({
               position: 'top',
-              message: '该学校下暂无学年，请重新选择！'
+              message: '该学年下暂无院系，请重新选择！'
             });
           } else {
             tools.openWin({
-              name: 'userSessionList',
+              name: 'userDepartment',
               url: '../win.html',
-              title: '选择学年',
-              fname: 'userSessionList_f',
-              furl: './userCenter/userSessionList.html',
+              title: '选择院系',
+              fname: 'userDepartment_f',
+              furl: './userCenter/userDepartment.html',
               data: {
-                nameSpace: 'userSessionList',
-                schoolList: response.result.list
+                nameSpace: 'userDepartment',
+                list: response.result.list
               }
             });
           }
+          const userInfo = tools.getStorage('userCenter/userInfo');
+          userInfo.session = this.selected;
+          tools.setStorage('userCenter/userInfo', userInfo);
           break;
         default:
           Toast({
             position: 'top',
-            message: '学年信息获取失败，请稍后重试！！'
+            message: '院系信息获取失败，请稍后重试！！'
           });
           break;
       }
@@ -97,8 +100,8 @@ export default {
     }
   },
   mounted () {
-    if (window.api.pageParam.nameSpace === 'userSchoolList') {
-      this.list = window.api.pageParam.schoolList;
+    if (window.api.pageParam.nameSpace === 'userSession') {
+      this.list = window.api.pageParam.list;
     }
   }
 };
@@ -136,7 +139,8 @@ export default {
   right: 12px;
 }
 .areaRow {
-  padding: 15px;
+  font-size: 16px;
+  padding: 14px 15px;
   border-bottom: 1px @grayLine solid;
   position: relative;
   &:active {

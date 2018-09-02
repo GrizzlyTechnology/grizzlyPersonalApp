@@ -1,20 +1,9 @@
 <template>
   <div class="content">
-    <div class="areaHead">
-      <div  class="textLabel">当前定位：</div>
-      <div class="textCon">{{selectedText}}</div>
-      <Icon
-        class="cleanBtn"
-        v-if="selected.length>0"
-        :size="24"
-        @click="cleanSelected"
-        value=":icon-qingchu"
-        color="#ccc"
-      />
-    </div>
     <div class="areaBody">
       <AreaSelected
-        :selected="selected"
+        :value="selected"
+        :level="2"
         @change="setSelected"
       />
     </div>
@@ -28,7 +17,7 @@
 import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
-import { Button, Icon } from 'muse-ui';
+import { Button } from 'muse-ui';
 import AreaSelected from 'components/AreaSelected';
 export default {
   name: 'userCenterArea',
@@ -38,20 +27,13 @@ export default {
       isEnd: false
     };
   },
-  computed: {
-    selectedText () {
-      return this.selected.map(row => row.label).join(' / ');
-    }
-  },
   components: {
     Button,
-    Icon,
-    AreaSelected,
-    Toast
+    AreaSelected
   },
   methods: {
     async getSchool () {
-      const response = await service.getSchoolListByAreaId(this.selected[this.selected.length - 1].value);
+      const response = await service.getSchoolList({areaId: this.selected[this.selected.length - 1].value});
       switch (response.code) {
         case 0:
           if (response.result.list.length === 0) {
@@ -61,14 +43,14 @@ export default {
             });
           } else {
             tools.openWin({
-              name: 'userSchoolList',
+              name: 'userSchool',
               url: '../win.html',
               title: '选择学校',
-              fname: 'userSchoolList_f',
-              furl: './userCenter/userSchoolList.html',
+              fname: 'userSchool_f',
+              furl: './userCenter/userSchool.html',
               data: {
-                nameSpace: 'userSchoolList',
-                schoolList: response.result.list
+                nameSpace: 'userSchool',
+                list: response.result.list
               }
             });
             const userInfo = tools.getStorage('userCenter/userInfo');
@@ -83,10 +65,6 @@ export default {
           });
           break;
       }
-    },
-    cleanSelected () {
-      this.selected = [];
-      this.isEnd = false;
     },
     setSelected (data) {
       this.selected = data.selected;
@@ -108,17 +86,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.areaHead{
-  padding: 15px;
-  overflow: auto;
-  & > .textCon {
-    margin-left: 75px;
-    margin-right: 20px;
-  }
-  & > .textLabel{
-    float: left;
-  }
-}
+
 // .areaFoot{
 //   padding-top: 15px;
 // }
@@ -126,10 +94,5 @@ export default {
   flex: 1;
   background-color: #fff;
   overflow: hidden;
-}
-.cleanBtn{
-  position: absolute;
-  top: 9px;
-  right: 12px;
 }
 </style>

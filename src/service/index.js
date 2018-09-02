@@ -102,10 +102,16 @@ export default {
       params
     });
   },
+  logout () {
+    return request({
+      host: hostList.test,
+      url: '/api/User/logout'
+    });
+  },
   registered (params) {
     return request({
       host: hostList.test,
-      url: '/api/userinfo/register',
+      url: '/api/User/create',
       params
     });
   },
@@ -127,30 +133,50 @@ export default {
   getAreaByAreaId (areaId = '') {
     return request({
       host: hostList.test,
-      url: '/api/area',
+      url: '/api/Area',
       params: {
         areaId
       },
       method: 'get'
     });
   },
-  getSchoolListByAreaId (areaId = '') {
+  getSchoolList (params) {
     return request({
       host: hostList.test,
       url: '/api/school',
-      params: {
-        areaId
-      },
+      params,
       method: 'get'
     });
   },
-  getSessionListBySchoolId (schoolId) {
+  getSessionList (params) {
     return request({
       host: hostList.test,
       url: '/api/session',
-      params: {
-        schoolId
-      },
+      params,
+      method: 'get'
+    });
+  },
+  getDepartmentList (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Department',
+      params,
+      method: 'get'
+    });
+  },
+  getDisciplineList (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Discipline',
+      params,
+      method: 'get'
+    });
+  },
+  getClassListBy (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Class',
+      params,
       method: 'get'
     });
   }
