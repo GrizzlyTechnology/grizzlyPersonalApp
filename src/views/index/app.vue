@@ -24,7 +24,8 @@ export default {
           url: './win.html',
           title: '登录',
           fname: 'login_f',
-          furl: './index/login.html'
+          // furl: './index/login.html'
+          furl: './userCenter/userInfo.html'
         });
       }
     }

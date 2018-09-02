@@ -44,7 +44,8 @@ export default {
       fname: window.api.pageParam.fname,
       furl: window.api.pageParam.furl,
       hasLeft: window.api.pageParam.hasLeft,
-      hasRight: window.api.pageParam.hasRight
+      hasRight: window.api.pageParam.hasRight,
+      data: window.api.pageParam.data
     };
   },
   components: {
@@ -58,8 +59,8 @@ export default {
     },
     clickRight () {
       window.api.execScript({
-          frameName: this.fname,
-          script:'clickRight()'
+        frameName: this.fname,
+        script: 'clickRight()'
       });
     }
   },
@@ -68,7 +69,8 @@ export default {
     window.api.openFrame({
       name: this.fname,
       url: this.furl,
-      bounces: true,
+      bounces: false,
+      pageParam: this.data || {},
       rect: {
         x: 0,
         y: headerH + 2,
