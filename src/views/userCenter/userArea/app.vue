@@ -33,10 +33,10 @@ export default {
   },
   methods: {
     async getSchool () {
-      const response = await service.getSchoolList({areaId: this.selected[this.selected.length - 1].value});
+      const response = await service.getSchoolList({cityCode: this.selected[this.selected.length - 1].cityCode});
       switch (response.code) {
         case 0:
-          if (response.result.list.length === 0) {
+          if (response.result.shcoolInfo.length === 0) {
             Toast({
               position: 'top',
               message: '该地区下暂无学校，请重新选择！'
@@ -50,12 +50,12 @@ export default {
               furl: './userCenter/userSchool.html',
               data: {
                 nameSpace: 'userSchool',
-                list: response.result.list
+                list: response.result.shcoolInfo
               }
             });
-            const userInfo = tools.getStorage('userCenter/userInfo');
-            userInfo.area = this.selected;
-            tools.setStorage('userCenter/userInfo', userInfo);
+            tools.setStorage('userCenter/userInfo', {
+              area: this.selected
+            });
           }
           break;
         default:
@@ -67,6 +67,7 @@ export default {
       }
     },
     setSelected (data) {
+      console.log(data);
       this.selected = data.selected;
       this.isEnd = data.isEnd;
     },
@@ -92,7 +93,6 @@ export default {
 // }
 .areaBody{
   flex: 1;
-  background-color: #fff;
   overflow: hidden;
 }
 </style>

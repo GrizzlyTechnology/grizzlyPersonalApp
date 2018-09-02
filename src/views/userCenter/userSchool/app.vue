@@ -101,7 +101,9 @@ export default {
   },
   mounted () {
     if (window.api.pageParam.nameSpace === 'userSchool') {
-      this.list = window.api.pageParam.list;
+      this.list = window.api.pageParam.list.map(row => {
+        return { label: row.title, value: row.sid };
+      });
     }
   }
 };
