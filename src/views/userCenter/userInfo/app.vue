@@ -49,6 +49,7 @@ import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
 import tools from 'util/tools';
 export default {
+  name: 'userInfo',
   data () {
     return {
       startDateTime: new Date(),
