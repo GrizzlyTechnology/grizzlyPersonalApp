@@ -2,9 +2,9 @@
   <List textline="two-line">
     <Form :model="{}">
       <template v-for='list in lists'>
-        <ListItem avatar :ripple="false" button class='listItem' @click='jobDetail()'>
+        <ListItem avatar :ripple="false" button class='listItem'>
           <ListAction>
-            <Checkbox v-model="checkboxModel" :value='list.id'></Checkbox>
+            <Checkbox v-model="checkboxModel" :value='list.id' @change='check'></Checkbox>
           </ListAction>
           <ListItemContent>
             <ListItemTitle>{{list.position}}
@@ -22,7 +22,7 @@
         <Divider></Divider>
       </template>
       <div class='p16'>
-        <Checkbox v-model='checked' v-on:click='checkedAll' label='全选'></Checkbox>
+        <Checkbox v-model='checked' v-on:change='checkedAll' label='全选'></Checkbox>
         <Button color="info" class='collection'>收藏</Button>
         <Button color="primary" class='deliveryButton'>立即投递</Button>
       </div>
@@ -88,6 +88,7 @@ export default {
         }
       ],
       checkboxModel: [],
+      jobIds: [],
       checked: false
     };
   },
@@ -108,6 +109,58 @@ export default {
     Button
   },
   methods: {
+    async addToCollection() {
+      // 加入收藏夹
+      if (this.jobIds.length !== 0) {
+        const response = await service.addToCollection({ ids: this.jobIds });
+        switch (response.code) {
+          case 0:
+            Toast({
+              position: "top",
+              message: "收藏成功！"
+            });
+            break;
+          default:
+            Toast({
+              position: "top",
+              message: "收藏失败，请稍后重试！！"
+            });
+            break;
+        }
+      } else {
+        Toast({
+          position: "top",
+          message: "请选择职位！"
+        });
+      }
+    },
+    async postJob() {
+      if (this.jobIds.length !== 0) {
+        const response = await service.postJob({ ids: this.jobIds });
+        switch (response.code) {
+          case 0:
+            Toast({
+              position: "top",
+              message: "投递成功！"
+            });
+            break;
+          default:
+            Toast({
+              position: "top",
+              message: "投递失败，请稍后重试！！"
+            });
+            break;
+        }
+      } else {
+        Toast({
+          position: "top",
+          message: "请选择职位！"
+        });
+      }
+    },
+    check(value) {
+      this.jobIds = value;
+    },
     checkedAll: function() {
       if (!this.checked) {
         //实现反选
@@ -123,7 +176,7 @@ export default {
         name: "zcgl",
         url: "../win.html",
         title: "职位详情",
-        fname: "zwxq_f",
+        fname: "jobDetails_f",
         furl: "./hr/jobDetails.html",
         hasLeft: 1,
         hasRight: 1
@@ -142,6 +195,9 @@ export default {
       },
       deep: true
     }
+  },
+  mounted() {
+    // this.getList();
   }
 };
 </script>
