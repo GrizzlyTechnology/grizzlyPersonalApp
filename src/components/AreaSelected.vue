@@ -64,15 +64,7 @@ export default {
   components: {
     Icon
   },
-  watch: {
-    selected () {
-      if (this.selected.length === 0) {
-        this.selectedAreaList = this.allArea;
-        this.isEnd = false;
-        this.$refs.con.scrollTop = 0;
-      }
-    }
-  },
+
   methods: {
     async getAllArea () {
       const response = await service.getAreaByAreaId();
@@ -92,7 +84,9 @@ export default {
     cleanSelected () {
       this.selected = [];
       this.isEnd = false;
+      this.selectedAreaList = this.allArea;
       this.levelNow = 1;
+      this.$refs.con.scrollTop = 0;
       this.$emit('change', { selected: [], isEnd: false });
     },
     selectedRow (row) {
@@ -102,6 +96,10 @@ export default {
         this.selected[this.selected.length - 1].value = row.value;
         this.selected[this.selected.length - 1].label = row.label;
         this.selected[this.selected.length - 1].cityCode = row.citycode;
+        if (this.levelNow !== this.level || row.children || row.children.length !== 0) {
+          this.isEnd = false;
+          this.$emit('change', { selected: this.selected, isEnd: false });
+        }
       }
       if (this.levelNow === this.level || !row.children || row.children.length === 0) {
         this.isEnd = true;

@@ -1,27 +1,11 @@
 <template>
   <div class="content">
-    <div class="areaHead">
-      <div  class="textLabel">当前选择：</div>
-      <div class="textCon">{{selectedText}}</div>
-      <Icon
-        class="cleanBtn"
-        v-if="selectedText.length>0"
-        :size="24"
-        @click="cleanSelected"
-        value=":icon-qingchu"
-        color="#ccc"
-      />
-    </div>
     <div class="areaBody">
-      <div
-        class="areaRow"
-        v-for="team in list"
-        :key="team.value" @click="()=>{
-          selectedRow(team);
-        }"
-      >
-        {{team.label}}
-      </div>
+      <SelectedRecursive
+        :data="list"
+        :value="selected"
+        @change="selectedRow"
+      />
     </div>
     <div class="areaFoot">
       <Button color="#009688" textColor="#ffffff" :disabled="!isEnd" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">下一步</Button>
@@ -34,28 +18,41 @@ import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button, Icon } from 'muse-ui';
-// import AreaSelected from 'components/AreaSelected';
+import SelectedRecursive from 'components/SelectedRecursive';
+
 export default {
   name: 'userDepartment',
   data () {
     return {
       isEnd: false,
       list: [],
-      selected: {},
-      selectedText: ''
+      selected: []
     };
   },
   components: {
     Button,
     Icon,
-    Toast
+    Toast,
+    SelectedRecursive
   },
   methods: {
-    async getSchool () {
-      const response = await service.getDisciplineList({departmentId: this.setSelected.value});
+    async getDiscipline () {
+      alert(JSON.stringify({
+        schoolId: tools.getStorage('userCenter/userInfo').school.value,
+        year: tools.getStorage('userCenter/userInfo').year.value,
+        collegeId: this.selected[this.selected.length - 1].value
+      }));
+      const response = await service.getDisciplineList({
+        schoolId: tools.getStorage('userCenter/userInfo').school.value,
+        year: tools.getStorage('userCenter/userInfo').year.value,
+        collegeId: this.selected[this.selected.length - 1].value
+        // schoolId: 1,
+        // year: 2018,
+        // collegeId: 7
+      });
       switch (response.code) {
         case 0:
-          if (response.result.list.length === 0) {
+          if (response.result.majorInfo.length === 0) {
             Toast({
               position: 'top',
               message: '该院系下暂无专业，请重新选择！'
@@ -69,14 +66,13 @@ export default {
               furl: './userCenter/userDiscipline.html',
               data: {
                 nameSpace: 'userDiscipline',
-                list: response.result.list
+                list: response.result.majorInfo
               }
             });
             const userInfo = tools.getStorage('userCenter/userInfo');
-            userInfo.department = this.selected;
+            userInfo.college = this.selected;
             tools.setStorage('userCenter/userInfo', userInfo);
           }
-
           break;
         default:
           Toast({
@@ -86,18 +82,12 @@ export default {
           break;
       }
     },
-    cleanSelected () {
-      this.selected = {};
-      this.selectedText = '';
-      this.isEnd = false;
-    },
     selectedRow (data) {
-      this.selected = data;
-      this.selectedText = data.label;
-      this.isEnd = true;
+      this.selected = data.selected;
+      this.isEnd = data.isEnd;
     },
     submit () {
-      this.getSchool();
+      this.getDiscipline();
     }
   },
   mounted () {
@@ -105,6 +95,13 @@ export default {
       this.list = window.api.pageParam.list.map(row => {
         row.label = row.title;
         row.value = row.id;
+        if (row.children) {
+          row.children = row.children.map(r => {
+            r.label = r.title;
+            r.value = r.id;
+            return r;
+          });
+        }
         return row;
       });
     }
@@ -135,7 +132,6 @@ export default {
 // }
 .areaBody{
   flex: 1;
-  background-color: #fff;
   overflow: auto;
 }
 .cleanBtn{

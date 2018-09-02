@@ -73,7 +73,7 @@ export default {
               }
             });
             const userInfo = tools.getStorage('userCenter/userInfo');
-            userInfo.discipline = this.selected;
+            userInfo.major = this.selected;
             tools.setStorage('userCenter/userInfo', userInfo);
           }
           break;
@@ -100,8 +100,10 @@ export default {
     }
   },
   mounted () {
-    if (window.api.pageParam.nameSpace === 'userDepartment') {
-      this.list = window.api.pageParam.list;
+    if (window.api.pageParam.nameSpace === 'userDiscipline') {
+      this.list = window.api.pageParam.list.map(row => {
+        return { value: row.majorid, label: row.title };
+      });
     }
   }
 };

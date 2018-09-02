@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     async getSchool () {
-      const response = await service.getSessionList({schoolId: this.setSelected.value});
+      const response = await service.getSessionList({schoolId: this.selected.value});
       switch (response.code) {
         case 0:
           if (response.result.years.length === 0) {

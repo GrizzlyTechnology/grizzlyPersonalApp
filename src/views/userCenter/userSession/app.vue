@@ -54,7 +54,9 @@ export default {
     async getDepartment () {
       const response = await service.getDepartmentList({
         schoolId: tools.getStorage('userCenter/userInfo').school.value,
-        year: this.setSelected.value
+        year: this.selected.value
+        // schoolId: 1,
+        // year: 2018
       });
       switch (response.code) {
         case 0:
@@ -99,17 +101,18 @@ export default {
       this.isEnd = true;
     },
     submit () {
-      this.getSchool();
+      this.getDepartment();
     }
   },
   mounted () {
     if (window.api.pageParam.nameSpace === 'userSession') {
-      this.list = window.api.pageParam.years.map(row => {
+      this.list = window.api.pageParam.list.map(row => {
         return {
-          label: row.years,
-          value: row.years
+          label: row.year,
+          value: row.year
         };
       });
+      // alert(JSON.stringify(this.list));
     }
   }
 };

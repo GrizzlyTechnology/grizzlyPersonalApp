@@ -19,7 +19,7 @@ import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button } from 'muse-ui';
-import SelectedRecursive from 'components/SelectedRecursive';
+import AreaSelected from 'components/AreaSelected';
 export default {
   name: 'userCenterArea',
   data () {
@@ -31,7 +31,7 @@ export default {
   },
   components: {
     Button,
-    AreaSelected: SelectedRecursive
+    AreaSelected
   },
   methods: {
     async getAllArea () {
@@ -83,7 +83,6 @@ export default {
       }
     },
     setSelected (data) {
-      console.log(data);
       this.selected = data.selected;
       this.isEnd = data.isEnd;
     },

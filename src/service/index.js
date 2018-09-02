@@ -168,7 +168,7 @@ export default {
   getDepartmentList (params) {
     return request({
       host: hostList.test,
-      url: '/api/College/collegeBySchool',
+      url: '/api/College/collegeBySchoolAndYear',
       params,
       method: 'get'
     });
@@ -176,7 +176,7 @@ export default {
   getDisciplineList (params) {
     return request({
       host: hostList.test,
-      url: '/api/Discipline',
+      url: '/api/Major/majorBy',
       params,
       method: 'get'
     });
