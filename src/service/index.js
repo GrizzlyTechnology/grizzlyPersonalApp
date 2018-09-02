@@ -15,14 +15,17 @@ switch (ENV) {
     BASEURL = '';
     break;
 }
+
 axios.defaults.baseURL = BASEURL;
 axios.defaults.timeout = 20000;
+// axios.defaults.withCredentials = true;
+
 axios.interceptors.request.use((config) => {
   // Do something with request
   config.headers['X-Requested-With'] = 'XMLHttpRequest';
   config.headers['MG_code'] = '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O';
   config.headers['MG_key'] = '5b10fed636fcf';
-  config.headers['MG_token'] = tools.getStorage('token') || '';
+  config.headers['MG_token'] = ENV !== 'production' ? '6f8bade35ef87e5a6aa623519ef973582dc25205' : tools.getStorage('token') || '';
   return config;
 }, (error) => {
   return Promise.reject(error);
@@ -41,21 +44,20 @@ axios.interceptors.response.use(function (response) {
 
 function delEmptyAttr (arg) {
   let rObj = {};
-  if (Array.isArray(arg) && arg.length === 0) {
-    const params = Object.assign({}, arg);
-    Object.keys(arg).forEach((key) => {
-      if (
-        arg[key] === '' ||
+
+  const params = Object.assign({}, arg);
+  Object.keys(arg).forEach((key) => {
+    if (
+      arg[key] === '' ||
             arg[key] === null ||
             arg[key] === undefined ||
             (Array.isArray(arg[key]) && arg[key].length === 0) ||
             (typeof arg[key] === 'object' && arg[key].length === undefined)
-      ) {
-        delete params[key];
-      }
-    });
-    rObj = params;
-  }
+    ) {
+      delete params[key];
+    }
+  });
+  rObj = params;
   return rObj;
 }
 
@@ -98,7 +100,7 @@ export default {
   login (params) {
     return request({
       host: hostList.test,
-      url: '/api/Userinfo/login',
+      url: '/api/User/login',
       params
     });
   },
@@ -106,6 +108,13 @@ export default {
     return request({
       host: hostList.test,
       url: '/api/User/logout'
+    });
+  },
+  getUserInfo () {
+    return request({
+      host: hostList.test,
+      url: '/api/User/getUserByToken',
+      method: 'get'
     });
   },
   registered (params) {
@@ -143,7 +152,7 @@ export default {
   getSchoolList (params) {
     return request({
       host: hostList.test,
-      url: '/api/school',
+      url: '/api/School/getSchoolBy',
       params,
       method: 'get'
     });

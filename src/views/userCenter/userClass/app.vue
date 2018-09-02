@@ -54,19 +54,33 @@ export default {
     async getSchool () {
       const userInfo = tools.getStorage('userCenter/userInfo');
       userInfo.class = this.selected;
-      const response = await service.createStudent(userInfo);
-      switch (response.code) {
-        case 0:
-
-          tools.rmStorage('userCenter/userInfo');
-          break;
-        default:
-          Toast({
-            position: 'top',
-            message: '学生信息创建失败，请稍后重试！！'
-          });
-          break;
-      }
+      tools.setStorage('userCenter/userInfo', userInfo);
+      tools.openWin({
+        name: 'userInfo',
+        url: '../win.html',
+        title: '学生信息',
+        fname: 'userInfo_f',
+        furl: './userCenter/userInfo.html',
+        data: {
+          nameSpace: 'userSchool'
+          // list: response.result.list
+        }
+      });
+      // const userInfo = tools.getStorage('userCenter/userInfo');
+      // userInfo.area = this.selected;
+      // tools.setStorage('userCenter/userInfo', userInfo);
+      // const response = await service.createStudent(userInfo);
+      // switch (response.code) {
+      //   case 0:
+      //     tools.rmStorage('userCenter/userInfo');
+      //     break;
+      //   default:
+      //     Toast({
+      //       position: 'top',
+      //       message: '学生信息创建失败，请稍后重试！！'
+      //     });
+      //     break;
+      // }
     },
     cleanSelected () {
       this.selected = {};
