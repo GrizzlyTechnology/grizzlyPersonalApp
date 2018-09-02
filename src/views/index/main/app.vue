@@ -64,7 +64,7 @@ export default {
           },
           {
             name: 'userCenter',
-            url: '../userCenter/index.html'
+            url: '../userCenter/systemSet.html'
           }
         ]
       });

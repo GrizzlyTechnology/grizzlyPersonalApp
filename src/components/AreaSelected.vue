@@ -93,13 +93,15 @@ export default {
       this.selected = [];
       this.isEnd = false;
       this.levelNow = 1;
+      this.$emit('change', { selected: [], isEnd: false });
     },
     selectedRow (row) {
       if (this.isEnd === false) {
-        this.selected.push({ value: row.value, label: row.label });
+        this.selected.push({ value: row.value, label: row.label, cityCode: row.citycode });
       } else if (row.value !== this.selected[this.selected.length - 1].value) {
         this.selected[this.selected.length - 1].value = row.value;
         this.selected[this.selected.length - 1].label = row.label;
+        this.selected[this.selected.length - 1].cityCode = row.citycode;
       }
       if (this.levelNow === this.level || !row.children || row.children.length === 0) {
         this.isEnd = true;
@@ -123,6 +125,7 @@ export default {
 .con {
   height: 100%;
   overflow: auto;
+  background-color: #fff;
 }
 .areaRow {
   padding: 14px 15px;
