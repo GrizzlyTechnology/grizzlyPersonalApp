@@ -1,7 +1,6 @@
 <template>
     <Container>
         <Button full-width large class="buttom" color="red" @click="submit">退出登录</Button>
-        <Button full-width large class="buttom" color="red" @click="studentInfo">完善学生信息</Button>
     </Container>
 </template>
 
@@ -32,16 +31,8 @@ export default {
       window.api.closeToWin({
         name: 'root'
       });
-    },
-    studentInfo () {
-      tool.openWin({
-        name: 'userArea',
-        url: '../win.html',
-        title: '选择地区',
-        fname: 'userArea_f',
-        furl: './userCenter/userArea.html'
-      });
     }
+
   },
   mounted () {
 

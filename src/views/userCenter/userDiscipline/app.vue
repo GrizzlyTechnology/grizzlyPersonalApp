@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button, Icon } from 'muse-ui';
@@ -47,16 +46,22 @@ export default {
   },
   components: {
     Button,
-    Icon,
-    Toast
+    Icon
   },
   methods: {
-    async getSchool () {
-      const response = await service.getClassListBy({disciplineId: this.setSelected.value});
+    async getClass () {
+      tools.showProgress();
+      const response = await service.getClassListBy({
+        majorId: this.selected.value,
+        schoolId: tools.getStorage('userCenter/userInfo').school.value,
+        year: tools.getStorage('userCenter/userInfo').year.value,
+        collegeId: tools.getStorage('userCenter/userInfo').college[0].value
+      });
+      tools.hideProgress();
       switch (response.code) {
         case 0:
-          if (response.result.list.length === 0) {
-            Toast({
+          if (response.result.classInfo.length === 0) {
+            tools.toast({
               position: 'top',
               message: '该专业下暂无班级，请重新选择！'
             });
@@ -67,18 +72,19 @@ export default {
               title: '选择班级',
               fname: 'userClass_f',
               furl: './userCenter/userClass.html',
+              hasLeft: 1,
               data: {
                 nameSpace: 'userClass',
-                list: response.result.list
+                list: response.result.classInfo
               }
             });
             const userInfo = tools.getStorage('userCenter/userInfo');
-            userInfo.discipline = this.selected;
+            userInfo.major = this.selected;
             tools.setStorage('userCenter/userInfo', userInfo);
           }
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '班级信息获取失败，请稍后重试！！'
           });
@@ -96,12 +102,14 @@ export default {
       this.isEnd = true;
     },
     submit () {
-      this.getSchool();
+      this.getClass();
     }
   },
   mounted () {
-    if (window.api.pageParam.nameSpace === 'userDepartment') {
-      this.list = window.api.pageParam.list;
+    if (window.api.pageParam.nameSpace === 'userDiscipline') {
+      this.list = window.api.pageParam.list.map(row => {
+        return { value: row.majorid, label: row.title };
+      });
     }
   }
 };

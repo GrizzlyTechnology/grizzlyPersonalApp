@@ -44,20 +44,23 @@ axios.interceptors.response.use(function (response) {
 
 function delEmptyAttr (arg) {
   let rObj = {};
+  if (arg && typeof arg === 'object' && !Array.isArray(arg)) {
+    const params = Object.assign({}, arg);
+    Object.keys(arg).forEach((key) => {
+      if (
+        arg[key] === '' ||
+              arg[key] === null ||
+              arg[key] === undefined ||
+              (Array.isArray(arg[key]) && arg[key].length === 0) ||
+              (typeof arg[key] === 'object' && arg[key].length === undefined)
+      ) {
+        delete params[key];
+      }
+    });
 
-  const params = Object.assign({}, arg);
-  Object.keys(arg).forEach((key) => {
-    if (
-      arg[key] === '' ||
-            arg[key] === null ||
-            arg[key] === undefined ||
-            (Array.isArray(arg[key]) && arg[key].length === 0) ||
-            (typeof arg[key] === 'object' && arg[key].length === undefined)
-    ) {
-      delete params[key];
-    }
-  });
-  rObj = params;
+    rObj = params;
+  }
+
   return rObj;
 }
 
@@ -139,6 +142,13 @@ export default {
       method: 'get'
     });
   },
+  createStudent (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Student/create',
+      params
+    });
+  },
   getAreaByAreaId (areaId = '') {
     return request({
       host: hostList.test,
@@ -160,7 +170,7 @@ export default {
   getSessionList (params) {
     return request({
       host: hostList.test,
-      url: '/api/session',
+      url: '/api/School/getYear',
       params,
       method: 'get'
     });
@@ -168,7 +178,7 @@ export default {
   getDepartmentList (params) {
     return request({
       host: hostList.test,
-      url: '/api/Department',
+      url: '/api/College/collegeBySchoolAndYear',
       params,
       method: 'get'
     });
@@ -176,7 +186,7 @@ export default {
   getDisciplineList (params) {
     return request({
       host: hostList.test,
-      url: '/api/Discipline',
+      url: '/api/Major/majorBy',
       params,
       method: 'get'
     });
@@ -184,12 +194,12 @@ export default {
   getClassListBy (params) {
     return request({
       host: hostList.test,
-      url: '/api/Class',
+      url: '/api/Classes/classBy',
       params,
       method: 'get'
     });
   },
-  addToCollection (params){
+  addToCollection (params) {
     return request({
       host: hostList.test,
       url: '/api/Collection',
@@ -197,12 +207,12 @@ export default {
       method: 'get'
     });
   },
-  postJob (params){
+  postJob (params) {
     return request({
       host: hostList.test,
       url: '/api/postJob',
       params,
       method: 'get'
     });
-  },
+  }
 };

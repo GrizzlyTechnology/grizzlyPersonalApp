@@ -1,7 +1,7 @@
 <template>
   <div class="areaCon">
     <div class="areaHead">
-      <div  class="textLabel">当前定位：</div>
+      <div  class="textLabel">当前选择：</div>
       <div class="textCon">{{selectedText}}</div>
       <Icon
         class="cleanBtn"
@@ -25,10 +25,10 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
+// import { Toast } from 'mint-ui';
 import { Icon } from 'muse-ui';
 
-import service from 'service';
+// import service from 'service';
 
 export default {
   data () {
@@ -46,6 +46,12 @@ export default {
     }
   },
   props: {
+    data: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
     value: {
       type: Array,
       default: function () {
@@ -64,23 +70,13 @@ export default {
   components: {
     Icon
   },
-
+  watch: {
+    data () {
+      this.allArea = this.data;
+      this.selectedAreaList = this.data;
+    }
+  },
   methods: {
-    async getAllArea () {
-      const response = await service.getAreaByAreaId();
-      switch (response.code) {
-        case 0:
-          this.allArea = response.result.areaList;
-          this.selectedAreaList = response.result.areaList;
-          break;
-        default:
-          Toast({
-            position: 'top',
-            message: '地区信息创建失败'
-          });
-          break;
-      }
-    },
     cleanSelected () {
       this.selected = [];
       this.isEnd = false;
@@ -91,11 +87,10 @@ export default {
     },
     selectedRow (row) {
       if (this.isEnd === false) {
-        this.selected.push({ value: row.value, label: row.label, cityCode: row.citycode });
+        this.selected.push({ value: row.value, label: row.label });
       } else if (row.value !== this.selected[this.selected.length - 1].value) {
         this.selected[this.selected.length - 1].value = row.value;
         this.selected[this.selected.length - 1].label = row.label;
-        this.selected[this.selected.length - 1].cityCode = row.citycode;
         if (this.levelNow !== this.level || (row.children && row.children.length !== 0)) {
           this.isEnd = false;
           this.$emit('change', { selected: this.selected, isEnd: false });
@@ -105,6 +100,7 @@ export default {
         this.isEnd = true;
         this.$emit('change', { selected: this.selected, isEnd: this.isEnd });
       } else {
+        this.isEnd = false;
         this.levelNow = this.levelNow + 1;
         this.selectedAreaList = row.children;
         this.$refs.con.scrollTop = 0;
@@ -113,8 +109,6 @@ export default {
   },
   mounted () {
     this.selected = this.value;
-    // todo 获取地区信息
-    this.getAllArea();
   }
 };
 </script>

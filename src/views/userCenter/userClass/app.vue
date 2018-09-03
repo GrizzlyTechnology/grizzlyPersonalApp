@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import service from 'service';
+// import { Toast } from 'mint-ui';
+// import service from 'service';
 import { Button, Icon } from 'muse-ui';
 import tools from 'util/tools';
 // import AreaSelected from 'components/AreaSelected';
@@ -47,41 +47,9 @@ export default {
   },
   components: {
     Button,
-    Icon,
-    Toast
+    Icon
   },
   methods: {
-    async getSchool () {
-      const userInfo = tools.getStorage('userCenter/userInfo');
-      userInfo.class = this.selected;
-      tools.setStorage('userCenter/userInfo', userInfo);
-      tools.openWin({
-        name: 'userInfo',
-        url: '../win.html',
-        title: '学生信息',
-        fname: 'userInfo_f',
-        furl: './userCenter/userInfo.html',
-        data: {
-          nameSpace: 'userSchool'
-          // list: response.result.list
-        }
-      });
-      // const userInfo = tools.getStorage('userCenter/userInfo');
-      // userInfo.area = this.selected;
-      // tools.setStorage('userCenter/userInfo', userInfo);
-      // const response = await service.createStudent(userInfo);
-      // switch (response.code) {
-      //   case 0:
-      //     tools.rmStorage('userCenter/userInfo');
-      //     break;
-      //   default:
-      //     Toast({
-      //       position: 'top',
-      //       message: '学生信息创建失败，请稍后重试！！'
-      //     });
-      //     break;
-      // }
-    },
     cleanSelected () {
       this.selected = {};
       this.selectedText = '';
@@ -93,12 +61,26 @@ export default {
       this.isEnd = true;
     },
     submit () {
-      this.getSchool();
+      const userInfo = tools.getStorage('userCenter/userInfo');
+      userInfo.class = this.selected;
+      tools.setStorage('userCenter/userInfo', userInfo);
+      tools.openWin({
+        name: 'userInfo',
+        url: '../win.html',
+        title: '学生信息',
+        fname: 'userInfo_f',
+        furl: './userCenter/userInfo.html',
+        hasLeft: 1
+      });
     }
   },
   mounted () {
     if (window.api.pageParam.nameSpace === 'userClass') {
-      this.list = window.api.pageParam.list;
+      this.list = window.api.pageParam.list.map(row => {
+        return {
+          value: row.id,
+          label: row.title};
+      });
     }
   }
 };
@@ -122,9 +104,6 @@ export default {
     float: left;
   }
 }
-// .areaFoot{
-//   padding-top: 15px;
-// }
 .areaBody{
   flex: 1;
   background-color: #fff;

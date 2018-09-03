@@ -8,12 +8,24 @@
       >
         <TextField v-model="form.name"></TextField>
       </FormItem>
-        <FormItem
+      <FormItem
         label="性别"
         prop="sex"
       >
         <Radio v-model="form.sex" :value="1" label="男"></Radio>
         <Radio v-model="form.sex" :value="0" label="女"></Radio>
+      </FormItem>
+      <FormItem
+        label="入学时间"
+      >
+        <DateInput
+          :value="startDateTimeText"
+          @change="changeStartDateTime"
+          format="YYYY年MM月DD日"
+          no-display
+          view-type="list"
+          container="bottomSheet"
+        />
       </FormItem>
       <FormItem
         label="身份证"
@@ -30,26 +42,35 @@
         <TextField v-model="form.phone"></TextField>
       </FormItem>
     </Form>
-    <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="submit">下一步</Button>
+    <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="submit">完成</Button>
   </div>
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
+import moment from 'moment';
 import service from 'service';
-import { Button, TextField, Radio } from 'muse-ui';
+import { DateInput, Button, TextField, Radio } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
 import tools from 'util/tools';
+
+const userInfo = tools.getStorage('userCenter/userInfo');
 export default {
   name: 'userInfo',
   data () {
     return {
+      startDateTime: new Date(),
       form: {
         name: '',
         sex: 1,
         identity: '',
-        phone: ''
+        phone: '',
+        nrolmenttime: (new Date()).valueOf(),
+        year: userInfo.year.value,
+        college: userInfo.college[0].value,
+        major: userInfo.major.value,
+        schoolId: userInfo.school.value,
+        yearClassId: userInfo.class.value
       },
       nameRules: [
         { validate: val => !!val, message: '必须填写姓名' }
@@ -58,7 +79,7 @@ export default {
         { validate: val => regexps.IdCard.test(val), message: '填写正确的身份证信息' }
       ],
       phoneRules: [
-        { validate: val => regexps.mobPhone.test(val), message: '填写正确的电话号码' }
+        { validate: val => regexps.mobPhone.test(val), message: '填写正确的手机号码' }
       ]
     };
   },
@@ -67,24 +88,29 @@ export default {
     Form,
     FormItem,
     TextField,
-    Radio
+    Radio,
+    DateInput
+  },
+  computed: {
+    startDateTimeText () {
+      return moment(this.form.nrolmenttime).format('YYYY-MM-DD');
+    }
   },
   methods: {
-    async check () {
-      const response = await service.checkStudent(this.form);
+    async create () {
+      const response = await service.createStudent(this.form);
       switch (response.code) {
         case 0:
-          // tools.openWin({
-          //   name: 'userArea',
-          //   url: '../win.html',
-          //   title: '选择地区',
-          //   fname: 'userArea_f',
-          //   furl: './userCenter/userArea.html'
-          // });
-          // tools.setStorage('userCenter/userInfo', this.form);
+          tools.toast({
+            position: 'top',
+            message: '学生信息创建成功！'
+          });
+          window.api.closeToWin({
+            name: 'root'
+          });
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '学生信息创建失败，请稍后重试！！'
           });
@@ -92,31 +118,27 @@ export default {
       }
     },
     async getUserInfo () {
+      tools.showProgress();
       const response = await service.getUserInfo();
+      tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.form = response.result.userInfo;
+          this.form.name = response.result.userInfo.name || this.form.name;
+          this.form.sex = response.result.userInfo.sex || this.form.sex;
+          this.form.identity = response.result.userInfo.identity || this.form.identity;
+          this.form.phone = response.result.userInfo.name || this.form.phone;
           break;
         default:
-          Toast({
-            position: 'top',
-            message: '信息获取失败，请稍后重试！！'
-          });
           break;
       }
+    },
+    changeStartDateTime (date) {
+      this.form.nrolmenttime = date.valueOf();
     },
     submit () {
       this.$refs.form.validate().then((result) => {
         if (result === true) {
-          tools.setStorage('userCenter/userInfo', this.form);
-          tools.openWin({
-            name: 'userArea',
-            url: '../win.html',
-            title: '选择地区',
-            fname: 'userArea_f',
-            furl: './userCenter/userArea.html'
-          });
-          // this.check();
+          this.create();
         }
       });
     }

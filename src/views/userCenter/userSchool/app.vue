@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button, Icon } from 'muse-ui';
@@ -47,16 +46,17 @@ export default {
   },
   components: {
     Button,
-    Icon,
-    Toast
+    Icon
   },
   methods: {
-    async getSchool () {
-      const response = await service.getSessionList({schoolId: this.setSelected.value});
+    async getSession () {
+      tools.showProgress();
+      const response = await service.getSessionList({schoolId: this.selected.value});
+      tools.hideProgress();
       switch (response.code) {
         case 0:
-          if (response.result.list.length === 0) {
-            Toast({
+          if (response.result.years.length === 0) {
+            tools.toast({
               position: 'top',
               message: '该学校下暂无学年，请重新选择！'
             });
@@ -67,18 +67,19 @@ export default {
               title: '选择学年',
               fname: 'userSession_f',
               furl: './userCenter/userSession.html',
+              hasLeft: 1,
               data: {
                 nameSpace: 'userSession',
-                list: response.result.list
+                list: response.result.years
               }
             });
+            const userInfo = tools.getStorage('userCenter/userInfo');
+            userInfo.school = this.selected;
+            tools.setStorage('userCenter/userInfo', userInfo);
           }
-          const userInfo = tools.getStorage('userCenter/userInfo');
-          userInfo.school = this.selected;
-          tools.setStorage('userCenter/userInfo', userInfo);
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '学年信息获取失败，请稍后重试！！'
           });
@@ -96,7 +97,7 @@ export default {
       this.isEnd = true;
     },
     submit () {
-      this.getSchool();
+      this.getSession();
     }
   },
   mounted () {

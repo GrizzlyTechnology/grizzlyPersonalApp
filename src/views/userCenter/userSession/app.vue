@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button, Icon } from 'muse-ui';
@@ -47,16 +46,22 @@ export default {
   },
   components: {
     Button,
-    Icon,
-    Toast
+    Icon
   },
   methods: {
     async getDepartment () {
-      const response = await service.getDepartmentList({sessionId: this.setSelected.value});
+      tools.showProgress();
+      const response = await service.getDepartmentList({
+        schoolId: tools.getStorage('userCenter/userInfo').school.value,
+        year: this.selected.value
+        // schoolId: 1,
+        // year: 2018
+      });
+      tools.hideProgress();
       switch (response.code) {
         case 0:
-          if (response.result.list.length === 0) {
-            Toast({
+          if (response.result.collegeInfo.length === 0) {
+            tools.toast({
               position: 'top',
               message: '该学年下暂无院系，请重新选择！'
             });
@@ -67,18 +72,19 @@ export default {
               title: '选择院系',
               fname: 'userDepartment_f',
               furl: './userCenter/userDepartment.html',
+              hasLeft: 1,
               data: {
                 nameSpace: 'userDepartment',
-                list: response.result.list
+                list: response.result.collegeInfo
               }
             });
+            const userInfo = tools.getStorage('userCenter/userInfo');
+            userInfo.year = this.selected;
+            tools.setStorage('userCenter/userInfo', userInfo);
           }
-          const userInfo = tools.getStorage('userCenter/userInfo');
-          userInfo.session = this.selected;
-          tools.setStorage('userCenter/userInfo', userInfo);
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '院系信息获取失败，请稍后重试！！'
           });
@@ -96,12 +102,18 @@ export default {
       this.isEnd = true;
     },
     submit () {
-      this.getSchool();
+      this.getDepartment();
     }
   },
   mounted () {
     if (window.api.pageParam.nameSpace === 'userSession') {
-      this.list = window.api.pageParam.list;
+      this.list = window.api.pageParam.list.map(row => {
+        return {
+          label: row.year + '届',
+          value: row.year
+        };
+      });
+      // alert(JSON.stringify(this.list));
     }
   }
 };
