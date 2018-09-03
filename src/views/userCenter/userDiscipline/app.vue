@@ -52,10 +52,15 @@ export default {
   },
   methods: {
     async getSchool () {
-      const response = await service.getClassListBy({disciplineId: this.setSelected.value});
+      const response = await service.getClassListBy({
+        majorId: this.selected.value,
+        schoolId: tools.getStorage('userCenter/userInfo').school.value,
+        year: tools.getStorage('userCenter/userInfo').year.value,
+        collegeId: tools.getStorage('userCenter/userInfo').college[0].value
+      });
       switch (response.code) {
         case 0:
-          if (response.result.list.length === 0) {
+          if (response.result.majorInfo.length === 0) {
             Toast({
               position: 'top',
               message: '该专业下暂无班级，请重新选择！'
@@ -69,7 +74,7 @@ export default {
               furl: './userCenter/userClass.html',
               data: {
                 nameSpace: 'userClass',
-                list: response.result.list
+                list: response.result.majorInfo
               }
             });
             const userInfo = tools.getStorage('userCenter/userInfo');

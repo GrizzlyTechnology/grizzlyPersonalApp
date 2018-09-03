@@ -37,18 +37,10 @@ export default {
   },
   methods: {
     async getDiscipline () {
-      alert(JSON.stringify({
-        schoolId: tools.getStorage('userCenter/userInfo').school.value,
-        year: tools.getStorage('userCenter/userInfo').year.value,
-        collegeId: this.selected[this.selected.length - 1].value
-      }));
       const response = await service.getDisciplineList({
         schoolId: tools.getStorage('userCenter/userInfo').school.value,
         year: tools.getStorage('userCenter/userInfo').year.value,
-        collegeId: this.selected[this.selected.length - 1].value
-        // schoolId: 1,
-        // year: 2018,
-        // collegeId: 7
+        collegeId: this.selected[0].value
       });
       switch (response.code) {
         case 0:
