@@ -112,7 +112,9 @@ export default {
   },
   methods: {
     async registered () {
+      tools.showProgress();
       const response = await service.registered(this.form);
+      tools.hideProgress();
       switch (response.code) {
         case 0:
           window.api.sendEvent({
