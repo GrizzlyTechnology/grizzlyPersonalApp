@@ -76,11 +76,13 @@ export default {
   },
   methods: {
     async query () {
+      tool.showProgress();
       const response = await service.login({
         phone: this.validateForm.phone,
         passWord: this.validateForm.password,
         deviceId: window.api.deviceId
       });
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           tool.setStorage('token', response.result.token);
