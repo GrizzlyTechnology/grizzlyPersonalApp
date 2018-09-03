@@ -34,20 +34,6 @@ export default {
     AreaSelected
   },
   methods: {
-    async getAllArea () {
-      const response = await service.getAreaByAreaId();
-      switch (response.code) {
-        case 0:
-          this.allArea = response.result.areaList;
-          break;
-        default:
-          tools.toast({
-            position: 'top',
-            message: '地区信息创建失败'
-          });
-          break;
-      }
-    },
     async getSchool () {
       tools.showProgress();
       const response = await service.getSchoolList({cityCode: this.selected[this.selected.length - 1].cityCode});
@@ -94,7 +80,6 @@ export default {
     }
   },
   mounted () {
-    this.getAllArea();
   }
 };
 </script>

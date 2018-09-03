@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import { Icon } from 'muse-ui';
+import tools from 'util/tools';
 
 import service from 'service';
 
@@ -67,14 +67,16 @@ export default {
 
   methods: {
     async getAllArea () {
+      tools.showProgress();
       const response = await service.getAreaByAreaId();
+      tools.hideProgress();
       switch (response.code) {
         case 0:
           this.allArea = response.result.areaList;
           this.selectedAreaList = response.result.areaList;
           break;
         default:
-          Toast({
+          tools.oast({
             position: 'top',
             message: '地区信息创建失败'
           });
