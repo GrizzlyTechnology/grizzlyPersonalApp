@@ -74,20 +74,15 @@ export default {
     data () {
       this.allArea = this.data;
       this.selectedAreaList = this.data;
-    },
-    selected () {
-      if (this.selected.length === 0) {
-        this.selectedAreaList = this.allArea;
-        this.isEnd = false;
-        this.$refs.con.scrollTop = 0;
-      }
     }
   },
   methods: {
     cleanSelected () {
       this.selected = [];
       this.isEnd = false;
+      this.selectedAreaList = this.allArea;
       this.levelNow = 1;
+      this.$refs.con.scrollTop = 0;
       this.$emit('change', { selected: [], isEnd: false });
     },
     selectedRow (row) {
