@@ -87,7 +87,6 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import service from 'service';
 import moment from 'moment';
 import { Button, TextField, Radio, DateInput } from 'muse-ui';
@@ -141,7 +140,7 @@ export default {
           tools.setStorage('userCenter/userInfo', this.form);
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '学生信息创建失败，请稍后重试！！'
           });

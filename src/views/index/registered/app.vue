@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import { Button, TextField, Radio } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
@@ -137,7 +136,7 @@ export default {
           // }
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: response.message
           });
@@ -159,7 +158,7 @@ export default {
           break;
 
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '验证码获取失败'
           });

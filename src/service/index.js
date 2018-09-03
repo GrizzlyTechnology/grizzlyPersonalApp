@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { isMock, hostList } from './mock';
 import tools from 'util/tools';
-import { Toast } from 'mint-ui';
 
 const ENV = process.env;
 let BASEURL = '';
@@ -35,7 +34,7 @@ axios.interceptors.response.use(function (response) {
   // Do something with response
   return response;
 }, function (error) {
-  Toast({
+  tools.toast({
     position: 'top',
     message: '网络错误，请稍后重试！！'
   });

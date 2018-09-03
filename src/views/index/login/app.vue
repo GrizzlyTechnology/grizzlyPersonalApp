@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import { Button, TextField, Checkbox, Avatar } from 'muse-ui';
 import { Row, Col } from 'muse-ui/lib/Grid';
 import { Form, FormItem } from 'muse-ui/lib/Form';
@@ -93,7 +92,7 @@ export default {
           window.api.closeWin();
           break;
         default:
-          Toast({
+          tool.toast({
             position: 'top',
             message: response.message
           });
