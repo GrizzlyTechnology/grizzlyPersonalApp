@@ -44,20 +44,23 @@ axios.interceptors.response.use(function (response) {
 
 function delEmptyAttr (arg) {
   let rObj = {};
+  if (arg && typeof arg === 'object' && !Array.isArray(arg)) {
+    const params = Object.assign({}, arg);
+    Object.keys(arg).forEach((key) => {
+      if (
+        arg[key] === '' ||
+              arg[key] === null ||
+              arg[key] === undefined ||
+              (Array.isArray(arg[key]) && arg[key].length === 0) ||
+              (typeof arg[key] === 'object' && arg[key].length === undefined)
+      ) {
+        delete params[key];
+      }
+    });
 
-  const params = Object.assign({}, arg);
-  Object.keys(arg).forEach((key) => {
-    if (
-      arg[key] === '' ||
-            arg[key] === null ||
-            arg[key] === undefined ||
-            (Array.isArray(arg[key]) && arg[key].length === 0) ||
-            (typeof arg[key] === 'object' && arg[key].length === undefined)
-    ) {
-      delete params[key];
-    }
-  });
-  rObj = params;
+    rObj = params;
+  }
+
   return rObj;
 }
 
@@ -137,6 +140,13 @@ export default {
       url: '/api/student',
       params,
       method: 'get'
+    });
+  },
+  createStudent (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Student/create',
+      params
     });
   },
   getAreaByAreaId (areaId = '') {
