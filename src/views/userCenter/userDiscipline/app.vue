@@ -60,7 +60,7 @@ export default {
       });
       switch (response.code) {
         case 0:
-          if (response.result.majorInfo.length === 0) {
+          if (response.result.classInfo.length === 0) {
             Toast({
               position: 'top',
               message: '该专业下暂无班级，请重新选择！'
@@ -74,7 +74,7 @@ export default {
               furl: './userCenter/userClass.html',
               data: {
                 nameSpace: 'userClass',
-                list: response.result.majorInfo
+                list: response.result.classInfo
               }
             });
             const userInfo = tools.getStorage('userCenter/userInfo');

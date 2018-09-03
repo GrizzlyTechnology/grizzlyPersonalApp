@@ -184,7 +184,7 @@ export default {
   getClassListBy (params) {
     return request({
       host: hostList.test,
-      url: '/api/Class',
+      url: '/api/Classes/classBy',
       params,
       method: 'get'
     });

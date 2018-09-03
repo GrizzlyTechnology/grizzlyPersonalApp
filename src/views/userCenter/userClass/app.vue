@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import service from 'service';
+// import { Toast } from 'mint-ui';
+// import service from 'service';
 import { Button, Icon } from 'muse-ui';
 import tools from 'util/tools';
 // import AreaSelected from 'components/AreaSelected';
@@ -47,8 +47,7 @@ export default {
   },
   components: {
     Button,
-    Icon,
-    Toast
+    Icon
   },
   methods: {
     cleanSelected () {
