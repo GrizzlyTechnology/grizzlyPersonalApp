@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button, Icon } from 'muse-ui';
@@ -47,21 +46,22 @@ export default {
   },
   components: {
     Button,
-    Icon,
-    Toast
+    Icon
   },
   methods: {
     async getDepartment () {
+      tools.showProgress();
       const response = await service.getDepartmentList({
         schoolId: tools.getStorage('userCenter/userInfo').school.value,
         year: this.selected.value
         // schoolId: 1,
         // year: 2018
       });
+      tools.hideProgress();
       switch (response.code) {
         case 0:
           if (response.result.collegeInfo.length === 0) {
-            Toast({
+            tools.toast({
               position: 'top',
               message: '该学年下暂无院系，请重新选择！'
             });
@@ -72,6 +72,7 @@ export default {
               title: '选择院系',
               fname: 'userDepartment_f',
               furl: './userCenter/userDepartment.html',
+              hasLeft: 1,
               data: {
                 nameSpace: 'userDepartment',
                 list: response.result.collegeInfo
@@ -83,7 +84,7 @@ export default {
           }
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '院系信息获取失败，请稍后重试！！'
           });
@@ -108,7 +109,7 @@ export default {
     if (window.api.pageParam.nameSpace === 'userSession') {
       this.list = window.api.pageParam.list.map(row => {
         return {
-          label: row.year,
+          label: row.year + '届',
           value: row.year
         };
       });

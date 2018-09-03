@@ -14,6 +14,8 @@
         <div class="atter">无锡职业技术学院<span class="atter-more">计算机32102班</span></div>
     </Flex>
   </Row>
+        <Button full-width large class="buttom" color="red" @click="studentInfo">完善学生信息</Button>
+
   </Container>
 </template>
 
@@ -36,6 +38,16 @@ export default {
     Paper
   },
   methods: {
+    studentInfo () {
+      tool.openWin({
+        name: 'userArea',
+        url: '../win.html',
+        title: '选择地区',
+        fname: 'userArea_f',
+        furl: './userCenter/userArea.html',
+        hasLeft: 1
+      });
+    },
     systemSet () {
       window.api.openWin({
         name: 'systemSet',

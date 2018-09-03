@@ -1,14 +1,13 @@
 <template>
   <div class="content">
-    <!-- <Form ref="form" :model="form" >
+    <Form ref="form" :model="form" >
       <FormItem
         label="姓名"
         prop="name"
         :rules="nameRules"
-      > -->
-      {{form.name}}
+      >
         <TextField v-model="form.name"></TextField>
-      <!-- </FormItem>
+      </FormItem>
       <FormItem
         label="性别"
         prop="sex"
@@ -42,37 +41,36 @@
       >
         <TextField v-model="form.phone"></TextField>
       </FormItem>
-    </Form> -->
+    </Form>
     <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="submit">完成</Button>
   </div>
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import moment from 'moment';
 import service from 'service';
 import { DateInput, Button, TextField, Radio } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
-// import tools from 'util/tools';
+import tools from 'util/tools';
 
-// const userInfo = tools.getStorage('userCenter/userInfo');
+const userInfo = tools.getStorage('userCenter/userInfo');
 export default {
   name: 'userInfo',
   data () {
     return {
       startDateTime: new Date(),
       form: {
-        name: 'haha'
-        // sex: 1,
-        // identity: '',
-        // phone: '',
-        // nrolmenttime: (new Date()).valueOf()
-        // year: userInfo.year.value,
-        // college: userInfo.college[0].value,
-        // major: userInfo.major.value,
-        // schoolId: userInfo.school.value,
-        // yearClassId: userInfo.class.value
+        name: '',
+        sex: 1,
+        identity: '',
+        phone: '',
+        nrolmenttime: (new Date()).valueOf(),
+        year: userInfo.year.value,
+        college: userInfo.college[0].value,
+        major: userInfo.major.value,
+        schoolId: userInfo.school.value,
+        yearClassId: userInfo.class.value
       },
       nameRules: [
         { validate: val => !!val, message: '必须填写姓名' }
@@ -100,13 +98,19 @@ export default {
   },
   methods: {
     async create () {
-      const response = await service.checkStudent(this.form);
+      const response = await service.createStudent(this.form);
       switch (response.code) {
         case 0:
-
+          tools.toast({
+            position: 'top',
+            message: '学生信息创建成功！'
+          });
+          window.api.closeToWin({
+            name: 'root'
+          });
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '学生信息创建失败，请稍后重试！！'
           });
@@ -114,10 +118,15 @@ export default {
       }
     },
     async getUserInfo () {
+      tools.showProgress();
       const response = await service.getUserInfo();
+      tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.form = response.result.userInfo;
+          this.form.name = response.result.userInfo.name || this.form.name;
+          this.form.sex = response.result.userInfo.sex || this.form.sex;
+          this.form.identity = response.result.userInfo.identity || this.form.identity;
+          this.form.phone = response.result.userInfo.name || this.form.phone;
           break;
         default:
           break;

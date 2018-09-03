@@ -96,7 +96,7 @@ export default {
         this.selected[this.selected.length - 1].value = row.value;
         this.selected[this.selected.length - 1].label = row.label;
         this.selected[this.selected.length - 1].cityCode = row.citycode;
-        if (this.levelNow !== this.level || row.children || row.children.length !== 0) {
+        if (this.levelNow !== this.level || (row.children && row.children.length !== 0)) {
           this.isEnd = false;
           this.$emit('change', { selected: this.selected, isEnd: false });
         }

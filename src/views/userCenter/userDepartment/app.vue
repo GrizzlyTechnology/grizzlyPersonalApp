@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button, Icon } from 'muse-ui';
@@ -32,20 +31,21 @@ export default {
   components: {
     Button,
     Icon,
-    Toast,
     SelectedRecursive
   },
   methods: {
     async getDiscipline () {
+      tools.showProgress();
       const response = await service.getDisciplineList({
         schoolId: tools.getStorage('userCenter/userInfo').school.value,
         year: tools.getStorage('userCenter/userInfo').year.value,
         collegeId: this.selected[0].value
       });
+      tools.hideProgress();
       switch (response.code) {
         case 0:
           if (response.result.majorInfo.length === 0) {
-            Toast({
+            tools.toast({
               position: 'top',
               message: '该院系下暂无专业，请重新选择！'
             });
@@ -56,6 +56,7 @@ export default {
               title: '选择专业',
               fname: 'userDiscipline_f',
               furl: './userCenter/userDiscipline.html',
+              hasLeft: 1,
               data: {
                 nameSpace: 'userDiscipline',
                 list: response.result.majorInfo
@@ -67,7 +68,7 @@ export default {
           }
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '专业信息获取失败，请稍后重试！！'
           });

@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button, Icon } from 'muse-ui';
@@ -47,21 +46,22 @@ export default {
   },
   components: {
     Button,
-    Icon,
-    Toast
+    Icon
   },
   methods: {
-    async getSchool () {
+    async getClass () {
+      tools.showProgress();
       const response = await service.getClassListBy({
         majorId: this.selected.value,
         schoolId: tools.getStorage('userCenter/userInfo').school.value,
         year: tools.getStorage('userCenter/userInfo').year.value,
         collegeId: tools.getStorage('userCenter/userInfo').college[0].value
       });
+      tools.hideProgress();
       switch (response.code) {
         case 0:
           if (response.result.classInfo.length === 0) {
-            Toast({
+            tools.toast({
               position: 'top',
               message: '该专业下暂无班级，请重新选择！'
             });
@@ -72,6 +72,7 @@ export default {
               title: '选择班级',
               fname: 'userClass_f',
               furl: './userCenter/userClass.html',
+              hasLeft: 1,
               data: {
                 nameSpace: 'userClass',
                 list: response.result.classInfo
@@ -83,7 +84,7 @@ export default {
           }
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '班级信息获取失败，请稍后重试！！'
           });
@@ -101,7 +102,7 @@ export default {
       this.isEnd = true;
     },
     submit () {
-      this.getSchool();
+      this.getClass();
     }
   },
   mounted () {

@@ -69,7 +69,8 @@ export default {
         url: '../win.html',
         title: '学生信息',
         fname: 'userInfo_f',
-        furl: './userCenter/userInfo.html'
+        furl: './userCenter/userInfo.html',
+        hasLeft: 1
       });
     }
   },

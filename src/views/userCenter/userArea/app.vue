@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
 import tools from 'util/tools';
 import service from 'service';
 import { Button } from 'muse-ui';
@@ -24,6 +23,7 @@ export default {
   name: 'userCenterArea',
   data () {
     return {
+      isLoading: false,
       allArea: [],
       selected: [],
       isEnd: false
@@ -41,7 +41,7 @@ export default {
           this.allArea = response.result.areaList;
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '地区信息创建失败'
           });
@@ -49,11 +49,13 @@ export default {
       }
     },
     async getSchool () {
+      tools.showProgress();
       const response = await service.getSchoolList({cityCode: this.selected[this.selected.length - 1].cityCode});
+      tools.hideProgress();
       switch (response.code) {
         case 0:
           if (response.result.shcoolInfo.length === 0) {
-            Toast({
+            tools.toast({
               position: 'top',
               message: '该地区下暂无学校，请重新选择！'
             });
@@ -64,6 +66,7 @@ export default {
               title: '选择学校',
               fname: 'userSchool_f',
               furl: './userCenter/userSchool.html',
+              hasLeft: 1,
               data: {
                 nameSpace: 'userSchool',
                 list: response.result.shcoolInfo
@@ -75,7 +78,7 @@ export default {
           }
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '学校信息获取失败，请稍后重试！！'
           });
