@@ -30,10 +30,6 @@
             <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
             </Col>
         </Row>
-        <Row>
-            <OtherLogin>
-            </OtherLogin>
-        </Row>
         </Container>
 </template>
 
@@ -41,7 +37,6 @@
 import { Container, Row, Col } from "muse-ui/lib/Grid";
 import { Form, FormItem } from "muse-ui/lib/Form";
 import { Button, TextField, Checkbox, Avatar } from "muse-ui";
-import { OtherLogin } from "components/OtherLogin";
 import service from "service";
 import tools from "util/tools";
 
@@ -61,7 +56,7 @@ export default {
       ],
       argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
       validateForm: {
-        phone: tool.getStorage('phone'),
+        phone:'',
         password: '',
         isAgree: true
       },
@@ -77,18 +72,17 @@ export default {
     Col,
     Avatar,
     Form,
-    FormItem,
-    OtherLogin
+    FormItem
   },
   methods: {
     async query () {
-      tool.showProgress();
+      tools.showProgress();
       const response = await service.login({
         phone: this.validateForm.phone,
         passWord: this.validateForm.password,
-        deviceId: window.api.deviceId
+        deviceId: '1232321'
       });
-      tool.hideProgress();
+      tools.hideProgress();
       switch (response.code) {
         case 0:
           tools.setStorage("token", response.result.token);
