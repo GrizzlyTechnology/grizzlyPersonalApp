@@ -1,16 +1,18 @@
 <template>
-  <div>
+  <Flex align-items="center" justify-content="around" style="width: 400px;">
     <Icon size="36" value=":icon-weixin"></Icon>
     <Icon size="36" value=":icon-qq" color="red"></Icon>
-  </div>
+  </Flex>
 </template>
 
 <script>
+import Flex from "muse-ui/lib/Grid";
 import Icon from "muse-ui/lib/Icon";
 export default {
   props: {
   },
   components: {
+    Flex,
     Icon
   },
   computed: {

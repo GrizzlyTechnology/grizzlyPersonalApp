@@ -5,7 +5,7 @@
         </Row>
         <Form ref="form" :model="validateForm" class="mu-demo-form">
             <FormItem prop="phone" :rules="phoneRules" label="用户名(手机号码)">
-                <TextField v-model="validateForm.phone" type="number" prop="phone">
+                <TextField v-model="validateForm.phone"  prop="phone">
                 </TextField>
             </FormItem>
             <FormItem prop="password" :rules="passwordRules" label="密 码">
@@ -21,9 +21,7 @@
             <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
             </Col>
         </Row>
-        <Row>
-            <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">登录</Button>
-        </Row>
+            <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">登陆</Button>
         <Row class="row-reg" gutter>
             <Col span="6">
             <div class="grid-cell" @click="msgCode">短信验证码登录</div>
@@ -51,11 +49,8 @@ export default {
   data() {
     return {
       phoneRules: [
-        { validate: val => !!val, message: "必须填写用户名" },
-        {
-          validate: val => val.length === 11,
-          message: "用户名长度为11位手机号码"
-        }
+        { validate: val => !!val, message: '必须填写用户名' },
+        { validate: val => val.length === 11, message: '用户名长度为11位手机号码' }
       ],
       passwordRules: [
         { validate: val => !!val, message: "必须填写密码" },
@@ -66,8 +61,8 @@ export default {
       ],
       argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
       validateForm: {
-        phone: tools.getStorage("phone"),
-        password: "",
+        phone: tool.getStorage('phone'),
+        password: '',
         isAgree: true
       },
       visibility: false
@@ -86,12 +81,14 @@ export default {
     OtherLogin
   },
   methods: {
-    async query() {
+    async query () {
+      tool.showProgress();
       const response = await service.login({
         phone: this.validateForm.phone,
         passWord: this.validateForm.password,
         deviceId: window.api.deviceId
       });
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           tools.setStorage("token", response.result.token);
@@ -103,7 +100,10 @@ export default {
           window.api.closeWin();
           break;
         default:
-          alert("nono");
+          tool.toast({
+            position: 'top',
+            message: response.message
+          });
           break;
       }
     },

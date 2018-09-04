@@ -1,0 +1,287 @@
+<template>
+  <Container>
+    <Card class='positionNameBox'>
+      <CardTitle title='产品经理' sub-title='8-20万'>
+        <span class="claim">7-10万</span>
+      </CardTitle>
+      <Row class='p16'>
+        <Col span="3">
+        <div class="grid-cell">
+          <Icon size="16" value=":icon-chanpin"></Icon>
+          3年经验</div>
+        </Col>
+        <Col span="3">
+        <div class="grid-cell">
+          <Icon size="16" value=":icon-chanpin"></Icon>
+          大专
+        </div>
+        </Col>
+        <Col span="3">
+        <div class="grid-cell">
+          <Icon size="16" value=":icon-chanpin"></Icon>
+          镇江</div>
+        </Col>
+        <Col span="3">
+        <div class="grid-cell">
+          <Icon size="16" value=":icon-chanpin"></Icon>
+          人数：10</div>
+        </Col>
+      </Row>
+    </Card>
+    <List textline="two-line" class='companyNameBox'>
+      <ListItem avatar :ripple="false" button class='listItem whiteBg'>
+        <ListAction>
+          <Avatar>
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt="">
+          </Avatar>
+        </ListAction>
+        <ListItemContent>
+          <ListItemTitle>
+            飞龙信息发展股份有限公司
+          </ListItemTitle>
+          <ListItemSubTitle>
+            <span>上市公司</span>
+            <span>500-1000人</span>
+            <span>电子商务</span>
+          </ListItemSubTitle>
+        </ListItemContent>
+      </ListItem>
+    </List>
+    <CardText class='whiteBg detailBox'>
+      <h2 class='titleBox'>职位描述</h2>
+      <h3>
+        岗位职责:
+      </h3>
+      <p>
+        1、负责零售后台/CRM等云平台产品规划设计，包括需求沟通与分析、产品设计（包括产品方案、功能和原型等的设计）、需求文档的撰写等； 2、全程负责 整个产品的全生命周期，通过产品数据监控、调研和分析，提出优化改进建议，完成产品的持续迭代优化；
+      </p>
+      <h3>
+        任职要求:
+      </h3>
+      <p>
+        1、负责零售后台/CRM等云平台产品规划设计，包括需求沟通与分析、产品设计（包括产品方案、功能和原型等的设计）、需求文档的撰写等； 2、全程负责 整个产品的全生命周期，通过产品数据监控、调研和分析，提出优化改进建议，完成产品的持续迭代优化；
+      </p>
+    </CardText>
+    <CardText class='whiteBg detailBox mt8'>
+      <h2 class='titleBox'>工作地址</h2>
+      <p class='spaceBetween'>
+        飞龙信息发展股份有限公司
+        <Icon size='14' value=":icon-jinru" right></Icon>
+      </p>
+    </CardText>
+
+    <List class='whiteBg mt8 allPostion' textline="two-line">
+      <CardText>
+        <h2 class='titleBox spaceBetween'>所有职位
+          <Icon size='14' value=":icon-jinru" right style='font-weight:normal'></Icon>
+        </h2>
+      </CardText>
+      <template v-for='jobs in lists'>
+        <ListItem avatar :ripple="false" button class='listItem'>
+          <ListItemContent>
+            <ListItemTitle>{{jobs.position}}
+              <span class='claim'>{{jobs.claim}}</span>
+            </ListItemTitle>
+            <ListItemSubTitle>
+              {{jobs.companyName}}
+            </ListItemSubTitle>
+          </ListItemContent>
+          <ListAction>
+            <ListItemAfterText class='salaryRange'>{{jobs.salaryRange}}</ListItemAfterText>
+            <ListItemAfterText>{{jobs.date}}</ListItemAfterText>
+          </ListAction>
+        </ListItem>
+        <Divider></Divider>
+      </template>
+    </List>
+    <div class='p16 fixBox whiteBg'>
+      <Button color="info" class='collection'>收藏</Button>
+      <Button color="primary" class='deliveryButton'>立即投递</Button>
+    </div>
+  </Container>
+</template>
+
+<script>
+import { Container, Row, Col } from "muse-ui/lib/Grid";
+import { CardTitle, CardText } from "muse-ui/lib/Card";
+import {
+  List,
+  ListItem,
+  ListAction,
+  ListItemSubTitle,
+  ListItemContent,
+  ListItemTitle,
+  ListItemAfterText
+} from "muse-ui/lib/List";
+import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
+export default {
+  data() {
+    return {
+      lists: [
+        {
+          position: "产品经理",
+          claim: "3年/大专/镇江",
+          salaryRange: "6K-8K",
+          companyName: "飞龙信息发展股份有限公司",
+          date: "2018-08-06"
+        },
+        {
+          position: "产品经理",
+          claim: "3年/大专/镇江",
+          salaryRange: "6K-8K",
+          companyName: "飞龙信息发展股份有限公司",
+          date: "2018-08-06"
+        },
+        {
+          position: "产品经理",
+          claim: "3年/大专/镇江",
+          salaryRange: "6K-8K",
+          companyName: "飞龙信息发展股份有限公司",
+          date: "2018-08-06"
+        },
+        {
+          position: "产品经理",
+          claim: "3年/大专/镇江",
+          salaryRange: "6K-8K",
+          companyName: "飞龙信息发展股份有限公司",
+          date: "2018-08-06"
+        },
+        {
+          position: "产品经理",
+          claim: "3年/大专/镇江",
+          salaryRange: "6K-8K",
+          companyName: "飞龙信息发展股份有限公司",
+          date: "2018-08-06"
+        }
+      ]
+    };
+  },
+  components: {
+    Container,
+    Row,
+    Col,
+    Card,
+    CardTitle,
+    Icon,
+    List,
+    ListItem,
+    ListAction,
+    ListItemSubTitle,
+    ListItemContent,
+    ListItemTitle,
+    ListItemAfterText,
+    Avatar,
+    CardText,
+    Divider,
+    Button
+  },
+  methods: {},
+  mounted() {}
+};
+</script>
+<style lang="less" scoped>
+@import url("../../../assets/css/base.less");
+.container {
+  padding: 0;
+}
+
+.p16 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.mt8 {
+  margin-top: 8px;
+}
+
+.whiteBg {
+  background: #fff;
+}
+
+.positionNameBox {
+  box-shadow: none;
+  padding-bottom: 5px;
+}
+
+.positionNameBox .mu-card-sub-title,
+.positionNameBox .mu-card-title {
+  display: inline;
+}
+
+.mu-card-title-container {
+  padding-bottom: 5px;
+}
+
+.mu-card-title-container .mu-card-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.mu-card-sub-title {
+  color: #009688;
+}
+
+.grid-cell {
+  color: #000;
+  font-size: 14px;
+}
+
+.companyNameBox {
+  padding-top: 1px;
+}
+
+.companyNameBox .mu-item-sub-title span {
+  margin-right: 10px;
+}
+
+.companyNameBox .mu-avatar img {
+  border-radius: 0px;
+}
+
+.titleBox {
+  font-size: 16px;
+  border-left: 3px solid #009688;
+  padding-left: 5px;
+  margin-top: 0;
+}
+
+.detailBox h3 {
+  font-size: 14px;
+}
+
+.spaceBetween {
+  display: flex;
+  justify-content: space-between;
+}
+
+.claim {
+  color: #666;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.salaryRange {
+  color: #009688;
+  font-size: 14px;
+}
+
+
+.allPostion{
+  padding-bottom: 56px;
+}
+
+.allPostion .mu-card-text {
+  padding-bottom: 0;
+}
+
+.fixBox{
+  position:fixed;
+  bottom: 0px;
+  width: 100%;
+  padding: 10px;
+  border-top:1px solid #eee;
+  display: flex;
+  justify-content: space-around;
+}
+</style>

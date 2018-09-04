@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { isMock, hostList } from './mock';
 import tools from 'util/tools';
-import { Toast } from 'mint-ui';
 
 const ENV = process.env;
 let BASEURL = '';
@@ -15,14 +14,17 @@ switch (ENV) {
     BASEURL = '';
     break;
 }
+
 axios.defaults.baseURL = BASEURL;
 axios.defaults.timeout = 20000;
+// axios.defaults.withCredentials = true;
+
 axios.interceptors.request.use((config) => {
   // Do something with request
   config.headers['X-Requested-With'] = 'XMLHttpRequest';
   config.headers['MG_code'] = '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O';
   config.headers['MG_key'] = '5b10fed636fcf';
-  config.headers['MG_token'] = tools.getStorage('token') || '';
+  config.headers['MG_token'] = ENV !== 'production' ? '6f8bade35ef87e5a6aa623519ef973582dc25205' : tools.getStorage('token') || '';
   return config;
 }, (error) => {
   return Promise.reject(error);
@@ -32,7 +34,7 @@ axios.interceptors.response.use(function (response) {
   // Do something with response
   return response;
 }, function (error) {
-  Toast({
+  tools.toast({
     position: 'top',
     message: '网络错误，请稍后重试！！'
   });
@@ -41,21 +43,23 @@ axios.interceptors.response.use(function (response) {
 
 function delEmptyAttr (arg) {
   let rObj = {};
-  if (Array.isArray(arg) && arg.length === 0) {
+  if (arg && typeof arg === 'object' && !Array.isArray(arg)) {
     const params = Object.assign({}, arg);
     Object.keys(arg).forEach((key) => {
       if (
         arg[key] === '' ||
-            arg[key] === null ||
-            arg[key] === undefined ||
-            (Array.isArray(arg[key]) && arg[key].length === 0) ||
-            (typeof arg[key] === 'object' && arg[key].length === undefined)
+              arg[key] === null ||
+              arg[key] === undefined ||
+              (Array.isArray(arg[key]) && arg[key].length === 0) ||
+              (typeof arg[key] === 'object' && arg[key].length === undefined)
       ) {
         delete params[key];
       }
     });
+
     rObj = params;
   }
+
   return rObj;
 }
 
@@ -102,10 +106,23 @@ export default {
       params
     });
   },
+  logout () {
+    return request({
+      host: hostList.test,
+      url: '/api/User/logout'
+    });
+  },
+  getUserInfo () {
+    return request({
+      host: hostList.test,
+      url: '/api/User/getUserByToken',
+      method: 'get'
+    });
+  },
   registered (params) {
     return request({
       host: hostList.test,
-      url: '/api/user/create',
+      url: '/api/User/create',
       params
     });
   },
@@ -124,33 +141,76 @@ export default {
       method: 'get'
     });
   },
+  createStudent (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Student/create',
+      params
+    });
+  },
   getAreaByAreaId (areaId = '') {
     return request({
       host: hostList.test,
-      url: '/api/area',
+      url: '/api/Area',
       params: {
         areaId
       },
       method: 'get'
     });
   },
-  getSchoolListByAreaId (areaId = '') {
+  getSchoolList (params) {
     return request({
       host: hostList.test,
-      url: '/api/school',
-      params: {
-        areaId
-      },
+      url: '/api/School/getSchoolBy',
+      params,
       method: 'get'
     });
   },
-  getSessionListBySchoolId (schoolId) {
+  getSessionList (params) {
     return request({
       host: hostList.test,
-      url: '/api/session',
-      params: {
-        schoolId
-      },
+      url: '/api/School/getYear',
+      params,
+      method: 'get'
+    });
+  },
+  getDepartmentList (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/College/collegeBySchoolAndYear',
+      params,
+      method: 'get'
+    });
+  },
+  getDisciplineList (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Major/majorBy',
+      params,
+      method: 'get'
+    });
+  },
+  getClassListBy (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Classes/classBy',
+      params,
+      method: 'get'
+    });
+  },
+  addToCollection (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Collection',
+      params,
+      method: 'get'
+    });
+  },
+  postJob (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/postJob',
+      params,
       method: 'get'
     });
   }

@@ -1,7 +1,7 @@
 <template>
-    <Container>
-        <Button full-width large class="buttom" color="red" @click="submit">退出登录</Button>
-    </Container>
+  <Container>
+    <Button full-width large class="buttom" color="red" @click="submit">退出登录</Button>
+  </Container>
 </template>
 
 <script>
@@ -33,9 +33,7 @@ export default {
       });
     }
   },
-  mounted () {
-
-  }
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>
@@ -44,7 +42,7 @@ export default {
   padding: 20px;
   .buttom {
     color: @grayFont;
-    font-size: h3
+    font-size: h3;
   }
 }
 </style>

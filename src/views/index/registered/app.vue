@@ -32,6 +32,14 @@
           {{verificationCodeBtnText}}
         </Button>
       </FormItem>
+      </FormItem>
+        <FormItem
+        label="性别"
+        prop="sex"
+      >
+        <Radio v-model="form.sex" :value="1" label="男"></Radio>
+        <Radio v-model="form.sex" :value="0" label="女"></Radio>
+      </FormItem>
       <FormItem
         label="密码"
         prop="passWord"
@@ -57,8 +65,7 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import { Button, TextField } from 'muse-ui';
+import { Button, TextField, Radio } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
 import tools from 'util/tools';
@@ -73,6 +80,7 @@ export default {
       form: {
         phone: '',
         // verificationImg: '',
+        sex: 1,
         messageCode: '',
         passWord: '',
         rePassword: ''
@@ -98,35 +106,39 @@ export default {
   components: {
     Button,
     Form,
+    Radio,
     FormItem,
     TextField
   },
   methods: {
     async registered () {
+      tools.showProgress();
       const response = await service.registered(this.form);
+      tools.hideProgress();
       switch (response.code) {
         case 0:
-          const login = await service.login({
-            phone: this.form.phone,
-            passWord: this.form.passWord,
-            deviceId: window.api.deviceId
+          window.api.sendEvent({
+            name: 'event'
           });
-          switch (login.code) {
-            case 0:
-              tools.setStorage('token', login.result.token);
-              tools.setStorage('phone', login.result.userinfo.phone);
-              tools.setStorage('userInfo', login.result.userinfo);
-              window.api.sendEvent({
-                name: 'event'
-              });
-              window.api.closeToWin({
-                name: 'root'
-              });
-              break;
-          }
+          window.api.closeToWin({
+            name: 'root'
+          });
+          // const login = await service.login({
+          //   phone: this.form.phone,
+          //   passWord: this.form.passWord,
+          //   deviceId: window.api.deviceId
+          // });
+          // alert(login.code);
+          // switch (login.code) {
+          //   case 0:
+          //     tools.setStorage('token', login.result.token);
+          //     tools.setStorage('phone', login.result.userinfo.phone);
+          //     tools.setStorage('userInfo', login.result.userinfo);
+          //     break;
+          // }
           break;
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: response.message
           });
@@ -148,7 +160,7 @@ export default {
           break;
 
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '验证码获取失败'
           });

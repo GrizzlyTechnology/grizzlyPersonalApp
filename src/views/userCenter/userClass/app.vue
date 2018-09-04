@@ -30,58 +30,25 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import tools from 'util/tools';
-import service from 'service';
+// import service from 'service';
 import { Button, Icon } from 'muse-ui';
+import tools from 'util/tools';
 // import AreaSelected from 'components/AreaSelected';
 export default {
-  name: 'userSchoolList',
+  name: 'userClass',
   data () {
     return {
       isEnd: false,
-      list: [{value: 0, label: '学校一'}, {value: 1, label: '学校二'}],
+      list: [],
       selected: {},
       selectedText: ''
     };
   },
   components: {
     Button,
-    Icon,
-    Toast
+    Icon
   },
   methods: {
-    async getSchool () {
-      const response = await service.getSessionListBySchoolId({id: this.setSelected.value});
-      switch (response.code) {
-        case 0:
-          if (response.result.list.length === 0) {
-            Toast({
-              position: 'top',
-              message: '该学校下暂无学年，请重新选择！'
-            });
-          } else {
-            tools.openWin({
-              name: 'userSessionList',
-              url: '../win.html',
-              title: '选择学年',
-              fname: 'userSessionList_f',
-              furl: './userCenter/userSessionList.html',
-              data: {
-                nameSpace: 'userSessionList',
-                schoolList: response.result.list
-              }
-            });
-          }
-          break;
-        default:
-          Toast({
-            position: 'top',
-            message: '学年信息获取失败，请稍后重试！！'
-          });
-          break;
-      }
-    },
     cleanSelected () {
       this.selected = {};
       this.selectedText = '';
@@ -93,12 +60,26 @@ export default {
       this.isEnd = true;
     },
     submit () {
-      this.getSchool();
+      const userInfo = tools.getStorage('userCenter/userInfo');
+      userInfo.class = this.selected;
+      tools.setStorage('userCenter/userInfo', userInfo);
+      tools.openWin({
+        name: 'userInfo',
+        url: '../win.html',
+        title: '学生信息',
+        fname: 'userInfo_f',
+        furl: './userCenter/userInfo.html',
+        hasLeft: 1
+      });
     }
   },
   mounted () {
-    if (window.api.pageParam.nameSpace === 'userSchoolList') {
-      this.list = window.api.pageParam.schoolList;
+    if (window.api.pageParam.nameSpace === 'userClass') {
+      this.list = window.api.pageParam.list.map(row => {
+        return {
+          value: row.id,
+          label: row.title};
+      });
     }
   }
 };
@@ -122,9 +103,6 @@ export default {
     float: left;
   }
 }
-// .areaFoot{
-//   padding-top: 15px;
-// }
 .areaBody{
   flex: 1;
   background-color: #fff;
@@ -136,7 +114,8 @@ export default {
   right: 12px;
 }
 .areaRow {
-  padding: 15px;
+  font-size: 16px;
+  padding: 14px 15px;
   border-bottom: 1px @grayLine solid;
   position: relative;
   &:active {
