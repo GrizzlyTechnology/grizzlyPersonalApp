@@ -47,12 +47,17 @@ export default {
   methods: {
     create () {
       tools.openWin({
-        name: 'userBaseInfo',
+        name: 'resumeDetail',
         url: '../win.html',
-        title: '基本信息',
-        fname: 'userBaseInfo_f',
-        furl: './userCenter/userBaseInfo.html',
-        hasLeft: 1
+        title: '创建简历',
+        fname: 'resumeDetail_f',
+        furl: './userCenter/resumeDetail.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'resumeDetail',
+          type: 'create',
+          userInfo: {}
+        }
       });
     },
     del (data) {
