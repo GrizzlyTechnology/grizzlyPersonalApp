@@ -39,7 +39,7 @@ export default {
       const response = await service.getDisciplineList({
         schoolId: tools.getStorage('userCenter/userInfo').school.value,
         year: tools.getStorage('userCenter/userInfo').year.value,
-        collegeId: this.selected[0].value
+        collegeId: this.selected[this.selected.length - 1].value
       });
       tools.hideProgress();
       switch (response.code) {
@@ -91,7 +91,7 @@ export default {
         if (row.children) {
           row.children = row.children.map(r => {
             r.label = r.title;
-            r.value = r.id;
+            r.value = r.collegeid;
             return r;
           });
         }

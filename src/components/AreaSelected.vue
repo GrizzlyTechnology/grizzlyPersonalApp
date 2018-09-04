@@ -76,7 +76,7 @@ export default {
           this.selectedAreaList = response.result.areaList;
           break;
         default:
-          tools.oast({
+          tools.toast({
             position: 'top',
             message: '地区信息创建失败'
           });
