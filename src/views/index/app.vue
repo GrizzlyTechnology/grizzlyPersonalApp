@@ -13,7 +13,7 @@ export default {
   methods: {
     init () {
       var token = tool.getStorage('token');
-      if (token) {
+      if (!!token) {
         tool.openWin({
           name: 'main',
           url: './index/main.html'
@@ -24,7 +24,6 @@ export default {
           url: './win.html',
           title: '登录',
           fname: 'login_f',
-          // furl: './index/login.html'
           furl: './index/login.html'
         });
       }
