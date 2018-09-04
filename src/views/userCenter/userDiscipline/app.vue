@@ -34,6 +34,8 @@ import tools from 'util/tools';
 import service from 'service';
 import { Button, Icon } from 'muse-ui';
 // import AreaSelected from 'components/AreaSelected';
+
+const studentInfo = tools.getStorage('userCenter/userInfo');
 export default {
   name: 'userDiscipline',
   data () {
@@ -53,9 +55,9 @@ export default {
       tools.showProgress();
       const response = await service.getClassListBy({
         majorId: this.selected.value,
-        schoolId: tools.getStorage('userCenter/userInfo').school.value,
-        year: tools.getStorage('userCenter/userInfo').year.value,
-        collegeId: tools.getStorage('userCenter/userInfo').college[0].value
+        schoolId: studentInfo.school.value,
+        year: studentInfo.year.value,
+        collegeId: studentInfo.college[studentInfo.college.length - 1].value
       });
       tools.hideProgress();
       switch (response.code) {

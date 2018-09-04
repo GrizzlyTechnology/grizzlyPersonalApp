@@ -512,10 +512,10 @@ u.showProgress = function (
   }
 };
 
-u.hideProgress = function(){
-  if(window.api){
+u.hideProgress = function () {
+  if (window.api) {
     window.api.hideProgress();
-  }else{
+  } else {
     Indicator.close()
   }
 }
@@ -595,26 +595,30 @@ u.sleep = function (times) {
 };
 u.openWin = function (params) {
   const { name, url, title = '', fname, furl, hasLeft = false, hasRight = false, data = {}, ...winData } = params
-  let op = {
-    name,
-    url,
-    bounces: false,
-    pageParam: {
-      ...winData,
-    }
-  };
+  if (window.api) {
+    let op = {
+      name,
+      url,
+      bounces: false,
+      pageParam: {
+        ...winData,
+      }
+    };
 
-  if (fname !== undefined) {
-    op.pageParam.wtitle = title;
-    op.pageParam.fname = fname;
-    op.pageParam.furl = furl;
-    op.pageParam.hasLeft = hasLeft;
-    op.pageParam.hasRight = hasRight;
-    op.pageParam.data = data;
+    if (fname !== undefined) {
+      op.pageParam.wtitle = title;
+      op.pageParam.fname = fname;
+      op.pageParam.furl = furl;
+      op.pageParam.hasLeft = hasLeft;
+      op.pageParam.hasRight = hasRight;
+      op.pageParam.data = data;
+    }
+    setTimeout(function () {
+      window.api.openWin(op);
+    }, 350)
+  } else if (furl) {
+    window.location.href = furl.replace('./', '/');
   }
-  setTimeout(function () {
-    window.api.openWin(op);
-  }, 350)
 }
 /* end */
 

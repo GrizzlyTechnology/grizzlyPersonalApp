@@ -16,6 +16,7 @@
       </Flex>
     </Row>
     <Button full-width large class="buttom" color="red" @click="studentInfo">完善学生信息</Button>
+    <Button full-width large class="buttom" color="red" @click="resumeList">简历管理</Button>
 
   </Container>
 </template>
@@ -48,6 +49,16 @@ export default {
         title: '选择地区',
         fname: 'userArea_f',
         furl: './userCenter/userArea.html',
+        hasLeft: 1
+      });
+    },
+    resumeList () {
+      tool.openWin({
+        name: 'resumeList',
+        url: '../win.html',
+        title: '简历管理',
+        fname: 'resumeList_f',
+        furl: './userCenter/resumeList.html',
         hasLeft: 1
       });
     },
