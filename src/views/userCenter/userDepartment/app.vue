@@ -91,7 +91,7 @@ export default {
         if (row.children) {
           row.children = row.children.map(r => {
             r.label = r.title;
-            r.value = r.id;
+            r.value = r.collegeid;
             return r;
           });
         }
