@@ -4,6 +4,8 @@ import DefaultFrame from './DefaultFrame';
 import OtherLogin from './OtherLogin';
 import SelectedRecursive from './SelectedRecursive';
 import AreaSelected from './AreaSelected';
+import Panel from './Panel';
+import StepVertical from './StepVertical';
 
 export {
   AreaSelected,
@@ -11,5 +13,7 @@ export {
   UIHeader,
   DefaultFrame,
   OtherLogin,
-  SelectedRecursive
+  SelectedRecursive,
+  Panel,
+  StepVertical
 };

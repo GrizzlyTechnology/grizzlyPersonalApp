@@ -1,33 +1,58 @@
 <template>
   <div class="content">
-    <div class="bodyer">
-      <CellSwipe v-for="row in list" :key="row.id" class="row" :right="[
-          {
-            content: '删除',
-            style: { background: '#e7585a', color: '#fff' },
-            handler: () => {del(row)}
-          }
-        ]">
-        <div class="title" slot="title">{{row.title}}</div>
-        <i class="mu-icon icon-left isLink" />
-      </CellSwipe>
-    </div>
-    <div class="footer">
-      <Button color="#009688" textColor="#ffffff" v-if="list.length===0" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">新增简历</Button>
-    </div>
+    <Panel title="基本信息" label="必填" :isLink="true" @click="()=>{}">
+      <Cell title="姓名" value="说明文字"></Cell>
+      <Cell title="性别" value="说明文字"></Cell>
+      <Cell title="出生年月" value="说明文字"></Cell>
+      <Cell title="毕业时间" value="说明文字"></Cell>
+      <Cell title="户籍" value="说明文字"></Cell>
+      <Cell title="手机号码" value="说明文字"></Cell>
+      <Cell title="电子邮箱" value="说明文字"></Cell>
+    </Panel>
+    <Panel title="教育经历" label="必填" :isLink="true">
+      <StepVertical
+        :data="education"
+      />
+    </Panel>
+    <Panel title="实习经历" label="必填" :isLink="true">
+      <Cell title="标题文字" value="说明文字"></Cell>
+      <Cell title="标题文字" value="说明文字"></Cell>
+      <Cell title="标题文字" value="说明文字"></Cell>
+    </Panel>
+  </div>
   </div>
 </template>
 
 <script>
 // import service from 'service';
-import { CellSwipe } from 'mint-ui';
 import { Button } from 'muse-ui';
-import tools from 'util/tools';
-// import AreaSelected from 'components/AreaSelected';
+import { Cell } from 'mint-ui';
+// import tools from 'util/tools';
+import Panel from 'components/Panel';
+import StepVertical from 'components/StepVertical';
 export default {
   name: 'userClass',
   data () {
     return {
+      education: [
+        {
+          head: '2017.5-2020.2',
+          title: '交通技师学院',
+          info: '大专/信息系'
+        }, {
+          head: '2017.5-2020.2',
+          title: 'sdfsdf',
+          info: '大专/信息系'
+        }, {
+          head: '2017.5-2020.2',
+          title: '交通技师学院',
+          info: '大专/信息系'
+        }, {
+          head: '2017.5-2020.2',
+          title: '交通技师学院',
+          info: '大专/信息系'
+        }
+      ],
       list: [
         // {
         //   id: 0,
@@ -42,55 +67,20 @@ export default {
   },
   components: {
     Button,
-    CellSwipe
+    Cell,
+    Panel,
+    StepVertical
   },
-  methods: {
-    create () {
-      tools.openWin({
-        name: 'userBaseInfo',
-        url: '../win.html',
-        title: '基本信息',
-        fname: 'userBaseInfo_f',
-        furl: './userCenter/userBaseInfo.html',
-        hasLeft: 1
-      });
-    },
-    del (data) {
-      console.log(data);
-    }
-  },
+  methods: {},
   mounted () {}
 };
 </script>
-<style lang="less" scoped>
-@import url("../../../assets/css/base.less");
-.content {
-  // padding: 15px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.bodyer {
-  flex: 1;
-  overflow: auto;
-}
-.isLink {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  font-size: 16px;
-  transform: rotate(180deg);
-}
-.row {
-  font-size: 16px;
-  border-bottom: 1px @grayLine solid;
-  background-color: #fff;
-  &:active {
-    background-color: #eee;
-  }
-  .title {
-    .ell();
-    padding: 0 15px;
+<style lang="less">
+.moduleBodyer {
+  .mint-cell {
+    .mint-cell-wrapper {
+      font-size: 14px;
+    }
   }
 }
 </style>
