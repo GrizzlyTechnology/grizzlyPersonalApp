@@ -1,12 +1,13 @@
 <template>
   <List textline="two-line">
     <Form :model="{}">
-      <template v-for='list in lists'>
+      <div class='allPostion'>
+ <template v-for='list in lists'>
         <ListItem avatar :ripple="false" button class='listItem'>
           <ListAction>
             <Checkbox v-model="checkboxModel" :value='list.id' @change='check'></Checkbox>
           </ListAction>
-          <ListItemContent>
+          <ListItemContent  @click="jobDetails">
             <ListItemTitle>{{list.position}}
               <span class='claim'>{{list.claim}}</span>
             </ListItemTitle>
@@ -14,14 +15,15 @@
               {{list.companyName}}
             </ListItemSubTitle>
           </ListItemContent>
-          <ListAction>
+          <ListAction  @click="jobDetails">
             <ListItemAfterText class='salaryRange'>{{list.salaryRange}}</ListItemAfterText>
             <ListItemAfterText>{{list.date}}</ListItemAfterText>
           </ListAction>
         </ListItem>
         <Divider></Divider>
       </template>
-      <div class='p16'>
+      </div>
+      <div class='p16 fixBox'>
         <Checkbox v-model='checked' v-on:change='checkedAll' label='全选'></Checkbox>
         <Button color="info" class='collection' @click="collectionBtn">收藏</Button>
         <Button color="primary" class='deliveryButton' @click="deliveryBtn">立即投递</Button>
@@ -42,6 +44,7 @@ import {
   ListItemTitle,
   ListItemAfterText
 } from 'muse-ui/lib/List';
+import tool from 'util/tools';
 export default {
   data () {
     return {
@@ -85,6 +88,30 @@ export default {
           salaryRange: '6K-8K',
           companyName: '飞龙信息发展股份有限公司',
           date: '2018-08-06'
+        },
+         {
+          id: '6',
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
+        },
+         {
+          id: '7',
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
+        },
+         {
+          id: '8',
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         }
       ],
       checkboxModel: [],
@@ -109,6 +136,17 @@ export default {
     Button
   },
   methods: {
+     jobDetails(){
+      tool.openWin({
+          name: 'jobDetails',
+          url: '../win.html',
+          title: '职位详情',
+          fname: 'jobDetails_f',
+          furl: './hr/jobDetails.html',
+          hasLeft:1,
+          hasRight:1
+        });
+    },
     async addToCollection () {
       // 加入收藏夹
       if (this.jobIds.length !== 0) {
@@ -237,5 +275,20 @@ export default {
 
 .collection {
   margin: 0 10px;
+}
+
+
+.allPostion{
+  padding-bottom: 56px;
+}
+
+.fixBox{
+  position:fixed;
+  bottom: 0px;
+  width: 100%;
+  padding: 10px;
+  border-top:1px solid #eee;
+  display: flex;
+  justify-content: space-around;
 }
 </style>

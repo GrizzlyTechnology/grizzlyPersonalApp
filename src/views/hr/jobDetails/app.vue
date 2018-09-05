@@ -35,7 +35,7 @@
             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt="">
           </Avatar>
         </ListAction>
-        <ListItemContent>
+        <ListItemContent @click="companyInfo">
           <ListItemTitle>
             飞龙信息发展股份有限公司
           </ListItemTitle>
@@ -72,12 +72,12 @@
 
     <List class='whiteBg mt8 allPostion' textline="two-line">
       <CardText>
-        <h2 class='titleBox spaceBetween'>所有职位
+        <h2 class='titleBox spaceBetween' @click="jobSearchList">所有职位
           <Icon size='14' value=":icon-jinru" right style='font-weight:normal'></Icon>
         </h2>
       </CardText>
       <template v-for='jobs in lists'>
-        <ListItem avatar :ripple="false" button class='listItem'>
+        <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails">
           <ListItemContent>
             <ListItemTitle>{{jobs.position}}
               <span class='claim'>{{jobs.claim}}</span>
@@ -114,6 +114,7 @@ import {
   ListItemAfterText
 } from "muse-ui/lib/List";
 import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
+import tool from 'util/tools';
 export default {
   data() {
     return {
@@ -175,7 +176,40 @@ export default {
     Divider,
     Button
   },
-  methods: {},
+  methods: {
+     jobSearchList(){
+      tool.openWin({
+          name: 'jobSearchList',
+          url: '../win.html',
+            title: '所有职位',
+            fname: 'jobSearchList_f',
+            furl: './hr/jobSearchList.html',
+            hasLeft: 1
+        });
+    },
+     jobDetails(){
+      tool.openWin({
+          name: 'jobDetails',
+          url: '../win.html',
+          title: '职位详情',
+          fname: 'jobDetails_f',
+          furl: './hr/jobDetails.html',
+          hasLeft:1,
+          hasRight:1
+        });
+    },
+    companyInfo(){
+      tool.openWin({
+          name: 'companyInfo',
+          url: '../win.html',
+          title: '企业介绍',
+          fname: 'companyInfo_f',
+          furl: './hr/companyInfo.html',
+          hasLeft:1,
+          hasRight:1
+        });
+    }
+  },
   mounted() {}
 };
 </script>
