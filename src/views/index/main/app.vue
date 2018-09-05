@@ -17,7 +17,7 @@ export default {
   props: {
     footerHeight: {
       type: String,
-      default: '50px'
+      default: '60px'
     }
   },
   data () {
@@ -79,6 +79,16 @@ export default {
 <style lang="less">
 @import url("../../../assets/css/base.less");
 body {
+    .footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+}
+  .footer .bottomNav{
+    background-color: @baseColor;
+    height: 60px;
+  }
   .mu-bottom-item {
     .mu-bottom-item-icon {
       font-size: 18px;
@@ -86,6 +96,7 @@ body {
     }
     .mu-bottom-item-text {
       color: #fff;
+      font-size: 10px;
     }
   }
   .mu-bottom-item-active {
@@ -95,25 +106,10 @@ body {
       color: #fff;
     }
     .mu-bottom-item-icon {
+      font-size: 22px;
       color: #fff;
+      font-weight: bold;
     }
   }
-  .mu-bottom-item-text {
-    font-size: 10px;
-  }
-}
-</style>
-
-<style lang="less" scoped>
-@import url("../../../assets/css/base.less");
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  left: 0;
-}
-.bottomNav {
-  background-color: @baseColor;
-  height: 50px;
 }
 </style>
