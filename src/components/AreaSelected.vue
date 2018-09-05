@@ -17,7 +17,7 @@
           selectedRow(area);
         }">
         {{area.label}}
-        <i class="mu-icon icon-left" v-if="area.children&&area.children.length>0 && levelNow!==level"></i>
+        <i class="mu-icon icon-right" v-if="area.children&&area.children.length>0 && levelNow!==level"></i>
       </div>
     </div>
   </div>
@@ -137,7 +137,6 @@ export default {
     top: 13px;
     right: 15px;
     font-size: 16px;
-    transform: rotate(180deg);
   }
   &:active {
     background-color: #eee;

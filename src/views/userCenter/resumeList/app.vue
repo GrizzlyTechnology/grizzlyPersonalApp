@@ -9,7 +9,7 @@
           }
         ]">
         <div class="title" slot="title">{{row.title}}</div>
-        <i class="mu-icon icon-left isLink" />
+        <i class="mu-icon icon-right isLink" />
       </CellSwipe>
     </div>
     <div class="footer">
