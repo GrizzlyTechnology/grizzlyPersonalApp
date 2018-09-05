@@ -51,7 +51,7 @@ export default {
   height: 16px;
   border-radius: 8px;
   background-color: #009688;
-  border: 2px solid #b6e9e4;
+  border: 2px solid #B3DFDB;
   margin-left: 3px;
 }
 .mu-step:last-child {

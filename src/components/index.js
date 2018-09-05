@@ -6,6 +6,7 @@ import SelectedRecursive from './SelectedRecursive';
 import AreaSelected from './AreaSelected';
 import Panel from './Panel';
 import StepVertical from './StepVertical';
+import SkillLine from './SkillLine';
 
 export {
   AreaSelected,
@@ -15,5 +16,6 @@ export {
   OtherLogin,
   SelectedRecursive,
   Panel,
-  StepVertical
+  StepVertical,
+  SkillLine
 };
