@@ -126,7 +126,7 @@ export default {
           this.form.name = response.result.userInfo.name || this.form.name;
           this.form.sex = response.result.userInfo.sex || this.form.sex;
           this.form.identity = response.result.userInfo.identity || this.form.identity;
-          this.form.phone = response.result.userInfo.name || this.form.phone;
+          this.form.phone = response.result.userInfo.phone || this.form.phone;
           break;
         default:
           break;

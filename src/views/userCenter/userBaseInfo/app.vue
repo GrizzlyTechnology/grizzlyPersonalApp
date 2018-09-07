@@ -14,8 +14,8 @@
             label="性别"
             prop="sex"
           >
-            <Radio v-model="form.sex" :value="0" label="男"></Radio>
-            <Radio v-model="form.sex" :value="1" label="女"></Radio>
+            <Radio v-model="form.sex" :value="1" label="男"></Radio>
+            <Radio v-model="form.sex" :value="0" label="女"></Radio>
           </FormItem>
           <FormItem
             label="出生年月"
@@ -93,16 +93,29 @@ import { Button, TextField, Radio, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
 import tools from 'util/tools';
+import dictMap from 'util/dictMap';
 export default {
   name: 'userInfo',
   data () {
     return {
       startDateTime: new Date(),
+      sexMap: dictMap.sex,
       form: {
-        name: '',
-        sex: 0,
-        personId: '',
-        startDateTime: (new Date()).valueOf()
+        title: '', // 简历名称
+        name: '', // true string 真实姓名
+        sex: null, // true string 性别
+        birthday: null, // true string生日
+        houseHold: {
+          province: null,
+          city: null
+        }, // true string 籍贯
+        address: {
+          province: null,
+          city: null,
+          street: ''
+        },
+        phone: '', // true string手机
+        email: '' // true string 邮箱
       },
       nameRules: [
         { validate: val => !!val, message: '必须填写姓名' }
