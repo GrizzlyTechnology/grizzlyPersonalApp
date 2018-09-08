@@ -1,6 +1,6 @@
 import pathToRegexp from 'path-to-regexp';
 import mockjs from 'mockjs';
-// import regexps from 'util/regexps';
+import areaData from 'util/areaData';
 
 const body = {
   code: 0, // 状态码
@@ -9,7 +9,7 @@ const body = {
   }
 };
 
-const hostList = {
+export const hostList = {
   default: '',
   test: 'test.mangotmall.com'
 };
@@ -38,6 +38,30 @@ const mockRouterMap = {
         }
       };
     }
+  }, {
+    // isMock: true, // 对应url的数据mock的开关
+    method: 'GET',
+    router: '/api/Area',
+    result (params) {
+      return {
+        ...body,
+        result: {
+          areaList: areaData
+        }
+      };
+    }
+  }, {
+    // isMock: true, // 对应url的数据mock的开关
+    method: 'GET',
+    router: '/api/school',
+    result (params) {
+      return {
+        ...body,
+        result: {
+          list: [{label: '111', value: 1111}, {label: '222', value: 222}]
+        }
+      };
+    }
   }]
 };
 
@@ -45,6 +69,7 @@ export const isMock = ({ url, method, params = {}, host = '', version = '' }) =>
   let hasMock = {
     isMock: false
   };
+
   if (mockRouterMap[host] !== undefined) {
     mockRouterMap[host].forEach(routerObject => {
       if (routerObject.method.toUpperCase() === method.toUpperCase() && routerObject.isMock === true) {

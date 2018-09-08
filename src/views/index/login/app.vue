@@ -1,11 +1,11 @@
 <template>
-    <Container class="formCon">
+    <Container>
         <Row class="hpic" justify-content="center">
             <Avatar size="100" color="teal">M</Avatar>
         </Row>
         <Form ref="form" :model="validateForm" class="mu-demo-form">
-            <FormItem prop="username" :rules="usernameRules" label="用户名(手机号码)">
-                <TextField v-model="validateForm.username" type="number" prop="username">
+            <FormItem prop="phone" :rules="phoneRules" label="用户名(手机号码)">
+                <TextField v-model="validateForm.phone"  prop="phone">
                 </TextField>
             </FormItem>
             <FormItem prop="password" :rules="passwordRules" label="密 码">
@@ -21,7 +21,7 @@
             <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
             </Col>
         </Row>
-            <Button full-width large class="buttom" color="teal" @click="submit">立即登录</Button>
+            <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">登陆</Button>
         <Row class="row-reg" gutter>
             <Col span="6">
             <div class="grid-cell" @click="msgCode">短信验证码登录</div>
@@ -30,27 +30,22 @@
             <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
             </Col>
         </Row>
-        <Row>
-            <OtherLogin>
-            </OtherLogin>
-        </Row>
-    </Container>
+        </Container>
 </template>
 
 <script>
-import { Button, TextField, Checkbox, Avatar } from "muse-ui";
 import { Container, Row, Col } from "muse-ui/lib/Grid";
 import { Form, FormItem } from "muse-ui/lib/Form";
-import OtherLogin from "components/OtherLogin";
-import serv from "service";
-import tool from "util/tools";
+import { Button, TextField, Checkbox, Avatar } from "muse-ui";
+import service from "service";
+import tools from "util/tools";
 
 export default {
   data() {
     return {
-      usernameRules: [
-        { validate: val => !!val, message: "必须填写用户名" },
-        { validate: val => val.length == 11, message: "用户名长度为11位手机号码" }
+      phoneRules: [
+        { validate: val => !!val, message: '必须填写用户名' },
+        { validate: val => val.length === 11, message: '用户名长度为11位手机号码' }
       ],
       passwordRules: [
         { validate: val => !!val, message: "必须填写密码" },
@@ -61,14 +56,15 @@ export default {
       ],
       argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
       validateForm: {
-        username: "",
-        password: "",
+        phone:'',
+        password: '',
         isAgree: true
       },
       visibility: false
     };
   },
   components: {
+    Container,
     Button,
     TextField,
     Checkbox,
@@ -76,30 +72,33 @@ export default {
     Col,
     Avatar,
     Form,
-    FormItem,
-    Container,
-    OtherLogin
+    FormItem
   },
   methods: {
-    async query() {
-      const response = await serv.login({
-        userName: this.validateForm.username,
+    async query () {
+      tools.showProgress();
+      const response = await service.login({
+        phone: this.validateForm.phone,
         passWord: this.validateForm.password,
-        deviceId: window.api.deviceId
+        deviceId: '1232321'
       });
+      tools.hideProgress();
       switch (response.code) {
-          case 0:
-            tool.setStorage('token', response.result.token);
-            tool.setStorage('phone', response.result.userinfo.phone);
-            tool.setStorage('userInfo', response.result.userinfo);
-            window.api.sendEvent({
-                name: 'login'
-            });
-            window.api.closeWin();
-              break;
-          default:
-            alert("nono");
-              break;
+        case 0:
+          tools.setStorage("token", response.result.token);
+          tools.setStorage("phone", response.result.userinfo.phone);
+          tools.setStorage("userInfo", response.result.userinfo);
+          window.api.sendEvent({
+            name: "event"
+          });
+          window.api.closeWin();
+          break;
+        default:
+          tool.toast({
+            position: 'top',
+            message: response.message
+          });
+          break;
       }
     },
     submit() {
@@ -109,72 +108,43 @@ export default {
         }
       });
     },
-    clickLeft() {
-      alert("nnnn");
-    },
     remanberPWD() {
       alert("sss");
     },
-    msgCode(){
-        alert("msgcode login");
+    msgCode() {
+      alert("msgcode login");
     },
-    regNewUser(){
-        window.api.openWin({
-            name: 'registered',
-            url: './win.html',
-            bounces: false,
-            pageParam: {
-                wtitle : '用户注册',
-                fname:'registered_f',
-                furl:'./registered.html',
-                hasLeft:1,
-                hasRight:0,
-                }
-        });
+    regNewUser() {
+      tools.openWin({
+        name: "registered",
+        url: "../win.html",
+        title: "用户注册",
+        fname: "registered_f",
+        furl: "./index/registered.html",
+        hasLeft: true
+      });
     }
   },
   mounted() {}
 };
 </script>
-<style lang="less">
-@import url("../../../assets/css/base.less");
-.mu-form-item-label {
-  font-size: 18px;
-}
-.formCon {
-  .row {
-    margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-  .row-reg {
-    margin-top: 20px;
-  }
-  .grid-cell {
-    border-radius: 4px;
-    height: 36px;
-    line-height: 24px;
-  }
-  .grid-cell-reg {
-    border-radius: 4px;
-    height: 36px;
-    line-height: 24px;
-    text-align: right;
-  }
-}
-</style>
+
 <style lang="less" scoped>
 @import url("../../../assets/css/base.less");
-.formCon {
-  padding: 20px;
-}
-
-.hpic {
-  padding: 30px 0;
+.container {
+  padding: @gap;
+  .hpic {
+    padding: 30px 0;
+  }
+  .row .grid-cell-reg {
+    text-align: right;
+  }
+  .row-reg {
+    padding-top: 30px;
+  }
 }
 .buttom {
   color: @white;
-  font-size: 18px;
+  font-size: @h2;
 }
 </style>

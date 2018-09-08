@@ -3,27 +3,27 @@
     <Form ref="form" :model="form" >
       <FormItem
         label="手机"
-        prop="mobilePhone"
-        :rules="mobilePhoneRules"
+        prop="phone"
+        :rules="phoneRules"
       >
-        <TextField v-model="form.mobilePhone"></TextField>
+        <TextField v-model="form.phone"></TextField>
       </FormItem>
-      <FormItem
+      <!-- <FormItem
         label="验证码"
         prop="verificationImg"
         :rules="verificationImgRules"
       >
         <TextField v-model="form.verificationImg" class="verificationCode"></TextField>
         <img @click="changeVerificationImg" class="verificationCodeImg" :src="'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_ca79a146.png?' + reVerificationImg"/>
-      </FormItem>
+      </FormItem> -->
       <FormItem
         label="短信验证码"
-        prop="verificationCode"
+        prop="messageCode"
         :rules="verificationCodeRules"
       >
-        <TextField v-model="form.verificationCode" class="verificationCode"></TextField>
+        <TextField v-model="form.messageCode" class="verificationCode"></TextField>
         <Button
-          color="#19AD17"
+          color="#009688"
           textColor="#ffffff"
           class="getVerificationCode"
           :disabled="verificationCodeBtnText !=='获取验证码'"
@@ -32,13 +32,21 @@
           {{verificationCodeBtnText}}
         </Button>
       </FormItem>
+      </FormItem>
+        <FormItem
+        label="性别"
+        prop="sex"
+      >
+        <Radio v-model="form.sex" :value="1" label="男"></Radio>
+        <Radio v-model="form.sex" :value="0" label="女"></Radio>
+      </FormItem>
       <FormItem
         label="密码"
-        prop="password"
+        prop="passWord"
         help-text="密码规则6-32位0-9大小写字母"
-        :rules="passwordRules"
+        :rules="passWordRules"
       >
-        <TextField v-model="form.password" type="password"></TextField>
+        <TextField v-model="form.passWord" type="password"></TextField>
       </FormItem>
       <FormItem
         label="确认密码"
@@ -49,7 +57,7 @@
         <TextField v-model="form.rePassword" type="password"></TextField>
       </FormItem>
     </Form>
-    <Button color="#19AD17" textColor="#ffffff" :style="{marginTop:'30px'}" :full-width="true" large @click="submit">注册</Button>
+    <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">注册</Button>
     <div class="registeredDescription">
       注册即代表您同意并遵守《大灰熊用户协议》
     </div>
@@ -57,8 +65,7 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import { Button, TextField } from 'muse-ui';
+import { Button, TextField, Radio } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
 import tools from 'util/tools';
@@ -67,17 +74,18 @@ import service from 'service';
 export default {
   data () {
     return {
-      maxTime: 10,
+      maxTime: 60,
       verificationCodeBtnText: '获取验证码',
       reVerificationImg: (new Date().getTime()) + '_' + Math.random(),
       form: {
-        mobilePhone: '',
-        verificationImg: '',
-        verificationCode: '',
-        password: '',
+        phone: '',
+        // verificationImg: '',
+        sex: 1,
+        messageCode: '',
+        passWord: '',
         rePassword: ''
       },
-      mobilePhoneRules: [
+      phoneRules: [
         { validate: val => regexps.mobPhone.test(val), message: '请填写正确的手机号码' }
       ],
       verificationImgRules: [
@@ -86,41 +94,64 @@ export default {
       verificationCodeRules: [
         { validate: val => !!val, message: '请填写验证码' }
       ],
-      passwordRules: [
+      passWordRules: [
         { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' }
       ],
       rePasswordRules: [
         { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' },
-        { validate: val => this.form.password === this.form.rePassword, message: '两次密码输入不一致' }
+        { validate: val => this.form.passWord === this.form.rePassword, message: '两次密码输入不一致' }
       ]
     };
   },
   components: {
     Button,
     Form,
+    Radio,
     FormItem,
     TextField
   },
   methods: {
     async registered () {
+      tools.showProgress();
       const response = await service.registered(this.form);
+      tools.hideProgress();
       switch (response.code) {
         case 0:
-          // 注册好了的动作
+          window.api.sendEvent({
+            name: 'event'
+          });
+          window.api.closeToWin({
+            name: 'root'
+          });
+          // const login = await service.login({
+          //   phone: this.form.phone,
+          //   passWord: this.form.passWord,
+          //   deviceId: window.api.deviceId
+          // });
+          // alert(login.code);
+          // switch (login.code) {
+          //   case 0:
+          //     tools.setStorage('token', login.result.token);
+          //     tools.setStorage('phone', login.result.userinfo.phone);
+          //     tools.setStorage('userInfo', login.result.userinfo);
+          //     break;
+          // }
           break;
         default:
-          // Toast({
-          //   position: 'top',
-          //   message: '验证码获取失败'
-          // });
+          tools.toast({
+            position: 'top',
+            message: response.message
+          });
           break;
       }
     },
     async getVerificationCode () {
-      const response = await service.getVerificationCode();
+      const response = await service.getVerificationCode({
+        phone: this.form.phone
+      });
       switch (response.code) {
         case 0:
-          this.verificationCodeBtnText = 10 + ' (s)';
+          this.verificationCodeBtnText = 60 + ' (s)';
           for (let i = 1; i <= this.maxTime; i++) {
             await tools.sleep(1000);
             this.verificationCodeBtnText = (this.maxTime - i) + '(s)';
@@ -129,7 +160,7 @@ export default {
           break;
 
         default:
-          Toast({
+          tools.toast({
             position: 'top',
             message: '验证码获取失败'
           });
@@ -162,6 +193,7 @@ export default {
 .getVerificationCode{
   width: 33.3333%;
   margin: 0 !important;
+  box-shadow: 0 0 0;
 }
 .registeredDescription{
   text-align: center;

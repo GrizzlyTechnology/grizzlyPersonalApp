@@ -16,7 +16,7 @@ let config = {
   // vendor: ['vue'],
   output: {
     path: resolve(__dirname, './dist'),
-    filename: '[name].js'
+    filename: process.env.NODE_ENV === 'production' ? 'assets/js/[id].[chunkhash:8].js' : '[name].js'
     // filename: 'script/[id].js',
     // publicPath: process.env.NODE_ENV === 'development' ? '/' : 'widget://'
   },
@@ -47,6 +47,7 @@ let config = {
         loader: 'vue-loader',
         options: {loaders: {
           less: ExtractTextPlugin.extract({
+            publicPath: '../../',
             fallback: 'style-loader',
             use: [
               {
@@ -69,6 +70,7 @@ let config = {
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
+          publicPath: '../../',
           fallback: 'style-loader',
           use: {
             loader: 'css-loader',
@@ -119,7 +121,7 @@ let config = {
           loader: 'url-loader',
           options: {
             limit: 10000,
-            name: 'widget://assets/img/[name].[ext]'
+            name: 'assets/img/[name].[ext]'
           }
         }]
       },
@@ -160,7 +162,7 @@ let config = {
       minChunks: Infinity
     }),
     new ExtractTextPlugin({
-      filename: '[name].css',
+      filename: process.env.NODE_ENV === 'production' ? 'assets/css/[id].[contenthash:8].css' : '[name].css',
       allChunks: true
     })
 

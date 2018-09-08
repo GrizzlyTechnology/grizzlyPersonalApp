@@ -2,6 +2,8 @@
  * APICloud JavaScript Library
  * Copyright (c) 2014 apicloud.com
  */
+import { Toast, Indicator } from 'mint-ui';
+
 var u = {};
 var isAndroid = (/android/gi).test(navigator.appVersion);
 var uzStorage = function () {
@@ -11,7 +13,7 @@ var uzStorage = function () {
   }
   return ls;
 };
-function parseArguments (url, data, fnSuc, dataType) {
+function parseArguments(url, data, fnSuc, dataType) {
   if (typeof (data) === 'function') {
     dataType = fnSuc;
     fnSuc = data;
@@ -481,7 +483,7 @@ u.fixStatusBar = function (el) {
     return 0;
   }
   el.style.paddingTop = window.api.safeArea.top + 'px';
-  el.style.height=(window.api.safeArea.top+el.offsetHeight)+'px';
+  el.style.height = (window.api.safeArea.top + el.offsetHeight) + 'px';
   return el.offsetHeight;
 };
 u.fixTabBar = function (el) {
@@ -492,45 +494,50 @@ u.fixTabBar = function (el) {
   el.style.paddingBottom = window.api.safeArea.bottom + 'px';
   return el.offsetHeight;
 };
-u.toast = function (title, text, time) {
-  var opts = {};
-  var show = function (opts, time) {
-    window.api.showProgress(opts);
-    setTimeout(function () {
-      window.api.hideProgress();
-    }, time);
-  };
-  if (arguments.length === 1) {
-    time = time || 500;
-    if (typeof title === 'number') {
-      time = title;
-    } else {
-      opts.title = title + '';
-    }
-    show(opts, time);
-  } else if (arguments.length === 2) {
-    time = time || 500;
-    if (typeof text === 'number') {
-      var tmp = text;
-      time = tmp;
-      text = null;
-    }
-    if (title) {
-      opts.title = title;
-    }
-    if (text) {
-      opts.text = text;
-    }
-    show(opts, time);
+
+
+u.showProgress = function (
+  text = ''
+) {
+  if (window.api) {
+    window.api.showProgress({
+      title: '',
+      text
+    });
+  } else {
+    Indicator.open({
+      text,
+      spinnerType: 'fading-circle'
+    })
   }
-  if (title) {
-    opts.title = title;
+};
+
+u.hideProgress = function () {
+  if (window.api) {
+    window.api.hideProgress();
+  } else {
+    Indicator.close()
   }
-  if (text) {
-    opts.text = text;
+}
+
+u.toast = function ({
+  message = '',
+  position = 'top',
+  duration = 2000
+}) {
+  if (window.api) {
+    window.api.toast({
+      msg: message,
+      location: position,
+      duration
+    });
+  } else {
+    Toast({
+      message,
+      position,
+      duration
+    })
   }
-  time = time || 500;
-  show(opts, time);
 };
 u.post = function (/* url,data,fnSuc,dataType */) {
   var argsToJson = parseArguments.apply(null, arguments);
@@ -579,13 +586,40 @@ u.get = function (/* url,fnSuc,dataType */) {
   );
 };
 
-u.sleep =  function (times) {
+u.sleep = function (times) {
   return new Promise(function (resolve, reject) {
     setTimeout(function () {
       resolve("ok");
     }, times);
   });
 };
+u.openWin = function (params) {
+  const { name, url, title = '', fname, furl, hasLeft = false, hasRight = false, data = {}, ...winData } = params
+  if (window.api) {
+    let op = {
+      name,
+      url,
+      bounces: false,
+      pageParam: {
+        ...winData,
+      }
+    };
+
+    if (fname !== undefined) {
+      op.pageParam.wtitle = title;
+      op.pageParam.fname = fname;
+      op.pageParam.furl = furl;
+      op.pageParam.hasLeft = hasLeft;
+      op.pageParam.hasRight = hasRight;
+      op.pageParam.data = data;
+    }
+    setTimeout(function () {
+      window.api.openWin(op);
+    }, 350)
+  } else if (furl) {
+    window.location.href = furl.replace('./', '/');
+  }
+}
 /* end */
 
 export default u;

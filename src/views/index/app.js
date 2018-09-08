@@ -5,10 +5,8 @@ import 'muse-ui/lib/styles/base.less';
 import 'assets/css/global.less';
 import 'assets/fonts/iconfont.css';
 window.apiready = function () {
-    
-    new Vue({
-        el: '#app',
-        render: h => h(App)
-    });
-
+  new Vue({
+    el: '#app',
+    render: h => h(App)
+  });
 };

@@ -44,7 +44,8 @@ export default {
       fname: window.api.pageParam.fname,
       furl: window.api.pageParam.furl,
       hasLeft: window.api.pageParam.hasLeft,
-      hasRight: window.api.pageParam.hasRight
+      hasRight: window.api.pageParam.hasRight,
+      data: window.api.pageParam.data
     };
   },
   components: {
@@ -55,13 +56,12 @@ export default {
   methods: {
     clickLeft () {
       window.api.closeWin();
-      // window.api.execScript({
-      //     frameName: this.fname,
-      //     script:'window.clickLeft();'
-      // });
     },
     clickRight () {
-      alert('right');
+      window.api.execScript({
+        frameName: this.fname,
+        script: 'clickRight()'
+      });
     }
   },
   mounted () {
@@ -69,10 +69,11 @@ export default {
     window.api.openFrame({
       name: this.fname,
       url: this.furl,
-      bounces: true,
+      bounces: false,
+      pageParam: this.data || {},
       rect: {
         x: 0,
-        y: headerH + 5,
+        y: headerH + 2,
         w: 'auto',
         h: 'auto'
       }
@@ -81,7 +82,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('../../../assets/css/base.less');
+@import url('../../assets/css/base.less');
 .header{
     height: 50px;
 }

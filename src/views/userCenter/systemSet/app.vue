@@ -1,17 +1,17 @@
 <template>
-    <Container>
-        <Button full-width large class="buttom" color="red" @click="submit">退出登录</Button>
-    </Container>
+  <Container>
+    <Button full-width large class="buttom" color="red" @click="submit">退出登录</Button>
+  </Container>
 </template>
 
 <script>
-import tool from "util/tools";
-import { Container, Row, Col, Flex } from "muse-ui/lib/Grid";
-import { Button } from "muse-ui";
-import Paper from "muse-ui/lib/Paper";
+import tool from 'util/tools';
+import { Container, Row, Col, Flex } from 'muse-ui/lib/Grid';
+import { Button } from 'muse-ui';
+import Paper from 'muse-ui/lib/Paper';
 
 export default {
-  data() {
+  data () {
     return {};
   },
   components: {
@@ -23,22 +23,17 @@ export default {
     Button
   },
   methods: {
-    submit() {
-      tool.clearStorage("token");
+    submit () {
+      tool.clearStorage('token');
       window.api.sendEvent({
-        name: "logout"
+        name: 'event'
       });
       window.api.closeToWin({
-        name: "root",
-        animation: {
-          type: "flip",
-          subType: "from_bottom",
-          duration: 500
-        }
+        name: 'root'
       });
     }
   },
-  mounted() {}
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>
@@ -47,7 +42,7 @@ export default {
   padding: 20px;
   .buttom {
     color: @grayFont;
-    font-size: h3
+    font-size: h3;
   }
 }
 </style>
