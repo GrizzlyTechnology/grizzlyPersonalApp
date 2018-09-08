@@ -8,7 +8,7 @@
       />
     </div>
     <div class="areaFoot">
-      <Button color="#009688" textColor="#ffffff" :disabled="!isEnd" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">确定</Button>
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :disabled="!isEnd" :full-width="true" large @click="submit">确定</Button>
     </div>
   </div>
 </template>
@@ -37,13 +37,16 @@ export default {
       this.isEnd = data.isEnd;
     },
     submit () {
-      window.api.pageParam.callback(1);
+      window.api.sendEvent({
+        name: window.api.pageParam.callback,
+        extra: window.api.pageParam.callback
+      });
       window.api.closeWin();
     }
   },
   mounted () {
     if (window.api && window.api.pageParam.nameSpace === 'areaSelector') {
-      this.level = Object.keys(window.api.pageParam.area);
+      this.level = Object.keys(window.api.pageParam.area.lenth);
       if (window.api.pageParam.area.province !== undefined) {
         this.setSelected[0].value = window.api.pageParam.area.province.value || '';
         this.setSelected[0].label = window.api.pageParam.area.province.label || '';
@@ -57,7 +60,6 @@ export default {
         }
       }
       this.selected.lenth = window.api.pageParam.area;
-      this.form.sex = window.api.pageParam.baseInfo.sex || 1;
     }
   }
 };

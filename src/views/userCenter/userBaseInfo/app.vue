@@ -14,10 +14,11 @@
             <DateInput :value="birthdayText" :max-date="new Date()" @change="changeBirthday" format="YYYY年MM月DD日" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
           <FormItem label="户籍" prop="houseHold" :rules="houseHoldRules">
-            <TextField readonly v-model="houseHoldText" @click="houseHoldHandle"></TextField>
+            <TextField readonly v-model="houseHoldText" @click="houseHoldHandle">
+            </TextField>
           </FormItem>
           <FormItem label="现居地" prop="address" :rules="addressRules">
-            <TextField v-model="addressText"></TextField>
+            <TextField readonly v-model="addressText" @click="addressHandle"></TextField>
           </FormItem>
           <FormItem label="街道" prop="street" :rules="streetRules">
             <TextField v-model="form.address.street"></TextField>
@@ -62,6 +63,7 @@ export default {
         address: {
           province: null,
           city: null,
+          county: null,
           street: ''
         },
         phone: '', // true string手机
@@ -83,7 +85,12 @@ export default {
           message: '必须填写地址信息'
         }
       ],
-      streetRules: [{ validate: val => this.form.address.street, message: '必须填写街道信息' }],
+      streetRules: [
+        {
+          validate: val => this.form.address.street,
+          message: '必须填写街道信息'
+        }
+      ],
       phoneRules: [
         {
           validate: val => regexps.mobPhone.test(this.form.phone),
@@ -125,9 +132,6 @@ export default {
     changeBirthday (date) {
       this.form.birthday = date.valueOf();
     },
-    houseHoldCallback (data) {
-      alert(data);
-    },
     houseHoldHandle () {
       tools.openWin({
         name: 'areaSelector',
@@ -139,17 +143,49 @@ export default {
         data: {
           nameSpace: 'areaSelector',
           area: this.form.houseHold,
-          callback: this.houseHoldCallback
+          callback: 'houseHoldCallback'
+        }
+      });
+    },
+    addressHandle () {
+      tools.openWin({
+        name: 'areaSelector',
+        url: '../win.html',
+        title: '选择现居地',
+        fname: 'areaSelector_f',
+        furl: './common/areaSelector.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'areaSelector',
+          area: {
+            province: this.form.address.province,
+            city: this.form.address.city,
+            county: this.form.address.county
+          },
+          callback: 'addressCallback'
         }
       });
     }
   },
   mounted () {
-    if (window.api && window.api.pageParam.nameSpace === 'resumeDetail') {
-      this.form = { ...window.api.pageParam.baseInfo };
-      this.form.birthday =
+    if (window.api) {
+      if (window.api.pageParam.nameSpace === 'resumeDetail') {
+        this.form = { ...window.api.pageParam.baseInfo };
+        this.form.birthday =
         window.api.pageParam.baseInfo.birthday || Date.now().valueOf();
-      this.form.sex = window.api.pageParam.baseInfo.sex || 1;
+        this.form.sex = window.api.pageParam.baseInfo.sex || 1;
+      }
+      window.api.addEventListener({
+        name: 'houseHoldCallback'
+      }, (ret, err) => {
+        this.form.phone = ret.value;
+      });
+
+      window.api.addEventListener({
+        name: 'addressCallback'
+      }, (ret, err) => {
+        this.form.email = ret.value;
+      });
     }
   }
 };
