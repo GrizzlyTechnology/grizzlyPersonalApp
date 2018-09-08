@@ -8,7 +8,15 @@
       <Cell title="地址" :value="addressText"></Cell>
       <Cell title="手机号码" :value="baseInfo.phone"></Cell>
       <Cell title="电子邮箱" :value="baseInfo.email"></Cell>
-      <Button v-if="type==='create'||type==='edit'" class="editBtn" slot="end" flat color="#009688" :ripple="false">
+      <Button
+        v-if="type==='create'||type==='edit'"
+        class="editBtn"
+        slot="end"
+        flat
+        color="#009688"
+        :ripple="false"
+        @click="baseInfoEdit"
+      >
         <Icon left value=":icon-75bianji" />编辑
       </Button>
     </Panel>
@@ -53,7 +61,7 @@
 // import service from 'service';
 import { Button, Icon } from 'muse-ui';
 import { Cell } from 'mint-ui';
-// import tools from 'util/tools';
+import tools from 'util/tools';
 import dictMap from 'util/dictMap';
 import moment from 'moment';
 import Panel from 'components/Panel';
@@ -132,15 +140,31 @@ export default {
       return this.baseInfo.sex ? dictMap.sex[this.baseInfo.sex] : '';
     },
     houseHoldText () {
-      return this.houseHold.province && this.houseHold.city ? this.houseHold.province.label + this.houseHold.city.label : '';
+      return this.baseInfo.houseHold.province && this.baseInfo.houseHold.city ? this.baseInfo.houseHold.province.label + this.baseInfo.houseHold.city.label : '';
     },
     addressText () {
-      return this.address.province && this.address.city && this.address.street ? this.address.province.label + this.address.city.label + this.address.street.label : '';
+      return this.baseInfo.address.province && this.baseInfo.address.city && this.baseInfo.address.street ? this.baseInfo.address.province.label + this.baseInfo.address.city.label + this.baseInfo.address.street.label : '';
     }
   },
-  methods: {},
+  methods: {
+    baseInfoEdit () {
+      tools.openWin({
+        name: 'userBaseinfo',
+        url: '../win.html',
+        title: '基本信息',
+        fname: 'userBaseinfo_f',
+        furl: './userCenter/userBaseinfo.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'userBaseinfo',
+          baseInfo: this.baseInfo
+        }
+
+      });
+    }
+  },
   mounted () {
-    if (window.api.pageParam.nameSpace === 'resumeDetail') {
+    if (window.api && window.api.pageParam.nameSpace === 'resumeDetail') {
       this.type = window.api.pageParam.type;
       this.baseInfo = {...this.baseInfo, ...window.api.pageParam.resume.baseInfo};
     }

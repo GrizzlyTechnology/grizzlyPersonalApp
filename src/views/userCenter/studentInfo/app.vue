@@ -20,6 +20,7 @@
       >
         <DateInput
           :value="startDateTimeText"
+          :max-date="Date.now()"
           @change="changeStartDateTime"
           format="YYYY年MM月DD日"
           no-display
@@ -47,7 +48,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+// import moment from 'moment';
 import service from 'service';
 import { DateInput, Button, TextField, Radio } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
@@ -93,7 +94,7 @@ export default {
   },
   computed: {
     startDateTimeText () {
-      return moment(this.form.nrolmenttime).format('YYYY-MM-DD');
+      return new Date(this.form.nrolmenttime) || Date.now();
     }
   },
   methods: {
