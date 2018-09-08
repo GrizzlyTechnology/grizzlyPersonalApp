@@ -1,7 +1,7 @@
 <template>
     <Container>
         <Row class="hpic" justify-content="center">
-            <Avatar size="100" color="teal">M</Avatar>
+            <Avatar size="80" color="teal">M</Avatar>
         </Row>
         <Form ref="form" :model="validateForm" class="mu-demo-form">
             <FormItem prop="phone" :rules="phoneRules" label="用户名(手机号码)">
@@ -30,6 +30,7 @@
             <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
             </Col>
         </Row>
+        <Other></Other>
         </Container>
 </template>
 
@@ -39,6 +40,7 @@ import { Form, FormItem } from "muse-ui/lib/Form";
 import { Button, TextField, Checkbox, Avatar } from "muse-ui";
 import service from "service";
 import tools from "util/tools";
+import Other from "components/OtherLogin"
 
 export default {
   data() {
@@ -72,7 +74,8 @@ export default {
     Col,
     Avatar,
     Form,
-    FormItem
+    FormItem,
+    Other,
   },
   methods: {
     async query () {
@@ -94,7 +97,7 @@ export default {
           window.api.closeWin();
           break;
         default:
-          tool.toast({
+          tools.toast({
             position: 'top',
             message: response.message
           });
