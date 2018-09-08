@@ -90,7 +90,7 @@ export default {
             alert('获取用户信息失败');
             return;
         }
-        alert(JSON.stringify(uinfo));
+        this.wxApi();
     },
     wxInstall(){
         var obj=this;
@@ -147,6 +147,9 @@ export default {
                 }
             });
         });
+    },
+    wxApi(){
+        alert("ok");
     }
   },
   mounted() {}
