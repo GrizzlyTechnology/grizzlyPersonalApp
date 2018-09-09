@@ -1,9 +1,9 @@
 <template>
   <Container ref="container" class="demo-loadmore-content">
     <LoadMore @refresh="refresh" :refreshing="refreshing" :loading="loading" @load="load">
-      <List textline="two-line">
+      <List textline="two-line" class='bodyer'>
         <Form :model="{}">
-          <div class='allPostion'>
+
             <div v-for='list in lists'  :key="list.id">
               <ListItem avatar :ripple="false" button class='listItem' >
                 <ListAction>
@@ -24,7 +24,7 @@
               </ListItem>
               <Divider></Divider>
             </div>
-          </div>
+
           <div class='p16 fixBox'>
             <Checkbox v-model='checked' v-on:change='checkedAll' label='全选'></Checkbox>
             <Button color="info" class='collection' @click="collectionBtn">收藏</Button>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { Checkbox, Divider, Form, Button, LoadMore } from 'muse-ui';
+import { Checkbox, Divider, Form, Button, LoadMore, Toast } from 'muse-ui';
 import { Container, Row, Col } from 'muse-ui/lib/Grid';
 import {
   List,
@@ -49,6 +49,7 @@ import {
   ListItemAfterText
 } from 'muse-ui/lib/List';
 import tool from 'util/tools';
+import service from 'service';
 export default {
   data () {
     return {
@@ -141,7 +142,8 @@ export default {
     Col,
     Form,
     Button,
-    LoadMore
+    LoadMore,
+    Toast
   },
   methods: {
     jobDetails () {
@@ -308,9 +310,9 @@ export default {
   margin: 0 10px;
 }
 
-.allPostion {
-  padding-bottom: 56px;
-}
+// .allPostion {
+//   padding-bottom: 56px;
+// }
 
 .fixBox {
   position: fixed;
