@@ -1,14 +1,21 @@
 <template>
   <div class="content">
     <Panel title="基本信息" label="必填">
-      <Cell title="姓名" value="说明文字"></Cell>
-      <Cell title="性别" value="说明文字"></Cell>
-      <Cell title="出生年月" value="说明文字"></Cell>
-      <Cell title="毕业时间" value="说明文字"></Cell>
-      <Cell title="户籍" value="说明文字"></Cell>
-      <Cell title="手机号码" value="说明文字"></Cell>
-      <Cell title="电子邮箱" value="说明文字"></Cell>
-      <Button class="editBtn" slot="end" flat color="#009688" :ripple="false">
+      <Cell title="姓名" :value="baseInfo.name"></Cell>
+      <Cell title="性别" :value="sexText"></Cell>
+      <Cell title="出生年月" :value="birthdayText"></Cell>
+      <Cell title="户籍" :value="houseHoldText"></Cell>
+      <Cell title="地址" :value="addressText"></Cell>
+      <Cell title="手机号码" :value="baseInfo.phone"></Cell>
+      <Cell title="电子邮箱" :value="baseInfo.email"></Cell>
+      <Button
+        v-if="type==='create'||type==='edit'"
+        class="editBtn"
+        slot="end"
+        flat
+        color="#009688"
+        @click="baseInfoEdit"
+      >
         <Icon left value=":icon-75bianji" />编辑
       </Button>
     </Panel>
@@ -53,7 +60,9 @@
 // import service from 'service';
 import { Button, Icon } from 'muse-ui';
 import { Cell } from 'mint-ui';
-// import tools from 'util/tools';
+import tools from 'util/tools';
+import dictMap from 'util/dictMap';
+import moment from 'moment';
 import Panel from 'components/Panel';
 import StepVertical from 'components/StepVertical';
 import SkillLine from 'components/SkillLine';
@@ -62,6 +71,24 @@ export default {
   name: 'userClass',
   data () {
     return {
+      type: 'detail',
+      baseInfo: {
+        title: '', // 简历名称
+        name: '', // true string 真实姓名
+        sex: null, // true string 性别
+        birthday: null, // true string生日
+        houseHold: {
+          province: null,
+          city: null
+        }, // true string 籍贯
+        address: {
+          province: null,
+          city: null,
+          street: ''
+        },
+        phone: '', // true string手机
+        email: '' // true string 邮箱
+      },
       education: [
         {
           head: '2017.5-2020.2',
@@ -104,8 +131,43 @@ export default {
     SkillLine,
     Icon
   },
-  methods: {},
-  mounted () {}
+  computed: {
+    birthdayText () {
+      return this.baseInfo.birthday ? moment(this.baseInfo.birthday).format('YYYY年MM月DD日') : '';
+    },
+    sexText () {
+      return this.baseInfo.sex ? dictMap.sex[this.baseInfo.sex] : '';
+    },
+    houseHoldText () {
+      return this.baseInfo.houseHold.province && this.baseInfo.houseHold.city ? this.baseInfo.houseHold.province.label + this.baseInfo.houseHold.city.label : '';
+    },
+    addressText () {
+      return this.baseInfo.address.province && this.baseInfo.address.city && this.baseInfo.address.street ? this.baseInfo.address.province.label + this.baseInfo.address.city.label + this.baseInfo.address.street.label : '';
+    }
+  },
+  methods: {
+    baseInfoEdit () {
+      tools.openWin({
+        name: 'userBaseinfo',
+        url: '../win.html',
+        title: '基本信息',
+        fname: 'userBaseinfo_f',
+        furl: './userCenter/userBaseinfo.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'userBaseinfo',
+          baseInfo: this.baseInfo
+        }
+
+      });
+    }
+  },
+  mounted () {
+    if (window.api && window.api.pageParam.nameSpace === 'resumeDetail') {
+      this.type = window.api.pageParam.type;
+      this.baseInfo = {...this.baseInfo, ...window.api.pageParam.resume.baseInfo};
+    }
+  }
 };
 </script>
 <style lang="less">

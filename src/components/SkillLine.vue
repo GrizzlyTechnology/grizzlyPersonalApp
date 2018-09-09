@@ -8,13 +8,12 @@
 
 <script>
 import { Cell, Progress } from 'mint-ui';
+import dictMap from 'util/dictMap';
 
 export default {
   computed: {
     level () {
-      const level = ['了解', '熟悉', '掌握', '精通', '专家'];
-      const l = parseInt((this.value === 0 ? 1 : this.value) / 20);
-      return level[l === 5 ? 4 : l];
+      return dictMap.skillLevel[parseInt((this.value === 0 ? 1 : this.value) / 20)];
     }
   },
   props: {

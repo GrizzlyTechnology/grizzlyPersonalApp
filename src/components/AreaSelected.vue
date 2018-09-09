@@ -64,7 +64,6 @@ export default {
   components: {
     Icon
   },
-
   methods: {
     async getAllArea () {
       tools.showProgress();
@@ -114,9 +113,11 @@ export default {
     }
   },
   mounted () {
-    this.selected = this.value;
     // todo 获取地区信息
     this.getAllArea();
+    // this.$nextTick(function () {
+    this.selected = this.value;
+    // });
   }
 };
 </script>
