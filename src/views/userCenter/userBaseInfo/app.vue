@@ -13,11 +13,11 @@
           <FormItem label="出生年月" prop="birthday">
             <DateInput :value="birthdayText" :max-date="new Date()" @change="changeBirthday" format="YYYY年MM月DD日" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
-          <FormItem label="户籍" prop="houseHold" :rules="houseHoldRules">
+          <FormItem label="户籍" prop="houseHoldText" :rules="houseHoldRules">
             <TextField readonly v-model="houseHoldText" @click="houseHoldHandle">
             </TextField>
           </FormItem>
-          <FormItem label="现居地" prop="address" :rules="addressRules">
+          <FormItem label="现居地" prop="addressText" :rules="addressRules">
             <TextField readonly v-model="addressText" @click="addressHandle"></TextField>
           </FormItem>
           <FormItem label="街道" prop="street" :rules="streetRules">
@@ -56,16 +56,9 @@ export default {
         name: '', // true string 真实姓名
         sex: 1, // true string 性别
         birthday: new Date(), // true string生日
-        houseHold: {
-          province: null,
-          city: null
-        }, // true string 籍贯
-        address: {
-          province: null,
-          city: null,
-          county: null,
-          street: ''
-        },
+        houseHold: [], // true string 籍贯
+        address: [],
+        street: '',
         phone: '', // true string手机
         email: '' // true string 邮箱
       },
@@ -73,21 +66,19 @@ export default {
       birthdayRules: [{ validate: val => val, message: '必须填写出生年月' }],
       houseHoldRules: [
         {
-          validate: val =>
-            this.form.houseHold.province && this.form.houseHold.city,
+          validate: val => this.houseHoldText.length > 0,
           message: '必须填写籍贯'
         }
       ],
       addressRules: [
         {
-          validate: val =>
-            this.form.houseHold.province && this.form.houseHold.city,
+          validate: val => this.addressText.length > 0,
           message: '必须填写地址信息'
         }
       ],
       streetRules: [
         {
-          validate: val => this.form.address.street,
+          validate: val => this.form.street.length > 0,
           message: '必须填写街道信息'
         }
       ],
@@ -110,14 +101,10 @@ export default {
       return new Date(this.form.birthday) || new Date();
     },
     houseHoldText () {
-      return this.form.houseHold.province && this.form.houseHold.city
-        ? this.form.houseHold.province.label + this.form.houseHold.city.label
-        : '';
+      return this.form.houseHold.map(row => row.label).join(' / ');
     },
     addressText () {
-      return this.form.address.province && this.form.address.city
-        ? this.form.address.province.label + this.form.address.city.label
-        : '';
+      return this.form.address.map(row => row.label).join(' / ');
     }
   },
   components: {
@@ -143,6 +130,7 @@ export default {
         data: {
           nameSpace: 'areaSelector',
           area: this.form.houseHold,
+          level: 2,
           callback: 'houseHoldCallback'
         }
       });
@@ -157,11 +145,8 @@ export default {
         hasLeft: 1,
         data: {
           nameSpace: 'areaSelector',
-          area: {
-            province: this.form.address.province,
-            city: this.form.address.city,
-            county: this.form.address.county
-          },
+          area: this.form.address,
+          level: 3,
           callback: 'addressCallback'
         }
       });
@@ -172,20 +157,26 @@ export default {
       if (window.api.pageParam.nameSpace === 'resumeDetail') {
         this.form = { ...window.api.pageParam.baseInfo };
         this.form.birthday =
-        window.api.pageParam.baseInfo.birthday || Date.now().valueOf();
+          window.api.pageParam.baseInfo.birthday || Date.now().valueOf();
         this.form.sex = window.api.pageParam.baseInfo.sex || 1;
       }
-      window.api.addEventListener({
-        name: 'houseHoldCallback'
-      }, (ret, err) => {
-        this.form.phone = ret.value;
-      });
+      window.api.addEventListener(
+        {
+          name: 'houseHoldCallback'
+        },
+        (ret, err) => {
+          this.form.houseHold = JSON.parse(ret.value);
+        }
+      );
 
-      window.api.addEventListener({
-        name: 'addressCallback'
-      }, (ret, err) => {
-        this.form.email = ret.value;
-      });
+      window.api.addEventListener(
+        {
+          name: 'addressCallback'
+        },
+        (ret, err) => {
+          this.form.address = JSON.parse(ret.value);
+        }
+      );
     }
   }
 };

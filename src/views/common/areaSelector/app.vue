@@ -3,7 +3,7 @@
     <div class="areaBody">
       <AreaSelected
         :value="selected"
-        :level="2"
+        :level="level"
         @change="setSelected"
       />
     </div>
@@ -22,8 +22,8 @@ export default {
   name: 'userCenterArea',
   data () {
     return {
-      level: 0,
-      selected: [],
+      level: window.api ? window.api.pageParam.area.level : 99,
+      selected: window.api ? window.api.pageParam.area : [],
       isEnd: false
     };
   },
@@ -39,28 +39,12 @@ export default {
     submit () {
       window.api.sendEvent({
         name: window.api.pageParam.callback,
-        extra: window.api.pageParam.callback
+        extra: this.selected
       });
       window.api.closeWin();
     }
   },
   mounted () {
-    if (window.api && window.api.pageParam.nameSpace === 'areaSelector') {
-      this.level = Object.keys(window.api.pageParam.area.lenth);
-      if (window.api.pageParam.area.province !== undefined) {
-        this.setSelected[0].value = window.api.pageParam.area.province.value || '';
-        this.setSelected[0].label = window.api.pageParam.area.province.label || '';
-        if (window.api.pageParam.area.city !== undefined) {
-          this.setSelected[1].value = window.api.pageParam.area.city.value || '';
-          this.setSelected[1].label = window.api.pageParam.area.city.label || '';
-          if (window.api.pageParam.area.county !== undefined) {
-            this.setSelected[2].value = window.api.pageParam.area.county.value || '';
-            this.setSelected[2].label = window.api.pageParam.area.county.label || '';
-          }
-        }
-      }
-      this.selected.lenth = window.api.pageParam.area;
-    }
   }
 };
 </script>

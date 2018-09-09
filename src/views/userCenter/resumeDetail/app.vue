@@ -14,7 +14,6 @@
         slot="end"
         flat
         color="#009688"
-        :ripple="false"
         @click="baseInfoEdit"
       >
         <Icon left value=":icon-75bianji" />编辑

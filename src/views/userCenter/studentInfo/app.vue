@@ -20,7 +20,7 @@
       >
         <DateInput
           :value="startDateTimeText"
-          :max-date="Date.now()"
+          :max-date="new Date()"
           @change="changeStartDateTime"
           format="YYYY年MM月DD日"
           no-display
