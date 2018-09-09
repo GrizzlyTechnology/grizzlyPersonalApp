@@ -35,7 +35,7 @@
             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt="">
           </Avatar>
         </ListAction>
-        <ListItemContent>
+        <ListItemContent @click="companyInfo">
           <ListItemTitle>
             飞龙信息发展股份有限公司
           </ListItemTitle>
@@ -72,12 +72,12 @@
 
     <List class='whiteBg mt8 allPostion' textline="two-line">
       <CardText>
-        <h2 class='titleBox spaceBetween'>所有职位
+        <h2 class='titleBox spaceBetween' @click="jobSearchList">所有职位
           <Icon size='14' value=":icon-jinru" right style='font-weight:normal'></Icon>
         </h2>
       </CardText>
-      <template v-for='jobs in lists'>
-        <ListItem avatar :ripple="false" button class='listItem'>
+      <div v-for='jobs in lists' :key="jobs.id">
+        <ListItem avatar :ripple="false" button class='listItem'  @click="jobDetails">
           <ListItemContent>
             <ListItemTitle>{{jobs.position}}
               <span class='claim'>{{jobs.claim}}</span>
@@ -92,7 +92,7 @@
           </ListAction>
         </ListItem>
         <Divider></Divider>
-      </template>
+      </div>
     </List>
     <div class='p16 fixBox whiteBg'>
       <Button color="info" class='collection'>收藏</Button>
@@ -102,8 +102,8 @@
 </template>
 
 <script>
-import { Container, Row, Col } from "muse-ui/lib/Grid";
-import { CardTitle, CardText } from "muse-ui/lib/Card";
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { CardTitle, CardText } from 'muse-ui/lib/Card';
 import {
   List,
   ListItem,
@@ -112,46 +112,52 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from "muse-ui/lib/List";
-import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
+} from 'muse-ui/lib/List';
+import { Card, Icon, Avatar, Divider, Button } from 'muse-ui';
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
       lists: [
         {
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: 1,
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: 2,
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: 3,
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: 4,
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: 5,
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         }
       ]
     };
@@ -175,8 +181,41 @@ export default {
     Divider,
     Button
   },
-  methods: {},
-  mounted() {}
+  methods: {
+    jobSearchList () {
+      tool.openWin({
+        name: 'jobSearchList',
+        url: '../win.html',
+        title: '所有职位',
+        fname: 'jobSearchList_f',
+        furl: './hr/jobSearchList.html',
+        hasLeft: 1
+      });
+    },
+    jobDetails () {
+      tool.openWin({
+        name: 'jobDetails',
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobDetails_f',
+        furl: './hr/jobDetails.html',
+        hasLeft: 1,
+        hasRight: 1
+      });
+    },
+    companyInfo () {
+      tool.openWin({
+        name: 'companyInfo',
+        url: '../win.html',
+        title: '企业介绍',
+        fname: 'companyInfo_f',
+        furl: './hr/companyInfo.html',
+        hasLeft: 1,
+        hasRight: 1
+      });
+    }
+  },
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>
@@ -265,7 +304,6 @@ export default {
   color: #009688;
   font-size: 14px;
 }
-
 
 .allPostion{
   padding-bottom: 56px;
