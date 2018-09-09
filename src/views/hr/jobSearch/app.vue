@@ -1,24 +1,18 @@
 <template>
   <div class="content">
-    <Search v-model="value" cancel-text="取消" placeholder="搜索"></Search>
-    <mu-radio v-model="labelPosition" style="margin-right: 16px;" value="right" label="Right"></mu-radio>
+    <Search v-model="value" cancel-text="取消" placeholder="搜索">
+      <Cell v-for="item in seachList" :key='item.id' :title="item.title" :value='item.value'>
+      </Cell>
+    </Search >
     <Form ref="form" :model="form" class="mu-demo-form" :label-position="labelPosition" label-width="45">
-      <FormItem label="地区" prop="name">
-        <TextField v-model="form.name" disabled></TextField>
+      <FormItem label="地区" prop="area">
+        <TextField v-model="form.area" readonly @click="areaHandle"></TextField>
       </FormItem>
-      <FormItem label="行业" prop="name" :rules="nameRules">
-        <TextField v-model="form.name"></TextField>
-        <Select label="Selection Scoped Slot" multiple chips v-model="custom.value2" full-width>
-          <template slot="selection" slot-scope="scope">
-            <Chip :selected="scope.selected" color="teal">
-              {{scope.label}}
-            </Chip>
-          </template>
-          <Option v-for="language in languages" :key="language" :label="language" :value="language"></Option>
-        </Select>
+      <FormItem label="行业" prop="industry">
+        <TextField v-model="form.duties" readonly  @click="industryHandle"></TextField>
       </FormItem>
-      <FormItem label="职能" prop="name" :rules="nameRules">
-        <TextField v-model="form.name"></TextField>
+      <FormItem label="职能" prop="duties">
+        <TextField v-model="form.duties" readonly @click="dutiesHandle"></TextField>
       </FormItem>
     </Form>
     <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large>搜索</Button>
@@ -26,44 +20,37 @@
 </template>
 
 <script>
-import { Search } from 'mint-ui';
+import { Search, Cell } from 'mint-ui';
 import { TextField, Button } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
-// import { Option } from "muse-ui/lib/Form";
-// import { Container, Row, Col } from "muse-ui/lib/Grid";
-// import { CardTitle, CardText } from "muse-ui/lib/Card";
-// import { Card } from "muse-ui";
+import tools from 'util/tools';
 export default {
   data () {
     return {
       value: '',
       form: {
-        name: '',
-        sex: 0,
-        personId: '',
-        startDateTime: new Date().valueOf()
+        area: '北京市',
+        industry: '',
+        duties: ''
       },
       labelPosition: 'right',
-      languages: [
-        'Alabama', 'Alaska', 'American Samoa', 'Arizona',
-        'Arkansas', 'California', 'Colorado', 'Connecticut',
-        'Delaware', 'District of Columbia', 'Federated States of Micronesia',
-        'Florida', 'Georgia', 'Guam', 'Hawaii', 'Idaho',
-        'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
-        'Louisiana', 'Maine', 'Marshall Islands', 'Maryland',
-        'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
-        'Missouri', 'Montana', 'Nebraska', 'Nevada',
-        'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
-        'North Carolina', 'North Dakota', 'Northern Mariana Islands', 'Ohio',
-        'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico',
-        'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee',
-        'Texas', 'Utah', 'Vermont', 'Virgin Island', 'Virginia',
-        'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-      ],
-      custom: {
-        value1: '',
-        value2: []
-      }
+      seachList: [
+        {
+          id: 1,
+          title: '22222',
+          value: '555'
+        },
+        {
+          id: 2,
+          title: '4444',
+          value: '666'
+        },
+        {
+          id: 3,
+          title: '565656',
+          value: '33333'
+        }
+      ]
     };
   },
   components: {
@@ -71,10 +58,46 @@ export default {
     Form,
     FormItem,
     TextField,
-    Button
+    Button,
+    Cell
   },
-  methods: {},
-  mounted () {}
+  methods: {
+    areaHandle () {
+      tools.openWin({
+        name: 'areaSelector',
+        url: '../win.html',
+        title: '选择地区',
+        fname: 'areaSelector_f',
+        furl: './common/areaSelector.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'areaSelector',
+          area: this.form.houseHold,
+          level: 2,
+          callback: 'houseHoldCallback'
+        }
+      });
+    },
+    industryHandle () {
+
+    },
+    dutiesHandle () {
+
+    }
+
+  },
+  mounted () {
+    if (window.api) {
+      window.api.addEventListener(
+        {
+          name: 'houseHoldCallback'
+        },
+        (ret, err) => {
+          this.form.houseHold = JSON.parse(ret.value);
+        }
+      );
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

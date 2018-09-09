@@ -4,8 +4,8 @@
       <List textline="two-line">
         <Form :model="{}">
           <div class='allPostion'>
-            <template v-for='(index,list) in lists'>
-              <ListItem avatar :ripple="false" button class='listItem' :key="index" >
+            <div v-for='list in lists'  :key="list.id">
+              <ListItem avatar :ripple="false" button class='listItem' >
                 <ListAction>
                   <Checkbox v-model="checkboxModel" :value='list.id'  @change='check'></Checkbox>
                 </ListAction>
@@ -22,8 +22,8 @@
                   <ListItemAfterText>{{list.date}}</ListItemAfterText>
                 </ListAction>
               </ListItem>
-              <Divider :key="index"></Divider>
-            </template>
+              <Divider></Divider>
+            </div>
           </div>
           <div class='p16 fixBox'>
             <Checkbox v-model='checked' v-on:change='checkedAll' label='全选'></Checkbox>

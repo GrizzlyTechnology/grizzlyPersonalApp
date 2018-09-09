@@ -1,7 +1,7 @@
 <template>
  <List textline="three-line" >
-   <template  v-for='(index,raiders) in raidersList'>
-    <ListItem :ripple="false" button class='listBg' :key="index" @click="raidersArticle">
+   <div  v-for='raiders in raidersList' :key="raiders.id">
+    <ListItem :ripple="false" button class='listBg'  @click="raidersArticle">
       <ListAction class='listAction'>
         <Paper class="imgSpace" :z-depth="5">
           <img :src="raiders.path" class='raidersImg'>
@@ -14,8 +14,8 @@
         </ListItemSubTitle>
       </ListItemContent>
     </ListItem>
-    <Divider :key="index"></Divider>
-    </template>
+    <Divider></Divider>
+    </div>
   </List>
 </template>
 
@@ -27,10 +27,10 @@ export default {
   data () {
     return {
       raidersList: [
-        { path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' },
-        { path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' },
-        { path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' },
-        { path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' }
+        { id: 1, path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' },
+        { id: 2, path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' },
+        { id: 3, path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' },
+        { id: 4, path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' }
       ]
     };
   },

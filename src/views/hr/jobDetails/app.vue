@@ -76,8 +76,8 @@
           <Icon size='14' value=":icon-jinru" right style='font-weight:normal'></Icon>
         </h2>
       </CardText>
-      <template v-for='(index,jobs) in lists'>
-        <ListItem avatar :ripple="false" button class='listItem' :key="index" @click="jobDetails">
+      <div v-for='jobs in lists' :key="jobs.id">
+        <ListItem avatar :ripple="false" button class='listItem'  @click="jobDetails">
           <ListItemContent>
             <ListItemTitle>{{jobs.position}}
               <span class='claim'>{{jobs.claim}}</span>
@@ -91,8 +91,8 @@
             <ListItemAfterText>{{jobs.date}}</ListItemAfterText>
           </ListAction>
         </ListItem>
-        <Divider :key="index"></Divider>
-      </template>
+        <Divider></Divider>
+      </div>
     </List>
     <div class='p16 fixBox whiteBg'>
       <Button color="info" class='collection'>收藏</Button>
@@ -120,6 +120,7 @@ export default {
     return {
       lists: [
         {
+          id: 1,
           position: '产品经理',
           claim: '3年/大专/镇江',
           salaryRange: '6K-8K',
@@ -127,6 +128,7 @@ export default {
           date: '2018-08-06'
         },
         {
+          id: 2,
           position: '产品经理',
           claim: '3年/大专/镇江',
           salaryRange: '6K-8K',
@@ -134,6 +136,7 @@ export default {
           date: '2018-08-06'
         },
         {
+          id: 3,
           position: '产品经理',
           claim: '3年/大专/镇江',
           salaryRange: '6K-8K',
@@ -141,6 +144,7 @@ export default {
           date: '2018-08-06'
         },
         {
+          id: 4,
           position: '产品经理',
           claim: '3年/大专/镇江',
           salaryRange: '6K-8K',
@@ -148,6 +152,7 @@ export default {
           date: '2018-08-06'
         },
         {
+          id: 5,
           position: '产品经理',
           claim: '3年/大专/镇江',
           salaryRange: '6K-8K',
