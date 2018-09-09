@@ -7,13 +7,11 @@
   </ExpansionPanel>
   </div>
   <div class='p16 fixBox'>
-  <SubHeader>已选行业<span>0/5</span></SubHeader>
-    <Chip color='#f5f5f5'>111</Chip>
-    <Chip color='#f5f5f5'>333</Chip>
+  <SubHeader>已选行业<span class='selectNum'>0/5</span></SubHeader>
+    <Chip color='#009688'class="demo-chip selected" v-for="(chip, index) in chips" :key="chip"  @delete="remove(index)" delete>{{chip}}</Chip>
   </div>
 </div>
 </template>
-
 <script>
 import { ExpansionPanel, Chip, SubHeader } from 'muse-ui';
 // import { List, ListItem, ListAction, ListItemContent, ListItemTitle, ListItemSubTitle } from 'muse-ui/lib/List';
@@ -152,8 +150,14 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      chips: [
+        'primary',
+        'secondary',
+        'secondary',
+        'secondary'
 
+      ]
     };
   },
   components: {
@@ -164,6 +168,9 @@ export default {
   methods: {
     toggle (panel) {
       this.panel = panel === this.panel ? '' : panel;
+    },
+    remove (index) {
+      this.chips.splice(index, 1);
     }
   },
   mounted () {
@@ -184,7 +191,15 @@ body .mu-chip{
   width: 100%;
   padding: 10px;
   border-top: 1px solid #eee;
-  display: flex;
-  justify-content: space-around;
+  background: #fff;
+}
+
+.mu-chip.selected{
+  color: #fff;
+}
+
+.selectNum{
+  font-size: 12px;
+  margin-left: 10px;
 }
 </style>
