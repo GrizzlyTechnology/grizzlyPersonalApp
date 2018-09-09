@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import tool from 'util/tools'
+import tool from 'util/tools';
 export default {
   data () {
     return {
@@ -22,36 +22,36 @@ export default {
 
   },
   methods: {
-    raidersList(){
+    raidersList () {
       tool.openWin({
-          name: 'raidersList',
-          url: '../win.html',
-            title: '职场攻略',
-            fname: 'raidersList_f',
-            furl: './hr/raidersList.html',
-            hasLeft: 1
-        });
+        name: 'raidersList',
+        url: '../win.html',
+        title: '职场攻略',
+        fname: 'raidersList_f',
+        furl: './hr/raidersList.html',
+        hasLeft: 1
+      });
     },
-    jobSearch(){
+    jobSearch () {
       tool.openWin({
-          name: 'jobSearch',
-          url: '../win.html',
-            title: '职位搜索',
-            fname: 'jobSearch_f',
-            furl: './hr/jobSearch.html',
-            hasLeft: 1
-        });
+        name: 'jobSearch',
+        url: '../win.html',
+        title: '职位搜索',
+        fname: 'jobSearch_f',
+        furl: './hr/jobSearch.html',
+        hasLeft: 1
+      });
     },
-     companyInfo(){
+    companyInfo () {
       tool.openWin({
-          name: 'companyInfo',
-          url: '../win.html',
-            title: '企业介绍',
-            fname: 'companyInfo_f',
-            furl: './hr/companyInfo.html',
-            hasLeft: 1,
-            hasRight:1
-        });
+        name: 'companyInfo',
+        url: '../win.html',
+        title: '企业介绍',
+        fname: 'companyInfo_f',
+        furl: './hr/companyInfo.html',
+        hasLeft: 1,
+        hasRight: 1
+      });
     }
 
   },

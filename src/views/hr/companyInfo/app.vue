@@ -39,8 +39,8 @@
           <Icon size='14' value=":icon-jinru" right style='font-weight:normal'></Icon>
         </h2>
       </CardText>
-      <template v-for='jobs in lists'>
-        <ListItem avatar :ripple="false" button class='listItem'  @click="jobDetails">
+      <template v-for='(index,jobs) in lists'>
+        <ListItem avatar :ripple="false" button class='listItem' :key="index" @click="jobDetails">
           <ListItemContent>
             <ListItemTitle>{{jobs.position}}
               <span class='claim'>{{jobs.claim}}</span>
@@ -54,15 +54,15 @@
             <ListItemAfterText>{{jobs.date}}</ListItemAfterText>
           </ListAction>
         </ListItem>
-        <Divider></Divider>
+        <Divider :key="index"></Divider>
       </template>
     </List>
   </Container>
 </template>
 
 <script>
-import { Container, Row, Col } from "muse-ui/lib/Grid";
-import { CardTitle, CardText } from "muse-ui/lib/Card";
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { CardTitle, CardText } from 'muse-ui/lib/Card';
 import {
   List,
   ListItem,
@@ -71,47 +71,47 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from "muse-ui/lib/List";
-import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
+} from 'muse-ui/lib/List';
+import { Card, Icon, Avatar, Divider, Button } from 'muse-ui';
 import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
       lists: [
         {
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         }
       ]
     };
@@ -136,29 +136,29 @@ export default {
     Button
   },
   methods: {
-    jobSearchList(){
+    jobSearchList () {
       tool.openWin({
-          name: 'jobSearchList',
-          url: '../win.html',
-            title: '所有职位',
-            fname: 'jobSearchList_f',
-            furl: './hr/jobSearchList.html',
-            hasLeft: 1
-        });
+        name: 'jobSearchList',
+        url: '../win.html',
+        title: '所有职位',
+        fname: 'jobSearchList_f',
+        furl: './hr/jobSearchList.html',
+        hasLeft: 1
+      });
     },
-    jobDetails(){
+    jobDetails () {
       tool.openWin({
-          name: 'jobDetails',
-          url: '../win.html',
-          title: '职位详情',
-          fname: 'jobDetails_f',
-          furl: './hr/jobDetails.html',
-          hasLeft:1,
-          hasRight:1
-        });
+        name: 'jobDetails',
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobDetails_f',
+        furl: './hr/jobDetails.html',
+        hasLeft: 1,
+        hasRight: 1
+      });
     }
   },
-  mounted() {}
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>
@@ -179,7 +179,6 @@ export default {
 .whiteBg {
   background: #fff;
 }
-
 
 .companyNameBox {
   padding-top: 0px;

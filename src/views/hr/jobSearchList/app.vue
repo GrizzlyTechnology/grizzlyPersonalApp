@@ -4,10 +4,10 @@
       <List textline="two-line">
         <Form :model="{}">
           <div class='allPostion'>
-            <template v-for='list in lists'>
-              <ListItem avatar :ripple="false" button class='listItem'>
+            <template v-for='(index,list) in lists'>
+              <ListItem avatar :ripple="false" button class='listItem' :key="index" >
                 <ListAction>
-                  <Checkbox v-model="checkboxModel" :value='list.id' @change='check'></Checkbox>
+                  <Checkbox v-model="checkboxModel" :value='list.id'  @change='check'></Checkbox>
                 </ListAction>
                 <ListItemContent @click="jobDetails">
                   <ListItemTitle>{{list.position}}
@@ -22,7 +22,7 @@
                   <ListItemAfterText>{{list.date}}</ListItemAfterText>
                 </ListAction>
               </ListItem>
-              <Divider></Divider>
+              <Divider :key="index"></Divider>
             </template>
           </div>
           <div class='p16 fixBox'>
@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import { Checkbox, Divider, Form, Button, LoadMore } from "muse-ui";
-import { Container, Row, Col } from "muse-ui/lib/Grid";
+import { Checkbox, Divider, Form, Button, LoadMore } from 'muse-ui';
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
 import {
   List,
   ListItem,
@@ -47,78 +47,78 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from "muse-ui/lib/List";
-import tool from "util/tools";
+} from 'muse-ui/lib/List';
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
       num: 10,
       refreshing: false,
       loading: false,
       lists: [
         {
-          id: "1",
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: '1',
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          id: "2",
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: '2',
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          id: "3",
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: '3',
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          id: "4",
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: '4',
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          id: "5",
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: '5',
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          id: "6",
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: '6',
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          id: "7",
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: '7',
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         },
         {
-          id: "8",
-          position: "产品经理",
-          claim: "3年/大专/镇江",
-          salaryRange: "6K-8K",
-          companyName: "飞龙信息发展股份有限公司",
-          date: "2018-08-06"
+          id: '8',
+          position: '产品经理',
+          claim: '3年/大专/镇江',
+          salaryRange: '6K-8K',
+          companyName: '飞龙信息发展股份有限公司',
+          date: '2018-08-06'
         }
       ],
       checkboxModel: [],
@@ -144,70 +144,70 @@ export default {
     LoadMore
   },
   methods: {
-    jobDetails() {
+    jobDetails () {
       tool.openWin({
-        name: "jobDetails",
-        url: "../win.html",
-        title: "职位详情",
-        fname: "jobDetails_f",
-        furl: "./hr/jobDetails.html",
+        name: 'jobDetails',
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobDetails_f',
+        furl: './hr/jobDetails.html',
         hasLeft: 1,
         hasRight: 1
       });
     },
-    async addToCollection() {
+    async addToCollection () {
       // 加入收藏夹
       if (this.jobIds.length !== 0) {
         const response = await service.addToCollection({ ids: this.jobIds });
         switch (response.code) {
           case 0:
             Toast({
-              position: "top",
-              message: "收藏成功！"
+              position: 'top',
+              message: '收藏成功！'
             });
             break;
           default:
             Toast({
-              position: "top",
-              message: "收藏失败，请稍后重试！！"
+              position: 'top',
+              message: '收藏失败，请稍后重试！！'
             });
             break;
         }
       } else {
         Toast({
-          position: "top",
-          message: "请选择职位！"
+          position: 'top',
+          message: '请选择职位！'
         });
       }
     },
-    async postJob() {
+    async postJob () {
       if (this.jobIds.length !== 0) {
         const response = await service.postJob({ ids: this.jobIds });
         switch (response.code) {
           case 0:
             Toast({
-              position: "top",
-              message: "投递成功！"
+              position: 'top',
+              message: '投递成功！'
             });
             break;
           default:
             Toast({
-              position: "top",
-              message: "投递失败，请稍后重试！！"
+              position: 'top',
+              message: '投递失败，请稍后重试！！'
             });
             break;
         }
       } else {
         Toast({
-          position: "top",
-          message: "请选择职位！"
+          position: 'top',
+          message: '请选择职位！'
         });
       }
     },
-    check(value) {
+    check (value) {
       this.jobIds = value;
     },
-    checkedAll: function() {
+    checkedAll: function () {
       if (!this.checked) {
         // 实现反选
         this.checkboxModel = [];
@@ -217,24 +217,24 @@ export default {
         this.lists.forEach(item => this.checkboxModel.push(item.id));
       }
     },
-    jobDetail: function() {
+    jobDetail: function () {
       tool.openWin({
-        name: "zcgl",
-        url: "../win.html",
-        title: "职位详情",
-        fname: "jobDetails_f",
-        furl: "./hr/jobDetails.html",
+        name: 'zcgl',
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobDetails_f',
+        furl: './hr/jobDetails.html',
         hasLeft: 1,
         hasRight: 1
       });
     },
-    collectionBtn() {
+    collectionBtn () {
       this.addToCollection();
     },
-    deliveryBtn() {
+    deliveryBtn () {
       this.postJob();
     },
-    refresh() {
+    refresh () {
       this.refreshing = true;
       this.$refs.container.scrollTop = 0;
       setTimeout(() => {
@@ -242,7 +242,7 @@ export default {
         this.num = 10;
       }, 2000);
     },
-    load() {
+    load () {
       this.loading = true;
       setTimeout(() => {
         this.loading = false;
@@ -253,7 +253,7 @@ export default {
   watch: {
     // 深度 watcher
     checkboxModel: {
-      handler: function(val, oldVal) {
+      handler: function (val, oldVal) {
         if (this.checkboxModel.length === this.lists.length) {
           this.checked = true;
         } else {
@@ -263,7 +263,7 @@ export default {
       deep: true
     }
   },
-  mounted() {
+  mounted () {
     // this.getList();
   }
 };

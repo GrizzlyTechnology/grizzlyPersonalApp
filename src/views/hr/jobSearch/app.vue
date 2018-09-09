@@ -1,9 +1,10 @@
 <template>
   <div class="content">
     <Search v-model="value" cancel-text="取消" placeholder="搜索"></Search>
-    <Form ref="form" :model="form">
-      <FormItem label="地区" prop="name" :rules="nameRules">
-        <TextField v-model="form.name"></TextField>
+    <mu-radio v-model="labelPosition" style="margin-right: 16px;" value="right" label="Right"></mu-radio>
+    <Form ref="form" :model="form" class="mu-demo-form" :label-position="labelPosition" label-width="45">
+      <FormItem label="地区" prop="name">
+        <TextField v-model="form.name" disabled></TextField>
       </FormItem>
       <FormItem label="行业" prop="name" :rules="nameRules">
         <TextField v-model="form.name"></TextField>
@@ -13,7 +14,7 @@
               {{scope.label}}
             </Chip>
           </template>
-          <Option v-for="language,index in languages" :key="language" :label="language" :value="language"></Option>
+          <Option v-for="language in languages" :key="language" :label="language" :value="language"></Option>
         </Select>
       </FormItem>
       <FormItem label="职能" prop="name" :rules="nameRules">
@@ -25,24 +26,25 @@
 </template>
 
 <script>
-import { Search } from "mint-ui";
-import { TextField, Button, Select , Chip, Option} from "muse-ui";
-import { Form, FormItem } from "muse-ui/lib/Form";
+import { Search } from 'mint-ui';
+import { TextField, Button } from 'muse-ui';
+import { Form, FormItem } from 'muse-ui/lib/Form';
 // import { Option } from "muse-ui/lib/Form";
 // import { Container, Row, Col } from "muse-ui/lib/Grid";
 // import { CardTitle, CardText } from "muse-ui/lib/Card";
 // import { Card } from "muse-ui";
 export default {
-  data() {
+  data () {
     return {
-      value: "",
+      value: '',
       form: {
-        name: "",
+        name: '',
         sex: 0,
-        personId: "",
+        personId: '',
         startDateTime: new Date().valueOf()
       },
-       languages: [
+      labelPosition: 'right',
+      languages: [
         'Alabama', 'Alaska', 'American Samoa', 'Arizona',
         'Arkansas', 'California', 'Colorado', 'Connecticut',
         'Delaware', 'District of Columbia', 'Federated States of Micronesia',
@@ -72,7 +74,7 @@ export default {
     Button
   },
   methods: {},
-  mounted() {}
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>
