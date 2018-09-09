@@ -8,7 +8,7 @@
         <TextField v-model="form.area" readonly @click="areaHandle"></TextField>
       </FormItem>
       <FormItem label="行业" prop="industryText">
-        <TextField v-model="form.duties" readonly  @click="industryHandle"></TextField>
+        <TextField v-model="form.industry" readonly  @click="industryHandle"></TextField>
       </FormItem>
       <FormItem label="职能" prop="dutiesText">
         <TextField v-model="form.duties" readonly @click="dutiesHandle"></TextField>
@@ -18,7 +18,7 @@
     </div>
     <div class="p15 mt25">
     <SubHeader>猜你要搜</SubHeader>
-    <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.id'>{{chip.value}}</Chip>
+    <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.id' @click="chipHandle">{{chip.value}}</Chip>
     </div>
   </div>
 </template>
@@ -110,6 +110,23 @@ export default {
         //   callback: 'houseHoldCallback'
         // }
       });
+    },
+    chipHandle () {
+      tools.openWin({
+        name: 'jobSearchList',
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobSearchList_f',
+        furl: './hr/jobSearchList.html',
+        hasLeft: 1,
+        hasRight: 1
+        // data: {
+        //   nameSpace: 'areaSelector',
+        //   area: this.form.houseHold,
+        //   level: 2,
+        //   callback: 'houseHoldCallback'
+        // }
+      });
     }
 
   },
@@ -163,7 +180,7 @@ export default {
   padding-left: 0;
 }
 
-body .mu-inverse{
+body .mu-chip{
   color: #333;
   margin-left: 10px;
   margin-bottom: 10px;
