@@ -1,6 +1,5 @@
 <template>
-  <Container>
-    <Card>
+  <Card>
       <CardTitle v-bind:title="title" class='txc'></CardTitle>
       <Row class='p16'>
         <Col span="4">
@@ -18,7 +17,6 @@
       </CardText>
 
     </Card>
-  </Container>
 </template>
 
 <script>

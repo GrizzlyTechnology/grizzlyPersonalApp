@@ -35,12 +35,12 @@
 
     <List class='whiteBg mt8 allPostion' textline="two-line">
       <CardText>
-        <h2 class='titleBox spaceBetween'>所有职位
+        <h2 class='titleBox spaceBetween' @click="jobSearchList">所有职位
           <Icon size='14' value=":icon-jinru" right style='font-weight:normal'></Icon>
         </h2>
       </CardText>
       <template v-for='jobs in lists'>
-        <ListItem avatar :ripple="false" button class='listItem'>
+        <ListItem avatar :ripple="false" button class='listItem'  @click="jobDetails">
           <ListItemContent>
             <ListItemTitle>{{jobs.position}}
               <span class='claim'>{{jobs.claim}}</span>
@@ -73,6 +73,7 @@ import {
   ListItemAfterText
 } from "muse-ui/lib/List";
 import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
+import tool from 'util/tools';
 export default {
   data() {
     return {
@@ -134,7 +135,29 @@ export default {
     Divider,
     Button
   },
-  methods: {},
+  methods: {
+    jobSearchList(){
+      tool.openWin({
+          name: 'jobSearchList',
+          url: '../win.html',
+            title: '所有职位',
+            fname: 'jobSearchList_f',
+            furl: './hr/jobSearchList.html',
+            hasLeft: 1
+        });
+    },
+    jobDetails(){
+      tool.openWin({
+          name: 'jobDetails',
+          url: '../win.html',
+          title: '职位详情',
+          fname: 'jobDetails_f',
+          furl: './hr/jobDetails.html',
+          hasLeft:1,
+          hasRight:1
+        });
+    }
+  },
   mounted() {}
 };
 </script>
