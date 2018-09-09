@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import { Search, Cell } from 'mint-ui';
-import { TextField, Button, SubHeader, Chip, Toast } from 'muse-ui';
+import { Search, Cell, Toast } from 'mint-ui';
+import { TextField, Button, SubHeader, Chip } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import tools from 'util/tools';
 export default {

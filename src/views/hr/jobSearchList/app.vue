@@ -37,7 +37,8 @@
 </template>
 
 <script>
-import { Checkbox, Divider, Form, Button, LoadMore, Toast } from 'muse-ui';
+import { Toast } from 'mint-ui';
+import { Checkbox, Divider, Form, Button, LoadMore } from 'muse-ui';
 import { Container, Row, Col } from 'muse-ui/lib/Grid';
 import {
   List,
