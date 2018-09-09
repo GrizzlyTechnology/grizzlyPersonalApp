@@ -13,7 +13,7 @@
       </CellSwipe>
     </div>
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" v-if="list.length===0" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">新增简历</Button>
+      <Button color="#009688" textColor="#ffffff" v-if="list.length===0" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">创建简历</Button>
     </div>
   </div>
 </template>
@@ -23,11 +23,14 @@
 import { CellSwipe } from 'mint-ui';
 import { Button } from 'muse-ui';
 import tools from 'util/tools';
+import service from 'service';
+
 // import AreaSelected from 'components/AreaSelected';
 export default {
   name: 'userClass',
   data () {
     return {
+      userInfo: {},
       list: [
         // {
         //   id: 0,
@@ -45,18 +48,45 @@ export default {
     CellSwipe
   },
   methods: {
-    create () {
+    async create () {
+      tools.showProgress();
+      const response = await service.getUserInfo();
+      tools.hideProgress();
+      let baseInfo = {
+        name: '',
+        sex: '',
+        phone: ''
+      };
+      switch (response.code) {
+        case 0:
+          baseInfo = {
+            name: response.result.userInfo.name || '',
+            sex: response.result.userInfo.sex,
+            phone: response.result.userInfo.phone
+          };
+          break;
+        default:
+          break;
+      }
+
+      const resumeTitle = '我的简历';
+
       tools.openWin({
         name: 'resumeDetail',
         url: '../win.html',
-        title: '创建简历',
+        title: resumeTitle,
         fname: 'resumeDetail_f',
         furl: './userCenter/resumeDetail.html',
         hasLeft: 1,
         data: {
           nameSpace: 'resumeDetail',
           type: 'create',
-          userInfo: {}
+          resume: {
+            baseInfo: {
+              title: resumeTitle, // 简历名称
+              ...baseInfo
+            }
+          }
         }
       });
     },
