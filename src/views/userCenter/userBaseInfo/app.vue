@@ -200,21 +200,21 @@ export default {
   },
   mounted () {
     if (window.api) {
-      window.api.addEventListener(
+      tools.addEventListener(
         {
           name: 'houseHoldCallback'
         },
         (ret, err) => {
-          this.form.houseHold = JSON.parse(ret.value);
+          this.form.houseHold = ret.value;
         }
       );
 
-      window.api.addEventListener(
+      tools.addEventListener(
         {
           name: 'addressCallback'
         },
         (ret, err) => {
-          this.form.address = JSON.parse(ret.value);
+          this.form.address = ret.value;
         }
       );
     }

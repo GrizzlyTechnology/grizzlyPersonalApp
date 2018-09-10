@@ -231,7 +231,7 @@ export default {
       }
 
       // 编辑基本信息后的回调
-      window.api.addEventListener(
+      tools.addEventListener(
         {
           name: 'editUserBaseInfoCallback'
         },
