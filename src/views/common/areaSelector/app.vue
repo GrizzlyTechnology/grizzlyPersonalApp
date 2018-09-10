@@ -42,7 +42,7 @@ export default {
     submit () {
       window.api.sendEvent({
         name: window.api.pageParam.callback,
-        extra: this.selected
+        extra: JSON.stringify(this.selected)
       });
       window.api.closeWin();
     }

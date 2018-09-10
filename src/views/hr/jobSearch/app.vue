@@ -131,16 +131,14 @@ export default {
 
   },
   mounted () {
-    if (window.api) {
-      window.api.addEventListener(
-        {
-          name: 'houseHoldCallback'
-        },
-        (ret, err) => {
-          this.form.houseHold = JSON.parse(ret.value);
-        }
-      );
-    }
+    tools.addEventListener(
+      {
+        name: 'houseHoldCallback'
+      },
+      (ret, err) => {
+        this.form.houseHold = ret.value;
+      }
+    );
   }
 };
 </script>

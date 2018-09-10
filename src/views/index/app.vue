@@ -13,7 +13,7 @@ export default {
   methods: {
     init () {
       var token = tool.getStorage('token');
-      if (!!token) {
+      if (token) {
         tool.openWin({
           name: 'main',
           url: './index/main.html'
@@ -32,7 +32,7 @@ export default {
   mounted () {
     var obj = this;
     obj.init();
-    window.api.addEventListener(
+    tool.addEventListener(
       {
         name: 'event'
       },
