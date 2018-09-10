@@ -122,4 +122,7 @@ export default {
     background-color: #eee;
   }
 }
+.areaFoot{
+  height: 44px;
+}
 </style>
