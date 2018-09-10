@@ -143,6 +143,7 @@ export default {
   methods: {
     // 一次获取所有信息
     async getAll () {
+      console.log(this.id);
       tools.showProgress();
       const response = await Promise.all([
         service.getUserBaseInfo({
@@ -150,6 +151,17 @@ export default {
         })
       ]);
       tools.hideProgress();
+      this.baseInfo = {
+        title: response[0].result.resumeInfo[0].title, // 简历名称
+        name: response[0].result.resumeInfo[0].name, // true string 真实姓名
+        sex: response[0].result.resumeInfo[0].sex, // true string 性别
+        birthday: response[0].result.resumeInfo[0].birthday * 1000, // true string生日
+        // houseHold: JSON.parse(response.result.resumeInfo[0].houseHold), // true string 籍贯
+        address: JSON.parse(response[0].result.resumeInfo[0].address),
+        street: response[0].result.resumeInfo[0].street,
+        phone: response[0].result.resumeInfo[0].phone, // true string手机
+        email: response[0].result.resumeInfo[0].email // true string 邮箱
+      };
     },
     // 获取用户基础信息
     async getUserBaseInfo () {
@@ -201,11 +213,12 @@ export default {
   mounted () {
     if (window.api) {
       if (window.api.pageParam.nameSpace === 'resumeDetail') {
-        // 创建基本信息后的回调
+        console.log(window.api.pageParam.id);
+        console.log(window.api.pageParam.type);
+        this.id = window.api.pageParam.id;
+        this.type = window.api.pageParam.type || 'detail';
         switch (window.api.pageParam.from) {
-          case 'userBaseInfo':
-            this.id = window.api.pageParam.id;
-            this.type = 'edit';
+          case 'userBaseInfo':// 创建基本信息后的回调
             this.getUserBaseInfo();
             window.api.closeWin({
               name: 'userBaseInfo'

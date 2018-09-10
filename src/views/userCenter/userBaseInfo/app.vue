@@ -137,7 +137,8 @@ export default {
             data: {
               nameSpace: 'resumeDetail',
               from: 'userBaseInfo',
-              id: response.result.resumeInfo.id
+              id: response.result.resumeInfo.id,
+              type: 'edit'
             }
           });
           break;

@@ -9,7 +9,7 @@
             handler: () => {del(row)}
           }
         ]">
-        <div class="title" slot="title">{{row.id}}{{row.name}}</div>
+        <div class="title" slot="title" @click="resumeDetail(row)">{{row.id}}{{row.name}}</div>
         <i class="mu-icon icon-right isLink" />
       </CellSwipe>
       </div>
@@ -33,35 +33,7 @@ export default {
   data () {
     return {
       userInfo: {},
-      list: [
-        // { id: 1 },
-        // { id: 2 },
-        // { id: 3 },
-        // { id: 4 },
-        // { id: 5 },
-        // { id: 6 },
-        // { id: 7 },
-        // { id: 8 },
-        // { id: 9 },
-        // { id: 11 },
-        // { id: 12 },
-        // { id: 13 },
-        // { id: 14 },
-        // { id: 15 },
-        // { id: 16 },
-        // { id: 17 },
-        // { id: 18 },
-        // { id: 19 },
-        // { id: 111 },
-        // { id: 112 },
-        // { id: 113 },
-        // { id: 114 },
-        // { id: 115 },
-        // { id: 116 },
-        // { id: 117 },
-        // { id: 118 },
-        // { id: 119 }
-      ]
+      list: []
     };
   },
   components: {
@@ -134,6 +106,22 @@ export default {
     },
     del (data) {
       alert(data.id + data.name);
+    },
+    resumeDetail (data) {
+      tools.openWin({
+        name: 'resumeDetail',
+        url: '../win.html',
+        title: data.title,
+        fname: 'resumeDetail_f',
+        furl: './userCenter/resumeDetail.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'resumeDetail',
+          from: 'resumeList',
+          type: 'edit',
+          id: data.id
+        }
+      });
     }
   },
   mounted () {
