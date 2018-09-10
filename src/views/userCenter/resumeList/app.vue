@@ -9,7 +9,7 @@
             handler: () => {del(row)}
           }
         ]">
-        <div class="title" slot="title" @click="resumeDetail(row)">{{row.id}}{{row.name}}</div>
+        <div class="title" slot="title" @click="resumeDetail(row)">{{row.title}}</div>
         <i class="mu-icon icon-right isLink" />
       </CellSwipe>
       </div>
@@ -33,7 +33,7 @@ export default {
   data () {
     return {
       userInfo: {},
-      list: []
+      list: [{id: 1, name: 'ok'}, {id: 2, name: 'ok'}, {id: 3, name: 'ok'}, {id: 4, name: 'ok'}]
     };
   },
   components: {
@@ -47,7 +47,7 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.list = response.result.resumeInfo;
+          this.list = [response.result.resumeInfo[0]];
           break;
         default:
           tools.toast({

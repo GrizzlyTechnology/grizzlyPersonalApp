@@ -221,6 +221,20 @@ export default {
       params
     });
   },
+  deleteUserBaesInfo (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Resume/update',
+      params
+    });
+  },
+  updateUserBaesInfo (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Resume/update',
+      params
+    });
+  },
   getUserBaseInfo (params) {
     return request({
       host: hostList.test,

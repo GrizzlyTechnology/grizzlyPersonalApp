@@ -150,7 +150,42 @@ export default {
           break;
       }
     },
-    async edit () {},
+    async edit () {
+      tools.showProgress();
+      const response = await service.updateUserBaesInfo({
+        id: this.id,
+        ...this.form
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          tools.toast({
+            position: 'top',
+            message: '基本信息编辑成功'
+          });
+          tools.openWin({
+            name: 'resumeDetail',
+            url: '../win.html',
+            title: '我的简历',
+            fname: 'resumeDetail_f',
+            furl: './userCenter/resumeDetail.html',
+            hasLeft: 1,
+            data: {
+              nameSpace: 'resumeDetail',
+              from: 'userBaseInfo',
+              id: this.id,
+              type: 'edit'
+            }
+          });
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '基本信息编辑失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
     changeBirthday (date) {
       this.form.birthday = date.valueOf();
     },
