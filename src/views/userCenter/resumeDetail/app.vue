@@ -225,7 +225,9 @@ export default {
           nameSpace: 'userBaseinfo',
           baseInfo: this.baseInfo,
           id: this.id,
-          callback: 'getUserBaseInfo'
+          callback: (ret, err) => {
+            this.getUserBaseInfo();
+          }
         }
       });
     },
@@ -241,7 +243,9 @@ export default {
           nameSpace: 'userIntroduction',
           introduction: this.introduction,
           id: this.id,
-          callback: 'getUserBaseInfo'
+          callback: (ret, err) => {
+            this.getUserBaseInfo();
+          }
         }
       });
     }
@@ -267,14 +271,14 @@ export default {
       }
 
       // 编辑基本信息后的回调
-      tools.addEventListener(
-        {
-          name: 'getUserBaseInfo'
-        },
-        (ret, err) => {
-          this.getUserBaseInfo();
-        }
-      );
+      // tools.addEventListener(
+      //   {
+      //     name: 'getUserBaseInfo'
+      //   },
+      //   (ret, err) => {
+      //     this.getUserBaseInfo();
+      //   }
+      // );
     }
   }
 };

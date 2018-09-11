@@ -35,30 +35,30 @@
 </template>
 
 <script>
-import { Container, Row, Col } from "muse-ui/lib/Grid";
-import { Form, FormItem } from "muse-ui/lib/Form";
-import { Button, TextField, Checkbox, Avatar } from "muse-ui";
-import service from "service";
-import tools from "util/tools";
-import Other from "components/OtherLogin"
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { Form, FormItem } from 'muse-ui/lib/Form';
+import { Button, TextField, Checkbox, Avatar } from 'muse-ui';
+import service from 'service';
+import tools from 'util/tools';
+import Other from 'components/OtherLogin';
 
 export default {
-  data() {
+  data () {
     return {
       phoneRules: [
         { validate: val => !!val, message: '必须填写用户名' },
         { validate: val => val.length === 11, message: '用户名长度为11位手机号码' }
       ],
       passwordRules: [
-        { validate: val => !!val, message: "必须填写密码" },
+        { validate: val => !!val, message: '必须填写密码' },
         {
           validate: val => val.length >= 6 && val.length <= 18,
-          message: "密码长度大于6小于18"
+          message: '密码长度大于6小于18'
         }
       ],
-      argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
+      argeeRules: [{ validate: val => !!val, message: '必须同意用户协议' }],
       validateForm: {
-        phone:'',
+        phone: '',
         password: '',
         isAgree: true
       },
@@ -75,7 +75,7 @@ export default {
     Avatar,
     Form,
     FormItem,
-    Other,
+    Other
   },
   methods: {
     async query () {
@@ -88,11 +88,11 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          tools.setStorage("token", response.result.token);
-          tools.setStorage("phone", response.result.userinfo.phone);
-          tools.setStorage("userInfo", response.result.userinfo);
+          tools.setStorage('token', response.result.token);
+          tools.setStorage('phone', response.result.userinfo.phone);
+          tools.setStorage('userInfo', response.result.userinfo);
           window.api.sendEvent({
-            name: "event"
+            name: 'event'
           });
           window.api.closeWin();
           break;
@@ -104,31 +104,31 @@ export default {
           break;
       }
     },
-    submit() {
+    submit () {
       this.$refs.form.validate().then(result => {
         if (result) {
           this.query();
         }
       });
     },
-    remanberPWD() {
-      alert("sss");
+    remanberPWD () {
+      alert('sss');
     },
-    msgCode() {
-      alert("msgcode login");
+    msgCode () {
+      alert('msgcode login');
     },
-    regNewUser() {
+    regNewUser () {
       tools.openWin({
-        name: "registered",
-        url: "../win.html",
-        title: "用户注册",
-        fname: "registered_f",
-        furl: "./index/registered.html",
+        name: 'registered',
+        url: '../win.html',
+        title: '用户注册',
+        fname: 'registered_f',
+        furl: './index/registered.html',
         hasLeft: true
       });
     }
   },
-  mounted() {}
+  mounted () {}
 };
 </script>
 

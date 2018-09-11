@@ -53,10 +53,9 @@ export default {
             position: 'top',
             message: '自我描述编辑成功'
           });
-          window.api.sendEvent({
-            name: window.api.pageParam.callback
+          tools.doCloseWinCallback({
+            id: this.id
           });
-          window.api.closeWin();
           break;
         default:
           tools.toast({
