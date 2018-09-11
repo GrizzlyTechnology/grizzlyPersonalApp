@@ -40,7 +40,7 @@ export default {
       this.isEnd = data.isEnd;
     },
     submit () {
-      tools.doGoBackCallback(this.selected);
+      tools.doCloseWinCallback(this.selected);
       // window.api.sendEvent({
       //   name: window.api.pageParam.callback,
       //   extra: JSON.stringify(this.selected)

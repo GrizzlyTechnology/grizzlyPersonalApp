@@ -635,7 +635,7 @@ u.addEventListener = function (ope = {}, callback = () => { }) {
   }
 };
 
-u.doGoBackCallback = function(data = {}){
+u.doCloseWinCallback = function(data = {}){
   if(window.api){
     if(window.api.pageParam.callback && window.api.pageParam.callback!==''){
       window.api.sendEvent({
