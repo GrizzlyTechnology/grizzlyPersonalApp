@@ -654,7 +654,7 @@ u.addEventListener = function (ope = {}, callback = () => { }) {
   }
 };
 
-u.doCloseWinCallback = function (data = {}) {
+u.closeWin = function (data = {}) {
   if (window.api) {
     if (window.api.pageParam.eventName && window.api.pageParam.eventName !== '') {
       console.log('callback name: ' + window.api.pageParam.eventName)

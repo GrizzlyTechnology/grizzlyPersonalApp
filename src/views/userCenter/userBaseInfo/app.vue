@@ -163,9 +163,7 @@ export default {
             position: 'top',
             message: '基本信息编辑成功'
           });
-          tools.doCloseWinCallback({
-            id: this.id
-          });
+          tools.closeWin();
           break;
         default:
           tools.toast({
@@ -226,27 +224,7 @@ export default {
       });
     }
   },
-  mounted () {
-    // if (window.api) {
-    // tools.addEventListener(
-    //   {
-    //     name: 'houseHoldCallback'
-    //   },
-    //   (ret, err) => {
-    //     this.form.houseHold = ret.value;
-    //   }
-    // );
-
-    // tools.addEventListener(
-    //   {
-    //     name: 'addressCallback'
-    //   },
-    //   (ret, err) => {
-    //     this.form.address = ret.value;
-    //   }
-    // );
-    // }
-  }
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>

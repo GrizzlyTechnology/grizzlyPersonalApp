@@ -176,6 +176,7 @@ export default {
         sex: response[0].result.resumeInfo[0].sex, // true string 性别
         birthday: response[0].result.resumeInfo[0].birthday * 1000, // true string生日
         // houseHold: JSON.parse(response.result.resumeInfo[0].houseHold), // true string 籍贯
+        houseHold: [], // true string 籍贯
         address: JSON.parse(response[0].result.resumeInfo[0].address),
         street: response[0].result.resumeInfo[0].street,
         phone: response[0].result.resumeInfo[0].phone, // true string手机
@@ -253,8 +254,8 @@ export default {
   mounted () {
     if (window.api) {
       if (window.api.pageParam.nameSpace === 'resumeDetail') {
-        console.log(window.api.pageParam.id);
-        console.log(window.api.pageParam.type);
+        // console.log(window.api.pageParam.id);
+        // console.log(window.api.pageParam.type);
         this.id = window.api.pageParam.id;
         this.type = window.api.pageParam.type || 'detail';
         switch (window.api.pageParam.from) {

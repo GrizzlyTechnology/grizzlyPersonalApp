@@ -53,9 +53,7 @@ export default {
             position: 'top',
             message: '自我描述编辑成功'
           });
-          tools.doCloseWinCallback({
-            id: this.id
-          });
+          tools.closeWin();
           break;
         default:
           tools.toast({

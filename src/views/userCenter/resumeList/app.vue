@@ -118,7 +118,6 @@ export default {
     },
 
     resumeDetail (data) {
-      alert(data.id);
       tools.openWin({
         name: 'resumeDetail',
         url: '../win.html',
