@@ -3,12 +3,15 @@
     <div class="moduleHeader">
       <div class="title">
         {{title}}
-        <span class="label">{{label}}</span>
+        <span class="label" v-if="label.length>0">{{label}}</span>
       </div>
-      <slot name="end"/>
+      <slot v-if="hasEnd" name="end"/>
     </div>
-    <div class="moduleBodyer">
+    <div v-if="hasSlot" class="moduleBodyer">
       <slot/>
+    </div>
+    <div v-if="!hasSlot" class="infoNotice">
+      <slot name="info"/>
     </div>
   </div>
 </template>
@@ -27,14 +30,11 @@ export default {
     }
   },
   computed: {
-    hasHeader () {
-      return !!this.$slots.header;
+    hasEnd () {
+      return !!this.$slots.end;
     },
-    hasFooter () {
-      return !!this.$slots.footer;
-    },
-    hasModalCon () {
-      return !!this.$slots.modalCon;
+    hasSlot () {
+      return !!this.$slots.default;
     }
   },
   methods: {
@@ -72,5 +72,15 @@ export default {
   overflow: hidden;
   margin: 0 15px 15px;
   background-color: #FFF;
+}
+.infoNotice{
+  border-radius: 5px;
+  border: 1px #A2D4F7 dashed;
+  overflow: hidden;
+  margin: 0 15px 15px;
+  background-color: #E4F2FB;
+  padding: 20px 15px;
+  text-align: center;
+  color:#A2D4F7;
 }
 </style>
