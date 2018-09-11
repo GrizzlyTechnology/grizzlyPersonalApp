@@ -163,20 +163,7 @@ export default {
             position: 'top',
             message: '基本信息编辑成功'
           });
-          tools.openWin({
-            name: 'resumeDetail',
-            url: '../win.html',
-            title: '我的简历',
-            fname: 'resumeDetail_f',
-            furl: './userCenter/resumeDetail.html',
-            hasLeft: 1,
-            data: {
-              nameSpace: 'resumeDetail',
-              from: 'userBaseInfo',
-              id: this.id,
-              type: 'edit'
-            }
-          });
+          tools.closeWin();
           break;
         default:
           tools.toast({
@@ -201,7 +188,9 @@ export default {
           nameSpace: 'areaSelector',
           area: this.form.houseHold,
           level: 2,
-          callback: 'houseHoldCallback'
+          callback: (ret, err) => {
+            this.form.houseHold = ret.value;
+          }
         }
       });
     },
@@ -217,7 +206,9 @@ export default {
           nameSpace: 'areaSelector',
           area: this.form.address,
           level: 3,
-          callback: 'addressCallback'
+          callback: (ret, err) => {
+            this.form.address = ret.value;
+          }
         }
       });
     },
@@ -233,27 +224,7 @@ export default {
       });
     }
   },
-  mounted () {
-    if (window.api) {
-      tools.addEventListener(
-        {
-          name: 'houseHoldCallback'
-        },
-        (ret, err) => {
-          this.form.houseHold = ret.value;
-        }
-      );
-
-      tools.addEventListener(
-        {
-          name: 'addressCallback'
-        },
-        (ret, err) => {
-          this.form.address = ret.value;
-        }
-      );
-    }
-  }
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-// import tools from 'util/tools';
+import tools from 'util/tools';
 // import service from 'service';
 import { Button } from 'muse-ui';
 import AreaSelected from 'components/AreaSelected';
@@ -40,11 +40,12 @@ export default {
       this.isEnd = data.isEnd;
     },
     submit () {
-      window.api.sendEvent({
-        name: window.api.pageParam.callback,
-        extra: JSON.stringify(this.selected)
-      });
-      window.api.closeWin();
+      tools.closeWin(this.selected);
+      // window.api.sendEvent({
+      //   name: window.api.pageParam.callback,
+      //   extra: JSON.stringify(this.selected)
+      // });
+      // window.api.closeWin();
     }
   },
   mounted () {}

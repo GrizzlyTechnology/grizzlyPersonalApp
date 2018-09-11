@@ -38,6 +38,7 @@ axios.interceptors.response.use(function (response) {
     position: 'top',
     message: '网络错误，请稍后重试！！'
   });
+  tools.hideProgress();
   return Promise.reject(error);
 });
 
