@@ -16,7 +16,7 @@ switch (ENV) {
 }
 
 axios.defaults.baseURL = BASEURL;
-axios.defaults.timeout = 20000;
+axios.defaults.timeout = 30000;
 // axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use((config) => {
@@ -210,6 +210,35 @@ export default {
     return request({
       host: hostList.test,
       url: '/api/postJob',
+      params,
+      method: 'get'
+    });
+  },
+  createUserBaesInfo (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Resume/create',
+      params
+    });
+  },
+  deleteUserBaesInfo (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Resume/update',
+      params
+    });
+  },
+  updateUserBaesInfo (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Resume/update',
+      params
+    });
+  },
+  getUserBaseInfo (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Resume/resumeBy',
       params,
       method: 'get'
     });

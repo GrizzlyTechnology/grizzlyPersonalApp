@@ -620,6 +620,20 @@ u.openWin = function (params) {
     window.location.href = furl.replace('./', '/');
   }
 }
+
+u.addEventListener = function (ope = {}, callback = () => { }) {
+  if (window.api) {
+    window.api.addEventListener(
+      ope,
+      (ret, err) => {
+        callback(
+          { ...ret, value: typeof (ret.value) === 'string' ? JSON.parse(ret.value) : ret.value },
+          err
+        );
+      }
+    );
+  }
+};
 /* end */
 
 export default u;

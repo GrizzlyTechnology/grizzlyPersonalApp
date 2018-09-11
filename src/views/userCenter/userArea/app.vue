@@ -2,7 +2,6 @@
   <div class="content">
     <div class="areaBody">
       <AreaSelected
-        :data="allArea"
         :value="selected"
         :level="2"
         @change="setSelected"
@@ -24,7 +23,6 @@ export default {
   data () {
     return {
       isLoading: false,
-      allArea: [],
       selected: [],
       isEnd: false
     };
