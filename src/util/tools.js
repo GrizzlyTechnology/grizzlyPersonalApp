@@ -634,6 +634,18 @@ u.addEventListener = function (ope = {}, callback = () => { }) {
     );
   }
 };
+
+u.doGoBackCallback = function(data = {}){
+  if(window.api){
+    if(window.api.pageParam.callback && window.api.pageParam.callback!==''){
+      window.api.sendEvent({
+        name: window.api.pageParam.callback,
+        extra:JSON.stringify(data)
+      });
+    }
+    window.api.closeWin();
+  }
+};
 /* end */
 
 export default u;
