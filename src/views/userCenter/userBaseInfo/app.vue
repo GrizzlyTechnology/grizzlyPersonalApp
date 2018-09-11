@@ -21,7 +21,7 @@
             <TextField readonly v-model="addressText" @click="addressHandle"></TextField>
           </FormItem>
           <FormItem label="街道" prop="street" :rules="streetRules">
-            <TextField v-model="form.address.street"></TextField>
+            <TextField v-model="form.street"></TextField>
           </FormItem>
           <FormItem label="手机号码" prop="phone" :rules="phoneRules">
             <TextField v-model="form.phone"></TextField>
@@ -33,34 +33,34 @@
       </div>
     </div>
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="()=>{}">保存</Button>
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">{{id?'保存':'下一步'}}</Button>
     </div>
   </div>
 </template>
 
 <script>
-// import service from 'service';
+import service from 'service';
 // import moment from 'moment';
 import { Button, TextField, Radio, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
 import tools from 'util/tools';
-import dictMap from 'util/dictMap';
+// import dictMap from 'util/dictMap';
 export default {
   name: 'userInfo',
   data () {
     return {
-      // startDateTime: new Date(),
-      sexMap: dictMap.sex,
+      id: window.api.pageParam.id || null,
       form: {
-        name: '', // true string 真实姓名
-        sex: 1, // true string 性别
-        birthday: new Date(), // true string生日
-        houseHold: [], // true string 籍贯
-        address: [],
-        street: '',
-        phone: '', // true string手机
-        email: '' // true string 邮箱
+        name: window.api.pageParam.baseInfo.name || '', // true string 真实姓名
+        sex: window.api.pageParam.baseInfo.sex || 1, // true string 性别
+        birthday:
+          window.api.pageParam.baseInfo.birthday || Date.now().valueOf(), // true string生日
+        houseHold: window.api.pageParam.baseInfo.houseHold || [], // true string 籍贯
+        address: window.api.pageParam.baseInfo.address || [],
+        street: window.api.pageParam.baseInfo.street || '',
+        phone: window.api.pageParam.baseInfo.phone || '', // true string手机
+        email: window.api.pageParam.baseInfo.email || '' // true string 邮箱
       },
       nameRules: [{ validate: val => !!val, message: '必须填写姓名' }],
       birthdayRules: [{ validate: val => val, message: '必须填写出生年月' }],
@@ -98,7 +98,7 @@ export default {
   },
   computed: {
     birthdayText () {
-      return new Date(this.form.birthday) || new Date();
+      return new Date(this.form.birthday);
     },
     houseHoldText () {
       return this.form.houseHold.map(row => row.label).join(' / ');
@@ -116,6 +116,76 @@ export default {
     DateInput
   },
   methods: {
+    async create () {
+      tools.showProgress();
+      const response = await service.createUserBaesInfo(this.form);
+      tools.hideProgress();
+
+      switch (response.code) {
+        case 0:
+          tools.toast({
+            position: 'top',
+            message: '基本信息创建成功'
+          });
+          tools.openWin({
+            name: 'resumeDetail',
+            url: '../win.html',
+            title: '我的简历',
+            fname: 'resumeDetail_f',
+            furl: './userCenter/resumeDetail.html',
+            hasLeft: 1,
+            data: {
+              nameSpace: 'resumeDetail',
+              from: 'userBaseInfo',
+              id: response.result.resumeInfo.id,
+              type: 'edit'
+            }
+          });
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '基本信息创建失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    async edit () {
+      tools.showProgress();
+      const response = await service.updateUserBaesInfo({
+        id: this.id,
+        ...this.form
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          tools.toast({
+            position: 'top',
+            message: '基本信息编辑成功'
+          });
+          tools.openWin({
+            name: 'resumeDetail',
+            url: '../win.html',
+            title: '我的简历',
+            fname: 'resumeDetail_f',
+            furl: './userCenter/resumeDetail.html',
+            hasLeft: 1,
+            data: {
+              nameSpace: 'resumeDetail',
+              from: 'userBaseInfo',
+              id: this.id,
+              type: 'edit'
+            }
+          });
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '基本信息编辑失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
     changeBirthday (date) {
       this.form.birthday = date.valueOf();
     },
@@ -150,31 +220,36 @@ export default {
           callback: 'addressCallback'
         }
       });
+    },
+    submit () {
+      this.$refs.form.validate().then((result) => {
+        if (result === true) {
+          if (this.id) {
+            this.edit();
+          } else {
+            this.create();
+          }
+        }
+      });
     }
   },
   mounted () {
     if (window.api) {
-      if (window.api.pageParam.nameSpace === 'resumeDetail') {
-        this.form = { ...window.api.pageParam.baseInfo };
-        this.form.birthday =
-          window.api.pageParam.baseInfo.birthday || Date.now().valueOf();
-        this.form.sex = window.api.pageParam.baseInfo.sex || 1;
-      }
-      window.api.addEventListener(
+      tools.addEventListener(
         {
           name: 'houseHoldCallback'
         },
         (ret, err) => {
-          this.form.houseHold = JSON.parse(ret.value);
+          this.form.houseHold = ret.value;
         }
       );
 
-      window.api.addEventListener(
+      tools.addEventListener(
         {
           name: 'addressCallback'
         },
         (ret, err) => {
-          this.form.address = JSON.parse(ret.value);
+          this.form.address = ret.value;
         }
       );
     }

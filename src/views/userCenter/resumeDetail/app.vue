@@ -4,12 +4,12 @@
       <Cell title="姓名" :value="baseInfo.name"></Cell>
       <Cell title="性别" :value="sexText"></Cell>
       <Cell title="出生年月" :value="birthdayText"></Cell>
-      <Cell title="户籍" :value="houseHoldText"></Cell>
+      <!-- <Cell title="户籍" :value="houseHoldText"></Cell> -->
       <Cell title="地址" :value="addressText"></Cell>
       <Cell title="手机号码" :value="baseInfo.phone"></Cell>
       <Cell title="电子邮箱" :value="baseInfo.email"></Cell>
       <Button
-        v-if="type==='create'||type==='edit'"
+        v-if="type==='edit'"
         class="editBtn"
         slot="end"
         flat
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-// import service from 'service';
+import service from 'service';
 import { Button, Icon } from 'muse-ui';
 import { Cell } from 'mint-ui';
 import tools from 'util/tools';
@@ -72,20 +72,15 @@ export default {
   data () {
     return {
       type: 'detail',
+      id: null,
       baseInfo: {
         title: '', // 简历名称
         name: '', // true string 真实姓名
         sex: null, // true string 性别
         birthday: null, // true string生日
-        houseHold: {
-          province: null,
-          city: null
-        }, // true string 籍贯
-        address: {
-          province: null,
-          city: null,
-          street: ''
-        },
+        // houseHold: [], // true string 籍贯
+        address: [],
+        street: '',
         phone: '', // true string手机
         email: '' // true string 邮箱
       },
@@ -138,14 +133,66 @@ export default {
     sexText () {
       return this.baseInfo.sex ? dictMap.sex[this.baseInfo.sex] : '';
     },
-    houseHoldText () {
-      return this.baseInfo.houseHold.province && this.baseInfo.houseHold.city ? this.baseInfo.houseHold.province.label + this.baseInfo.houseHold.city.label : '';
-    },
+    // houseHoldText () {
+    //   return this.baseInfo.houseHold.map(row => row.label).join(' / ');
+    // },
     addressText () {
-      return this.baseInfo.address.province && this.baseInfo.address.city && this.baseInfo.address.street ? this.baseInfo.address.province.label + this.baseInfo.address.city.label + this.baseInfo.address.street.label : '';
+      return this.baseInfo.address.map(row => row.label).join(' / ') + this.baseInfo.street;
     }
   },
   methods: {
+    // 一次获取所有信息
+    async getAll () {
+      console.log(this.id);
+      tools.showProgress();
+      const response = await Promise.all([
+        service.getUserBaseInfo({
+          id: this.id
+        })
+      ]);
+      tools.hideProgress();
+      this.baseInfo = {
+        title: response[0].result.resumeInfo[0].title, // 简历名称
+        name: response[0].result.resumeInfo[0].name, // true string 真实姓名
+        sex: response[0].result.resumeInfo[0].sex, // true string 性别
+        birthday: response[0].result.resumeInfo[0].birthday * 1000, // true string生日
+        // houseHold: JSON.parse(response.result.resumeInfo[0].houseHold), // true string 籍贯
+        address: JSON.parse(response[0].result.resumeInfo[0].address),
+        street: response[0].result.resumeInfo[0].street,
+        phone: response[0].result.resumeInfo[0].phone, // true string手机
+        email: response[0].result.resumeInfo[0].email // true string 邮箱
+      };
+    },
+    // 获取用户基础信息
+    async getUserBaseInfo () {
+      tools.showProgress();
+      const response = await service.getUserBaseInfo({
+        id: this.id
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.baseInfo = {
+            title: response.result.resumeInfo[0].title, // 简历名称
+            name: response.result.resumeInfo[0].name, // true string 真实姓名
+            sex: response.result.resumeInfo[0].sex, // true string 性别
+            birthday: response.result.resumeInfo[0].birthday * 1000, // true string生日
+            // houseHold: JSON.parse(response.result.resumeInfo[0].houseHold), // true string 籍贯
+            address: JSON.parse(response.result.resumeInfo[0].address),
+            street: response.result.resumeInfo[0].street,
+            phone: response.result.resumeInfo[0].phone, // true string手机
+            email: response.result.resumeInfo[0].email // true string 邮箱
+          };
+          console.log(JSON.stringify(this.baseInfo));
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '基本信息获取失败'
+          });
+          break;
+      }
+    },
     baseInfoEdit () {
       tools.openWin({
         name: 'userBaseinfo',
@@ -156,16 +203,42 @@ export default {
         hasLeft: 1,
         data: {
           nameSpace: 'userBaseinfo',
-          baseInfo: this.baseInfo
+          baseInfo: this.baseInfo,
+          id: this.id,
+          callback: 'editUserBaseInfoCallback'
         }
-
       });
     }
   },
   mounted () {
-    if (window.api && window.api.pageParam.nameSpace === 'resumeDetail') {
-      this.type = window.api.pageParam.type;
-      this.baseInfo = {...this.baseInfo, ...window.api.pageParam.resume.baseInfo};
+    if (window.api) {
+      if (window.api.pageParam.nameSpace === 'resumeDetail') {
+        console.log(window.api.pageParam.id);
+        console.log(window.api.pageParam.type);
+        this.id = window.api.pageParam.id;
+        this.type = window.api.pageParam.type || 'detail';
+        switch (window.api.pageParam.from) {
+          case 'userBaseInfo':// 创建基本信息后的回调
+            this.getUserBaseInfo();
+            window.api.closeWin({
+              name: 'userBaseInfo'
+            });
+            break;
+          default:
+            this.getAll();
+            break;
+        }
+      }
+
+      // 编辑基本信息后的回调
+      tools.addEventListener(
+        {
+          name: 'editUserBaseInfoCallback'
+        },
+        (ret, err) => {
+          this.getUserBaseInfo();
+        }
+      );
     }
   }
 };
