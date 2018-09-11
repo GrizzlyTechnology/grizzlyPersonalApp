@@ -1,10 +1,10 @@
 <template>
   <div class="content">
-    <Panel title="基本信息" label="必填">
+    <Panel title="基本信息" :label="labelText">
       <Cell title="姓名" :value="baseInfo.name"></Cell>
       <Cell title="性别" :value="sexText"></Cell>
       <Cell title="出生年月" :value="birthdayText"></Cell>
-      <!-- <Cell title="户籍" :value="houseHoldText"></Cell> -->
+      <Cell title="户籍" :value="houseHoldText"></Cell>
       <Cell title="地址" :value="addressText"></Cell>
       <Cell title="手机号码" :value="baseInfo.phone"></Cell>
       <Cell title="电子邮箱" :value="baseInfo.email"></Cell>
@@ -19,19 +19,35 @@
         <Icon left value=":icon-75bianji" />编辑
       </Button>
     </Panel>
-    <Panel title="教育经历" label="必填">
+    <Panel title="教育经历" :label="labelText">
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel title="实习经历" label="必填">
+    <Panel title="实习经历" >
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel title="项目经验" label="必填">
+    <Panel title="项目经验" >
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel title="自我介绍" label="必填">
-      <div class="introduction">自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍</div>
+    <Panel v-if="type!=='detail' || introduction.length>0" title="自我描述">
+      <Button
+        v-if="type==='edit'"
+        class="editBtn"
+        slot="end"
+        flat
+        color="#009688"
+        @click="introductionEdit"
+      >
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <div v-if="introduction.length>0" class="introduction">
+        {{introduction}}
+      </div>
+      <div slot="info">
+        暂无自我描述
+      </div>
     </Panel>
-    <Panel title="技能评价" label="必填">
+
+    <Panel title="技能评价">
       <SkillLine title="Axure" :value="0" />
       <SkillLine title="Axure" :value="10" />
       <SkillLine title="Axure" :value="20" />
@@ -44,7 +60,7 @@
       <SkillLine title="Axure" :value="90" />
       <SkillLine title="Axure" :value="100" />
     </Panel>
-    <Panel title="期望工作" label="必填">
+    <Panel title="期望工作" :label="labelText">
       <Cell title="期望职位" value="说明文字"></Cell>
       <Cell title="期望月薪" value="说明文字"></Cell>
       <Cell title="期望城市" value="说明文字"></Cell>
@@ -71,18 +87,19 @@ export default {
   name: 'userClass',
   data () {
     return {
-      type: 'detail',
+      type: 'edit',
       id: null,
+      introduction: '',
       baseInfo: {
         title: '', // 简历名称
         name: '', // true string 真实姓名
         sex: null, // true string 性别
         birthday: null, // true string生日
-        // houseHold: [], // true string 籍贯
+        houseHold: [], // true string 籍贯
         address: [],
         street: '',
         phone: '', // true string手机
-        email: '' // true string 邮箱
+        email: '' // true string 邮箱，
       },
       education: [
         {
@@ -127,15 +144,18 @@ export default {
     Icon
   },
   computed: {
+    labelText () {
+      return this.type === 'edit' ? '必填' : '';
+    },
     birthdayText () {
       return this.baseInfo.birthday ? moment(this.baseInfo.birthday).format('YYYY年MM月DD日') : '';
     },
     sexText () {
       return this.baseInfo.sex ? dictMap.sex[this.baseInfo.sex] : '';
     },
-    // houseHoldText () {
-    //   return this.baseInfo.houseHold.map(row => row.label).join(' / ');
-    // },
+    houseHoldText () {
+      return this.baseInfo.houseHold.map(row => row.label).join(' / ');
+    },
     addressText () {
       return this.baseInfo.address.map(row => row.label).join(' / ') + this.baseInfo.street;
     }
@@ -143,7 +163,6 @@ export default {
   methods: {
     // 一次获取所有信息
     async getAll () {
-      console.log(this.id);
       tools.showProgress();
       const response = await Promise.all([
         service.getUserBaseInfo({
@@ -162,6 +181,7 @@ export default {
         phone: response[0].result.resumeInfo[0].phone, // true string手机
         email: response[0].result.resumeInfo[0].email // true string 邮箱
       };
+      this.introduction = response[0].result.resumeInfo[0].introduction;
     },
     // 获取用户基础信息
     async getUserBaseInfo () {
@@ -183,12 +203,12 @@ export default {
             phone: response.result.resumeInfo[0].phone, // true string手机
             email: response.result.resumeInfo[0].email // true string 邮箱
           };
-          console.log(JSON.stringify(this.baseInfo));
+          this.introduction = response.result.resumeInfo[0].introduction;
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '基本信息获取失败'
+            message: '简历信息获取失败'
           });
           break;
       }
@@ -205,7 +225,23 @@ export default {
           nameSpace: 'userBaseinfo',
           baseInfo: this.baseInfo,
           id: this.id,
-          callback: 'editUserBaseInfoCallback'
+          callback: 'getUserBaseInfo'
+        }
+      });
+    },
+    introductionEdit () {
+      tools.openWin({
+        name: 'userIntroduction',
+        url: '../win.html',
+        title: '自我描述',
+        fname: 'userIntroduction_f',
+        furl: './userCenter/userIntroduction.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'userIntroduction',
+          introduction: this.introduction,
+          id: this.id,
+          callback: 'getUserBaseInfo'
         }
       });
     }
@@ -233,7 +269,7 @@ export default {
       // 编辑基本信息后的回调
       tools.addEventListener(
         {
-          name: 'editUserBaseInfoCallback'
+          name: 'getUserBaseInfo'
         },
         (ret, err) => {
           this.getUserBaseInfo();
@@ -255,6 +291,9 @@ export default {
 }
 </style>
 <style lang="less" scoped>
+.infoNotice{
+
+}
 .introduction {
   padding: 15px;
   line-height: 1.8;
