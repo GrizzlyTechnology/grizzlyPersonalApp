@@ -83,8 +83,23 @@ import Panel from 'components/Panel';
 import StepVertical from 'components/StepVertical';
 import SkillLine from 'components/SkillLine';
 
+// 基础信息的适配器
+function baseInfoAdapter (data) {
+  return {
+    title: data.title, // 简历名称
+    name: data.name, // true string 真实姓名
+    sex: data.sex, // true string 性别
+    birthday: data.birthday * 1000, // true string生日
+    // houseHold: JSON.parse(data.houseHold), // true string 籍贯
+    houseHold: [], // true string 籍贯
+    address: JSON.parse(data.address),
+    street: data.street,
+    phone: data.phone, // true string手机
+    email: data.email // true string 邮箱
+  };
+}
 export default {
-  name: 'userClass',
+  name: 'resumeDetail',
   data () {
     return {
       type: 'edit',
@@ -170,19 +185,8 @@ export default {
         })
       ]);
       tools.hideProgress();
-      this.baseInfo = {
-        title: response[0].result.resumeInfo[0].title, // 简历名称
-        name: response[0].result.resumeInfo[0].name, // true string 真实姓名
-        sex: response[0].result.resumeInfo[0].sex, // true string 性别
-        birthday: response[0].result.resumeInfo[0].birthday * 1000, // true string生日
-        // houseHold: JSON.parse(response.result.resumeInfo[0].houseHold), // true string 籍贯
-        houseHold: [], // true string 籍贯
-        address: JSON.parse(response[0].result.resumeInfo[0].address),
-        street: response[0].result.resumeInfo[0].street,
-        phone: response[0].result.resumeInfo[0].phone, // true string手机
-        email: response[0].result.resumeInfo[0].email // true string 邮箱
-      };
-      this.introduction = response[0].result.resumeInfo[0].introduction;
+      this.baseInfo = baseInfoAdapter(response[0].result.resumeInfo[0]);
+      this.introduction = response[0].result.resumeInfo[0].introduction || '';
     },
     // 获取用户基础信息
     async getUserBaseInfo () {
