@@ -210,10 +210,12 @@ export default {
         resumeId: this.id
       });
       tools.hideProgress();
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.baseInfo = baseInfoAdapter(response.result.resumeInfo[0]);
           this.introduction = response.result.resumeInfo[0].introduction || '';
+          // alert(this.baseInfo.houseHold[0].label);
           break;
         default:
           tools.toast({
