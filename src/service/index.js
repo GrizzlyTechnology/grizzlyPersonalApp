@@ -57,7 +57,6 @@ function delEmptyAttr (arg) {
         delete params[key];
       }
     });
-
     rObj = params;
   }
 
@@ -79,7 +78,7 @@ function request ({ host = '', version = '', url, params, method = 'post' }) {
       } else {
         url += '?_=' + tk;
       }
-
+      // console.log(url);
       axios[method](host === '' ? url : `http://${host}${url}`, data).then(
         response => {
           // TODO 这里做数据的验证

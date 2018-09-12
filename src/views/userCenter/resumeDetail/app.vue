@@ -8,38 +8,24 @@
       <Cell title="地址" :value="addressText"></Cell>
       <Cell title="手机号码" :value="baseInfo.phone"></Cell>
       <Cell title="电子邮箱" :value="baseInfo.email"></Cell>
-      <Button
-        v-if="type==='edit'"
-        class="editBtn"
-        slot="end"
-        flat
-        color="#009688"
-        @click="baseInfoEdit"
-      >
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="baseInfoEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
     </Panel>
     <Panel title="教育经历" :label="labelText">
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel title="实习经历" >
+    <Panel title="实习经历">
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel title="项目经验" >
+    <Panel title="项目经验">
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel v-if="type!=='detail' || introduction.length>0" title="自我描述">
-      <Button
-        v-if="type==='edit'"
-        class="editBtn"
-        slot="end"
-        flat
-        color="#009688"
-        @click="introductionEdit"
-      >
+    <Panel :noContent="introduction.length===0" v-if="type!=='detail' || introduction.length>0" title="自我描述">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="introductionEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
-      <div v-if="introduction.length>0" class="introduction">
+      <div class="introduction">
         {{introduction}}
       </div>
       <div slot="info">
@@ -61,14 +47,7 @@
       <SkillLine title="Axure" :value="100" />
     </Panel>
     <Panel title="期望工作" :label="labelText">
-      <Button
-        v-if="type==='edit'"
-        class="editBtn"
-        slot="end"
-        flat
-        color="#009688"
-        @click="expectedWorkEdit"
-      >
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="expectedWorkEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
       <Cell title="期望职位" :value="expectedWork.desiredPosition"></Cell>
@@ -112,8 +91,8 @@ export default {
   name: 'resumeDetail',
   data () {
     return {
-      type: 'edit',
-      id: null,
+      type: window.api.pageParam.type || 'detail',
+      id: window.api.pageParam.id || null,
       introduction: '',
       baseInfo: {
         title: '', // 简历名称
@@ -171,7 +150,9 @@ export default {
       return this.type === 'edit' ? '必填' : '';
     },
     birthdayText () {
-      return this.baseInfo.birthday ? moment(this.baseInfo.birthday).format('YYYY年MM月DD日') : '';
+      return this.baseInfo.birthday
+        ? moment(this.baseInfo.birthday).format('YYYY年MM月DD日')
+        : '';
     },
     sexText () {
       return this.baseInfo.sex ? dictMap.sex[this.baseInfo.sex] : '';
@@ -180,19 +161,28 @@ export default {
       return this.baseInfo.houseHold.map(row => row.label).join(' ');
     },
     addressText () {
-      return this.baseInfo.address.map(row => row.label).join(' ') + (this.baseInfo.street || '');
+      return (
+        this.baseInfo.address.map(row => row.label).join(' ') +
+        (this.baseInfo.street || '')
+      );
     },
     expectedCityText () {
       return this.expectedWork.expectedCity.map(row => row.label).join('，');
     },
     workTypeText () {
-      return this.expectedWork.workType ? dictMap.workType[Number(this.expectedWork.workType)] : '';
+      return this.expectedWork.workType
+        ? dictMap.workType[Number(this.expectedWork.workType)]
+        : '';
     },
     currentStateText () {
-      return this.expectedWork.currentState ? dictMap.currentState[Number(this.expectedWork.currentState)] : '';
+      return this.expectedWork.currentState
+        ? dictMap.currentState[Number(this.expectedWork.currentState)]
+        : '';
     },
     timeToPostText () {
-      return this.expectedWork.timeToPost ? dictMap.timeToPost[Number(this.expectedWork.timeToPost)] : '';
+      return this.expectedWork.timeToPost
+        ? dictMap.timeToPost[Number(this.expectedWork.timeToPost)]
+        : '';
     }
   },
   methods: {
@@ -206,7 +196,6 @@ export default {
       ]);
       tools.hideProgress();
       if (response.length) {
-        console.log(JSON.stringify(response[0]));
         this.baseInfo = baseInfoAdapter(response[0].result.resumeInfo[0]);
         this.introduction = response[0].result.resumeInfo[0].introduction || '';
       } else {
@@ -305,10 +294,8 @@ export default {
   mounted () {
     if (window.api) {
       if (window.api.pageParam.nameSpace === 'resumeDetail') {
-        this.id = window.api.pageParam.id;
-        this.type = window.api.pageParam.type || 'detail';
         switch (window.api.pageParam.from) {
-          case 'userBaseInfo':// 创建基本信息后的回调
+          case 'userBaseInfo': // 创建基本信息后的回调
             this.getUserBaseInfo();
             window.api.closeWin({
               name: 'userBaseInfo'
@@ -335,8 +322,7 @@ export default {
 }
 </style>
 <style lang="less" scoped>
-.infoNotice{
-
+.infoNotice {
 }
 .introduction {
   padding: 15px;

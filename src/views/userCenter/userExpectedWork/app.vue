@@ -29,7 +29,7 @@
             </div>
           </FormItem>
           <FormItem label="工作性质" prop="workType">
-            <TextField v-model="workTypeText"></TextField>
+            <TextField v-model="workTypeText" readonly @click="workTypePopup=true"></TextField>
           </FormItem>
         </Form>
       </div>
@@ -43,7 +43,7 @@
 <script>
 import service from 'service';
 // import moment from 'moment';
-import { Button, TextField, Radio, Chip } from 'muse-ui';
+import { Button, TextField, Radio, Chip, SlidePicker } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 // import regexps from 'util/regexps';
 import tools from 'util/tools';
@@ -52,7 +52,9 @@ export default {
   name: 'userInfo',
   data () {
     return {
-      id: window.api.pageParam.id || null,
+      workTypePopup: false,
+      // id: window.api.pageParam.id || null,
+      id: 2,
       rowHeight: 28,
       form: {
         // desiredPosition: window.api.pageParam.desiredPosition,
@@ -85,6 +87,7 @@ export default {
     }
   },
   components: {
+    SlidePicker,
     Button,
     Form,
     FormItem,
