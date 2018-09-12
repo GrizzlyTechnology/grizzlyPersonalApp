@@ -11,11 +11,13 @@
         <span class='selectNum' v-text="selectIndex.length+'/5'"></span>
       </SubHeader>
       <Chip color='#009688' class="demo-chip selected" v-for="(chip, index) in selectIndex" :key="chip.id" @delete="remove(index)" delete>{{chip.value}}</Chip>
+      <Button color="#009688" textColor="#ffffff" class='mt25' :full-width="true" :style="{boxShadow: '0 0 0'}" large @click='pushData'>确定</Button>
     </div>
   </div>
 </template>
 <script>
-import { ExpansionPanel, Chip, SubHeader } from "muse-ui";
+import tools from 'util/tools';
+import { ExpansionPanel, Chip, SubHeader, Button } from "muse-ui";
 import { Toast } from "mint-ui";
 export default {
   data() {
@@ -160,7 +162,8 @@ export default {
   components: {
     ExpansionPanel,
     Chip,
-    SubHeader
+    SubHeader,
+    Button
   },
   methods: {
     toggle(panel) {
@@ -170,7 +173,7 @@ export default {
       this.selectIndex.splice(index, 1);
     },
     toggleColor(index) {
-      if (this.selectIndex.length >= 5) {
+      if (this.selectIndex.length >= 5 && !this.selectIndex.includes(index)) {
         Toast({ message: "最多选择5个行业" });
         return;
       }
@@ -179,6 +182,14 @@ export default {
         this.selectIndex.splice(thisIndex, 1);
       } else {
         this.selectIndex.push(index);
+      }
+    },
+    pushData() {
+      if (this.selectIndex.length <= 0) {
+        Toast({ message: "请选择行业" });
+        return;
+      } else {
+         tools.closeWin(this.selectIndex);
       }
     }
   },
@@ -193,9 +204,20 @@ body .mu-chip {
   margin-bottom: 10px;
 }
 
+.content{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.bodyer{
+  flex: 1;
+  overflow: auto;
+  height: 100%;
+}
+
 .fixBox {
-  position: fixed;
-  bottom: 0px;
   width: 100%;
   padding: 10px;
   border-top: 1px solid #eee;
@@ -209,5 +231,9 @@ body .mu-chip {
 .selectNum {
   font-size: 12px;
   margin-left: 10px;
+}
+
+.mt25 {
+  margin-top: 25px;
 }
 </style>
