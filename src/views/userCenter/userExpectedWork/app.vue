@@ -52,8 +52,7 @@ export default {
   name: 'userInfo',
   data () {
     return {
-      // id: window.api.pageParam.id || null,
-      id: 2,
+      id: window.api.pageParam.id || null,
       rowHeight: 28,
       form: {
         // desiredPosition: window.api.pageParam.desiredPosition,
@@ -104,9 +103,9 @@ export default {
     async edit () {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
-        resumeId: this.id,
         ...this.form,
-        expectedCity: this.expectedCityList
+        expectedCity: this.expectedCityList,
+        resumeId: this.id
       });
       tools.hideProgress();
       switch (response.code) {

@@ -156,8 +156,8 @@ export default {
       }));
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
-        resumeId: this.id,
-        ...this.form
+        ...this.form,
+        resumeId: this.id
       });
       tools.hideProgress();
       console.log(JSON.stringify(response));
