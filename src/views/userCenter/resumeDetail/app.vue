@@ -183,7 +183,7 @@ export default {
       return this.baseInfo.address.map(row => row.label).join(' ') + (this.baseInfo.street || '');
     },
     expectedCityText () {
-      return this.expectedWork.expectedCity.map(r => r.label).join('，');
+      return this.expectedWork.expectedCity.map(row => row.label).join('，');
     },
     workTypeText () {
       return this.expectedWork.workType ? dictMap.workType[Number(this.expectedWork.workType)] : '';
@@ -240,7 +240,7 @@ export default {
       tools.openWin({
         name: 'userBaseinfo',
         url: '../win.html',
-        title: '基本信息',
+        title: '编辑基本信息',
         fname: 'userBaseinfo_f',
         furl: './userCenter/userBaseinfo.html',
         hasLeft: 1,
@@ -259,7 +259,7 @@ export default {
       tools.openWin({
         name: 'userIntroduction',
         url: '../win.html',
-        title: '自我描述',
+        title: '编辑自我描述',
         fname: 'userIntroduction_f',
         furl: './userCenter/userIntroduction.html',
         hasLeft: 1,
@@ -278,7 +278,7 @@ export default {
       tools.openWin({
         name: 'userExpectedWork',
         url: '../win.html',
-        title: '期望工作',
+        title: '编辑期望工作',
         fname: 'userExpectedWork_f',
         furl: './userCenter/userExpectedWork.html',
         hasLeft: 1,

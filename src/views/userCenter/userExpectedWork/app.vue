@@ -3,37 +3,36 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form">
-          <FormItem label="姓名" prop="name" :rules="nameRules">
-            <TextField v-model="form.name"></TextField>
+          <FormItem label="期望职位" prop="desiredPosition" :rules="desiredPositionRules">
+            <TextField v-model="form.desiredPosition"></TextField>
           </FormItem>
-          <FormItem label="性别" prop="sex">
-            <Radio v-model="form.sex" :value="1" label="男"></Radio>
-            <Radio v-model="form.sex" :value="0" label="女"></Radio>
+          <FormItem label="期望月薪" prop="expectedSalary" :rules="expectedSalaryRules">
+            <TextField v-model="form.expectedSalary"></TextField>
           </FormItem>
-          <FormItem label="出生年月" prop="birthday">
-            <DateInput :value="birthdayText" :max-date="new Date()" @change="changeBirthday" format="YYYY年MM月DD日" no-display view-type="list" container="bottomSheet"></DateInput>
-          </FormItem>
-          <FormItem label="户籍" prop="houseHoldText" :rules="houseHoldRules">
-            <TextField readonly v-model="houseHoldText" @click="houseHoldHandle">
-            </TextField>
-          </FormItem>
-          <FormItem label="现居地" prop="addressText" :rules="addressRules">
-            <TextField readonly v-model="addressText" @click="addressHandle"></TextField>
-          </FormItem>
-          <FormItem label="街道" prop="street" :rules="streetRules">
-            <TextField v-model="form.street"></TextField>
-          </FormItem>
-          <FormItem label="手机号码" prop="phone" :rules="phoneRules">
-            <TextField v-model="form.phone"></TextField>
-          </FormItem>
-          <FormItem label="电子邮箱" prop="email" :rules="emailRules">
-            <TextField v-model="form.email"></TextField>
+          <FormItem label="期望城市" prop="expectedCity" :rules="expectedCityRules">
+            <TextField
+              readonly
+              multi-line
+              :style="{height:rowHeight + 'px'}"
+            />
+            <div class="chipCon" @click="expectedCityHandle">
+              <div ref="chipCon">
+                <Chip
+                  @click.stop="()=>{}"
+                  class="cityTip"
+                  v-for="row in expectedCityList"
+                  :key="row.id"
+                  :delete="true"
+                  @delete="delCity(row)"
+                >{{row.label}}</Chip>
+              </div>
+            </div>
           </FormItem>
         </Form>
       </div>
     </div>
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">{{id?'保存':'下一步'}}</Button>
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">保存</Button>
     </div>
   </div>
 </template>
@@ -41,70 +40,43 @@
 <script>
 import service from 'service';
 // import moment from 'moment';
-import { Button, TextField, Radio, DateInput } from 'muse-ui';
+import { Button, TextField, Radio, Chip } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
-import regexps from 'util/regexps';
+// import regexps from 'util/regexps';
 import tools from 'util/tools';
 // import dictMap from 'util/dictMap';
 export default {
   name: 'userInfo',
   data () {
     return {
-      id: window.api.pageParam.id || null,
+      // id: window.api.pageParam.id || null,
+      id: 2,
+      rowHeight: 28,
       form: {
-        name: window.api.pageParam.baseInfo.name || '', // true string 真实姓名
-        sex: window.api.pageParam.baseInfo.sex || 1, // true string 性别
-        birthday:
-          window.api.pageParam.baseInfo.birthday || Date.now().valueOf(), // true string生日
-        houseHold: window.api.pageParam.baseInfo.houseHold || [], // true string 籍贯
-        address: window.api.pageParam.baseInfo.address || [],
-        street: window.api.pageParam.baseInfo.street || '',
-        phone: window.api.pageParam.baseInfo.phone || '', // true string手机
-        email: window.api.pageParam.baseInfo.email || '' // true string 邮箱
+        // desiredPosition: window.api.pageParam.desiredPosition,
+        // expectedSalary: window.api.pageParam.expectedSalary,
+        // expectedCity: window.api.pageParam.expectedCity,
+        // workType: window.api.pageParam.workType || 0,
+        // currentState: window.api.pageParam.currentState || 0,
+        // timeToPost: window.api.pageParam.timeToPost || 0
+        desiredPosition: '',
+        expectedSalary: '',
+        expectedCity: {},
+        workType: 0,
+        currentState: 0,
+        timeToPost: 0
       },
-      nameRules: [{ validate: val => !!val, message: '必须填写姓名' }],
-      birthdayRules: [{ validate: val => val, message: '必须填写出生年月' }],
-      houseHoldRules: [
-        {
-          validate: val => this.houseHoldText.length > 0,
-          message: '必须填写籍贯'
-        }
-      ],
-      addressRules: [
-        {
-          validate: val => this.addressText.length > 0,
-          message: '必须填写地址信息'
-        }
-      ],
-      streetRules: [
-        {
-          validate: val => this.form.street.length > 0,
-          message: '必须填写街道信息'
-        }
-      ],
-      phoneRules: [
-        {
-          validate: val => regexps.mobPhone.test(this.form.phone),
-          message: '请填写正确的手机号码'
-        }
-      ],
-      emailRules: [
-        {
-          validate: val => regexps.email.test(this.form.email),
-          message: '请填写正确的电子邮箱'
-        }
+      desiredPositionRules: [{ validate: val => !!val, message: '必须填写期望职位' }],
+      expectedSalaryRules: [{ validate: val => !!val, message: '必须填写期望月薪' }],
+      expectedCityRules: [
+        { validate: val => Object.keys(this.form.expectedCity).length > 0, message: '至少选择一个期望城市' },
+        { validate: val => Object.keys(this.form.expectedCity).length <= 3, message: '最多选择三个期望城市' }
       ]
     };
   },
   computed: {
-    birthdayText () {
-      return new Date(this.form.birthday);
-    },
-    houseHoldText () {
-      return this.form.houseHold.map(row => row.label).join(' / ');
-    },
-    addressText () {
-      return this.form.address.map(row => row.label).join(' / ');
+    expectedCityList () {
+      return Object.keys(this.form.expectedCity).map(id => this.form.expectedCity[id]);
     }
   },
   components: {
@@ -112,119 +84,82 @@ export default {
     Form,
     FormItem,
     TextField,
-    Radio,
-    DateInput
+    Chip,
+    Radio
+  },
+  watch: {
+    expectedCityList () {
+      setTimeout(() => {
+        this.rowHeight = this.$refs.chipCon.offsetHeight;
+      }, 50);
+    }
   },
   methods: {
-    async create () {
-      tools.showProgress();
-      const response = await service.createUserBaesInfo(this.form);
-      tools.hideProgress();
-
-      switch (response.code) {
-        case 0:
-          tools.toast({
-            position: 'top',
-            message: '基本信息创建成功'
-          });
-          tools.openWin({
-            name: 'resumeDetail',
-            url: '../win.html',
-            title: '我的简历',
-            fname: 'resumeDetail_f',
-            furl: './userCenter/resumeDetail.html',
-            hasLeft: 1,
-            data: {
-              nameSpace: 'resumeDetail',
-              from: 'userBaseInfo',
-              id: response.result.resumeInfo.id,
-              type: 'edit'
-            }
-          });
-          break;
-        default:
-          tools.toast({
-            position: 'top',
-            message: '基本信息创建失败，请稍后重试！！'
-          });
-          break;
-      }
-    },
     async edit () {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
         id: this.id,
-        ...this.form
+        ...this.form,
+        expectedCity: this.expectedCityList
       });
       tools.hideProgress();
       switch (response.code) {
         case 0:
           tools.toast({
             position: 'top',
-            message: '基本信息编辑成功'
+            message: '期望工作编辑成功'
           });
           tools.closeWin();
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '基本信息编辑失败，请稍后重试！！'
+            message: '期望工作编辑失败，请稍后重试！！'
           });
           break;
       }
     },
-    changeBirthday (date) {
-      this.form.birthday = date.valueOf();
-    },
-    houseHoldHandle () {
-      tools.openWin({
-        name: 'areaSelector',
-        url: '../win.html',
-        title: '选择户籍',
-        fname: 'areaSelector_f',
-        furl: './common/areaSelector.html',
-        hasLeft: 1,
-        data: {
-          nameSpace: 'areaSelector',
-          area: this.form.houseHold,
-          level: 2,
-          callback: (ret, err) => {
-            this.form.houseHold = ret.value;
+    expectedCityHandle () {
+      if (this.expectedCityList.length < 3) {
+        tools.openWin({
+          name: 'areaSelector',
+          url: '../win.html',
+          title: '选择期望城市',
+          fname: 'areaSelector_f',
+          furl: './common/areaSelector.html',
+          hasLeft: 1,
+          data: {
+            nameSpace: 'areaSelector',
+            area: [],
+            level: 2,
+            callback: (ret, err) => {
+              const city = ret.value[ret.value.length - 1];
+              this.form.expectedCity[city.value] = city;
+            }
           }
-        }
-      });
+        });
+      } else {
+        tools.toast({
+          position: 'top',
+          message: '最多选择三个期望城市'
+        });
+      }
     },
-    addressHandle () {
-      tools.openWin({
-        name: 'areaSelector',
-        url: '../win.html',
-        title: '选择现居地',
-        fname: 'areaSelector_f',
-        furl: './common/areaSelector.html',
-        hasLeft: 1,
-        data: {
-          nameSpace: 'areaSelector',
-          area: this.form.address,
-          level: 3,
-          callback: (ret, err) => {
-            this.form.address = ret.value;
-          }
-        }
-      });
+    delCity (city) {
+      delete this.form.expectedCity[city.value];
+      this.form.expectedCity = {...this.form.expectedCity};
     },
     submit () {
       this.$refs.form.validate().then((result) => {
         if (result === true) {
-          if (this.id) {
-            this.edit();
-          } else {
-            this.create();
-          }
+          this.edit();
         }
       });
     }
   },
-  mounted () {}
+  mounted () {
+    this.rowHeight = this.$refs.chipCon.offsetHeight;
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -238,7 +173,18 @@ export default {
   flex: 1;
   overflow: auto;
 }
-// .startDateTime{
-//   bottom: 50px;
-// }
+.chipCon{
+  // background-color: red;
+  position: absolute;
+  left: 0;
+  top: 28px;
+  bottom: 17px;
+  right: 0;
+}
+.cityTip{
+  border-radius: 10px;
+  line-height: 20px;
+  margin-bottom: 4px;
+  margin-right: 4px;
+}
 </style>

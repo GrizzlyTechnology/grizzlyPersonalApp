@@ -8,8 +8,8 @@
               v-model="form.introduction"
               multi-line
               :max-length="255"
-              :rows="5"
-              :rows-max="5"
+              :rows="10"
+              :rows-max="10"
             />
           </FormItem>
         </Form>
