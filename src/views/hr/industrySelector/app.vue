@@ -1,162 +1,159 @@
 <template>
-<div class="content">
-  <div class="bodyer">
- <ExpansionPanel :expand="panel === 'panel'+idustrySort.id" @change="toggle('panel'+idustrySort.id)" v-for='idustrySort in idustrySorts' :key='idustrySort.id'>
-    <div slot="header">{{idustrySort.value}}</div>
-    <Chip v-for='idustry in idustrySort.idustrys' color='#f5f5f5' :key='idustry.id'>{{idustry.value}}</Chip>
-  </ExpansionPanel>
+  <div class="content">
+    <div class="bodyer">
+      <ExpansionPanel :expand="panel === 'panel'+idustrySort.id" @change="toggle('panel'+idustrySort.id)" v-for='idustrySort in idustrySorts' :key='idustrySort.id'>
+        <div slot="header">{{idustrySort.value}}</div>
+        <Chip v-for='idustry in idustrySort.idustrys' :text-color="selectIndex.includes(idustry) ?'#fff':'#333' " :color="selectIndex.includes(idustry) ?'#009688':'#f5f5f5' " @click='toggleColor(idustry)' :key='idustry.id'>{{idustry.value}}</Chip>
+      </ExpansionPanel>
+    </div>
+    <div class='p16 fixBox'>
+      <SubHeader>已选行业
+        <span class='selectNum' v-text="selectIndex.length+'/5'"></span>
+      </SubHeader>
+      <Chip color='#009688' class="demo-chip selected" v-for="(chip, index) in selectIndex" :key="chip.id" @delete="remove(index)" delete>{{chip.value}}</Chip>
+    </div>
   </div>
-  <div class='p16 fixBox'>
-  <SubHeader>已选行业<span class='selectNum'>0/5</span></SubHeader>
-    <Chip color='#009688'class="demo-chip selected" v-for="(chip, index) in chips" :key="chip"  @delete="remove(index)" delete>{{chip}}</Chip>
-  </div>
-</div>
 </template>
 <script>
-import { ExpansionPanel, Chip, SubHeader } from 'muse-ui';
-// import { List, ListItem, ListAction, ListItemContent, ListItemTitle, ListItemSubTitle } from 'muse-ui/lib/List';
-// import { Container } from 'muse-ui/lib/Grid';
+import { ExpansionPanel, Chip, SubHeader } from "muse-ui";
+import { Toast } from "mint-ui";
 export default {
-  data () {
+  data() {
     return {
-      panel: '',
+      selectColor: false,
+      selectIndex: [],
+      panel: "",
       idustrySorts: [
-        { id: 1,
-          value: '计算机/互联网/通信电子',
+        {
+          id: 1,
+          value: "计算机/互联网/通信电子",
           idustrys: [
             {
-              id: 1,
-              value: '计算机软件'
+              id: 1456456,
+              value: "计算机软件"
             },
             {
-              id: 2,
-              value: '计算机硬件'
+              id: 2678678,
+              value: "计算机硬件"
             },
             {
-              id: 3,
-              value: '计算机'
+              id: 33245345,
+              value: "计算机"
             },
             {
-              id: 4,
-              value: '制药 / 医疗'
+              id: 4567,
+              value: "制药 / 医疗"
             },
             {
-              id: 5,
-              value: '广告 / 媒体'
+              id: 5678,
+              value: "广告 / 媒体"
             }
           ]
         },
         {
           id: 2,
-          value: '会计/金融/银行/保险',
+          value: "会计/金融/银行/保险",
           idustrys: [
             {
-              id: 1,
-              value: '计算机软件1'
+              id: 11,
+              value: "计算机软件1"
             },
             {
-              id: 2,
-              value: '计算机硬件123'
+              id: 22,
+              value: "计算机硬件123"
             },
             {
-              id: 3,
-              value: '计算机123'
+              id: 33,
+              value: "计算机123"
             },
             {
-              id: 4,
-              value: '制药 / 医疗123'
+              id: 44,
+              value: "制药 / 医疗123"
             },
             {
-              id: 5,
-              value: '广告 / 媒体123'
+              id: 55,
+              value: "广告 / 媒体123"
             }
           ]
         },
         {
           id: 3,
-          value: '贸易/消费/制造/营运',
+          value: "贸易/消费/制造/营运",
           idustrys: [
             {
-              id: 1,
-              value: '计算机软件134345'
+              id: 1222,
+              value: "计算机软件134345"
             },
             {
-              id: 2,
-              value: 'gg'
+              id: 2333,
+              value: "gg"
             },
             {
-              id: 3,
-              value: '456546'
+              id: 34444,
+              value: "456546"
             },
             {
-              id: 4,
-              value: 'dfgdfg'
+              id: 45555,
+              value: "dfgdfg"
             },
             {
-              id: 5,
-              value: 'gfdfg'
+              id: 5666,
+              value: "gfdfg"
             }
           ]
         },
         {
           id: 4,
-          value: '制药/医疗',
+          value: "制药/医疗",
           idustrys: [
             {
-              id: 1,
-              value: '计算机软件134345'
+              id: 134534,
+              value: "计算机软件134345"
             },
             {
-              id: 2,
-              value: 'gg'
+              id: 234534,
+              value: "gg"
             },
             {
-              id: 3,
-              value: '456546'
+              id: 3567,
+              value: "456546"
             },
             {
-              id: 4,
-              value: 'dfgdfg'
+              id: 4567,
+              value: "dfgdfg"
             },
             {
-              id: 5,
-              value: 'gfdfg'
+              id: 5567,
+              value: "gfdfg"
             }
           ]
         },
         {
           id: 5,
-          value: '广告/媒体',
+          value: "广告/媒体",
           idustrys: [
             {
-              id: 1,
-              value: '计算机软件134345'
+              id: 12345345,
+              value: "计算机软件134345"
             },
             {
-              id: 2,
-              value: 'gg'
+              id: 25678568,
+              value: "gg"
             },
             {
-              id: 3,
-              value: '456546'
+              id: 3345345,
+              value: "456546"
             },
             {
-              id: 4,
-              value: 'dfgdfg'
+              id: 46465464,
+              value: "dfgdfg"
             },
             {
-              id: 5,
-              value: 'gfdfg'
+              id: 5456456,
+              value: "gfdfg"
             }
           ]
         }
-      ],
-      chips: [
-        'primary',
-        'secondary',
-        'secondary',
-        'secondary'
-
       ]
     };
   },
@@ -166,20 +163,31 @@ export default {
     SubHeader
   },
   methods: {
-    toggle (panel) {
-      this.panel = panel === this.panel ? '' : panel;
+    toggle(panel) {
+      this.panel = panel === this.panel ? "" : panel;
     },
-    remove (index) {
-      this.chips.splice(index, 1);
+    remove(index) {
+      this.selectIndex.splice(index, 1);
+    },
+    toggleColor(index) {
+      if (this.selectIndex.length >= 5) {
+        Toast({ message: "最多选择5个行业" });
+        return;
+      }
+      if (this.selectIndex.includes(index)) {
+        var thisIndex = this.selectIndex.indexOf(index);
+        this.selectIndex.splice(thisIndex, 1);
+      } else {
+        this.selectIndex.push(index);
+      }
     }
   },
-  mounted () {
-  }
+  mounted() {}
 };
 </script>
 <style lang="less" scoped>
-@import url('../../../assets/css/base.less');
-body .mu-chip{
+@import url("../../../assets/css/base.less");
+body .mu-chip {
   color: #333;
   margin-left: 10px;
   margin-bottom: 10px;
@@ -194,11 +202,11 @@ body .mu-chip{
   background: #fff;
 }
 
-.mu-chip.selected{
+.mu-chip.selected {
   color: #fff;
 }
 
-.selectNum{
+.selectNum {
   font-size: 12px;
   margin-left: 10px;
 }
