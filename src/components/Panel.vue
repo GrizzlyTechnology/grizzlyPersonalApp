@@ -5,21 +5,24 @@
         {{title}}
         <span class="label" v-if="label.length>0">{{label}}</span>
       </div>
-      <slot v-if="hasEnd" name="end"/>
+      <slot v-if="hasEnd" name="end" />
     </div>
-    <div v-if="hasSlot" class="moduleBodyer">
+    <div v-if="!noContent" class="moduleBodyer">
       <slot/>
     </div>
-    <div v-if="!hasSlot" class="infoNotice">
-      <slot name="info"/>
+    <div v-if="noContent" class="infoNotice">
+      <slot name="info" />
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
+    noContent: {
+      type: Boolean,
+      default: false
+    },
     title: {
       type: String,
       default: ''
@@ -61,7 +64,7 @@ export default {
     font-size: 16px;
     transform: rotate(180deg);
   }
-  .title{
+  .title {
     float: left;
     padding-top: 12px;
   }
@@ -71,16 +74,16 @@ export default {
   border: 1px #ddd solid;
   overflow: hidden;
   margin: 0 15px 15px;
-  background-color: #FFF;
+  background-color: #fff;
 }
-.infoNotice{
+.infoNotice {
   border-radius: 5px;
-  border: 1px #A2D4F7 dashed;
+  border: 1px #a2d4f7 dashed;
   overflow: hidden;
   margin: 0 15px 15px;
-  background-color: #E4F2FB;
+  background-color: #e4f2fb;
   padding: 20px 15px;
   text-align: center;
-  color:#A2D4F7;
+  color: #a2d4f7;
 }
 </style>
