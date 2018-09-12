@@ -25,9 +25,7 @@
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="introductionEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
-      <div class="introduction">
-        {{introduction}}
-      </div>
+      <div class="introduction" v-html="introduction.replace(/\n|\r\n/g,'<br/>')"/>
       <div slot="info">
         暂无自我描述
       </div>
@@ -212,10 +210,12 @@ export default {
         resumeId: this.id
       });
       tools.hideProgress();
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.baseInfo = baseInfoAdapter(response.result.resumeInfo[0]);
           this.introduction = response.result.resumeInfo[0].introduction || '';
+          // alert(this.baseInfo.houseHold[0].label);
           break;
         default:
           tools.toast({
