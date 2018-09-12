@@ -25,9 +25,7 @@
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="introductionEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
-      <div class="introduction">
-        {{introduction}}
-      </div>
+      <div class="introduction" v-html="introduction.replace(/\n|\r\n/g,'<br/>')"/>
       <div slot="info">
         暂无自我描述
       </div>

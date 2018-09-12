@@ -151,6 +151,10 @@ export default {
     },
     async edit () {
       tools.showProgress();
+      console.log(JSON.stringify({
+        ...this.form,
+        resumeId: this.id
+      }));
       const response = await service.updateUserBaesInfo({
         ...this.form,
         resumeId: this.id
