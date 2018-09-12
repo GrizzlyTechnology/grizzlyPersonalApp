@@ -19,7 +19,7 @@
           slot="title"
           @click="resumeDetail(row)"
         >
-          111 {{row.title}}
+          {{row.title}}
         </div>
         <i class="mu-icon icon-right isLink" />
       </CellSwipe>

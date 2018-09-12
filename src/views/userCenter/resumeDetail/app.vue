@@ -84,6 +84,7 @@
 
 <script>
 import service from 'service';
+import isJson from 'is-json';
 import { Button, Icon } from 'muse-ui';
 import { Cell } from 'mint-ui';
 import tools from 'util/tools';
@@ -100,9 +101,8 @@ function baseInfoAdapter (data) {
     name: data.name, // true string 真实姓名
     sex: data.sex, // true string 性别
     birthday: data.birthday * 1000, // true string生日
-    // houseHold: JSON.parse(data.houseHold), // true string 籍贯
-    houseHold: [], // true string 籍贯
-    address: JSON.parse(data.address),
+    houseHold: isJson(data.household) ? JSON.parse(data.household) : [], // true string 籍贯
+    address: isJson(data.address) ? JSON.parse(data.address) : [],
     street: data.street,
     phone: data.phone, // true string手机
     email: data.email // true string 邮箱
@@ -201,11 +201,12 @@ export default {
       tools.showProgress();
       const response = await Promise.all([
         service.getUserBaseInfo({
-          id: this.id
+          resumeId: this.id
         })
       ]);
       tools.hideProgress();
       if (response.length) {
+        console.log(JSON.stringify(response[0]));
         this.baseInfo = baseInfoAdapter(response[0].result.resumeInfo[0]);
         this.introduction = response[0].result.resumeInfo[0].introduction || '';
       } else {
@@ -219,7 +220,7 @@ export default {
     async getUserBaseInfo () {
       tools.showProgress();
       const response = await service.getUserBaseInfo({
-        id: this.id
+        resumeId: this.id
       });
       tools.hideProgress();
       switch (response.code) {
@@ -275,6 +276,10 @@ export default {
     },
 
     expectedWorkEdit () {
+      const expectedCity = {};
+      this.expectedWork.expectedCity.forEach(element => {
+        expectedCity[element.value] = element;
+      });
       tools.openWin({
         name: 'userExpectedWork',
         url: '../win.html',
@@ -284,7 +289,10 @@ export default {
         hasLeft: 1,
         data: {
           nameSpace: 'userExpectedWork',
-          expectedWork: this.expectedWork,
+          expectedWork: {
+            ...this.expectedWork,
+            expectedCity
+          },
           id: this.id,
           callback: (ret, err) => {
             this.getUserBaseInfo();

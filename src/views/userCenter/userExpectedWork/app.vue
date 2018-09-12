@@ -28,6 +28,9 @@
               </div>
             </div>
           </FormItem>
+          <FormItem label="工作性质" prop="workType">
+            <TextField v-model="workTypeText"></TextField>
+          </FormItem>
         </Form>
       </div>
     </div>
@@ -44,7 +47,7 @@ import { Button, TextField, Radio, Chip } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 // import regexps from 'util/regexps';
 import tools from 'util/tools';
-// import dictMap from 'util/dictMap';
+import dictMap from 'util/dictMap';
 export default {
   name: 'userInfo',
   data () {
@@ -77,6 +80,9 @@ export default {
   computed: {
     expectedCityList () {
       return Object.keys(this.form.expectedCity).map(id => this.form.expectedCity[id]);
+    },
+    workTypeText () {
+      return dictMap.workType[this.form.workType];
     }
   },
   components: {
@@ -98,7 +104,7 @@ export default {
     async edit () {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
-        id: this.id,
+        resumeId: this.id,
         ...this.form,
         expectedCity: this.expectedCityList
       });
@@ -133,8 +139,11 @@ export default {
             area: [],
             level: 2,
             callback: (ret, err) => {
+              // console.log(JSON.stringify(ret));
               const city = ret.value[ret.value.length - 1];
+              // console.log(JSON.stringify(city));
               this.form.expectedCity[city.value] = city;
+              this.form.expectedCity = {...this.form.expectedCity};
             }
           }
         });
@@ -180,6 +189,9 @@ export default {
   top: 28px;
   bottom: 17px;
   right: 0;
+  &>div{
+    min-height: 28px;
+  }
 }
 .cityTip{
   border-radius: 10px;

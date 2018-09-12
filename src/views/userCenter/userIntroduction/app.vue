@@ -49,7 +49,7 @@ export default {
     async edit () {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
-        id: this.id,
+        resumeId: this.id,
         introduction: this.form.introduction
       });
       tools.hideProgress();
