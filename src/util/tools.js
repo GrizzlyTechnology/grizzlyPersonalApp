@@ -593,6 +593,7 @@ u.sleep = function (times) {
     }, times);
   });
 };
+
 u.openWin = function (params) {
   const { name, url, title = '', fname, furl, hasLeft = false, hasRight = false, data = {}, ...winData } = params
   if (window.api) {
@@ -605,6 +606,18 @@ u.openWin = function (params) {
       }
     };
 
+    if (typeof (data.callback) === 'function') {
+      const eventName = ('ENVENT' + Date.now().valueOf()) + Math.random();
+      u.addEventListener(
+        {
+          name: eventName
+        },
+        data.callback
+      );
+      data.eventName=eventName;
+      delete data.callback;
+    }
+
     if (fname !== undefined) {
       op.pageParam.wtitle = title;
       op.pageParam.fname = fname;
@@ -613,6 +626,8 @@ u.openWin = function (params) {
       op.pageParam.hasRight = hasRight;
       op.pageParam.data = data;
     }
+
+
     setTimeout(function () {
       window.api.openWin(op);
     }, 350)
@@ -626,12 +641,29 @@ u.addEventListener = function (ope = {}, callback = () => { }) {
     window.api.addEventListener(
       ope,
       (ret, err) => {
+        console.log('evnet name: ' + ope.name);
         callback(
           { ...ret, value: typeof (ret.value) === 'string' ? JSON.parse(ret.value) : ret.value },
           err
         );
+        window.api.removeEventListener({
+          name: ope.name
+        });
       }
     );
+  }
+};
+
+u.closeWin = function (data = {}) {
+  if (window.api) {
+    if (window.api.pageParam.eventName && window.api.pageParam.eventName !== '') {
+      console.log('callback name: ' + window.api.pageParam.eventName)
+      window.api.sendEvent({
+        name: window.api.pageParam.eventName,
+        extra: JSON.stringify(data)
+      });
+    }
+    window.api.closeWin();
   }
 };
 /* end */

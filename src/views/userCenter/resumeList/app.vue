@@ -2,20 +2,31 @@
   <div class="content">
     <div class="bodyer">
       <div class="listCon">
-      <CellSwipe v-for="row in list" :key="row.id" class="rowList" :right="[
+      <CellSwipe
+        class="rowList"
+        v-for="row in list"
+        :key="row.id"
+        :right="[
           {
             content: '删除',
             style: { background: '#e7585a', color: '#fff' },
             handler: () => {del(row)}
           }
-        ]">
-        <div class="title" slot="title" @click="resumeDetail(row)">{{row.title}}</div>
+        ]"
+      >
+        <div
+          class="title"
+          slot="title"
+          @click="resumeDetail(row)"
+        >
+          111 {{row.title}}
+        </div>
         <i class="mu-icon icon-right isLink" />
       </CellSwipe>
       </div>
     </div>
-    <div class="footer">
-      <Button color="#009688" textColor="#ffffff"  :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">创建简历</Button>
+    <div class="footer" v-if="list.length===0">
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">创建简历</Button>
     </div>
   </div>
 </template>
@@ -33,7 +44,7 @@ export default {
   data () {
     return {
       userInfo: {},
-      list: [{id: 1, name: 'ok'}, {id: 2, name: 'ok'}, {id: 3, name: 'ok'}, {id: 4, name: 'ok'}]
+      list: []
     };
   },
   components: {
@@ -57,6 +68,7 @@ export default {
           break;
       }
     },
+
     async create () {
       // 获取用户信息补充基本信息
       tools.showProgress();
@@ -104,9 +116,7 @@ export default {
         }
       });
     },
-    del (data) {
-      alert(data.id + data.name);
-    },
+
     resumeDetail (data) {
       tools.openWin({
         name: 'resumeDetail',
@@ -122,6 +132,10 @@ export default {
           id: data.id
         }
       });
+    },
+
+    del (data) {
+      alert(data.id + data.name);
     }
   },
   mounted () {
@@ -165,7 +179,6 @@ export default {
 }
 .rowList {
   font-size: 16px;
-  border-bottom: 1px @grayLine solid;
   background-color: #fff;
   &:active {
     background-color: #eee;
