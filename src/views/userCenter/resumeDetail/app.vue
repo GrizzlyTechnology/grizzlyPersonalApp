@@ -49,8 +49,8 @@
         <Icon left value=":icon-75bianji" />编辑
       </Button>
       <Cell title="期望职位" :value="expectedWork.desiredPosition"></Cell>
-      <Cell title="期望月薪" :value="expectedWork.desiredPosition"></Cell>
-      <Cell title="期望城市" :value="expectedCityText"></Cell>
+      <Cell title="期望月薪" :value="expectedWork.expectedSalary"></Cell>
+      <Cell title="期望城市" :value="expectedWork.expectedCity"></Cell>
       <Cell title="工作性质" :value="workTypeText"></Cell>
       <Cell title="当前状态" :value="currentStateText"></Cell>
       <Cell title="到岗时间" :value="timeToPostText"></Cell>
@@ -106,7 +106,7 @@ export default {
       expectedWork: {
         desiredPosition: '',
         expectedSalary: '',
-        expectedCity: [],
+        expectedCity: '',
         workType: null,
         currentState: null,
         timeToPost: null
@@ -164,9 +164,14 @@ export default {
         (this.baseInfo.street || '')
       );
     },
-    expectedCityText () {
-      return this.expectedWork.expectedCity.map(row => row.label).join('，');
-    },
+    // expectedCityText () {
+    //   return this.expectedWork.expectedCity.map(row => row.label).join('，');
+    // },
+    // expectedSalaryText () {
+    //   return this.expectedWork.expectedSalary
+    //     ? dictMap.expectedSalary[Number(this.expectedWork.expectedSalary)]
+    //     : '';
+    // },
     workTypeText () {
       return this.expectedWork.workType
         ? dictMap.workType[Number(this.expectedWork.workType)]
@@ -265,10 +270,10 @@ export default {
     },
 
     expectedWorkEdit () {
-      const expectedCity = {};
-      this.expectedWork.expectedCity.forEach(element => {
-        expectedCity[element.value] = element;
-      });
+      // const expectedCity = {};
+      // this.expectedWork.expectedCity.forEach(element => {
+      //   expectedCity[element.value] = element;
+      // });
       tools.openWin({
         name: 'userExpectedWork',
         url: '../win.html',
@@ -280,7 +285,10 @@ export default {
           nameSpace: 'userExpectedWork',
           expectedWork: {
             ...this.expectedWork,
-            expectedCity
+            workType: dictMap.workType[this.expectedWork.workType],
+            currentState: dictMap.currentState[this.expectedWork.currentState],
+            timeToPost: dictMap.timeToPost[this.expectedWork.timeToPost]
+            // expectedCity
           },
           id: this.id,
           callback: (ret, err) => {
