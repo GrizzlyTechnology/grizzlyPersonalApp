@@ -73,6 +73,7 @@ import SkillLine from 'components/SkillLine';
 
 // 基础信息的适配器
 function baseInfoAdapter (data) {
+  console.log(JSON.stringify(data));
   return {
     title: data.title, // 简历名称
     name: data.name, // true string 真实姓名
@@ -166,7 +167,7 @@ export default {
         : '';
     },
     sexText () {
-      return this.baseInfo.sex ? dictMap.sex[this.baseInfo.sex] : '';
+      return this.baseInfo.sex !== null ? dictMap.sex[this.baseInfo.sex] : '';
     },
     houseHoldText () {
       return this.baseInfo.houseHold.map(row => row.label).join(' ');
