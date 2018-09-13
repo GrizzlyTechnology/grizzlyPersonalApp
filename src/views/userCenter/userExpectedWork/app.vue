@@ -57,22 +57,22 @@ export default {
   name: 'userInfo',
   data () {
     return {
-      // id: window.api.pageParam.id || null,
-      id: 2,
-      rowHeight: 28,
+      id: window.api.pageParam.id || null,
+      // id: 2,
+      // rowHeight: 28,
       form: {
-        // desiredPosition: window.api.pageParam.expectedWork.desiredPosition,
-        // expectedSalary: window.api.pageParam.expectedWork.expectedSalary || dictMap.expectedSalary[0],
-        // expectedCity: window.api.pageParam.expectedWork.expectedCity,
-        // workType: window.api.pageParam.expectedWork.workType || dictMap.workType[0],
-        // currentState: window.api.pageParam.expectedWork.currentState || dictMap.currentState[0],
-        // timeToPost: window.api.pageParam.expectedWork.timeToPost || dictMap.timeToPost[0]
-        desiredPosition: '',
-        expectedSalary: dictMap.expectedSalary[0],
-        expectedCity: {},
-        workType: dictMap.workType[0],
-        currentState: dictMap.currentState[0],
-        timeToPost: dictMap.timeToPost[0]
+        desiredPosition: window.api.pageParam.expectedWork.desiredPosition,
+        expectedSalary: window.api.pageParam.expectedWork.expectedSalary || dictMap.expectedSalary[0],
+        expectedCity: window.api.pageParam.expectedWork.expectedCity,
+        workType: window.api.pageParam.expectedWork.workType || dictMap.workType[0],
+        currentState: window.api.pageParam.expectedWork.currentState || dictMap.currentState[0],
+        timeToPost: window.api.pageParam.expectedWork.timeToPost || dictMap.timeToPost[0]
+        // desiredPosition: '',
+        // expectedSalary: dictMap.expectedSalary[0],
+        // expectedCity: '',
+        // workType: dictMap.workType[0],
+        // currentState: dictMap.currentState[0],
+        // timeToPost: dictMap.timeToPost[0]
       },
       desiredPositionRules: [
         { validate: val => !!val, message: '必须填写期望职位' }
@@ -92,8 +92,8 @@ export default {
       // ]
       expectedCityRules: [
         {
-          validate: val => Object.keys(this.form.expectedCity).length > 0,
-          message: '至少选择一个期望城市'
+          validate: val => val,
+          message: '请选择一个期望城市'
         }
       ]
     };
@@ -170,6 +170,14 @@ export default {
   },
   methods: {
     async edit () {
+      console.log(JSON.stringify({
+        ...this.form,
+        // expectedCity: this.expectedCityList,
+        workType: dictMap.workType.indexOf(this.form.workType),
+        currentState: dictMap.currentState.indexOf(this.form.currentState),
+        timeToPost: dictMap.timeToPost.indexOf(this.form.timeToPost),
+        resumeId: this.id
+      }));
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
         ...this.form,
