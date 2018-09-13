@@ -120,7 +120,6 @@ export default {
       tools.showProgress();
       const response = await service.createUserBaesInfo(this.form);
       tools.hideProgress();
-
       switch (response.code) {
         case 0:
           tools.toast({
@@ -152,9 +151,13 @@ export default {
     },
     async edit () {
       tools.showProgress();
+      // console.log(JSON.stringify({
+      //   ...this.form,
+      //   resumeId: this.id
+      // }));
       const response = await service.updateUserBaesInfo({
-        id: this.id,
-        ...this.form
+        ...this.form,
+        resumeId: this.id
       });
       tools.hideProgress();
       switch (response.code) {
