@@ -19,7 +19,6 @@ import service from 'service';
 import { Button } from 'muse-ui';
 import AreaSelected from 'components/AreaSelected';
 export default {
-  name: 'userCenterArea',
   data () {
     return {
       isLoading: false,

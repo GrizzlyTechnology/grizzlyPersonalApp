@@ -40,7 +40,6 @@ import service from 'service';
 
 // import AreaSelected from 'components/AreaSelected';
 export default {
-  name: 'userClass',
   data () {
     return {
       userInfo: {},

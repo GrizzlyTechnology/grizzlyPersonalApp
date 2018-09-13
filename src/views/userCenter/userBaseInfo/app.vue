@@ -47,7 +47,6 @@ import regexps from 'util/regexps';
 import tools from 'util/tools';
 // import dictMap from 'util/dictMap';
 export default {
-  name: 'userInfo',
   data () {
     return {
       id: window.api.pageParam.id || null,

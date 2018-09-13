@@ -85,8 +85,21 @@ function baseInfoAdapter (data) {
     email: data.email // true string 邮箱
   };
 }
+
+// 期望工作适配器
+function expectedWorkAdapter (data) {
+  console.log(JSON.stringify(data));
+  return {
+    desiredPosition: data.desiredposition,
+    expectedSalary: data.expectedsalary,
+    expectedCity: data.expectedcity,
+    workType: data.worktype,
+    currentState: data.currentstate,
+    timeToPost: data.timetopost
+  };
+}
+
 export default {
-  name: 'resumeDetail',
   data () {
     return {
       type: window.api.pageParam.type || 'detail',
@@ -173,17 +186,17 @@ export default {
     //     : '';
     // },
     workTypeText () {
-      return this.expectedWork.workType
+      return this.expectedWork.workType !== null
         ? dictMap.workType[Number(this.expectedWork.workType)]
         : '';
     },
     currentStateText () {
-      return this.expectedWork.currentState
+      return this.expectedWork.currentState !== null
         ? dictMap.currentState[Number(this.expectedWork.currentState)]
         : '';
     },
     timeToPostText () {
-      return this.expectedWork.timeToPost
+      return this.expectedWork.timeToPost !== null
         ? dictMap.timeToPost[Number(this.expectedWork.timeToPost)]
         : '';
     }
@@ -200,6 +213,7 @@ export default {
       tools.hideProgress();
       if (response.length) {
         this.baseInfo = baseInfoAdapter(response[0].result.resumeInfo[0]);
+        this.expectedWork = expectedWorkAdapter(response[0].result.resumeInfo[0]);
         this.introduction = response[0].result.resumeInfo[0].introduction || '';
       } else {
         tools.toast({
@@ -219,6 +233,7 @@ export default {
       switch (response.code) {
         case 0:
           this.baseInfo = baseInfoAdapter(response.result.resumeInfo[0]);
+          this.expectedWork = expectedWorkAdapter(response.result.resumeInfo[0]);
           this.introduction = response.result.resumeInfo[0].introduction || '';
           // alert(this.baseInfo.houseHold[0].label);
           break;

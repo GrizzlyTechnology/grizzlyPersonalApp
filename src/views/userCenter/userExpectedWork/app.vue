@@ -54,7 +54,6 @@ import PickerPopup from 'components/PickerPopup';
 import tools from 'util/tools';
 import dictMap from 'util/dictMap';
 export default {
-  name: 'userInfo',
   data () {
     return {
       id: window.api.pageParam.id || null,
@@ -170,14 +169,14 @@ export default {
   },
   methods: {
     async edit () {
-      console.log(JSON.stringify({
-        ...this.form,
-        // expectedCity: this.expectedCityList,
-        workType: dictMap.workType.indexOf(this.form.workType),
-        currentState: dictMap.currentState.indexOf(this.form.currentState),
-        timeToPost: dictMap.timeToPost.indexOf(this.form.timeToPost),
-        resumeId: this.id
-      }));
+      // console.log(JSON.stringify({
+      //   ...this.form,
+      //   // expectedCity: this.expectedCityList,
+      //   workType: dictMap.workType.indexOf(this.form.workType),
+      //   currentState: dictMap.currentState.indexOf(this.form.currentState),
+      //   timeToPost: dictMap.timeToPost.indexOf(this.form.timeToPost),
+      //   resumeId: this.id
+      // }));
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
         ...this.form,

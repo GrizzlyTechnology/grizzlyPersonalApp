@@ -4,7 +4,7 @@
       <span class="cancel" @click="cancel">{{ cancelText }}</span>
       <span class="ok" @click="confirm">{{ confirmText }}</span>
     </div>
-    <Picker ref="picker" :slots="slots" value-key="label" @change="change"/>
+    <Picker ref="picker" :slots="slots" value-key="label" @change="changeHandle"/>
   </Popup>
 </template>
 
@@ -41,8 +41,8 @@ export default {
     Picker
   },
   methods: {
-    change (picker, values) {
-      if (this.selected === null) {
+    changeHandle (picker, values) {
+      if (this.selected === null && this.slots.values) {
         this.oldSelected = this.slots.values[this.slots.defaultIndex];
       } else {
         this.oldSelected = this.selected;

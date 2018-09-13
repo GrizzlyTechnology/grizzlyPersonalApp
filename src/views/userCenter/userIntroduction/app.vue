@@ -30,7 +30,6 @@ import { Form, FormItem } from 'muse-ui/lib/Form';
 import tools from 'util/tools';
 // import dictMap from 'util/dictMap';
 export default {
-  name: 'userInfo',
   data () {
     return {
       id: window.api.pageParam.id || null,
