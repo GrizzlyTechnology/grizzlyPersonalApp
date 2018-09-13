@@ -49,8 +49,8 @@
         <Icon left value=":icon-75bianji" />编辑
       </Button>
       <Cell title="期望职位" :value="expectedWork.desiredPosition"></Cell>
-      <Cell title="期望月薪" :value="expectedWork.desiredPosition"></Cell>
-      <Cell title="期望城市" :value="expectedCityText"></Cell>
+      <Cell title="期望月薪" :value="expectedWork.expectedSalary"></Cell>
+      <Cell title="期望城市" :value="expectedWork.expectedCity"></Cell>
       <Cell title="工作性质" :value="workTypeText"></Cell>
       <Cell title="当前状态" :value="currentStateText"></Cell>
       <Cell title="到岗时间" :value="timeToPostText"></Cell>
@@ -73,6 +73,7 @@ import SkillLine from 'components/SkillLine';
 
 // 基础信息的适配器
 function baseInfoAdapter (data) {
+  console.log(JSON.stringify(data));
   return {
     title: data.title, // 简历名称
     name: data.name, // true string 真实姓名
@@ -85,8 +86,21 @@ function baseInfoAdapter (data) {
     email: data.email // true string 邮箱
   };
 }
+
+// 期望工作适配器
+function expectedWorkAdapter (data) {
+  console.log(JSON.stringify(data));
+  return {
+    desiredPosition: data.desiredposition,
+    expectedSalary: data.expectedsalary,
+    expectedCity: data.expectedcity,
+    workType: data.worktype,
+    currentState: data.currentstate,
+    timeToPost: data.timetopost
+  };
+}
+
 export default {
-  name: 'resumeDetail',
   data () {
     return {
       type: window.api.pageParam.type || 'detail',
@@ -106,7 +120,7 @@ export default {
       expectedWork: {
         desiredPosition: '',
         expectedSalary: '',
-        expectedCity: [],
+        expectedCity: '',
         workType: null,
         currentState: null,
         timeToPost: null
@@ -153,7 +167,7 @@ export default {
         : '';
     },
     sexText () {
-      return this.baseInfo.sex ? dictMap.sex[this.baseInfo.sex] : '';
+      return this.baseInfo.sex !== null ? dictMap.sex[this.baseInfo.sex] : '';
     },
     houseHoldText () {
       return this.baseInfo.houseHold.map(row => row.label).join(' ');
@@ -164,21 +178,26 @@ export default {
         (this.baseInfo.street || '')
       );
     },
-    expectedCityText () {
-      return this.expectedWork.expectedCity.map(row => row.label).join('，');
-    },
+    // expectedCityText () {
+    //   return this.expectedWork.expectedCity.map(row => row.label).join('，');
+    // },
+    // expectedSalaryText () {
+    //   return this.expectedWork.expectedSalary
+    //     ? dictMap.expectedSalary[Number(this.expectedWork.expectedSalary)]
+    //     : '';
+    // },
     workTypeText () {
-      return this.expectedWork.workType
+      return this.expectedWork.workType !== null
         ? dictMap.workType[Number(this.expectedWork.workType)]
         : '';
     },
     currentStateText () {
-      return this.expectedWork.currentState
+      return this.expectedWork.currentState !== null
         ? dictMap.currentState[Number(this.expectedWork.currentState)]
         : '';
     },
     timeToPostText () {
-      return this.expectedWork.timeToPost
+      return this.expectedWork.timeToPost !== null
         ? dictMap.timeToPost[Number(this.expectedWork.timeToPost)]
         : '';
     }
@@ -195,6 +214,7 @@ export default {
       tools.hideProgress();
       if (response.length) {
         this.baseInfo = baseInfoAdapter(response[0].result.resumeInfo[0]);
+        this.expectedWork = expectedWorkAdapter(response[0].result.resumeInfo[0]);
         this.introduction = response[0].result.resumeInfo[0].introduction || '';
       } else {
         tools.toast({
@@ -214,6 +234,7 @@ export default {
       switch (response.code) {
         case 0:
           this.baseInfo = baseInfoAdapter(response.result.resumeInfo[0]);
+          this.expectedWork = expectedWorkAdapter(response.result.resumeInfo[0]);
           this.introduction = response.result.resumeInfo[0].introduction || '';
           // alert(this.baseInfo.houseHold[0].label);
           break;
@@ -265,10 +286,10 @@ export default {
     },
 
     expectedWorkEdit () {
-      const expectedCity = {};
-      this.expectedWork.expectedCity.forEach(element => {
-        expectedCity[element.value] = element;
-      });
+      // const expectedCity = {};
+      // this.expectedWork.expectedCity.forEach(element => {
+      //   expectedCity[element.value] = element;
+      // });
       tools.openWin({
         name: 'userExpectedWork',
         url: '../win.html',
@@ -280,7 +301,10 @@ export default {
           nameSpace: 'userExpectedWork',
           expectedWork: {
             ...this.expectedWork,
-            expectedCity
+            workType: dictMap.workType[this.expectedWork.workType],
+            currentState: dictMap.currentState[this.expectedWork.currentState],
+            timeToPost: dictMap.timeToPost[this.expectedWork.timeToPost]
+            // expectedCity
           },
           id: this.id,
           callback: (ret, err) => {

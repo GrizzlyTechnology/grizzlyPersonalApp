@@ -35,7 +35,6 @@ import service from 'service';
 import { Button, Icon } from 'muse-ui';
 // import AreaSelected from 'components/AreaSelected';
 export default {
-  name: 'userSchool',
   data () {
     return {
       isEnd: false,

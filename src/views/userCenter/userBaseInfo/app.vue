@@ -47,13 +47,12 @@ import regexps from 'util/regexps';
 import tools from 'util/tools';
 // import dictMap from 'util/dictMap';
 export default {
-  name: 'userInfo',
   data () {
     return {
       id: window.api.pageParam.id || null,
       form: {
         name: window.api.pageParam.baseInfo.name || '', // true string 真实姓名
-        sex: window.api.pageParam.baseInfo.sex || 1, // true string 性别
+        sex: window.api.pageParam.baseInfo.sex !== null ? window.api.pageParam.baseInfo.sex : 1, // true string 性别
         birthday:
           window.api.pageParam.baseInfo.birthday || Date.now().valueOf(), // true string生日
         houseHold: window.api.pageParam.baseInfo.houseHold || [], // true string 籍贯
