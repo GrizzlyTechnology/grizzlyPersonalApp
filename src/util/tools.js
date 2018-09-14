@@ -680,6 +680,7 @@ u.sendEvent = function (name = '', data = {}) {
     });
   }
 };
+
 u.closeWin = function (data = {}) {
   if (window.api) {
     if (window.api.pageParam.eventName && window.api.pageParam.eventName !== '') {

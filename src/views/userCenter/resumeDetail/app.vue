@@ -131,28 +131,7 @@ export default {
         currentState: null,
         timeToPost: null
       },
-      education: [
-        {
-          head: '2017.5-2020.2',
-          title: '交通技师学院',
-          info: '大专/信息系'
-        },
-        {
-          head: '2017.5-2020.2',
-          title: 'sdfsdf',
-          info: '大专/信息系'
-        },
-        {
-          head: '2017.5-2020.2',
-          title: '交通技师学院',
-          info: '大专/信息系'
-        },
-        {
-          head: '2017.5-2020.2',
-          title: '交通技师学院',
-          info: '大专/信息系'
-        }
-      ]
+      education: []
     };
   },
   components: {
@@ -287,9 +266,6 @@ export default {
         fname: 'userIntroduction_f',
         furl: './userCenter/userIntroduction.html',
         hasLeft: 1,
-        LCB: () => {
-          console.log('LCB');
-        },
         data: {
           nameSpace: 'userIntroduction',
           introduction: this.introduction,
@@ -326,6 +302,25 @@ export default {
           callback: (ret, err) => {
             this.getUserBaseInfo();
           }
+        }
+      });
+    },
+
+    educationEdit () {
+      tools.openWin({
+        name: 'userEducationHistroy',
+        url: '../win.html',
+        title: '编辑教育经历',
+        fname: 'userEducationHistroy_f',
+        furl: './userCenter/userEducationHistroy.html',
+        hasLeft: 1,
+        LCB: () => {
+          console.log('编辑教育经历返回简历详情');
+        },
+        data: {
+          nameSpace: 'userEducationHistroy',
+          education: this.education,
+          id: this.id
         }
       });
     }
