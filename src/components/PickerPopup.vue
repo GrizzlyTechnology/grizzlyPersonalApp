@@ -10,6 +10,7 @@
 
 <script>
 import { Popup, Picker } from 'mint-ui';
+// import tools from 'util/tools';
 
 export default {
   data () {
@@ -51,9 +52,11 @@ export default {
     },
     open () {
       this.isShow = true;
+      // tools.sendEvent('openMarker');
     },
     cancel () {
       this.isShow = false;
+      // tools.sendEvent('closeMarker');
       this.$refs.picker.setSlotValue(0, this.oldSelected);
     },
     confirm () {
