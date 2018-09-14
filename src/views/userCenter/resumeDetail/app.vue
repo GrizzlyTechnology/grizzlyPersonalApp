@@ -287,6 +287,9 @@ export default {
         fname: 'userIntroduction_f',
         furl: './userCenter/userIntroduction.html',
         hasLeft: 1,
+        LCB: () => {
+          console.log('LCB');
+        },
         data: {
           nameSpace: 'userIntroduction',
           introduction: this.introduction,
