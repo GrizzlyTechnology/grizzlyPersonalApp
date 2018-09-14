@@ -168,6 +168,9 @@ export default {
         // }
       });
     }
+//     submit(){
+// Toast(this.value);
+// }
   },
   mounted() {
     tools.addEventListener(
