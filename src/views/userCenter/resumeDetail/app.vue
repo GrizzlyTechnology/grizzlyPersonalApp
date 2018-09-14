@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Panel title="基本信息" :label="labelText">
+    <Panel title="基本信息" :label="isRequired">
       <Cell title="姓名" :value="baseInfo.name"></Cell>
       <Cell title="性别" :value="sexText"></Cell>
       <Cell title="出生年月" :value="birthdayText"></Cell>
@@ -12,8 +12,14 @@
         <Icon left value=":icon-75bianji" />编辑
       </Button>
     </Panel>
-    <Panel title="教育经历" :label="labelText">
+    <Panel title="教育经历" :noContent="education.length===0" v-if="isNotDetail || education.length>0" :label="isRequired">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="introductionEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
       <StepVertical class="stepVertical" :data="education" />
+      <div slot="info">
+        暂无教育经历
+      </div>
     </Panel>
     <Panel title="实习经历">
       <StepVertical class="stepVertical" :data="education" />
@@ -21,11 +27,11 @@
     <Panel title="项目经验">
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel :noContent="introduction.length===0" v-if="type!=='detail' || introduction.length>0" title="自我描述">
+    <Panel title="自我描述" :noContent="introduction.length===0" v-if="isNotDetail|| introduction.length>0">
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="introductionEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
-      <div class="introduction" v-html="introduction.replace(/\n|\r\n/g,'<br/>')"/>
+      <div class="introduction" v-html="introduction.replace(/\n|\r\n/g,'<br/>')" />
       <div slot="info">
         暂无自我描述
       </div>
@@ -44,7 +50,7 @@
       <SkillLine title="Axure" :value="90" />
       <SkillLine title="Axure" :value="100" />
     </Panel>
-    <Panel title="期望工作" :label="labelText">
+    <Panel title="期望工作" :label="isRequired">
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="expectedWorkEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
@@ -73,7 +79,7 @@ import SkillLine from 'components/SkillLine';
 
 // 基础信息的适配器
 function baseInfoAdapter (data) {
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   return {
     title: data.title, // 简历名称
     name: data.name, // true string 真实姓名
@@ -89,7 +95,7 @@ function baseInfoAdapter (data) {
 
 // 期望工作适配器
 function expectedWorkAdapter (data) {
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   return {
     desiredPosition: data.desiredposition,
     expectedSalary: data.expectedsalary,
@@ -103,8 +109,8 @@ function expectedWorkAdapter (data) {
 export default {
   data () {
     return {
-      type: window.api.pageParam.type || 'detail',
-      id: window.api.pageParam.id || null,
+      type: window.api ? window.api.pageParam.type : 'detail',
+      id: window.api ? window.api.pageParam.id : null,
       introduction: '',
       baseInfo: {
         title: '', // 简历名称
@@ -158,7 +164,10 @@ export default {
     Icon
   },
   computed: {
-    labelText () {
+    isNotDetail () {
+      return this.type === 'creat' || this.type === 'edit';
+    },
+    isRequired () {
       return this.type === 'edit' ? '必填' : '';
     },
     birthdayText () {
@@ -214,7 +223,9 @@ export default {
       tools.hideProgress();
       if (response.length) {
         this.baseInfo = baseInfoAdapter(response[0].result.resumeInfo[0]);
-        this.expectedWork = expectedWorkAdapter(response[0].result.resumeInfo[0]);
+        this.expectedWork = expectedWorkAdapter(
+          response[0].result.resumeInfo[0]
+        );
         this.introduction = response[0].result.resumeInfo[0].introduction || '';
       } else {
         tools.toast({
@@ -234,7 +245,9 @@ export default {
       switch (response.code) {
         case 0:
           this.baseInfo = baseInfoAdapter(response.result.resumeInfo[0]);
-          this.expectedWork = expectedWorkAdapter(response.result.resumeInfo[0]);
+          this.expectedWork = expectedWorkAdapter(
+            response.result.resumeInfo[0]
+          );
           this.introduction = response.result.resumeInfo[0].introduction || '';
           // alert(this.baseInfo.houseHold[0].label);
           break;
