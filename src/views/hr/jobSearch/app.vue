@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class='p15'>
-      <Search v-model="value" class='searchBox' cancel-text="取消" placeholder="搜索公司/职位" :result="seachList">
+      <Search v-model="value" class='searchBox' cancel-text="取消" placeholder="搜索公司/职位" :result="filterResult">
       </Search>
       <Form ref="form" :model="form" class="mu-demo-form" :label-position="labelPosition" label-width="45">
         <FormItem label="地区" prop="areaText">
@@ -32,13 +32,30 @@ export default {
   data() {
     return {
       value: "",
+       defaultResult: [
+        'Apple',
+        'Banana',
+        'Orange',
+        'Durian',
+        'Lemon',
+        'Peach',
+        'Cherry',
+        'Berry',
+        'Core',
+        'Fig',
+        'Haw',
+        'Melon',
+        'Plum',
+        'Pear',
+        'Peanut',
+        'Other'
+      ],
       form: {
         area: "北京市",
         industry: "",
         duties: ""
       },
       labelPosition: "right",
-      seachList: ["222", "333", "44", "555"],
       chips: [
         { id: 1, value: "产品经理" },
         { id: 2, value: "网络科技" },
@@ -63,6 +80,9 @@ export default {
   computed: {
     areaText() {
       return this.form.area.map(row => row.label).join(" / ");
+    },
+     filterResult() {
+      return this.defaultResult.filter(value => new RegExp(this.value, 'i').test(value));
     }
   },
   methods: {
@@ -183,6 +203,7 @@ export default {
   background: none;
   border: 1px solid #009688;
   border-radius: 2px;
+   z-index: 99999;
 }
 
 .mint-searchbar-cancel,
