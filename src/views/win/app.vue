@@ -1,15 +1,15 @@
 <template>
-<div>
-  <UIHeader color="#ffffff" textColor="#000000" :z-depth="0" class="header" :title="wtitle">
-    <Button icon slot="left" v-if="hasLeft" @click="clickLeft">
-      <Icon value=":icon-left" color="#666" :size="24" />
-    </Button>
-    <Button icon slot="right" v-if="hasRight" @click="clickRight">
-      <Icon value=":icon-kefunv" color="#666" :size="24" />
-    </Button>
-  </UIHeader>
-  <div v-if="showMarker" class="v-modal"></div>
-</div>
+  <div>
+    <UIHeader color="#ffffff" textColor="#000000" :z-depth="0" class="header" :title="wtitle">
+      <Button icon slot="left" v-if="hasLeft" @click="clickLeft">
+        <Icon value=":icon-left" color="#666" :size="24" />
+      </Button>
+      <Button icon slot="right" v-if="hasRight" @click="clickRight">
+        <Icon value=":icon-kefunv" color="#666" :size="24" />
+      </Button>
+    </UIHeader>
+    <div v-if="showMarker" class="v-modal"></div>
+  </div>
 </template>
 
 <script>
@@ -33,13 +33,7 @@ export default {
   },
   methods: {
     clickLeft () {
-      if (window.api) {
-        if (window.api.pageParam.LCBName && window.api.pageParam.LCBName !== '') {
-          tool.sendEvent(window.api.pageParam.LCBName);
-        } else {
-          window.api.closeWin();
-        }
-      }
+      tool.back();
     },
     clickRight () {
       if (window.api) {
@@ -58,11 +52,7 @@ export default {
           name: 'keyback'
         },
         () => {
-          if (window.api.pageParam.LCBName && window.api.pageParam.LCBName !== '') {
-            tool.sendEvent(window.api.pageParam.LCBName);
-          } else {
-            window.api.closeWin();
-          }
+          tool.back();
         }
       );
       window.api.addEventListener(

@@ -288,7 +288,7 @@ export default {
         furl: './userCenter/userIntroduction.html',
         hasLeft: 1,
         LCB: () => {
-          alert('LCB');
+          console.log('LCB');
         },
         data: {
           nameSpace: 'userIntroduction',

@@ -688,6 +688,15 @@ u.closeWin = function (data = {}) {
     window.api.closeWin();
   }
 };
+
+u.back = function () {
+  if (window.api) {
+    if (window.api.pageParam.LCBName && window.api.pageParam.LCBName !== '') {
+      u.sendEvent(window.api.pageParam.LCBName);
+    }
+    window.api.closeWin();
+  }
+};
 /* end */
 
 export default u;
