@@ -8,40 +8,24 @@
       <Cell title="地址" :value="addressText"></Cell>
       <Cell title="手机号码" :value="baseInfo.phone"></Cell>
       <Cell title="电子邮箱" :value="baseInfo.email"></Cell>
-      <Button
-        v-if="type==='edit'"
-        class="editBtn"
-        slot="end"
-        flat
-        color="#009688"
-        @click="baseInfoEdit"
-      >
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="baseInfoEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
     </Panel>
     <Panel title="教育经历" :label="labelText">
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel title="实习经历" >
+    <Panel title="实习经历">
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel title="项目经验" >
+    <Panel title="项目经验">
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel v-if="type!=='detail' || introduction.length>0" title="自我描述">
-      <Button
-        v-if="type==='edit'"
-        class="editBtn"
-        slot="end"
-        flat
-        color="#009688"
-        @click="introductionEdit"
-      >
+    <Panel :noContent="introduction.length===0" v-if="type!=='detail' || introduction.length>0" title="自我描述">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="introductionEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
-      <div v-if="introduction.length>0" class="introduction">
-        {{introduction}}
-      </div>
+      <div class="introduction" v-html="introduction.replace(/\n|\r\n/g,'<br/>')"/>
       <div slot="info">
         暂无自我描述
       </div>
@@ -61,12 +45,15 @@
       <SkillLine title="Axure" :value="100" />
     </Panel>
     <Panel title="期望工作" :label="labelText">
-      <Cell title="期望职位" value="说明文字"></Cell>
-      <Cell title="期望月薪" value="说明文字"></Cell>
-      <Cell title="期望城市" value="说明文字"></Cell>
-      <Cell title="工作性质" value="说明文字"></Cell>
-      <Cell title="当前状态" value="说明文字"></Cell>
-      <Cell title="到岗时间" value="说明文字"></Cell>
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="expectedWorkEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <Cell title="期望职位" :value="expectedWork.desiredPosition"></Cell>
+      <Cell title="期望月薪" :value="expectedWork.expectedSalary"></Cell>
+      <Cell title="期望城市" :value="expectedWork.expectedCity"></Cell>
+      <Cell title="工作性质" :value="workTypeText"></Cell>
+      <Cell title="当前状态" :value="currentStateText"></Cell>
+      <Cell title="到岗时间" :value="timeToPostText"></Cell>
     </Panel>
   </div>
   </div>
@@ -74,6 +61,7 @@
 
 <script>
 import service from 'service';
+import isJson from 'is-json';
 import { Button, Icon } from 'muse-ui';
 import { Cell } from 'mint-ui';
 import tools from 'util/tools';
@@ -85,25 +73,38 @@ import SkillLine from 'components/SkillLine';
 
 // 基础信息的适配器
 function baseInfoAdapter (data) {
+  console.log(JSON.stringify(data));
   return {
     title: data.title, // 简历名称
     name: data.name, // true string 真实姓名
     sex: data.sex, // true string 性别
     birthday: data.birthday * 1000, // true string生日
-    // houseHold: JSON.parse(data.houseHold), // true string 籍贯
-    houseHold: [], // true string 籍贯
-    address: JSON.parse(data.address),
+    houseHold: isJson(data.household) ? JSON.parse(data.household) : [], // true string 籍贯
+    address: isJson(data.address) ? JSON.parse(data.address) : [],
     street: data.street,
     phone: data.phone, // true string手机
     email: data.email // true string 邮箱
   };
 }
+
+// 期望工作适配器
+function expectedWorkAdapter (data) {
+  console.log(JSON.stringify(data));
+  return {
+    desiredPosition: data.desiredposition,
+    expectedSalary: data.expectedsalary,
+    expectedCity: data.expectedcity,
+    workType: data.worktype,
+    currentState: data.currentstate,
+    timeToPost: data.timetopost
+  };
+}
+
 export default {
-  name: 'resumeDetail',
   data () {
     return {
-      type: 'edit',
-      id: null,
+      type: window.api.pageParam.type || 'detail',
+      id: window.api.pageParam.id || null,
       introduction: '',
       baseInfo: {
         title: '', // 简历名称
@@ -115,6 +116,14 @@ export default {
         street: '',
         phone: '', // true string手机
         email: '' // true string 邮箱，
+      },
+      expectedWork: {
+        desiredPosition: '',
+        expectedSalary: '',
+        expectedCity: '',
+        workType: null,
+        currentState: null,
+        timeToPost: null
       },
       education: [
         {
@@ -137,16 +146,6 @@ export default {
           title: '交通技师学院',
           info: '大专/信息系'
         }
-      ],
-      list: [
-        // {
-        //   id: 0,
-        //   title: '我的简历1'
-        // },
-        // {
-        //   id: 1,
-        //   title: '我的简历2'
-        // }
       ]
     };
   },
@@ -163,16 +162,44 @@ export default {
       return this.type === 'edit' ? '必填' : '';
     },
     birthdayText () {
-      return this.baseInfo.birthday ? moment(this.baseInfo.birthday).format('YYYY年MM月DD日') : '';
+      return this.baseInfo.birthday
+        ? moment(this.baseInfo.birthday).format('YYYY年MM月DD日')
+        : '';
     },
     sexText () {
-      return this.baseInfo.sex ? dictMap.sex[this.baseInfo.sex] : '';
+      return this.baseInfo.sex !== null ? dictMap.sex[this.baseInfo.sex] : '';
     },
     houseHoldText () {
-      return this.baseInfo.houseHold.map(row => row.label).join(' / ');
+      return this.baseInfo.houseHold.map(row => row.label).join(' ');
     },
     addressText () {
-      return this.baseInfo.address.map(row => row.label).join(' / ') + this.baseInfo.street;
+      return (
+        this.baseInfo.address.map(row => row.label).join(' ') +
+        (this.baseInfo.street || '')
+      );
+    },
+    // expectedCityText () {
+    //   return this.expectedWork.expectedCity.map(row => row.label).join('，');
+    // },
+    // expectedSalaryText () {
+    //   return this.expectedWork.expectedSalary
+    //     ? dictMap.expectedSalary[Number(this.expectedWork.expectedSalary)]
+    //     : '';
+    // },
+    workTypeText () {
+      return this.expectedWork.workType !== null
+        ? dictMap.workType[Number(this.expectedWork.workType)]
+        : '';
+    },
+    currentStateText () {
+      return this.expectedWork.currentState !== null
+        ? dictMap.currentState[Number(this.expectedWork.currentState)]
+        : '';
+    },
+    timeToPostText () {
+      return this.expectedWork.timeToPost !== null
+        ? dictMap.timeToPost[Number(this.expectedWork.timeToPost)]
+        : '';
     }
   },
   methods: {
@@ -181,34 +208,35 @@ export default {
       tools.showProgress();
       const response = await Promise.all([
         service.getUserBaseInfo({
-          id: this.id
+          resumeId: this.id
         })
       ]);
       tools.hideProgress();
-      this.baseInfo = baseInfoAdapter(response[0].result.resumeInfo[0]);
-      this.introduction = response[0].result.resumeInfo[0].introduction || '';
+      if (response.length) {
+        this.baseInfo = baseInfoAdapter(response[0].result.resumeInfo[0]);
+        this.expectedWork = expectedWorkAdapter(response[0].result.resumeInfo[0]);
+        this.introduction = response[0].result.resumeInfo[0].introduction || '';
+      } else {
+        tools.toast({
+          position: 'top',
+          message: '简历信息获取失败'
+        });
+      }
     },
     // 获取用户基础信息
     async getUserBaseInfo () {
       tools.showProgress();
       const response = await service.getUserBaseInfo({
-        id: this.id
+        resumeId: this.id
       });
       tools.hideProgress();
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.baseInfo = {
-            title: response.result.resumeInfo[0].title, // 简历名称
-            name: response.result.resumeInfo[0].name, // true string 真实姓名
-            sex: response.result.resumeInfo[0].sex, // true string 性别
-            birthday: response.result.resumeInfo[0].birthday * 1000, // true string生日
-            // houseHold: JSON.parse(response.result.resumeInfo[0].houseHold), // true string 籍贯
-            address: JSON.parse(response.result.resumeInfo[0].address),
-            street: response.result.resumeInfo[0].street,
-            phone: response.result.resumeInfo[0].phone, // true string手机
-            email: response.result.resumeInfo[0].email // true string 邮箱
-          };
-          this.introduction = response.result.resumeInfo[0].introduction;
+          this.baseInfo = baseInfoAdapter(response.result.resumeInfo[0]);
+          this.expectedWork = expectedWorkAdapter(response.result.resumeInfo[0]);
+          this.introduction = response.result.resumeInfo[0].introduction || '';
+          // alert(this.baseInfo.houseHold[0].label);
           break;
         default:
           tools.toast({
@@ -218,11 +246,12 @@ export default {
           break;
       }
     },
+
     baseInfoEdit () {
       tools.openWin({
         name: 'userBaseinfo',
         url: '../win.html',
-        title: '基本信息',
+        title: '编辑基本信息',
         fname: 'userBaseinfo_f',
         furl: './userCenter/userBaseinfo.html',
         hasLeft: 1,
@@ -236,11 +265,12 @@ export default {
         }
       });
     },
+
     introductionEdit () {
       tools.openWin({
         name: 'userIntroduction',
         url: '../win.html',
-        title: '自我描述',
+        title: '编辑自我描述',
         fname: 'userIntroduction_f',
         furl: './userCenter/userIntroduction.html',
         hasLeft: 1,
@@ -253,17 +283,43 @@ export default {
           }
         }
       });
+    },
+
+    expectedWorkEdit () {
+      // const expectedCity = {};
+      // this.expectedWork.expectedCity.forEach(element => {
+      //   expectedCity[element.value] = element;
+      // });
+      tools.openWin({
+        name: 'userExpectedWork',
+        url: '../win.html',
+        title: '编辑期望工作',
+        fname: 'userExpectedWork_f',
+        furl: './userCenter/userExpectedWork.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'userExpectedWork',
+          expectedWork: {
+            ...this.expectedWork,
+            workType: dictMap.workType[this.expectedWork.workType],
+            currentState: dictMap.currentState[this.expectedWork.currentState],
+            timeToPost: dictMap.timeToPost[this.expectedWork.timeToPost]
+            // expectedCity
+          },
+          id: this.id,
+          callback: (ret, err) => {
+            this.getUserBaseInfo();
+          }
+        }
+      });
     }
   },
+
   mounted () {
     if (window.api) {
       if (window.api.pageParam.nameSpace === 'resumeDetail') {
-        // console.log(window.api.pageParam.id);
-        // console.log(window.api.pageParam.type);
-        this.id = window.api.pageParam.id;
-        this.type = window.api.pageParam.type || 'detail';
         switch (window.api.pageParam.from) {
-          case 'userBaseInfo':// 创建基本信息后的回调
+          case 'userBaseInfo': // 创建基本信息后的回调
             this.getUserBaseInfo();
             window.api.closeWin({
               name: 'userBaseInfo'
@@ -274,16 +330,6 @@ export default {
             break;
         }
       }
-
-      // 编辑基本信息后的回调
-      // tools.addEventListener(
-      //   {
-      //     name: 'getUserBaseInfo'
-      //   },
-      //   (ret, err) => {
-      //     this.getUserBaseInfo();
-      //   }
-      // );
     }
   }
 };
@@ -300,8 +346,7 @@ export default {
 }
 </style>
 <style lang="less" scoped>
-.infoNotice{
-
+.infoNotice {
 }
 .introduction {
   padding: 15px;

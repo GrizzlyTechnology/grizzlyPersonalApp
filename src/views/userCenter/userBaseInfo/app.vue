@@ -47,13 +47,12 @@ import regexps from 'util/regexps';
 import tools from 'util/tools';
 // import dictMap from 'util/dictMap';
 export default {
-  name: 'userInfo',
   data () {
     return {
       id: window.api.pageParam.id || null,
       form: {
         name: window.api.pageParam.baseInfo.name || '', // true string 真实姓名
-        sex: window.api.pageParam.baseInfo.sex || 1, // true string 性别
+        sex: window.api.pageParam.baseInfo.sex !== null ? window.api.pageParam.baseInfo.sex : 1, // true string 性别
         birthday:
           window.api.pageParam.baseInfo.birthday || Date.now().valueOf(), // true string生日
         houseHold: window.api.pageParam.baseInfo.houseHold || [], // true string 籍贯
@@ -120,7 +119,6 @@ export default {
       tools.showProgress();
       const response = await service.createUserBaesInfo(this.form);
       tools.hideProgress();
-
       switch (response.code) {
         case 0:
           tools.toast({
@@ -152,9 +150,13 @@ export default {
     },
     async edit () {
       tools.showProgress();
+      // console.log(JSON.stringify({
+      //   ...this.form,
+      //   resumeId: this.id
+      // }));
       const response = await service.updateUserBaesInfo({
-        id: this.id,
-        ...this.form
+        ...this.form,
+        resumeId: this.id
       });
       tools.hideProgress();
       switch (response.code) {

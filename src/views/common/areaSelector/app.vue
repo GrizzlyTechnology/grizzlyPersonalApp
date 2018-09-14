@@ -19,7 +19,6 @@ import tools from 'util/tools';
 import { Button } from 'muse-ui';
 import AreaSelected from 'components/AreaSelected';
 export default {
-  name: 'userCenterArea',
   data () {
     return {
       level: window.api.pageParam.area.level || 99,

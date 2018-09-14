@@ -57,7 +57,6 @@ import tools from 'util/tools';
 
 const userInfo = tools.getStorage('userCenter/userInfo');
 export default {
-  name: 'userInfo',
   data () {
     return {
       startDateTime: new Date(),

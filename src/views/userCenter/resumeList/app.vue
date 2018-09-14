@@ -19,7 +19,7 @@
           slot="title"
           @click="resumeDetail(row)"
         >
-          111 {{row.title}}
+          {{row.title}}
         </div>
         <i class="mu-icon icon-right isLink" />
       </CellSwipe>
@@ -40,7 +40,6 @@ import service from 'service';
 
 // import AreaSelected from 'components/AreaSelected';
 export default {
-  name: 'userClass',
   data () {
     return {
       userInfo: {},

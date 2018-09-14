@@ -4,13 +4,19 @@
       <div style="padding:15px">
         <Form ref="form" :model="form">
           <FormItem label="自我描述" prop="introduction" :rules="introductionRules">
-            <TextField v-model="form.introduction"></TextField>
+            <TextField
+              v-model="form.introduction"
+              multi-line
+              :max-length="255"
+              :rows="10"
+              :rows-max="10"
+            />
           </FormItem>
         </Form>
       </div>
     </div>
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">{{id?'保存':'下一步'}}</Button>
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">保存</Button>
     </div>
   </div>
 </template>
@@ -24,7 +30,6 @@ import { Form, FormItem } from 'muse-ui/lib/Form';
 import tools from 'util/tools';
 // import dictMap from 'util/dictMap';
 export default {
-  name: 'userInfo',
   data () {
     return {
       id: window.api.pageParam.id || null,
@@ -43,7 +48,7 @@ export default {
     async edit () {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
-        id: this.id,
+        resumeId: this.id,
         introduction: this.form.introduction
       });
       tools.hideProgress();
