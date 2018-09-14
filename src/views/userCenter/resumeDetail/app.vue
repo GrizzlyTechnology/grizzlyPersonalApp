@@ -13,7 +13,7 @@
       </Button>
     </Panel>
     <Panel title="教育经历" :noContent="education.length===0" v-if="isNotDetail || education.length>0" :label="isRequired">
-      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="introductionEdit">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="educationEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
       <StepVertical class="stepVertical" :data="education" />
@@ -66,45 +66,18 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 import service from 'service';
-import isJson from 'is-json';
-import { Button, Icon } from 'muse-ui';
-import { Cell } from 'mint-ui';
 import tools from 'util/tools';
 import dictMap from 'util/dictMap';
-import moment from 'moment';
+import adapter from 'util/adapter';
+
+import { Button, Icon } from 'muse-ui';
+import { Cell } from 'mint-ui';
 import Panel from 'components/Panel';
 import StepVertical from 'components/StepVertical';
 import SkillLine from 'components/SkillLine';
-
-// 基础信息的适配器
-function baseInfoAdapter (data) {
-  // console.log(JSON.stringify(data));
-  return {
-    title: data.title, // 简历名称
-    name: data.name, // true string 真实姓名
-    sex: data.sex, // true string 性别
-    birthday: data.birthday * 1000, // true string生日
-    houseHold: isJson(data.household) ? JSON.parse(data.household) : [], // true string 籍贯
-    address: isJson(data.address) ? JSON.parse(data.address) : [],
-    street: data.street,
-    phone: data.phone, // true string手机
-    email: data.email // true string 邮箱
-  };
-}
-
-// 期望工作适配器
-function expectedWorkAdapter (data) {
-  // console.log(JSON.stringify(data));
-  return {
-    desiredPosition: data.desiredposition,
-    expectedSalary: data.expectedsalary,
-    expectedCity: data.expectedcity,
-    workType: data.worktype,
-    currentState: data.currentstate,
-    timeToPost: data.timetopost
-  };
-}
 
 export default {
   data () {
@@ -131,28 +104,32 @@ export default {
         currentState: null,
         timeToPost: null
       },
-      education: [
-        {
-          head: '2017.5-2020.2',
-          title: '交通技师学院',
-          info: '大专/信息系'
-        },
-        {
-          head: '2017.5-2020.2',
-          title: 'sdfsdf',
-          info: '大专/信息系'
-        },
-        {
-          head: '2017.5-2020.2',
-          title: '交通技师学院',
-          info: '大专/信息系'
-        },
-        {
-          head: '2017.5-2020.2',
-          title: '交通技师学院',
-          info: '大专/信息系'
-        }
-      ]
+      education: [{
+        id: 0,
+        schoolname: '学校名',
+        major: '计算机',
+        education: '高中',
+        inschooltime: 1536914108816,
+        graduationtime: 1536914108816,
+        uid: 0
+      },
+      {
+        id: 1,
+        schoolname: '学校名',
+        major: '计算机',
+        education: '1高中',
+        inschooltime: 1536914108816,
+        graduationtime: 1536914108816,
+        uid: 0
+      }, {
+        id: 2,
+        schoolname: '学校名',
+        major: '计算机',
+        education: '高中',
+        inschooltime: 1536914108816,
+        graduationtime: 1536914108816,
+        uid: 0
+      }].map(row => adapter.educationAdapter(row))
     };
   },
   components: {
@@ -222,8 +199,8 @@ export default {
       ]);
       tools.hideProgress();
       if (response.length) {
-        this.baseInfo = baseInfoAdapter(response[0].result.resumeInfo[0]);
-        this.expectedWork = expectedWorkAdapter(
+        this.baseInfo = adapter.baseInfoAdapter(response[0].result.resumeInfo[0]);
+        this.expectedWork = adapter.expectedWorkAdapter(
           response[0].result.resumeInfo[0]
         );
         this.introduction = response[0].result.resumeInfo[0].introduction || '';
@@ -244,8 +221,8 @@ export default {
       // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.baseInfo = baseInfoAdapter(response.result.resumeInfo[0]);
-          this.expectedWork = expectedWorkAdapter(
+          this.baseInfo = adapter.baseInfoAdapter(response.result.resumeInfo[0]);
+          this.expectedWork = adapter.expectedWorkAdapter(
             response.result.resumeInfo[0]
           );
           this.introduction = response.result.resumeInfo[0].introduction || '';
@@ -287,9 +264,6 @@ export default {
         fname: 'userIntroduction_f',
         furl: './userCenter/userIntroduction.html',
         hasLeft: 1,
-        LCB: () => {
-          console.log('LCB');
-        },
         data: {
           nameSpace: 'userIntroduction',
           introduction: this.introduction,
@@ -326,6 +300,25 @@ export default {
           callback: (ret, err) => {
             this.getUserBaseInfo();
           }
+        }
+      });
+    },
+
+    educationEdit () {
+      tools.openWin({
+        name: 'userEducationHistroy',
+        url: '../win.html',
+        title: '编辑教育经历',
+        fname: 'userEducationHistroy_f',
+        furl: './userCenter/userEducationHistroy.html',
+        hasLeft: 1,
+        LCB: () => {
+          console.log('编辑教育经历返回简历详情');
+        },
+        data: {
+          nameSpace: 'userEducationHistroy',
+          education: this.education,
+          id: this.id
         }
       });
     }
