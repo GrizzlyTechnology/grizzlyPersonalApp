@@ -36,8 +36,9 @@ export default {
       if (window.api) {
         if (window.api.pageParam.LCBName && window.api.pageParam.LCBName !== '') {
           tool.sendEvent(window.api.pageParam.LCBName);
+        } else {
+          window.api.closeWin();
         }
-        window.api.closeWin();
       }
     },
     clickRight () {
@@ -52,6 +53,18 @@ export default {
   mounted () {
     var headerH = tool.fixStatusBar(tool.dom('.header'));
     if (window.api) {
+      window.api.addEventListener(
+        {
+          name: 'keyback'
+        },
+        () => {
+          if (window.api.pageParam.LCBName && window.api.pageParam.LCBName !== '') {
+            tool.sendEvent(window.api.pageParam.LCBName);
+          } else {
+            window.api.closeWin();
+          }
+        }
+      );
       window.api.addEventListener(
         {
           name: 'openMarker'
