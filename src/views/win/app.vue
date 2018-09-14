@@ -34,6 +34,9 @@ export default {
   methods: {
     clickLeft () {
       if (window.api) {
+        if (window.api.pageParam.LCBName && window.api.pageParam.LCBName !== '') {
+          tool.sendEvent(window.api.pageParam.LCBName);
+        }
         window.api.closeWin();
       }
     },

@@ -595,7 +595,7 @@ u.sleep = function (times) {
 };
 
 u.openWin = function (params) {
-  const { name, url, title = '', fname, furl, hasLeft = false, hasRight = false, data = {}, ...winData } = params
+  const { LCB, name, url, title = '', fname, furl, hasLeft = false, hasRight = false, data = {}, ...winData } = params
   if (window.api) {
     let op = {
       name,
@@ -606,6 +606,19 @@ u.openWin = function (params) {
       }
     };
 
+    //添加点击返回按钮的回调监听
+    if (typeof (LCB) === 'function') {
+      const LCBName = ('LCB' + Date.now().valueOf()) + Math.random();
+      u.addEventListener(
+        {
+          name: LCBName
+        },
+        LCB
+      );
+      op.pageParam.LCBName = LCBName;
+    }
+
+    //添加页面关闭的回调监听
     if (typeof (data.callback) === 'function') {
       const eventName = ('EVENT' + Date.now().valueOf()) + Math.random();
       u.addEventListener(
@@ -647,7 +660,7 @@ u.addEventListener = function (ope = {}, callback = () => { }) {
           { ...ret, value: typeof (ret.value) === 'string' ? JSON.parse(ret.value) : ret.value },
           err
         );
-        if(ope.autoDel !== false){
+        if (ope.delEvent !== false) {
           console.log('del event: ' + ope.name);
           window.api.removeEventListener({
             name: ope.name
