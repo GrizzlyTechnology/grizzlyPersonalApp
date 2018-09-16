@@ -243,6 +243,30 @@ export default {
       method: 'get'
     });
   },
+  searchJob (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Hr/searchJob',
+      params,
+      method: 'get'
+    });
+  },
+  searchBoxValue (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Hr/searchBoxValue',
+      params,
+      method: 'get'
+    });
+  },
+  searchChipValue (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Hr/searchChipValue',
+      params,
+      method: 'get'
+    });
+  },
   createUserEducation (params) {
     return request({
       host: hostList.test,
@@ -261,9 +285,7 @@ export default {
     return request({
       host: hostList.test,
       url: '/api/Educationexp/educationexpBy',
-      params,
-      method: 'get'
+      params
     });
   }
-
 };
