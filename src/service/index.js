@@ -242,5 +242,28 @@ export default {
       params,
       method: 'get'
     });
+  },
+  createUserEducation (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Educationexp/create',
+      params
+    });
+  },
+  updateUserEducation (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Educationexp/update',
+      params
+    });
+  },
+  getUserEducation (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Educationexp/educationexpBy',
+      params,
+      method: 'get'
+    });
   }
+
 };

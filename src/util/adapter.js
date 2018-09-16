@@ -36,10 +36,10 @@ adapter.educationAdapter = function (data) {
   // console.log(JSON.stringify(data));
   return {
     ...data,
-    inSchoolTime: data.inschooltime,
-    graduationTime: data.graduationtime,
+    inSchoolTime: data.inschooltime * 1000,
+    graduationTime: data.graduationtime * 1000,
     schoolName: data.schoolname,
-    head: moment(data.inschooltime).format('YYYY年MM月') + ' - ' + moment(data.graduationtime).format('YYYY年MM月'),
+    head: moment(data.inschooltime * 1000).format('YYYY年MM月') + ' - ' + moment(data.graduationtime * 1000).format('YYYY年MM月'),
     title: data.schoolname,
     info: data.education + ' / ' + data.major
   };
