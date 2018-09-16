@@ -104,32 +104,7 @@ export default {
         currentState: null,
         timeToPost: null
       },
-      education: [{
-        id: 0,
-        schoolname: '学校名',
-        major: '计算机',
-        education: '高中',
-        inschooltime: 1536914108816,
-        graduationtime: 1536914108816,
-        uid: 0
-      },
-      {
-        id: 1,
-        schoolname: '学校名',
-        major: '计算机',
-        education: '1高中',
-        inschooltime: 1536914108816,
-        graduationtime: 1536914108816,
-        uid: 0
-      }, {
-        id: 2,
-        schoolname: '学校名',
-        major: '计算机',
-        education: '高中',
-        inschooltime: 1536914108816,
-        graduationtime: 1536914108816,
-        uid: 0
-      }].map(row => adapter.educationAdapter(row))
+      education: []
     };
   },
   components: {
@@ -195,15 +170,32 @@ export default {
       const response = await Promise.all([
         service.getUserBaseInfo({
           resumeId: this.id
+        }),
+        service.getUserEducation({
+          resumeId: this.id
         })
       ]);
       tools.hideProgress();
       if (response.length) {
-        this.baseInfo = adapter.baseInfoAdapter(response[0].result.resumeInfo[0]);
-        this.expectedWork = adapter.expectedWorkAdapter(
-          response[0].result.resumeInfo[0]
-        );
-        this.introduction = response[0].result.resumeInfo[0].introduction || '';
+        switch (response[0].code) {
+          case 0:
+            this.baseInfo = adapter.baseInfoAdapter(response[0].result.resumeInfo[0]);
+            this.expectedWork = adapter.expectedWorkAdapter(
+              response[0].result.resumeInfo[0]
+            );
+            this.introduction = response[0].result.resumeInfo[0].introduction || '';
+            break;
+
+          default:
+            break;
+        }
+        switch (response[1].code) {
+          case 0:
+            this.education = response[1].result.educationExpInfo.map(row => adapter.educationAdapter(row));
+            break;
+          default:
+            break;
+        }
       } else {
         tools.toast({
           position: 'top',
@@ -237,6 +229,24 @@ export default {
       }
     },
 
+    async getEducation () {
+      tools.showProgress();
+      const response = await service.getUserEducation({
+        resumeId: this.id
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.education = response.result.educationExpInfo.map(row => adapter.educationAdapter(row));
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '教育经历获取失败'
+          });
+          break;
+      }
+    },
     baseInfoEdit () {
       tools.openWin({
         name: 'userBaseinfo',
@@ -313,11 +323,11 @@ export default {
         furl: './userCenter/userEducationHistroy.html',
         hasLeft: 1,
         LCB: () => {
-          console.log('编辑教育经历返回简历详情');
+          this.getEducation();
         },
         data: {
           nameSpace: 'userEducationHistroy',
-          education: this.education,
+          // education: this.education,
           id: this.id
         }
       });
@@ -335,7 +345,9 @@ export default {
             });
             break;
           default:
-            this.getAll();
+            // this.getAll();
+            this.getUserBaseInfo();
+            this.getEducation();
             break;
         }
       }

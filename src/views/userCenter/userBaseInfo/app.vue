@@ -121,10 +121,10 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          tools.toast({
-            position: 'top',
-            message: '基本信息创建成功'
-          });
+          // tools.toast({
+          //   position: 'top',
+          //   message: '基本信息创建成功'
+          // });
           tools.openWin({
             name: 'resumeDetail',
             url: '../win.html',
@@ -161,10 +161,10 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          tools.toast({
-            position: 'top',
-            message: '基本信息编辑成功'
-          });
+          // tools.toast({
+          //   position: 'top',
+          //   message: '基本信息编辑成功'
+          // });
           tools.closeWin();
           break;
         default:
