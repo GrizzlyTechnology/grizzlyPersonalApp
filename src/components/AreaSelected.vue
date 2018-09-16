@@ -27,6 +27,7 @@
 <script>
 import { Icon } from 'muse-ui';
 import tools from 'util/tools';
+import _ from 'lodash';
 
 import service from 'service';
 
@@ -72,7 +73,15 @@ export default {
       switch (response.code) {
         case 0:
           this.allArea = response.result.areaList;
-          this.selectedAreaList = response.result.areaList;
+          if (this.selected.length === 0) {
+            this.selectedAreaList = response.result.areaList;
+          } else {
+            let temp = response.result.areaList;
+            for (let i = 0; i < this.selected.length - 1; i++) {
+              temp = temp[_.findIndex(temp, { value: this.selected[i].value })].children;
+            }
+            this.selectedAreaList = temp;
+          }
           break;
         default:
           tools.toast({
@@ -92,20 +101,25 @@ export default {
     },
     selectedRow (row) {
       if (this.isEnd === false) {
+        // console.log(0);
         this.selected.push({ value: row.value, label: row.label, cityCode: row.citycode });
       } else if (row.value !== this.selected[this.selected.length - 1].value) {
+        // console.log(1);
         this.selected[this.selected.length - 1].value = row.value;
         this.selected[this.selected.length - 1].label = row.label;
         this.selected[this.selected.length - 1].cityCode = row.citycode;
         if (this.levelNow !== this.level || (row.children && row.children.length !== 0)) {
+          // console.log(2);
           this.isEnd = false;
           this.$emit('change', { selected: this.selected, isEnd: false });
         }
       }
       if (this.levelNow === this.level || !row.children || row.children.length === 0) {
+        // console.log(3);
         this.isEnd = true;
         this.$emit('change', { selected: this.selected, isEnd: this.isEnd });
       } else {
+        // console.log(4);
         this.levelNow = this.levelNow + 1;
         this.selectedAreaList = row.children;
         this.$refs.con.scrollTop = 0;
@@ -117,6 +131,8 @@ export default {
     this.getAllArea();
     // this.$nextTick(function () {
     this.selected = this.value;
+    this.levelNow = this.value.length;
+    this.isEnd = this.value.length > 0;
     // });
   }
 };

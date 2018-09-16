@@ -16,7 +16,7 @@ switch (ENV) {
 }
 
 axios.defaults.baseURL = BASEURL;
-axios.defaults.timeout = 20000;
+axios.defaults.timeout = 30000;
 // axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use((config) => {
@@ -38,6 +38,7 @@ axios.interceptors.response.use(function (response) {
     position: 'top',
     message: '网络错误，请稍后重试！！'
   });
+  tools.hideProgress();
   return Promise.reject(error);
 });
 
@@ -56,7 +57,6 @@ function delEmptyAttr (arg) {
         delete params[key];
       }
     });
-
     rObj = params;
   }
 
@@ -78,7 +78,7 @@ function request ({ host = '', version = '', url, params, method = 'post' }) {
       } else {
         url += '?_=' + tk;
       }
-
+      // console.log(url);
       axios[method](host === '' ? url : `http://${host}${url}`, data).then(
         response => {
           // TODO 这里做数据的验证
@@ -210,6 +210,35 @@ export default {
     return request({
       host: hostList.test,
       url: '/api/postJob',
+      params,
+      method: 'get'
+    });
+  },
+  createUserBaesInfo (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Resume/create',
+      params
+    });
+  },
+  deleteUserBaesInfo (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Resume/update',
+      params
+    });
+  },
+  updateUserBaesInfo (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Resume/update',
+      params
+    });
+  },
+  getUserBaseInfo (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Resume/resumeBy',
       params,
       method: 'get'
     });

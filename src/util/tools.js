@@ -593,8 +593,9 @@ u.sleep = function (times) {
     }, times);
   });
 };
+
 u.openWin = function (params) {
-  const { name, url, title = '', fname, furl, hasLeft = false, hasRight = false, data = {}, ...winData } = params
+  const { LCB, name, url, title = '', fname, furl, hasLeft = false, hasRight = false, data = {}, ...winData } = params
   if (window.api) {
     let op = {
       name,
@@ -605,6 +606,31 @@ u.openWin = function (params) {
       }
     };
 
+    //添加点击返回按钮的回调监听
+    if (typeof (LCB) === 'function') {
+      const LCBName = ('LCB' + Date.now().valueOf()) + Math.random();
+      u.addEventListener(
+        {
+          name: LCBName
+        },
+        LCB
+      );
+      op.pageParam.LCBName = LCBName;
+    }
+
+    //添加页面关闭的回调监听
+    if (typeof (data.callback) === 'function') {
+      const eventName = ('EVENT' + Date.now().valueOf()) + Math.random();
+      u.addEventListener(
+        {
+          name: eventName
+        },
+        data.callback
+      );
+      data.eventName = eventName;
+      delete data.callback;
+    }
+
     if (fname !== undefined) {
       op.pageParam.wtitle = title;
       op.pageParam.fname = fname;
@@ -613,6 +639,8 @@ u.openWin = function (params) {
       op.pageParam.hasRight = hasRight;
       op.pageParam.data = data;
     }
+
+
     setTimeout(function () {
       window.api.openWin(op);
     }, 350)
@@ -620,6 +648,56 @@ u.openWin = function (params) {
     window.location.href = furl.replace('./', '/');
   }
 }
+
+u.addEventListener = function (ope = {}, callback = () => { }) {
+  if (window.api) {
+    console.log('add evnet: ' + ope.name);
+    window.api.addEventListener(
+      ope,
+      (ret, err) => {
+        console.log('evnet callback: ' + ope.name);
+        callback(
+          { ...ret, value: typeof (ret.value) === 'string' ? JSON.parse(ret.value) : ret.value },
+          err
+        );
+        if (ope.delEvent !== false) {
+          console.log('del event: ' + ope.name);
+          window.api.removeEventListener({
+            name: ope.name
+          });
+        }
+      }
+    );
+  }
+};
+
+u.sendEvent = function (name = '', data = {}) {
+  console.log('send event: ' + name)
+  if (window.api) {
+    window.api.sendEvent({
+      name: name,
+      extra: typeof (data) === 'object' ? JSON.stringify(data) : data
+    });
+  }
+};
+
+u.closeWin = function (data = {}) {
+  if (window.api) {
+    if (window.api.pageParam.eventName && window.api.pageParam.eventName !== '') {
+      u.sendEvent(window.api.pageParam.eventName, data);
+    }
+    window.api.closeWin();
+  }
+};
+
+u.back = function () {
+  if (window.api) {
+    if (window.api.pageParam.LCBName && window.api.pageParam.LCBName !== '') {
+      u.sendEvent(window.api.pageParam.LCBName);
+    }
+    window.api.closeWin();
+  }
+};
 /* end */
 
 export default u;

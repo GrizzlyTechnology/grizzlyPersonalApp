@@ -3,20 +3,26 @@
     <div class="moduleHeader">
       <div class="title">
         {{title}}
-        <span class="label">{{label}}</span>
+        <span class="label" v-if="label.length>0">{{label}}</span>
       </div>
-      <slot name="end"/>
+      <slot v-if="hasEnd" name="end" />
     </div>
-    <div class="moduleBodyer">
+    <div v-if="!noContent" class="moduleBodyer">
       <slot/>
+    </div>
+    <div v-if="noContent" class="infoNotice">
+      <slot name="info" />
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
+    noContent: {
+      type: Boolean,
+      default: false
+    },
     title: {
       type: String,
       default: ''
@@ -27,14 +33,11 @@ export default {
     }
   },
   computed: {
-    hasHeader () {
-      return !!this.$slots.header;
+    hasEnd () {
+      return !!this.$slots.end;
     },
-    hasFooter () {
-      return !!this.$slots.footer;
-    },
-    hasModalCon () {
-      return !!this.$slots.modalCon;
+    hasSlot () {
+      return !!this.$slots.default;
     }
   },
   methods: {
@@ -61,7 +64,7 @@ export default {
     font-size: 16px;
     transform: rotate(180deg);
   }
-  .title{
+  .title {
     float: left;
     padding-top: 12px;
   }
@@ -71,6 +74,16 @@ export default {
   border: 1px #ddd solid;
   overflow: hidden;
   margin: 0 15px 15px;
-  background-color: #FFF;
+  background-color: #fff;
+}
+.infoNotice {
+  border-radius: 5px;
+  border: 1px #a2d4f7 dashed;
+  overflow: hidden;
+  margin: 0 15px 15px;
+  background-color: #e4f2fb;
+  padding: 20px 15px;
+  text-align: center;
+  color: #a2d4f7;
 }
 </style>

@@ -14,17 +14,19 @@
 </template>
 
 <script>
-// import tools from 'util/tools';
+import tools from 'util/tools';
 // import service from 'service';
 import { Button } from 'muse-ui';
 import AreaSelected from 'components/AreaSelected';
 export default {
-  name: 'userCenterArea',
   data () {
     return {
-      level: window.api ? window.api.pageParam.area.level : 99,
-      selected: window.api ? window.api.pageParam.area : [],
-      isEnd: false
+      level: window.api.pageParam.area.level || 99,
+      selected: window.api.pageParam.area || [],
+      isEnd: window.api.pageParam.area.length === window.api.pageParam.level
+      // level: 2,
+      // selected: [{label: '河北省', value: 130000}, {value: 130100, label: '石家庄市', parentid: 110000, citycode: null}],
+      // isEnd: [{value: 110000, label: '北京'}, {value: 110100, label: '北京市', parentid: 110000, citycode: null}].length === 2
     };
   },
   components: {
@@ -37,15 +39,15 @@ export default {
       this.isEnd = data.isEnd;
     },
     submit () {
-      window.api.sendEvent({
-        name: window.api.pageParam.callback,
-        extra: this.selected
-      });
-      window.api.closeWin();
+      tools.closeWin(this.selected);
+      // window.api.sendEvent({
+      //   name: window.api.pageParam.callback,
+      //   extra: JSON.stringify(this.selected)
+      // });
+      // window.api.closeWin();
     }
   },
-  mounted () {
-  }
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>

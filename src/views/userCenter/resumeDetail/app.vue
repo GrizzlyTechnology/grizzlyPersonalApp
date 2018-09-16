@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Panel title="基本信息" label="必填">
+    <Panel title="基本信息" :label="isRequired">
       <Cell title="姓名" :value="baseInfo.name"></Cell>
       <Cell title="性别" :value="sexText"></Cell>
       <Cell title="出生年月" :value="birthdayText"></Cell>
@@ -8,30 +8,36 @@
       <Cell title="地址" :value="addressText"></Cell>
       <Cell title="手机号码" :value="baseInfo.phone"></Cell>
       <Cell title="电子邮箱" :value="baseInfo.email"></Cell>
-      <Button
-        v-if="type==='create'||type==='edit'"
-        class="editBtn"
-        slot="end"
-        flat
-        color="#009688"
-        @click="baseInfoEdit"
-      >
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="baseInfoEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
     </Panel>
-    <Panel title="教育经历" label="必填">
+    <Panel title="教育经历" :noContent="education.length===0" v-if="isNotDetail || education.length>0" :label="isRequired">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="educationEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <StepVertical class="stepVertical" :data="education" />
+      <div slot="info">
+        暂无教育经历
+      </div>
+    </Panel>
+    <Panel title="实习经历">
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel title="实习经历" label="必填">
+    <Panel title="项目经验">
       <StepVertical class="stepVertical" :data="education" />
     </Panel>
-    <Panel title="项目经验" label="必填">
-      <StepVertical class="stepVertical" :data="education" />
+    <Panel title="自我描述" :noContent="introduction.length===0" v-if="isNotDetail|| introduction.length>0">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="introductionEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <div class="introduction" v-html="introduction.replace(/\n|\r\n/g,'<br/>')" />
+      <div slot="info">
+        暂无自我描述
+      </div>
     </Panel>
-    <Panel title="自我介绍" label="必填">
-      <div class="introduction">自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍自我介绍</div>
-    </Panel>
-    <Panel title="技能评价" label="必填">
+
+    <Panel title="技能评价">
       <SkillLine title="Axure" :value="0" />
       <SkillLine title="Axure" :value="10" />
       <SkillLine title="Axure" :value="20" />
@@ -44,83 +50,86 @@
       <SkillLine title="Axure" :value="90" />
       <SkillLine title="Axure" :value="100" />
     </Panel>
-    <Panel title="期望工作" label="必填">
-      <Cell title="期望职位" value="说明文字"></Cell>
-      <Cell title="期望月薪" value="说明文字"></Cell>
-      <Cell title="期望城市" value="说明文字"></Cell>
-      <Cell title="工作性质" value="说明文字"></Cell>
-      <Cell title="当前状态" value="说明文字"></Cell>
-      <Cell title="到岗时间" value="说明文字"></Cell>
+    <Panel title="期望工作" :label="isRequired">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="expectedWorkEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <Cell title="期望职位" :value="expectedWork.desiredPosition"></Cell>
+      <Cell title="期望月薪" :value="expectedWork.expectedSalary"></Cell>
+      <Cell title="期望城市" :value="expectedWork.expectedCity"></Cell>
+      <Cell title="工作性质" :value="workTypeText"></Cell>
+      <Cell title="当前状态" :value="currentStateText"></Cell>
+      <Cell title="到岗时间" :value="timeToPostText"></Cell>
     </Panel>
   </div>
   </div>
 </template>
 
 <script>
-// import service from 'service';
-import { Button, Icon } from 'muse-ui';
-import { Cell } from 'mint-ui';
+import moment from 'moment';
+
+import service from 'service';
 import tools from 'util/tools';
 import dictMap from 'util/dictMap';
-import moment from 'moment';
+import adapter from 'util/adapter';
+
+import { Button, Icon } from 'muse-ui';
+import { Cell } from 'mint-ui';
 import Panel from 'components/Panel';
 import StepVertical from 'components/StepVertical';
 import SkillLine from 'components/SkillLine';
 
 export default {
-  name: 'userClass',
   data () {
     return {
-      type: 'detail',
+      type: window.api ? window.api.pageParam.type : 'detail',
+      id: window.api ? window.api.pageParam.id : null,
+      introduction: '',
       baseInfo: {
         title: '', // 简历名称
         name: '', // true string 真实姓名
         sex: null, // true string 性别
         birthday: null, // true string生日
-        houseHold: {
-          province: null,
-          city: null
-        }, // true string 籍贯
-        address: {
-          province: null,
-          city: null,
-          street: ''
-        },
+        houseHold: [], // true string 籍贯
+        address: [],
+        street: '',
         phone: '', // true string手机
-        email: '' // true string 邮箱
+        email: '' // true string 邮箱，
       },
-      education: [
-        {
-          head: '2017.5-2020.2',
-          title: '交通技师学院',
-          info: '大专/信息系'
-        },
-        {
-          head: '2017.5-2020.2',
-          title: 'sdfsdf',
-          info: '大专/信息系'
-        },
-        {
-          head: '2017.5-2020.2',
-          title: '交通技师学院',
-          info: '大专/信息系'
-        },
-        {
-          head: '2017.5-2020.2',
-          title: '交通技师学院',
-          info: '大专/信息系'
-        }
-      ],
-      list: [
-        // {
-        //   id: 0,
-        //   title: '我的简历1'
-        // },
-        // {
-        //   id: 1,
-        //   title: '我的简历2'
-        // }
-      ]
+      expectedWork: {
+        desiredPosition: '',
+        expectedSalary: '',
+        expectedCity: '',
+        workType: null,
+        currentState: null,
+        timeToPost: null
+      },
+      education: [{
+        id: 0,
+        schoolname: '学校名',
+        major: '计算机',
+        education: '高中',
+        inschooltime: 1536914108816,
+        graduationtime: 1536914108816,
+        uid: 0
+      },
+      {
+        id: 1,
+        schoolname: '学校名',
+        major: '计算机',
+        education: '1高中',
+        inschooltime: 1536914108816,
+        graduationtime: 1536914108816,
+        uid: 0
+      }, {
+        id: 2,
+        schoolname: '学校名',
+        major: '计算机',
+        education: '高中',
+        inschooltime: 1536914108816,
+        graduationtime: 1536914108816,
+        uid: 0
+      }].map(row => adapter.educationAdapter(row))
     };
   },
   components: {
@@ -132,40 +141,204 @@ export default {
     Icon
   },
   computed: {
+    isNotDetail () {
+      return this.type === 'creat' || this.type === 'edit';
+    },
+    isRequired () {
+      return this.type === 'edit' ? '必填' : '';
+    },
     birthdayText () {
-      return this.baseInfo.birthday ? moment(this.baseInfo.birthday).format('YYYY年MM月DD日') : '';
+      return this.baseInfo.birthday
+        ? moment(this.baseInfo.birthday).format('YYYY年MM月DD日')
+        : '';
     },
     sexText () {
-      return this.baseInfo.sex ? dictMap.sex[this.baseInfo.sex] : '';
+      return this.baseInfo.sex !== null ? dictMap.sex[this.baseInfo.sex] : '';
     },
     houseHoldText () {
-      return this.baseInfo.houseHold.province && this.baseInfo.houseHold.city ? this.baseInfo.houseHold.province.label + this.baseInfo.houseHold.city.label : '';
+      return this.baseInfo.houseHold.map(row => row.label).join(' ');
     },
     addressText () {
-      return this.baseInfo.address.province && this.baseInfo.address.city && this.baseInfo.address.street ? this.baseInfo.address.province.label + this.baseInfo.address.city.label + this.baseInfo.address.street.label : '';
+      return (
+        this.baseInfo.address.map(row => row.label).join(' ') +
+        (this.baseInfo.street || '')
+      );
+    },
+    // expectedCityText () {
+    //   return this.expectedWork.expectedCity.map(row => row.label).join('，');
+    // },
+    // expectedSalaryText () {
+    //   return this.expectedWork.expectedSalary
+    //     ? dictMap.expectedSalary[Number(this.expectedWork.expectedSalary)]
+    //     : '';
+    // },
+    workTypeText () {
+      return this.expectedWork.workType !== null
+        ? dictMap.workType[Number(this.expectedWork.workType)]
+        : '';
+    },
+    currentStateText () {
+      return this.expectedWork.currentState !== null
+        ? dictMap.currentState[Number(this.expectedWork.currentState)]
+        : '';
+    },
+    timeToPostText () {
+      return this.expectedWork.timeToPost !== null
+        ? dictMap.timeToPost[Number(this.expectedWork.timeToPost)]
+        : '';
     }
   },
   methods: {
+    // 一次获取所有信息
+    async getAll () {
+      tools.showProgress();
+      const response = await Promise.all([
+        service.getUserBaseInfo({
+          resumeId: this.id
+        })
+      ]);
+      tools.hideProgress();
+      if (response.length) {
+        this.baseInfo = adapter.baseInfoAdapter(response[0].result.resumeInfo[0]);
+        this.expectedWork = adapter.expectedWorkAdapter(
+          response[0].result.resumeInfo[0]
+        );
+        this.introduction = response[0].result.resumeInfo[0].introduction || '';
+      } else {
+        tools.toast({
+          position: 'top',
+          message: '简历信息获取失败'
+        });
+      }
+    },
+    // 获取用户基础信息
+    async getUserBaseInfo () {
+      tools.showProgress();
+      const response = await service.getUserBaseInfo({
+        resumeId: this.id
+      });
+      tools.hideProgress();
+      // console.log(JSON.stringify(response));
+      switch (response.code) {
+        case 0:
+          this.baseInfo = adapter.baseInfoAdapter(response.result.resumeInfo[0]);
+          this.expectedWork = adapter.expectedWorkAdapter(
+            response.result.resumeInfo[0]
+          );
+          this.introduction = response.result.resumeInfo[0].introduction || '';
+          // alert(this.baseInfo.houseHold[0].label);
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '简历信息获取失败'
+          });
+          break;
+      }
+    },
+
     baseInfoEdit () {
       tools.openWin({
         name: 'userBaseinfo',
         url: '../win.html',
-        title: '基本信息',
+        title: '编辑基本信息',
         fname: 'userBaseinfo_f',
         furl: './userCenter/userBaseinfo.html',
         hasLeft: 1,
         data: {
           nameSpace: 'userBaseinfo',
-          baseInfo: this.baseInfo
+          baseInfo: this.baseInfo,
+          id: this.id,
+          callback: (ret, err) => {
+            this.getUserBaseInfo();
+          }
         }
+      });
+    },
 
+    introductionEdit () {
+      tools.openWin({
+        name: 'userIntroduction',
+        url: '../win.html',
+        title: '编辑自我描述',
+        fname: 'userIntroduction_f',
+        furl: './userCenter/userIntroduction.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'userIntroduction',
+          introduction: this.introduction,
+          id: this.id,
+          callback: (ret, err) => {
+            this.getUserBaseInfo();
+          }
+        }
+      });
+    },
+
+    expectedWorkEdit () {
+      // const expectedCity = {};
+      // this.expectedWork.expectedCity.forEach(element => {
+      //   expectedCity[element.value] = element;
+      // });
+      tools.openWin({
+        name: 'userExpectedWork',
+        url: '../win.html',
+        title: '编辑期望工作',
+        fname: 'userExpectedWork_f',
+        furl: './userCenter/userExpectedWork.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'userExpectedWork',
+          expectedWork: {
+            ...this.expectedWork,
+            workType: dictMap.workType[this.expectedWork.workType],
+            currentState: dictMap.currentState[this.expectedWork.currentState],
+            timeToPost: dictMap.timeToPost[this.expectedWork.timeToPost]
+            // expectedCity
+          },
+          id: this.id,
+          callback: (ret, err) => {
+            this.getUserBaseInfo();
+          }
+        }
+      });
+    },
+
+    educationEdit () {
+      tools.openWin({
+        name: 'userEducationHistroy',
+        url: '../win.html',
+        title: '编辑教育经历',
+        fname: 'userEducationHistroy_f',
+        furl: './userCenter/userEducationHistroy.html',
+        hasLeft: 1,
+        LCB: () => {
+          console.log('编辑教育经历返回简历详情');
+        },
+        data: {
+          nameSpace: 'userEducationHistroy',
+          education: this.education,
+          id: this.id
+        }
       });
     }
   },
+
   mounted () {
-    if (window.api && window.api.pageParam.nameSpace === 'resumeDetail') {
-      this.type = window.api.pageParam.type;
-      this.baseInfo = {...this.baseInfo, ...window.api.pageParam.resume.baseInfo};
+    if (window.api) {
+      if (window.api.pageParam.nameSpace === 'resumeDetail') {
+        switch (window.api.pageParam.from) {
+          case 'userBaseInfo': // 创建基本信息后的回调
+            this.getUserBaseInfo();
+            window.api.closeWin({
+              name: 'userBaseInfo'
+            });
+            break;
+          default:
+            this.getAll();
+            break;
+        }
+      }
     }
   }
 };
@@ -182,6 +355,8 @@ export default {
 }
 </style>
 <style lang="less" scoped>
+.infoNotice {
+}
 .introduction {
   padding: 15px;
   line-height: 1.8;

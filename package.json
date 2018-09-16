@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "is-json": "^2.0.1",
+    "lodash": "^4.17.10",
     "mint-ui": "^2.2.13",
     "mockjs": "^1.0.1-beta3",
     "moment": "^2.22.2",

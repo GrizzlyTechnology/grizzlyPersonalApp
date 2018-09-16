@@ -100,7 +100,7 @@ export default {
       this.$refs.startDateTime.open();
     },
     changeStartDateTime (date) {
-      console.log('1');
+      // console.log('1');
       this.startDateTimeText = moment(date).format('YYYY年MM月DD日');
       this.step1Form.startDateTime = (this.startDateTime).valueOf();
     }
