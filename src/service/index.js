@@ -242,5 +242,29 @@ export default {
       params,
       method: 'get'
     });
+  },
+  searchJob (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Hr/searchJob',
+      params,
+      method: 'get'
+    });
+  },
+  searchBoxValue (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Hr/searchBoxValue',
+      params,
+      method: 'get'
+    });
+  },
+  searchChipValue (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Hr/searchChipValue',
+      params,
+      method: 'get'
+    });
   }
 };

@@ -19,107 +19,107 @@
   </div>
 </template>
 <script>
-import tools from "util/tools";
-import { ExpansionPanel, Chip, SubHeader, Button } from "muse-ui";
-import { Toast } from "mint-ui";
+import tools from 'util/tools';
+import { ExpansionPanel, Chip, SubHeader, Button } from 'muse-ui';
+import { Toast } from 'mint-ui';
 export default {
-  data() {
+  data () {
     return {
       selectColor: false,
       selectIndex: [],
-      panel: "",
+      panel: '',
       idustrySorts: [
         {
           id: 1,
-          value: "计算机/互联网/通信电子",
+          value: '计算机/互联网/通信电子',
           idustrys: [
             {
               id: 1456456,
-              value: "计算机软件",
+              value: '计算机软件',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 2678678,
-              value: "计算机硬件",
+              value: '计算机硬件',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 33245345,
-              value: "计算机",
+              value: '计算机',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 4567,
-              value: "制药 / 医疗",
+              value: '制药 / 医疗',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 5678,
-              value: "广告 / 媒体",
+              value: '广告 / 媒体',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             }
@@ -127,95 +127,95 @@ export default {
         },
         {
           id: 2,
-          value: "会计/金融/银行/保险",
+          value: '会计/金融/银行/保险',
           idustrys: [
             {
               id: 11,
-              value: "计算机软件1",
+              value: '计算机软件1',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 22,
-              value: "计算机硬件123",
+              value: '计算机硬件123',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 33,
-              value: "计算机123",
+              value: '计算机123',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 44,
-              value: "制药 / 医疗123",
+              value: '制药 / 医疗123',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 55,
-              value: "广告 / 媒体123",
+              value: '广告 / 媒体123',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             }
@@ -223,95 +223,95 @@ export default {
         },
         {
           id: 3,
-          value: "贸易/消费/制造/营运",
+          value: '贸易/消费/制造/营运',
           idustrys: [
             {
               id: 1222,
-              value: "计算机软件134345",
+              value: '计算机软件134345',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 2333,
-              value: "gg",
+              value: 'gg',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 34444,
-              value: "456546",
+              value: '456546',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 45555,
-              value: "dfgdfg",
+              value: 'dfgdfg',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 5666,
-              value: "gfdfg",
+              value: 'gfdfg',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             }
@@ -319,95 +319,95 @@ export default {
         },
         {
           id: 4,
-          value: "制药/医疗",
+          value: '制药/医疗',
           idustrys: [
             {
               id: 134534,
-              value: "计算机软件134345",
+              value: '计算机软件134345',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 234534,
-              value: "gg",
+              value: 'gg',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 3567,
-              value: "456546",
+              value: '456546',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 4567,
-              value: "dfgdfg",
+              value: 'dfgdfg',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 5567,
-              value: "gfdfg",
+              value: 'gfdfg',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             }
@@ -415,95 +415,95 @@ export default {
         },
         {
           id: 5,
-          value: "广告/媒体",
+          value: '广告/媒体',
           idustrys: [
             {
               id: 12345345,
-              value: "计算机软件134345",
+              value: '计算机软件134345',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 25678568,
-              value: "gg",
+              value: 'gg',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 3345345,
-              value: "456546",
+              value: '456546',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 46465464,
-              value: "dfgdfg",
+              value: 'dfgdfg',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             },
             {
               id: 5456456,
-              value: "gfdfg",
+              value: 'gfdfg',
               duties: [
                 {
                   id: 456456,
-                  value: "计算机硬件"
+                  value: '计算机硬件'
                 },
-                 {
+                {
                   id: 675675,
-                  value: "计算机硬件1111"
+                  value: '计算机硬件1111'
                 },
                 {
                   id: 567567567,
-                  value: "ertertert"
+                  value: 'ertertert'
                 }
               ]
             }
@@ -519,15 +519,15 @@ export default {
     Button
   },
   methods: {
-    toggle(panel) {
-      this.panel = panel === this.panel ? "" : panel;
+    toggle (panel) {
+      this.panel = panel === this.panel ? '' : panel;
     },
-    remove(index) {
+    remove (index) {
       this.selectIndex.splice(index, 1);
     },
-    toggleColor(index) {
+    toggleColor (index) {
       if (this.selectIndex.length >= 5 && !this.selectIndex.includes(index)) {
-        Toast({ message: "最多选择5个行业" });
+        Toast({ message: '最多选择5个行业' });
         return;
       }
       if (this.selectIndex.includes(index)) {
@@ -537,16 +537,15 @@ export default {
         this.selectIndex.push(index);
       }
     },
-    pushData() {
+    pushData () {
       if (this.selectIndex.length <= 0) {
-        Toast({ message: "请选择职位" });
-        return;
+        Toast({ message: '请选择职位' });
       } else {
         tools.closeWin(this.selectIndex);
       }
     }
   },
-  mounted() {}
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>
