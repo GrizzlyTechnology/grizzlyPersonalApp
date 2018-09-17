@@ -287,5 +287,26 @@ export default {
       url: '/api/Educationexp/educationexpBy',
       params
     });
+  },
+  createUserInternship (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Internshipexp/create',
+      params
+    });
+  },
+  updateUserInternship (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Internshipexp/update',
+      params
+    });
+  },
+  getUserInternship (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Internshipexp/internshipexpBy',
+      params
+    });
   }
 };
