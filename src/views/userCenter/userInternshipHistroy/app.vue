@@ -98,16 +98,16 @@ export default {
     },
     edit (data) {
       tools.openWin({
-        name: 'userEducationForm',
+        name: 'userInternshipForm',
         url: '../win.html',
-        title: '编辑教育经历',
-        fname: 'userEducationForm_f',
-        furl: './userCenter/userEducationForm.html',
+        title: '编辑实习经历',
+        fname: 'userInternshipForm_f',
+        furl: './userCenter/userInternshipForm.html',
         hasLeft: 1,
         data: {
-          nameSpace: 'userEducationForm',
+          nameSpace: 'userInternshipForm',
           id: data.id,
-          education: data,
+          internship: data,
           callback: (ret, err) => {
             this.getList();
           }
