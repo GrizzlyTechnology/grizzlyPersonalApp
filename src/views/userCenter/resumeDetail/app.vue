@@ -118,7 +118,23 @@ export default {
       },
       education: [],
       internship: [],
-      project: []
+      project: [{
+        id: 0,
+        projectname: '项目名',
+        duty: '职责',
+        starttime: 1537146097,
+        endtime: 1537146097,
+        porjectdec: '项目描述',
+        uid: 0
+      }, {
+        id: 1,
+        projectname: '项目名',
+        duty: '职责',
+        starttime: 1537146097,
+        endtime: 1537146097,
+        porjectdec: '项目描述',
+        uid: 0
+      }].map(r => adapter.projectAdapter(r))
     };
   },
   components: {
@@ -411,7 +427,7 @@ export default {
         furl: './userCenter/userProjectHistroy.html',
         hasLeft: 1,
         LCB: () => {
-          this.getInternship();
+          this.getProject();
         },
         data: {
           nameSpace: 'userProjectHistroy',
@@ -436,7 +452,7 @@ export default {
             this.getUserBaseInfo();
             this.getEducation();
             this.getInternship();
-            this.getProject();
+            // this.getProject();
             break;
         }
       }

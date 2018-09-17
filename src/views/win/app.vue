@@ -71,7 +71,7 @@ export default {
           this.showMarker = false;
         }
       );
-      console.log(JSON.stringify(window.api.pageParam));
+      // console.log(JSON.stringify(window.api.pageParam));
       window.api.openFrame({
         name: window.api.pageParam.fname,
         url: window.api.pageParam.furl,
