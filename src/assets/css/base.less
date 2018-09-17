@@ -1,15 +1,23 @@
 @charset "utf-8";
-
 /* 基本字体样式 */
-@fontFamily: arial, Microsoft Yahei, Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
-@smallFontFamily: arial, serif;
 
+@fontFamily: arial,
+Microsoft Yahei,
+Helvetica,
+Hiragino Sans GB,
+WenQuanYi Micro Hei,
+sans-serif;
+@smallFontFamily: arial,
+serif;
 /* 行高 */
+
 @lineHeight: 1.5;
 /* 基本间距 */
+
 @gap: 16px;
 @gap24: 24px;
 /* 列表顶部选择 */
+
 @listHeaderItemLeftMargin: 20px;
 /* 几个基本的灰度色彩 */
 
@@ -26,21 +34,20 @@
 @darkerWhite: #f5f5f5;
 @darkWhite: #f7f7f7;
 @white: #fff;
-
 /* 语意化灰度 */
+
 @grayLine: @lighterGray;
 @grayBoxBackground: @white;
 @grayBodyBackground: @darkerWhite;
 @grayInputBackground: @darkestWhite;
 @grayListHeader: @dark4White;
-
 @grayFont: @darkGray;
 @grayFontTil: @darkerGray;
 @grayFontSmallTil: @baseGray;
 @grayFontLeastTil: @gray;
-
 /* 基本状态色 */
-@baseColor:#009688;
+
+@baseColor: #009688;
 @default: @darkGray;
 @primary: #0D9CE6;
 @success: #27cd59;
@@ -48,26 +55,24 @@
 @warning: #f7ba2a;
 @danger: #f75c5d;
 @orange: #f7842a;
-
 @defaultDark: darken(@darkGray, 9%);
 @primaryDark: darken(@primary, 9%);
 @successDark: darken(@success, 9%);
 @infoDark: darken(@info, 9%);
 @warningDark: darken(@warning, 9%);
 @dangerDark: darken(@danger, 9%);
-
 @defaultLight: lighten(@darkGray, 53%);
 @primaryLight: lighten(@primary, 10%);
 @successLight: lighten(@success, 53%);
 @infoLight: lighten(@info, 35%);
 @warningLight: lighten(@warning, 47%);
 @dangerLight: lighten(@danger, 34%);
-
 /* 网站基本蓝色 */
-@baseBlue:rgb(0, 150, 136);
-@antdLightBlue: #ecf6fd;
 
+@baseBlue: rgb(0, 150, 136);
+@antdLightBlue: #ecf6fd;
 /* 字体大小 */
+
 @fontSizeMax: 20px;
 @fontSizeMedium: 15px;
 @h1: 18px;
@@ -76,9 +81,9 @@
 @h4: 13px;
 @h5: 12px;
 @h6: 11px;
-
 /* 一些辅助方法
  ellipsis，省略号，当超过宽度时，显示省略号： */
+
 .ell() {
     overflow: hidden;
     -ms-text-overflow: ellipsis;
@@ -87,12 +92,16 @@
 }
 
 /* 强制换行 */
+
 .wordBreak() {
-    word-break: break-all; /*支持IE，chrome，FF不支持*/
-    word-wrap: break-word; /*支持IE，chrome，FF*/
+    word-break: break-all;
+    /*支持IE，chrome，FF不支持*/
+    word-wrap: break-word;
+    /*支持IE，chrome，FF*/
 }
 
 /* display:inline-block;IE6,7块级元素对inline-block支持不好，需要触发Layout；内联元素就不需要了。 */
+
 .dib() {
     display: inline-block;
     *display: inline;
@@ -100,7 +109,8 @@
 }
 
 /* 清除浮动，貌似最完美的解决方案 */
-.clearFix (){
+
+.clearFix () {
     &:after {
         clear: both;
         content: '.';
@@ -113,6 +123,7 @@
 }
 
 /* 最小高度，IE6不支持min-height，但是使用height能达到一样的效果 */
+
 .minHeight(@min-height) {
     min-height: @min-height;
     height: auto !important;
@@ -120,6 +131,7 @@
 }
 
 /* 使用纯CSS现实三角形，兼容所有浏览器；使用了三个参数，第一个是"方向"，第二个是"大小"，第三个是"颜色"，省得每次都写一大堆代码，非常方便啦； */
+
 // .arrow(@direction, @size, @color) {
 //     width: 0;
 //     height: 0;
@@ -146,15 +158,16 @@
 //     border-left: none;
 // }
 // }
-
 /* 一个区块 */
+
 .rectangle(@width, @height) {
     width: @width + px;
     height: @height + px;
 }
 
 /* 整体居中 */
-.center (){
+
+.center () {
     margin-left: auto;
     margin-right: auto;
 }
@@ -163,17 +176,18 @@
 //   @include rectangle(@maxWidth, auto);
 //   @include center();
 // }
-
 /* 垂直居中 */
+
 .centerMiddle () {
     display: table-cell;
     vertical-align: middle;
 }
 
 /* 当Card底部是一个没有分页的List时 */
+
 .noPagination() {
     :global(.ant-table-tbody) {
-        > tr:last-of-type > td {
+        >tr:last-of-type>td {
             border-bottom: none;
         }
     }

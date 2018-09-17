@@ -242,5 +242,116 @@ export default {
       params,
       method: 'get'
     });
+  },
+  searchJob (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Hr/searchJob',
+      params,
+      method: 'get'
+    });
+  },
+  searchBoxValue (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Hr/searchBoxValue',
+      params,
+      method: 'get'
+    });
+  },
+  searchChipValue (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Hr/searchChipValue',
+      params,
+      method: 'get'
+    });
+  },
+  createUserEducation (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Educationexp/create',
+      params
+    });
+  },
+  updateUserEducation (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Educationexp/update',
+      params
+    });
+  },
+  getUserEducation (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Educationexp/educationexpBy',
+      params
+    });
+  },
+  createUserInternship (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Internshipexp/create',
+      params
+    });
+  },
+  updateUserInternship (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Internshipexp/update',
+      params
+    });
+  },
+  getUserInternship (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Internshipexp/internshipexpBy',
+      params,
+      method: 'get'
+    });
+  },
+  createUserProject (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Projectpexp/create',
+      params
+    });
+  },
+  updateUserProject (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Projectexp/update',
+      params
+    });
+  },
+  getUserProject (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Projectexp/projectexpBy',
+      params,
+      method: 'get'
+    });
+  },
+  createUserJob (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Jobexp/create',
+      params
+    });
+  },
+  updateUserJob (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Jobexp/update',
+      params
+    });
+  },
+  getUserJob (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Jobexp/jobexpBy',
+      params,
+      method: 'get'
+    });
   }
 };

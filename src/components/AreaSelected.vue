@@ -101,25 +101,25 @@ export default {
     },
     selectedRow (row) {
       if (this.isEnd === false) {
-        console.log(0);
+        // console.log(0);
         this.selected.push({ value: row.value, label: row.label, cityCode: row.citycode });
       } else if (row.value !== this.selected[this.selected.length - 1].value) {
-        console.log(1);
+        // console.log(1);
         this.selected[this.selected.length - 1].value = row.value;
         this.selected[this.selected.length - 1].label = row.label;
         this.selected[this.selected.length - 1].cityCode = row.citycode;
         if (this.levelNow !== this.level || (row.children && row.children.length !== 0)) {
-          console.log(2);
+          // console.log(2);
           this.isEnd = false;
           this.$emit('change', { selected: this.selected, isEnd: false });
         }
       }
       if (this.levelNow === this.level || !row.children || row.children.length === 0) {
-        console.log(3);
+        // console.log(3);
         this.isEnd = true;
         this.$emit('change', { selected: this.selected, isEnd: this.isEnd });
       } else {
-        console.log(4);
+        // console.log(4);
         this.levelNow = this.levelNow + 1;
         this.selectedAreaList = row.children;
         this.$refs.con.scrollTop = 0;
