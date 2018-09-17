@@ -87,6 +87,15 @@ export default {
           break;
       }
     },
+    del (data) {
+      this.unLink(
+        this.list.filter(r => {
+          if (r.id !== data.id) {
+            return r;
+          }
+        }).map(r => r.id).join(',')
+      );
+    },
     edit (data) {
       tools.openWin({
         name: 'userEducationForm',
@@ -104,17 +113,6 @@ export default {
           }
         }
       });
-    },
-    del (data) {
-      const list = this.list.filter(r => {
-        if (r.id !== data.id) {
-          return r;
-        }
-      });
-      // console.log(list.map(r => r.id).join(','));
-      this.unLink(
-        list.map(r => r.id).join(',')
-      );
     },
     create () {
       tools.openWin({
@@ -135,7 +133,7 @@ export default {
     }
   },
   mounted () {
-    this.getList();
+    // this.getList();
   }
 };
 </script>
