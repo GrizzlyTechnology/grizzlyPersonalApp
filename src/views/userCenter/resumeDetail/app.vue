@@ -94,7 +94,7 @@ import SkillLine from 'components/SkillLine';
 export default {
   data () {
     return {
-      type: window.api ? window.api.pageParam.type : 'detail',
+      type: window.api ? window.api.pageParam.type : 'edit',
       id: window.api ? window.api.pageParam.id : null,
       introduction: '',
       baseInfo: {
@@ -118,23 +118,7 @@ export default {
       },
       education: [],
       internship: [],
-      project: [{
-        id: 0,
-        projectname: '项目名',
-        duty: '职责',
-        starttime: 1537146097,
-        endtime: 1537146097,
-        porjectdec: '项目描述',
-        uid: 0
-      }, {
-        id: 1,
-        projectname: '项目名',
-        duty: '职责',
-        starttime: 1537146097,
-        endtime: 1537146097,
-        porjectdec: '项目描述',
-        uid: 0
-      }].map(r => adapter.projectAdapter(r))
+      project: []
     };
   },
   components: {
@@ -452,7 +436,7 @@ export default {
             this.getUserBaseInfo();
             this.getEducation();
             this.getInternship();
-            // this.getProject();
+            this.getProject();
             break;
         }
       }

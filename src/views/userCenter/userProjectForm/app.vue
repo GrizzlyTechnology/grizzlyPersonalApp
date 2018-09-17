@@ -3,20 +3,20 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form">
-          <FormItem label="公司名称" prop="companyName" :rules="companyNameRules">
-            <TextField v-model="form.companyName"></TextField>
+          <FormItem label="项目名称" prop="projectName" :rules="projectNameRules">
+            <TextField v-model="form.projectName"></TextField>
           </FormItem>
-          <FormItem label="岗位" prop="post" :rules="postRules">
-            <TextField v-model="form.post"></TextField>
+          <FormItem label="项目职责" prop="duty" :rules="dutyRules">
+            <TextField v-model="form.duty"></TextField>
           </FormItem>
-          <FormItem label="在职时间" prop="starTime" :rules="workingTimeRules">
+          <FormItem label="项目时间" prop="starTime" :rules="workingTimeRules">
             <DateInput class="dateInput" type="month" :value="starTimeText" :max-date="new Date()" @change="changeStarTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
             <span class="joiner">至</span>
             <DateInput class="dateInput" type="month" :value="endTimeText" :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
-          <FormItem label="工作内容" prop="jobContent">
+          <FormItem label="项目描述" prop="porjectDec">
             <TextField
-              v-model="form.jobContent"
+              v-model="form.porjectDec"
               multi-line
               :max-length="100"
               :rows="5"
@@ -46,14 +46,14 @@ export default {
     return {
       id: window.api ? window.api.pageParam.id : null,
       form: {
-        companyName: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.companyName : '',
-        endTime: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.endTime : Date.now().valueOf(),
-        starTime: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.starTime : Date.now().valueOf(),
-        jobContent: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.jobContent : '',
-        post: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.post : ''
+        projectName: window.api && window.api.pageParam.project ? window.api.pageParam.project.projectName : '',
+        duty: window.api && window.api.pageParam.project ? window.api.pageParam.project.duty : '',
+        endTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.endTime : Date.now().valueOf(),
+        starTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.starTime : Date.now().valueOf(),
+        porjectDec: window.api && window.api.pageParam.project ? window.api.pageParam.project.porjectDec : ''
       },
-      companyNameRules: [{ validate: val => !!val, message: '必须填写公司名称' }],
-      postRules: [{ validate: val => val, message: '必须填写岗位' }],
+      projectNameRules: [{ validate: val => !!val, message: '必须填写项目名称' }],
+      dutyRules: [{ validate: val => val, message: '必须填写项目职责' }],
       workingTimeRules: [
         { validate: val => this.form.starTime <= this.form.endTime, message: '开始时间不能在结束时间之后' }
       ]
@@ -76,8 +76,12 @@ export default {
   },
   methods: {
     async create () {
+      // console.log(JSON.stringify({
+      //   ...this.form,
+      //   resumeId: window.api.pageParam.resumeId
+      // }));
       tools.showProgress();
-      const response = await service.createUserInternship({
+      const response = await service.createUserProject({
         ...this.form,
         resumeId: window.api.pageParam.resumeId
       });
@@ -93,15 +97,15 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '实习经历创建失败，请稍后重试！！'
+            message: '项目经验创建失败，请稍后重试！！'
           });
           break;
       }
     },
     async edit () {
       tools.showProgress();
-      const response = await service.updateUserInternship({
-        internshipExpId: this.id,
+      const response = await service.updateUserProject({
+        projectExpId: this.id,
         ...this.form
       });
       tools.hideProgress();
@@ -116,7 +120,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '实习经历编辑失败，请稍后重试！！'
+            message: '项目经验编辑失败，请稍后重试！！'
           });
           break;
       }
