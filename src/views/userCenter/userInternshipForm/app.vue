@@ -9,11 +9,10 @@
           <FormItem label="岗位" prop="post" :rules="postRules">
             <TextField v-model="form.post"></TextField>
           </FormItem>
-          <FormItem label="入职时间" prop="starTime" :rules="workingTimeRules">
-            <DateInput type="month" :value="starTimeText" :max-date="new Date()" @change="changeStarTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
-          </FormItem>
-          <FormItem label="离职时间" prop="endTime" :rules="workingTimeRules">
-            <DateInput type="month" :value="endTimeText" :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
+          <FormItem label="在职时间" prop="starTime" :rules="workingTimeRules">
+            <DateInput class="dateInput" type="month" :value="starTimeText" :max-date="new Date()" @change="changeStarTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
+            <span class="joiner">至</span>
+            <DateInput class="dateInput" type="month" :value="endTimeText" :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
           <FormItem label="工作内容" prop="jobContent">
             <TextField
@@ -51,13 +50,13 @@ export default {
         companyName: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.companyName : '',
         endTime: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.endTime : Date.now().valueOf(),
         starTime: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.starTime : Date.now().valueOf(),
-        jobContent: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.jobContent : '',
+        jobContent: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.jobContent.replace(/<br\/>/g, '\r\n') : '',
         post: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.post : ''
       },
       companyNameRules: [{ validate: val => !!val, message: '必须填写公司名称' }],
       postRules: [{ validate: val => val, message: '必须填写岗位' }],
       workingTimeRules: [
-        { validate: val => this.form.starTime <= this.form.endTime, message: '入职时间不能在离职时间之后' }
+        { validate: val => this.form.starTime <= this.form.endTime, message: '开始时间不能在结束时间之后' }
       ]
     };
   },
@@ -161,6 +160,13 @@ export default {
 .bodyer {
   flex: 1;
   overflow: auto;
+}
+.dateInput{
+  width: 40%;
+}
+.joiner{
+  width: 20%;
+  text-align: center;
 }
 // .startDateTime{
 //   bottom: 50px;

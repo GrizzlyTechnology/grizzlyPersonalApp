@@ -116,14 +116,14 @@ export default {
     },
     create () {
       tools.openWin({
-        name: 'userEducationForm',
+        name: 'userInternshipForm',
         url: '../win.html',
-        title: '创建教育经历',
-        fname: 'userEducationForm_f',
-        furl: './userCenter/userEducationForm.html',
+        title: '创建实习经历',
+        fname: 'userInternshipForm_f',
+        furl: './userCenter/userInternshipForm.html',
         hasLeft: 1,
         data: {
-          nameSpace: 'userEducationForm',
+          nameSpace: 'userInternshipForm',
           resumeId: this.id,
           callback: (ret, err) => {
             this.getList();

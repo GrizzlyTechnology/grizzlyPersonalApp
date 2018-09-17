@@ -54,7 +54,7 @@ adapter.internshipAdapter = function (data) {
     jobContent: data.jobcontent,
     head: moment(data.startime * 1000).format('YYYY年MM月') + ' - ' + moment(data.endtime * 1000).format('YYYY年MM月'),
     title: data.companyname + ' / ' + data.post,
-    info: data.jobcontent
+    info: data.jobcontent.replace(/\n|\r\n/g, '<br/>')
   };
 };
 export default adapter;
