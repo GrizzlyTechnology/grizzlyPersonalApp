@@ -111,25 +111,7 @@ export default {
         timeToPost: null
       },
       education: [],
-      internship: [
-        {
-          id: 0,
-          companyname: '实习公司',
-          post: '岗位',
-          startime: 1537146097,
-          endtime: 1537146097,
-          jobcontent: '工作内容',
-          uid: 0
-        }, {
-          id: 1,
-          companyname: '实习公司',
-          post: '岗位',
-          startime: 1537146097,
-          endtime: 1537146097,
-          jobcontent: '工作内容',
-          uid: 0
-        }
-      ].map(row => adapter.internshipAdapter(row))
+      internship: []
     };
   },
   components: {
@@ -386,7 +368,7 @@ export default {
         furl: './userCenter/userInternshipHistroy.html',
         hasLeft: 1,
         LCB: () => {
-          // this.getInternship();
+          this.getInternship();
         },
         data: {
           nameSpace: 'userInternshipHistroy',
@@ -410,7 +392,7 @@ export default {
             // this.getAll();
             this.getUserBaseInfo();
             this.getEducation();
-            // this.getInternship();
+            this.getInternship();
             break;
         }
       }

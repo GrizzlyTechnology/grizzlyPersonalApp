@@ -306,7 +306,8 @@ export default {
     return request({
       host: hostList.test,
       url: '/api/Internshipexp/internshipexpBy',
-      params
+      params,
+      method: 'get'
     });
   }
 };
