@@ -58,18 +58,14 @@
       </div>
     </Panel>
 
-    <Panel title="技能评价">
-      <SkillLine title="Axure" :value="0" />
-      <SkillLine title="Axure" :value="10" />
-      <SkillLine title="Axure" :value="20" />
-      <SkillLine title="Axure" :value="30" />
-      <SkillLine title="Axure" :value="40" />
-      <SkillLine title="Axure" :value="50" />
-      <SkillLine title="Axure" :value="60" />
-      <SkillLine title="Axure" :value="70" />
-      <SkillLine title="Axure" :value="80" />
-      <SkillLine title="Axure" :value="90" />
-      <SkillLine title="Axure" :value="100" />
+    <Panel title="技能评价" :noContent="skills.length===0" v-if="isNotDetail|| skills.length>0">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="skillsEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <SkillLine v-for="row in skills" :key="row.label" :title="row.label" :value="row.value" />
+      <div slot="info">
+        暂无技能评价
+      </div>
     </Panel>
     <Panel title="期望工作" :label="isRequired">
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="expectedWorkEdit">
@@ -88,6 +84,7 @@
 
 <script>
 import moment from 'moment';
+import isJson from 'is-json';
 
 import service from 'service';
 import tools from 'util/tools';
@@ -103,7 +100,7 @@ import SkillLine from 'components/SkillLine';
 export default {
   data () {
     return {
-      type: window.api ? window.api.pageParam.type : 'edit',
+      type: window.api ? window.api.pageParam.type : 'detail',
       id: window.api ? window.api.pageParam.id : null,
       introduction: '',
       baseInfo: {
@@ -128,7 +125,8 @@ export default {
       education: [],
       internship: [],
       project: [],
-      job: []
+      job: [],
+      skills: []
     };
   },
   components: {
@@ -237,11 +235,19 @@ export default {
       // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.baseInfo = adapter.baseInfoAdapter(response.result.resumeInfo[0]);
+          this.baseInfo = adapter.baseInfoAdapter(
+            response.result.resumeInfo[0]
+          );
           this.expectedWork = adapter.expectedWorkAdapter(
             response.result.resumeInfo[0]
           );
           this.introduction = response.result.resumeInfo[0].introduction || '';
+          if (
+            response.result.resumeInfo[0].skills &&
+            isJson(response.result.resumeInfo[0].skills)
+          ) {
+            this.skills = JSON.parse(response.result.resumeInfo[0].skills);
+          }
           // alert(this.baseInfo.houseHold[0].label);
           break;
         default:
@@ -261,7 +267,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.education = response.result.educationExpInfo.map(row => adapter.educationAdapter(row));
+          this.education = response.result.educationExpInfo.map(row =>
+            adapter.educationAdapter(row)
+          );
           break;
         default:
           tools.toast({
@@ -280,7 +288,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.internship = response.result.internshipExpInfo.map(row => adapter.internshipAdapter(row));
+          this.internship = response.result.internshipExpInfo.map(row =>
+            adapter.internshipAdapter(row)
+          );
           break;
         default:
           tools.toast({
@@ -299,7 +309,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.project = response.result.projectExpInfo.map(row => adapter.projectAdapter(row));
+          this.project = response.result.projectExpInfo.map(row =>
+            adapter.projectAdapter(row)
+          );
           break;
         default:
           tools.toast({
@@ -318,7 +330,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.job = response.result.jobExpInfo.map(row => adapter.jobAdapter(row));
+          this.job = response.result.jobExpInfo.map(row =>
+            adapter.jobAdapter(row)
+          );
           break;
         default:
           tools.toast({
@@ -462,6 +476,24 @@ export default {
         data: {
           nameSpace: 'userJobHistroy',
           id: this.id
+        }
+      });
+    },
+    skillsEdit () {
+      tools.openWin({
+        name: 'userSkills',
+        url: '../win.html',
+        title: '技能评价管理',
+        fname: 'userSkills_f',
+        furl: './userCenter/userSkills.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getUserBaseInfo();
+        },
+        data: {
+          nameSpace: 'userSkills',
+          id: this.id,
+          skills: this.skills
         }
       });
     }

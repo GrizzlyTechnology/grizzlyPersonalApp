@@ -698,6 +698,37 @@ u.back = function () {
     window.api.closeWin();
   }
 };
+
+u.confirm = function (
+  {
+    title = '',
+    content = '',
+    callback = () => { }
+  }
+) {
+  if (window.api) {
+    api.confirm({
+      title,
+      msg: content,
+      buttons: ['确定','取消']
+    }, function (ret, err) {
+      switch (ret.buttonIndex) {
+        case 1:
+          callback(ret, err);
+          break;
+        default:
+          break;
+      }
+    });
+  }else{
+    if (confirm(content) === true) {
+      callback();
+    }
+  }
+};
+
 /* end */
+
+
 
 export default u;
