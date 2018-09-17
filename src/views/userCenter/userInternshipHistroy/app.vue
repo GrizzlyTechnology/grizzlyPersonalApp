@@ -51,7 +51,7 @@ export default {
     async unLink (ids) {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
-        educationExps: ids,
+        internshipExps: ids,
         resumeId: this.id
       });
       tools.hideProgress();
@@ -69,20 +69,20 @@ export default {
     },
     async getList () {
       tools.showProgress();
-      const response = await service.getUserEducation({
+      const response = await service.getUserInternship({
         resumeId: this.id
       });
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.list = response.result.educationExpInfo.map(row =>
-            adapter.educationAdapter(row)
+          this.list = response.result.internshipExpInfo.map(row =>
+            adapter.internshipAdapter(row)
           );
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '教育经历列表获取失败'
+            message: '实习经历列表获取失败'
           });
           break;
       }

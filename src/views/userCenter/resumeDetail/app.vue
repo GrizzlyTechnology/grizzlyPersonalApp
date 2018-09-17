@@ -281,7 +281,7 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.internship = response.result.educationExpInfo.map(row => adapter.internshipAdapter(row));
+          this.internship = response.result.internshipExpInfo.map(row => adapter.internshipAdapter(row));
           break;
         default:
           tools.toast({
