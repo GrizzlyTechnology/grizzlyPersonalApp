@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import _ from 'lodash';
+// import _ from 'lodash';
 import { CellSwipe } from 'mint-ui';
 import { Button } from 'muse-ui';
 import tools from 'util/tools';
@@ -106,12 +106,12 @@ export default {
       });
     },
     del (data) {
-      // console.log(JSON.stringify(this.list));
       const list = this.list.filter(r => {
         if (r.id !== data.id) {
           return r;
         }
       });
+      // console.log(list.map(r => r.id).join(','));
       this.unLink(
         list.map(r => r.id).join(',')
       );

@@ -318,7 +318,7 @@ export default {
       tools.openWin({
         name: 'userEducationHistroy',
         url: '../win.html',
-        title: '编辑教育经历',
+        title: '教育经历管理',
         fname: 'userEducationHistroy_f',
         furl: './userCenter/userEducationHistroy.html',
         hasLeft: 1,
