@@ -37,7 +37,6 @@ import service from 'service';
 // import moment from 'moment';
 import { Button, TextField, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
-import PickerPopup from 'components/PickerPopup';
 // import regexps from 'util/regexps';
 import tools from 'util/tools';
 // import dictMap from 'util/dictMap';
@@ -73,8 +72,7 @@ export default {
     Form,
     FormItem,
     TextField,
-    DateInput,
-    PickerPopup
+    DateInput
   },
   methods: {
     async create () {
@@ -102,8 +100,8 @@ export default {
     },
     async edit () {
       tools.showProgress();
-      const response = await service.updateUserEducation({
-        educationExpId: this.id,
+      const response = await service.updateUserInternship({
+        internshipExpId: this.id,
         ...this.form
       });
       tools.hideProgress();
@@ -118,7 +116,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '教育经历编辑失败，请稍后重试！！'
+            message: '实习经历编辑失败，请稍后重试！！'
           });
           break;
       }
@@ -128,12 +126,6 @@ export default {
     },
     changeEndTime (date) {
       this.form.endTime = date.valueOf();
-    },
-    setEducation (data) {
-      this.form.education = data;
-    },
-    educationPopup () {
-      this.$refs.educationPopup.open();
     },
     submit () {
       this.$refs.form.validate().then(result => {
