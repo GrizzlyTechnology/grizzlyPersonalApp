@@ -21,11 +21,23 @@
         暂无教育经历
       </div>
     </Panel>
-    <Panel title="实习经历">
-      <StepVertical class="stepVertical" :data="education" />
+    <Panel title="实习经历" :noContent="internship.length===0" v-if="isNotDetail || internship.length>0">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="internshipEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <StepVertical class="stepVertical" :data="internship" />
+      <div slot="info">
+        暂无实习经历
+      </div>
     </Panel>
-    <Panel title="项目经验">
-      <StepVertical class="stepVertical" :data="education" />
+    <Panel title="项目经验" :noContent="project.length===0" v-if="isNotDetail || project.length>0">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="projectEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <StepVertical class="stepVertical" :data="project" />
+      <div slot="info">
+        暂无项目经验
+      </div>
     </Panel>
     <Panel title="自我描述" :noContent="introduction.length===0" v-if="isNotDetail|| introduction.length>0">
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="introductionEdit">
@@ -82,7 +94,7 @@ import SkillLine from 'components/SkillLine';
 export default {
   data () {
     return {
-      type: window.api ? window.api.pageParam.type : 'detail',
+      type: window.api ? window.api.pageParam.type : 'edit',
       id: window.api ? window.api.pageParam.id : null,
       introduction: '',
       baseInfo: {
@@ -104,7 +116,9 @@ export default {
         currentState: null,
         timeToPost: null
       },
-      education: []
+      education: [],
+      internship: [],
+      project: []
     };
   },
   components: {
@@ -165,44 +179,44 @@ export default {
   },
   methods: {
     // 一次获取所有信息
-    async getAll () {
-      tools.showProgress();
-      const response = await Promise.all([
-        service.getUserBaseInfo({
-          resumeId: this.id
-        }),
-        service.getUserEducation({
-          resumeId: this.id
-        })
-      ]);
-      tools.hideProgress();
-      if (response.length) {
-        switch (response[0].code) {
-          case 0:
-            this.baseInfo = adapter.baseInfoAdapter(response[0].result.resumeInfo[0]);
-            this.expectedWork = adapter.expectedWorkAdapter(
-              response[0].result.resumeInfo[0]
-            );
-            this.introduction = response[0].result.resumeInfo[0].introduction || '';
-            break;
+    // async getAll () {
+    //   tools.showProgress();
+    //   const response = await Promise.all([
+    //     service.getUserBaseInfo({
+    //       resumeId: this.id
+    //     }),
+    //     service.getUserEducation({
+    //       resumeId: this.id
+    //     })
+    //   ]);
+    //   tools.hideProgress();
+    //   if (response.length) {
+    //     switch (response[0].code) {
+    //       case 0:
+    //         this.baseInfo = adapter.baseInfoAdapter(response[0].result.resumeInfo[0]);
+    //         this.expectedWork = adapter.expectedWorkAdapter(
+    //           response[0].result.resumeInfo[0]
+    //         );
+    //         this.introduction = response[0].result.resumeInfo[0].introduction || '';
+    //         break;
 
-          default:
-            break;
-        }
-        switch (response[1].code) {
-          case 0:
-            this.education = response[1].result.educationExpInfo.map(row => adapter.educationAdapter(row));
-            break;
-          default:
-            break;
-        }
-      } else {
-        tools.toast({
-          position: 'top',
-          message: '简历信息获取失败'
-        });
-      }
-    },
+    //       default:
+    //         break;
+    //     }
+    //     switch (response[1].code) {
+    //       case 0:
+    //         this.education = response[1].result.educationExpInfo.map(row => adapter.educationAdapter(row));
+    //         break;
+    //       default:
+    //         break;
+    //     }
+    //   } else {
+    //     tools.toast({
+    //       position: 'top',
+    //       message: '简历信息获取失败'
+    //     });
+    //   }
+    // },
     // 获取用户基础信息
     async getUserBaseInfo () {
       tools.showProgress();
@@ -247,6 +261,45 @@ export default {
           break;
       }
     },
+
+    async getInternship () {
+      tools.showProgress();
+      const response = await service.getUserInternship({
+        resumeId: this.id
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.internship = response.result.internshipExpInfo.map(row => adapter.internshipAdapter(row));
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '实习经历获取失败'
+          });
+          break;
+      }
+    },
+
+    async getProject () {
+      tools.showProgress();
+      const response = await service.getUserProject({
+        resumeId: this.id
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.project = response.result.projectExpInfo.map(row => adapter.projectAdapter(row));
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '项目经验获取失败'
+          });
+          break;
+      }
+    },
+
     baseInfoEdit () {
       tools.openWin({
         name: 'userBaseinfo',
@@ -318,7 +371,7 @@ export default {
       tools.openWin({
         name: 'userEducationHistroy',
         url: '../win.html',
-        title: '编辑教育经历',
+        title: '教育经历管理',
         fname: 'userEducationHistroy_f',
         furl: './userCenter/userEducationHistroy.html',
         hasLeft: 1,
@@ -327,7 +380,41 @@ export default {
         },
         data: {
           nameSpace: 'userEducationHistroy',
-          // education: this.education,
+          id: this.id
+        }
+      });
+    },
+
+    internshipEdit () {
+      tools.openWin({
+        name: 'userInternshipHistroy',
+        url: '../win.html',
+        title: '实习经历管理',
+        fname: 'userInternshipHistroy_f',
+        furl: './userCenter/userInternshipHistroy.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getInternship();
+        },
+        data: {
+          nameSpace: 'userInternshipHistroy',
+          id: this.id
+        }
+      });
+    },
+    projectEdit () {
+      tools.openWin({
+        name: 'userProjectHistroy',
+        url: '../win.html',
+        title: '项目经验管理',
+        fname: 'userProjectHistroy_f',
+        furl: './userCenter/userProjectHistroy.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getProject();
+        },
+        data: {
+          nameSpace: 'userProjectHistroy',
           id: this.id
         }
       });
@@ -348,6 +435,8 @@ export default {
             // this.getAll();
             this.getUserBaseInfo();
             this.getEducation();
+            this.getInternship();
+            this.getProject();
             break;
         }
       }

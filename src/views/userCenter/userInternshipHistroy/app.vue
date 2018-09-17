@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">添加教育经历</Button>
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">添加实习经历</Button>
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ export default {
     async unLink (ids) {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
-        educationExps: ids,
+        internshipExps: ids,
         resumeId: this.id
       });
       tools.hideProgress();
@@ -62,32 +62,31 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '教育经历删除失败'
+            message: '实习经历删除失败'
           });
           break;
       }
     },
     async getList () {
       tools.showProgress();
-      const response = await service.getUserEducation({
+      const response = await service.getUserInternship({
         resumeId: this.id
       });
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.list = response.result.educationExpInfo.map(row =>
-            adapter.educationAdapter(row)
+          this.list = response.result.internshipExpInfo.map(row =>
+            adapter.internshipAdapter(row)
           );
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '教育经历列表获取失败'
+            message: '实习经历列表获取失败'
           });
           break;
       }
     },
-
     del (data) {
       this.unLink(
         this.list.filter(r => {
@@ -99,16 +98,16 @@ export default {
     },
     edit (data) {
       tools.openWin({
-        name: 'userEducationForm',
+        name: 'userInternshipForm',
         url: '../win.html',
-        title: '编辑教育经历',
-        fname: 'userEducationForm_f',
-        furl: './userCenter/userEducationForm.html',
+        title: '编辑实习经历',
+        fname: 'userInternshipForm_f',
+        furl: './userCenter/userInternshipForm.html',
         hasLeft: 1,
         data: {
-          nameSpace: 'userEducationForm',
+          nameSpace: 'userInternshipForm',
           id: data.id,
-          education: data,
+          internship: data,
           callback: (ret, err) => {
             this.getList();
           }
@@ -117,14 +116,14 @@ export default {
     },
     create () {
       tools.openWin({
-        name: 'userEducationForm',
+        name: 'userInternshipForm',
         url: '../win.html',
-        title: '创建教育经历',
-        fname: 'userEducationForm_f',
-        furl: './userCenter/userEducationForm.html',
+        title: '创建实习经历',
+        fname: 'userInternshipForm_f',
+        furl: './userCenter/userInternshipForm.html',
         hasLeft: 1,
         data: {
-          nameSpace: 'userEducationForm',
+          nameSpace: 'userInternshipForm',
           resumeId: this.id,
           callback: (ret, err) => {
             this.getList();
