@@ -3,20 +3,26 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form">
-          <FormItem label="学校名称" prop="schoolName" :rules="schoolNameRules">
-            <TextField v-model="form.schoolName"></TextField>
+          <FormItem label="公司名称" prop="companyName" :rules="companyNameRules">
+            <TextField v-model="form.companyName"></TextField>
           </FormItem>
-          <FormItem label="专业" prop="major" :rules="majorRules">
-            <TextField v-model="form.major"></TextField>
+          <FormItem label="岗位" prop="post" :rules="postRules">
+            <TextField v-model="form.post"></TextField>
           </FormItem>
-          <FormItem label="学历" prop="education">
-            <TextField v-model="form.education" readonly @click="educationPopup"></TextField>
+          <FormItem label="入职时间" prop="starTime" :rules="workingTimeRules">
+            <DateInput type="month" :value="starTimeText" :max-date="new Date()" @change="changeStarTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
-          <FormItem label="入校时间" prop="inSchoolTime" :rules="schoolTimeRules">
-            <DateInput type="month" :value="inSchoolTimeText" :max-date="new Date()" @change="changeInSchoolTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
+          <FormItem label="离职时间" prop="endTime" :rules="workingTimeRules">
+            <DateInput type="month" :value="endTimeText" :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
-          <FormItem label="毕业年月" prop="graduationTime" :rules="schoolTimeRules">
-            <DateInput type="month" :value="graduationTimeText" :max-date="new Date()" @change="changeGraduationTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
+          <FormItem label="工作内容" prop="jobContent">
+            <TextField
+              v-model="form.jobContent"
+              multi-line
+              :max-length="100"
+              :rows="5"
+              :rows-max="5"
+            />
           </FormItem>
         </Form>
       </div>
@@ -24,7 +30,6 @@
     <div class="footer">
       <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">保存</Button>
     </div>
-    <PickerPopup ref="educationPopup" :slots="educationPopupSlots" @confirm="setEducation"></PickerPopup>
   </div>
 </template>
 
@@ -36,41 +41,32 @@ import { Form, FormItem } from 'muse-ui/lib/Form';
 import PickerPopup from 'components/PickerPopup';
 // import regexps from 'util/regexps';
 import tools from 'util/tools';
-import dictMap from 'util/dictMap';
+// import dictMap from 'util/dictMap';
 // import dictMap from 'util/dictMap';
 export default {
   data () {
     return {
       id: window.api ? window.api.pageParam.id : null,
       form: {
-        schoolName: window.api && window.api.pageParam.education ? window.api.pageParam.education.schoolName : '',
-        major: window.api && window.api.pageParam.education ? window.api.pageParam.education.major : '',
-        education: window.api && window.api.pageParam.education ? window.api.pageParam.education.education : dictMap.education[0],
-        inSchoolTime: window.api && window.api.pageParam.education ? window.api.pageParam.education.inSchoolTime : Date.now().valueOf(),
-        graduationTime: window.api && window.api.pageParam.education ? window.api.pageParam.education.graduationTime : Date.now().valueOf()
+        companyName: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.companyName : '',
+        endTime: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.endTime : Date.now().valueOf(),
+        starTime: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.starTime : Date.now().valueOf(),
+        jobContent: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.jobContent : '',
+        post: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.post : ''
       },
-      schoolNameRules: [{ validate: val => !!val, message: '必须填写学校名称' }],
-      majorRules: [{ validate: val => val, message: '必须填写专业' }],
-      schoolTimeRules: [
-        { validate: val => this.form.inSchoolTime <= this.form.graduationTime, message: '入校时间不能在毕业时间之后' }
+      companyNameRules: [{ validate: val => !!val, message: '必须填写公司名称' }],
+      postRules: [{ validate: val => val, message: '必须填写岗位' }],
+      workingTimeRules: [
+        { validate: val => this.form.starTime <= this.form.endTime, message: '入职时间不能在离职时间之后' }
       ]
     };
   },
   computed: {
-    inSchoolTimeText () {
-      return new Date(this.form.inSchoolTime);
+    starTimeText () {
+      return new Date(this.form.starTime);
     },
-    graduationTimeText () {
-      return new Date(this.form.graduationTime);
-    },
-    educationPopupSlots () {
-      return [
-        {
-          flex: 1,
-          defaultIndex: dictMap.education.indexOf(this.form.education),
-          values: dictMap.education
-        }
-      ];
+    endTimeText () {
+      return new Date(this.form.endTime);
     }
   },
   components: {
@@ -84,7 +80,7 @@ export default {
   methods: {
     async create () {
       tools.showProgress();
-      const response = await service.createUserEducation({
+      const response = await service.createUserInternship({
         ...this.form,
         resumeId: window.api.pageParam.resumeId
       });
@@ -100,7 +96,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '教育经历创建失败，请稍后重试！！'
+            message: '实习经历创建失败，请稍后重试！！'
           });
           break;
       }
@@ -128,11 +124,11 @@ export default {
           break;
       }
     },
-    changeInSchoolTime (date) {
-      this.form.inSchoolTime = date.valueOf();
+    changeStarTime (date) {
+      this.form.starTime = date.valueOf();
     },
-    changeGraduationTime (date) {
-      this.form.graduationTime = date.valueOf();
+    changeEndTime (date) {
+      this.form.endTime = date.valueOf();
     },
     setEducation (data) {
       this.form.education = data;
