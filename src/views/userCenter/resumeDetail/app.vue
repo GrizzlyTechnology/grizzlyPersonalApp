@@ -30,8 +30,14 @@
         暂无实习经历
       </div>
     </Panel>
-    <Panel title="项目经验">
-      <StepVertical class="stepVertical" :data="education" />
+    <Panel title="项目经验" :noContent="project.length===0" v-if="isNotDetail || project.length>0">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="projectEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <StepVertical class="stepVertical" :data="project" />
+      <div slot="info">
+        暂无项目经验
+      </div>
     </Panel>
     <Panel title="自我描述" :noContent="introduction.length===0" v-if="isNotDetail|| introduction.length>0">
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="introductionEdit">
@@ -111,7 +117,8 @@ export default {
         timeToPost: null
       },
       education: [],
-      internship: []
+      internship: [],
+      project: []
     };
   },
   components: {
@@ -274,6 +281,25 @@ export default {
       }
     },
 
+    async getProject () {
+      tools.showProgress();
+      const response = await service.getUserProject({
+        resumeId: this.id
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.project = response.result.projectExpInfo.map(row => adapter.projectAdapter(row));
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '项目经验获取失败'
+          });
+          break;
+      }
+    },
+
     baseInfoEdit () {
       tools.openWin({
         name: 'userBaseinfo',
@@ -375,6 +401,23 @@ export default {
           id: this.id
         }
       });
+    },
+    projectEdit () {
+      tools.openWin({
+        name: 'userProjectHistroy',
+        url: '../win.html',
+        title: '项目经验管理',
+        fname: 'userProjectHistroy_f',
+        furl: './userCenter/userProjectHistroy.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getInternship();
+        },
+        data: {
+          nameSpace: 'userProjectHistroy',
+          id: this.id
+        }
+      });
     }
   },
 
@@ -393,6 +436,7 @@ export default {
             this.getUserBaseInfo();
             this.getEducation();
             this.getInternship();
+            this.getProject();
             break;
         }
       }

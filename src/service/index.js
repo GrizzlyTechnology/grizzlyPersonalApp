@@ -309,5 +309,27 @@ export default {
       params,
       method: 'get'
     });
+  },
+  createUserProject (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Projectpexp/create',
+      params
+    });
+  },
+  updateUserProject (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Projectexp/update',
+      params
+    });
+  },
+  getUserProject (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Projectexp/projectexpBy',
+      params,
+      method: 'get'
+    });
   }
 };
