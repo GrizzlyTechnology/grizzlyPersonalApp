@@ -39,6 +39,15 @@
         暂无项目经验
       </div>
     </Panel>
+    <Panel title="工作经历" :noContent="job.length===0" v-if="isNotDetail || job.length>0">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="jobEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <StepVertical class="stepVertical" :data="job" />
+      <div slot="info">
+        暂无工作经历
+      </div>
+    </Panel>
     <Panel title="自我描述" :noContent="introduction.length===0" v-if="isNotDetail|| introduction.length>0">
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="introductionEdit">
         <Icon left value=":icon-75bianji" />编辑
@@ -118,7 +127,8 @@ export default {
       },
       education: [],
       internship: [],
-      project: []
+      project: [],
+      job: []
     };
   },
   components: {
@@ -300,6 +310,25 @@ export default {
       }
     },
 
+    async getJob () {
+      tools.showProgress();
+      const response = await service.getUserJob({
+        resumeId: this.id
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.job = response.result.jobExpInfo.map(row => adapter.jobAdapter(row));
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '工作经验获取失败'
+          });
+          break;
+      }
+    },
+
     baseInfoEdit () {
       tools.openWin({
         name: 'userBaseinfo',
@@ -418,6 +447,23 @@ export default {
           id: this.id
         }
       });
+    },
+    jobEdit () {
+      tools.openWin({
+        name: 'userJobHistroy',
+        url: '../win.html',
+        title: '工作经历管理',
+        fname: 'userJobHistroy_f',
+        furl: './userCenter/userJobHistroy.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getJob();
+        },
+        data: {
+          nameSpace: 'userJobHistroy',
+          id: this.id
+        }
+      });
     }
   },
 
@@ -437,6 +483,7 @@ export default {
             this.getEducation();
             this.getInternship();
             this.getProject();
+            this.getJob();
             break;
         }
       }

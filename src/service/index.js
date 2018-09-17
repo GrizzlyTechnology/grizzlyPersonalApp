@@ -331,5 +331,27 @@ export default {
       params,
       method: 'get'
     });
+  },
+  createUserJob (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Jobexp/create',
+      params
+    });
+  },
+  updateUserJob (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Jobexp/update',
+      params
+    });
+  },
+  getUserJob (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Jobexp/jobexpBy',
+      params,
+      method: 'get'
+    });
   }
 };
