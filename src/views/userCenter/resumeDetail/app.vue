@@ -111,7 +111,25 @@ export default {
         timeToPost: null
       },
       education: [],
-      internship: []
+      internship: [
+        {
+          id: 0,
+          companyname: '实习公司',
+          post: '岗位',
+          startime: 1537146097,
+          endtime: 1537146097,
+          jobcontent: '工作内容',
+          uid: 0
+        }, {
+          id: 1,
+          companyname: '实习公司',
+          post: '岗位',
+          startime: 1537146097,
+          endtime: 1537146097,
+          jobcontent: '工作内容',
+          uid: 0
+        }
+      ].map(row => adapter.internshipAdapter(row))
     };
   },
   components: {
@@ -263,7 +281,7 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.internship = response.result.educationExpInfo.map(row => adapter.educationAdapter(row));
+          this.internship = response.result.educationExpInfo.map(row => adapter.internshipAdapter(row));
           break;
         default:
           tools.toast({
@@ -340,6 +358,7 @@ export default {
         }
       });
     },
+
     educationEdit () {
       tools.openWin({
         name: 'userEducationHistroy',
@@ -357,6 +376,7 @@ export default {
         }
       });
     },
+
     internshipEdit () {
       tools.openWin({
         name: 'userInternshipHistroy',
@@ -366,7 +386,7 @@ export default {
         furl: './userCenter/userInternshipHistroy.html',
         hasLeft: 1,
         LCB: () => {
-          this.getInternship();
+          // this.getInternship();
         },
         data: {
           nameSpace: 'userInternshipHistroy',
@@ -390,7 +410,7 @@ export default {
             // this.getAll();
             this.getUserBaseInfo();
             this.getEducation();
-            this.getInternship();
+            // this.getInternship();
             break;
         }
       }

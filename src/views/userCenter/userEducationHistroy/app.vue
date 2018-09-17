@@ -62,7 +62,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '教育经删除失败'
+            message: '教育经历删除失败'
           });
           break;
       }

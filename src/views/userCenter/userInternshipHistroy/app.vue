@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">添加教育经历</Button>
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">添加实习经历</Button>
     </div>
   </div>
 </template>
@@ -62,7 +62,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '教育经删除失败'
+            message: '实习经历删除失败'
           });
           break;
       }
