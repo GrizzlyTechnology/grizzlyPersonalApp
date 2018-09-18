@@ -64,10 +64,10 @@ adapter.projectAdapter = function (data) {
     startTime: data.starttime * 1000,
     endTime: data.endtime * 1000,
     projectName: data.projectname,
-    projectDec: data.projectdec,
+    projectDesc: data.projectdesc,
     head: moment(data.starttime * 1000).format('YYYY年MM月') + ' - ' + moment(data.endtime * 1000).format('YYYY年MM月'),
     title: data.projectname + ' / ' + data.duty,
-    info: data.projectdec.replace(/\n|\r\n/g, '<br/>')
+    info: data.projectdesc.replace(/\n|\r\n/g, '<br/>')
   };
 };
 
