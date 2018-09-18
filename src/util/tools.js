@@ -710,7 +710,7 @@ u.confirm = function (
     api.confirm({
       title,
       msg: content,
-      buttons: ['确定','取消']
+      buttons: ['确定', '取消']
     }, function (ret, err) {
       switch (ret.buttonIndex) {
         case 1:
@@ -720,13 +720,56 @@ u.confirm = function (
           break;
       }
     });
-  }else{
+  } else {
     if (confirm(content) === true) {
       callback();
     }
   }
 };
 
+u.urlParse = function (url) {
+  const urlObj = url.split('?');
+  const base = urlObj[0];
+  const searchAry = urlObj[1].split('&');
+  const params = {};
+
+  searchAry.foreach(r => {
+    params[r.split("=")[0]] = unescape(r.split("=")[1]);
+  });
+
+  return {
+    base,
+    params
+  };
+};
+
+u.openWebPage = function (url) {
+  if (window.api) {
+    switch (window.api.systemType) {
+      case 'android':
+        window.api.openApp({
+          androidPkg: 'android.intent.action.VIEW',
+          mimeType: 'text/html',
+          uri: url
+        }, function (ret, err) {
+        });
+        break;
+      case 'ios':
+        const { base, params } = u.urlParse(url);
+        window.api.openApp({
+          iosUrl: base,
+          appParam: {
+            appParam: params
+          }
+        });
+        break;
+      default:
+        break;
+    }
+  }else{
+    window.open(url);
+  }
+}
 /* end */
 
 
