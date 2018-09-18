@@ -285,7 +285,8 @@ export default {
     return request({
       host: hostList.test,
       url: '/api/Educationexp/educationexpBy',
-      params
+      params,
+      method: 'get'
     });
   },
   createUserInternship (params) {
