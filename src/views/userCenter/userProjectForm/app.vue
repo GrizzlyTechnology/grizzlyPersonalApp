@@ -14,9 +14,9 @@
             <span class="joiner">至</span>
             <DateInput class="dateInput" type="month" :value="endTimeText" :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
-          <FormItem label="项目描述" prop="porjectDec">
+          <FormItem label="项目描述" prop="projectDec">
             <TextField
-              v-model="form.porjectDec"
+              v-model="form.projectDec"
               multi-line
               :max-length="100"
               :rows="5"
@@ -50,7 +50,7 @@ export default {
         duty: window.api && window.api.pageParam.project ? window.api.pageParam.project.duty : '',
         endTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.endTime : Date.now().valueOf(),
         startTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.startTime : Date.now().valueOf(),
-        porjectDec: window.api && window.api.pageParam.project ? window.api.pageParam.project.porjectDec : ''
+        projectDec: window.api && window.api.pageParam.project ? window.api.pageParam.project.projectDec : ''
       },
       projectNameRules: [{ validate: val => !!val, message: '必须填写项目名称' }],
       dutyRules: [{ validate: val => val, message: '必须填写项目职责' }],
