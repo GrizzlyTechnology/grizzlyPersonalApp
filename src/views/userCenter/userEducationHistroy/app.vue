@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       id: window.api ? window.api.pageParam.id : null,
-      list: [{title: 'sdfsfsdf', head: 'sdfsdf'}]
+      list: []
     };
   },
   components: {

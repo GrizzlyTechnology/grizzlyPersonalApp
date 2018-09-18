@@ -6,7 +6,7 @@
           {
             content: '编辑',
             style: { background: '#07A9EA', color: '#fff' },
-            handler: () => {edit(row)}
+            handler: () => {edit(row,index)}
           },{
             content: '删除',
             style: { background: '#e7585a', color: '#fff' },
@@ -26,7 +26,7 @@
         <span class="ok" @click="confirm">保存</span>
       </div>
       <Form ref="form" class="form" :model="form">
-        <FormItem label="技能名称"  prop="label" :rules="labelRules">
+        <FormItem label="技能名称" prop="label" :rules="labelRules">
           <TextField :readonly="isEdit" v-model="form.label"></TextField>
         </FormItem>
         <FormItem label="能力值" prop="major">
@@ -59,42 +59,47 @@ const defaultForm = {
 export default {
   data () {
     return {
+      msg: '',
       isShow: false,
       isEdit: false,
       id: window.api ? window.api.pageParam.id : null,
       form: { ...defaultForm },
-      labelRules: [{ validate: val => !!val, message: '必须填写技能名称' },
-        { validate: val => {
-          let b = true;
-          if (this.isEdit === false) {
-            this.list.forEach(r => {
-              if (r.label === val) {
-                b = false;
-              }
-            });
-          }
-          return b;
-        },
-        message: '技能名称已存在' }],
-      // list: window.api ? window.api.pageParam.skills : []
-      list: [
+      labelRules: [
+        { validate: val => !!val, message: '必须填写技能名称' },
         {
-          label: 'js',
-          value: 21
-        },
-        {
-          label: 'php',
-          value: 35
-        },
-        {
-          label: 'java',
-          value: 78
-        },
-        {
-          label: 'node',
-          value: 99
+          validate: val => {
+            let b = true;
+            if (this.isEdit === false) {
+              this.list.forEach(r => {
+                if (r.label === val) {
+                  b = false;
+                }
+              });
+            }
+            return b;
+          },
+          message: '技能名称已存在'
         }
-      ]
+      ],
+      list: window.api ? window.api.pageParam.skills : []
+      // list: [
+      //   {
+      //     label: 'js',
+      //     value: 21
+      //   },
+      //   {
+      //     label: 'php',
+      //     value: 35
+      //   },
+      //   {
+      //     label: 'java',
+      //     value: 78
+      //   },
+      //   {
+      //     label: 'node',
+      //     value: 99
+      //   }
+      // ]
     };
   },
   components: {
@@ -109,11 +114,13 @@ export default {
   },
   computed: {
     level () {
-      return dictMap.skillLevel[parseInt((this.form.value === 0 ? 1 : this.form.value) / 20)];
+      return dictMap.skillLevel[
+        parseInt((this.form.value === 0 ? 1 : this.form.value) / 20)
+      ];
     }
   },
   methods: {
-    async unLink (skills) {
+    async updateSkills (skills) {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
         skills,
@@ -123,11 +130,14 @@ export default {
       switch (response.code) {
         case 0:
           this.list = JSON.parse(skills);
+          this.isShow = false;
+          this.$refs.form.clear();
+          this.curRow = -1;
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '技能删除失败'
+            message: this.msg
           });
           break;
       }
@@ -137,7 +147,7 @@ export default {
         title: '确认',
         content: `删除 ${data.label} 技能？`,
         callback: () => {
-          this.unLink(
+          this.updateSkills(
             JSON.stringify(
               this.list.filter(r => {
                 if (r.label !== data.label) {
@@ -146,25 +156,40 @@ export default {
               })
             )
           );
+          this.msg = '技能删除失败';
         }
       });
     },
     edit (data, index) {
       this.isShow = true;
       this.isEdit = true;
+      this.curRow = index;
+      this.msg = '技能编辑失败';
       this.form = { ...data };
     },
     create () {
       this.isShow = true;
       this.isEdit = false;
+      this.msg = '技能创建失败';
       this.form = { ...defaultForm };
     },
     cancel () {
       this.isShow = false;
+      this.curRow = -1;
       this.$refs.form.clear();
     },
     confirm () {
-      this.isShow = false;
+      this.$refs.form.validate().then(result => {
+        if (result === true) {
+          const list = [...this.list];
+          if (this.isEdit === true) {
+            list[this.curRow] = this.form;
+          } else {
+            list.push(this.form);
+          }
+          this.updateSkills(JSON.stringify(list));
+        }
+      });
     }
   },
   mounted () {}
@@ -190,7 +215,8 @@ export default {
   }
 }
 .skillLevel {
-  .mu-slider-fill,.mu-slider-track {
+  .mu-slider-fill,
+  .mu-slider-track {
     height: 5px;
   }
   .mu-slider-thumb {
@@ -198,7 +224,7 @@ export default {
     width: 15px;
     height: 15px;
   }
-  .mu-slider-display-value{
+  .mu-slider-display-value {
     font-size: 14px;
   }
 }
@@ -263,11 +289,12 @@ export default {
 }
 .form {
   padding: 15px 15px 0;
-  .level{
+  .level {
     position: absolute;
     left: 55px;
-    top: 4px;
+    top: 2px;
     color: #333;
+    font-size: 16px;
   }
 }
 </style>
