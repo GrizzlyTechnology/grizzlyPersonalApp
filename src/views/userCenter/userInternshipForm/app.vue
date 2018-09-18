@@ -10,7 +10,7 @@
             <TextField v-model="form.post"></TextField>
           </FormItem>
           <FormItem label="在职时间" prop="startTime" :rules="workingTimeRules">
-            <DateInput class="dateInput" type="month" :value="starTimeText" :max-date="new Date()" @change="changeStarTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
+            <DateInput class="dateInput" type="month" :value="startTimeText" :max-date="new Date()" @change="changeStartTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
             <span class="joiner">至</span>
             <DateInput class="dateInput" type="month" :value="endTimeText" :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
@@ -60,7 +60,7 @@ export default {
     };
   },
   computed: {
-    starTimeText () {
+    startTimeText () {
       return new Date(this.form.startTime);
     },
     endTimeText () {
@@ -121,7 +121,7 @@ export default {
           break;
       }
     },
-    changeStarTime (date) {
+    changeStartTime (date) {
       this.form.startTime = date.valueOf();
     },
     changeEndTime (date) {
