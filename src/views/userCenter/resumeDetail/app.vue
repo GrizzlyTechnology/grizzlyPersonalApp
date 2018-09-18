@@ -335,7 +335,7 @@ export default {
         resumeId: this.id
       });
       tools.hideProgress();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.project = response.result.projectExpInfo.map(row =>

@@ -1,6 +1,8 @@
 import isJson from 'is-json';
 import moment from 'moment';
 
+import dictMap from 'util/dictMap';
+
 const adapter = {};
 
 // 基础信息的适配器
@@ -81,6 +83,14 @@ adapter.jobAdapter = function (data) {
     head: moment(data.starttime * 1000).format('YYYY年MM月') + ' - ' + moment(data.endtime * 1000).format('YYYY年MM月'),
     title: data.companyname + ' / ' + data.post,
     info: data.jobcontent ? data.jobcontent.replace(/\n|\r\n/g, '<br/>') : ''
+  };
+};
+
+adapter.skillAdapter = function (data) {
+  return {
+    ...data,
+    label: data.skillname,
+    value: dictMap.skillLevel[data.proficiency]
   };
 };
 
