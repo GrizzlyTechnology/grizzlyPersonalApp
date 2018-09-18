@@ -48,7 +48,7 @@ adapter.educationAdapter = function (data) {
 adapter.internshipAdapter = function (data) {
   return {
     ...data,
-    starttime: data.starttime * 1000,
+    startTime: data.starttime * 1000,
     endTime: data.endtime * 1000,
     companyName: data.companyname,
     jobContent: data.jobcontent,
@@ -61,7 +61,7 @@ adapter.internshipAdapter = function (data) {
 adapter.projectAdapter = function (data) {
   return {
     ...data,
-    starttime: data.starttime * 1000,
+    startTime: data.starttime * 1000,
     endTime: data.endtime * 1000,
     projectName: data.projectname,
     porjectDec: data.porjectdec,
@@ -74,7 +74,7 @@ adapter.projectAdapter = function (data) {
 adapter.jobAdapter = function (data) {
   return {
     ...data,
-    starttime: data.starttime * 1000,
+    startTime: data.starttime * 1000,
     endTime: data.endtime * 1000,
     companyName: data.companyname,
     jobContent: data.jobcontent,
