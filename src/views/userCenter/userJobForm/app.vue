@@ -105,7 +105,7 @@ export default {
     async edit () {
       tools.showProgress();
       const response = await service.updateUserJob({
-        internshipExpId: this.id,
+        jobExpId: this.id,
         ...this.form
       });
       tools.hideProgress();

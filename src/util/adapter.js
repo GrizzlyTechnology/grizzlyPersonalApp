@@ -1,6 +1,8 @@
 import isJson from 'is-json';
 import moment from 'moment';
 
+import dictMap from 'util/dictMap';
+
 const adapter = {};
 
 // 基础信息的适配器
@@ -54,7 +56,7 @@ adapter.internshipAdapter = function (data) {
     jobContent: data.jobcontent,
     head: moment(data.starttime * 1000).format('YYYY年MM月') + ' - ' + moment(data.endtime * 1000).format('YYYY年MM月'),
     title: data.companyname + ' / ' + data.post,
-    info: data.jobcontent.replace(/\n|\r\n/g, '<br/>')
+    info: data.jobcontent ? data.jobcontent.replace(/\n|\r\n/g, '<br/>') : ''
   };
 };
 
@@ -67,7 +69,7 @@ adapter.projectAdapter = function (data) {
     projectDesc: data.projectdesc,
     head: moment(data.starttime * 1000).format('YYYY年MM月') + ' - ' + moment(data.endtime * 1000).format('YYYY年MM月'),
     title: data.projectname + ' / ' + data.duty,
-    info: data.projectdesc.replace(/\n|\r\n/g, '<br/>')
+    info: data.projectdesc ? data.projectdesc.replace(/\n|\r\n/g, '<br/>') : ''
   };
 };
 
@@ -80,7 +82,15 @@ adapter.jobAdapter = function (data) {
     jobContent: data.jobcontent,
     head: moment(data.starttime * 1000).format('YYYY年MM月') + ' - ' + moment(data.endtime * 1000).format('YYYY年MM月'),
     title: data.companyname + ' / ' + data.post,
-    info: data.jobcontent.replace(/\n|\r\n/g, '<br/>')
+    info: data.jobcontent ? data.jobcontent.replace(/\n|\r\n/g, '<br/>') : ''
+  };
+};
+
+adapter.skillAdapter = function (data) {
+  return {
+    ...data,
+    label: data.skillname,
+    value: data.proficiency * 20
   };
 };
 

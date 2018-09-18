@@ -62,7 +62,7 @@
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="skillsEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
-      <SkillLine v-for="row in skills" :key="row.label" :title="row.label" :value="row.value" />
+      <SkillLine v-for="row in skills" :key="row.id" :title="row.label" :value="row.value" />
       <div slot="info">
         暂无技能评价
       </div>
@@ -271,9 +271,9 @@ export default {
             response.result.resumeInfo[0]
           );
           this.introduction = response.result.resumeInfo[0].introduction || '';
-          if (response.result.resumeInfo[0].skills) {
-            this.skills = JSON.parse(response.result.resumeInfo[0].skills);
-          }
+          // if (response.result.resumeInfo[0].skills) {
+          //   this.skills = JSON.parse(response.result.resumeInfo[0].skills);
+          // }
           // alert(this.baseInfo.houseHold[0].label);
           break;
         default:
@@ -335,6 +335,7 @@ export default {
         resumeId: this.id
       });
       tools.hideProgress();
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.project = response.result.projectExpInfo.map(row =>
@@ -370,9 +371,32 @@ export default {
           break;
       }
     },
+
+    async getSkill () {
+      tools.showProgress();
+      const response = await service.getUserSkill({
+        resumeId: this.id
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.skills = response.result.skillsInfo.map(row =>
+            adapter.skillAdapter(row)
+          );
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '技能评价获取失败'
+          });
+          break;
+      }
+    },
+
     openWebPage (data) {
       tools.openWebPage('http://www.baidu.com');
     },
+
     baseInfoEdit () {
       tools.openWin({
         name: 'userBaseinfo',
@@ -492,6 +516,7 @@ export default {
         }
       });
     },
+
     jobEdit () {
       tools.openWin({
         name: 'userJobHistroy',
@@ -509,6 +534,7 @@ export default {
         }
       });
     },
+
     skillsEdit () {
       tools.openWin({
         name: 'userSkills',
@@ -518,7 +544,7 @@ export default {
         furl: './userCenter/userSkills.html',
         hasLeft: 1,
         LCB: () => {
-          this.getUserBaseInfo();
+          this.getSkill();
         },
         data: {
           nameSpace: 'userSkills',
@@ -526,6 +552,7 @@ export default {
         }
       });
     },
+
     opusEdit () {
       tools.openWin({
         name: 'userSkills',
@@ -563,6 +590,7 @@ export default {
             this.getInternship();
             this.getProject();
             this.getJob();
+            this.getSkill();
             break;
         }
       }
@@ -595,13 +623,13 @@ export default {
       background-color: #eee;
     }
   }
-  .mint-cell-text{
+  .mint-cell-text {
     color: #333;
     .ell();
     display: block;
     width: 90%;
   }
-  .mint-cell-label{
+  .mint-cell-label {
     .ell();
     width: 90%;
   }
@@ -631,7 +659,7 @@ export default {
   right: 15px;
 }
 .opusRow {
-   position: absolute;
+  position: absolute;
   left: 0;
   right: 0;
   top: 0;
