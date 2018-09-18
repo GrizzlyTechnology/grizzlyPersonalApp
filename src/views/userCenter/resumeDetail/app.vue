@@ -271,9 +271,9 @@ export default {
             response.result.resumeInfo[0]
           );
           this.introduction = response.result.resumeInfo[0].introduction || '';
-          if (response.result.resumeInfo[0].skills) {
-            this.skills = JSON.parse(response.result.resumeInfo[0].skills);
-          }
+          // if (response.result.resumeInfo[0].skills) {
+          //   this.skills = JSON.parse(response.result.resumeInfo[0].skills);
+          // }
           // alert(this.baseInfo.houseHold[0].label);
           break;
         default:
@@ -371,6 +371,28 @@ export default {
           break;
       }
     },
+
+    async getSkill () {
+      tools.showProgress();
+      const response = await service.getUserSkill({
+        resumeId: this.id
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.skills = response.result.skillsInfo.map(row =>
+            adapter.skillAdapter(row)
+          );
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '技能评价获取失败'
+          });
+          break;
+      }
+    },
+
     openWebPage (data) {
       tools.openWebPage('http://www.baidu.com');
     },
@@ -519,7 +541,7 @@ export default {
         furl: './userCenter/userSkills.html',
         hasLeft: 1,
         LCB: () => {
-          this.getUserBaseInfo();
+          this.getSkill();
         },
         data: {
           nameSpace: 'userSkills',
@@ -564,6 +586,7 @@ export default {
             this.getInternship();
             this.getProject();
             this.getJob();
+            this.getSkill();
             break;
         }
       }
