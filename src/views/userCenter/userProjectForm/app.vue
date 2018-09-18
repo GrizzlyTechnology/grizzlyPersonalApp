@@ -9,14 +9,14 @@
           <FormItem label="项目职责" prop="duty" :rules="dutyRules">
             <TextField v-model="form.duty"></TextField>
           </FormItem>
-          <FormItem label="项目时间" prop="starTime" :rules="workingTimeRules">
-            <DateInput class="dateInput" type="month" :value="starTimeText" :max-date="new Date()" @change="changeStarTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
+          <FormItem label="项目时间" prop="startTime" :rules="workingTimeRules">
+            <DateInput class="dateInput" type="month" :value="startTimeText" :max-date="new Date()" @change="changeStartTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
             <span class="joiner">至</span>
             <DateInput class="dateInput" type="month" :value="endTimeText" :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
-          <FormItem label="项目描述" prop="porjectDec">
+          <FormItem label="项目描述" prop="projectDesc">
             <TextField
-              v-model="form.porjectDec"
+              v-model="form.projectDesc"
               multi-line
               :max-length="100"
               :rows="5"
@@ -49,19 +49,19 @@ export default {
         projectName: window.api && window.api.pageParam.project ? window.api.pageParam.project.projectName : '',
         duty: window.api && window.api.pageParam.project ? window.api.pageParam.project.duty : '',
         endTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.endTime : Date.now().valueOf(),
-        starTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.starTime : Date.now().valueOf(),
-        porjectDec: window.api && window.api.pageParam.project ? window.api.pageParam.project.porjectDec : ''
+        startTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.startTime : Date.now().valueOf(),
+        projectDesc: window.api && window.api.pageParam.project ? window.api.pageParam.project.projectDesc : ''
       },
       projectNameRules: [{ validate: val => !!val, message: '必须填写项目名称' }],
       dutyRules: [{ validate: val => val, message: '必须填写项目职责' }],
       workingTimeRules: [
-        { validate: val => this.form.starTime <= this.form.endTime, message: '开始时间不能在结束时间之后' }
+        { validate: val => this.form.startTime <= this.form.endTime, message: '开始时间不能在结束时间之后' }
       ]
     };
   },
   computed: {
-    starTimeText () {
-      return new Date(this.form.starTime);
+    startTimeText () {
+      return new Date(this.form.startTime);
     },
     endTimeText () {
       return new Date(this.form.endTime);
@@ -125,8 +125,8 @@ export default {
           break;
       }
     },
-    changeStarTime (date) {
-      this.form.starTime = date.valueOf();
+    changeStartTime (date) {
+      this.form.startTime = date.valueOf();
     },
     changeEndTime (date) {
       this.form.endTime = date.valueOf();

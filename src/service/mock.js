@@ -29,7 +29,7 @@ const internship = {
   'id|+1': 1,
   companyname: 'mock GET @CTITLE(2,20)',
   post: 'mock GET @CTITLE(2,10)',
-  startime: 1537146097,
+  starttime: 1537146097,
   endtime: 1537146097,
   jobcontent: 'mock GET @CTITLE(20,100)',
   uid: 0

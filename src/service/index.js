@@ -314,7 +314,7 @@ export default {
   createUserProject (params) {
     return request({
       host: hostList.test,
-      url: '/api/Projectpexp/create',
+      url: '/api/Projectexp/create',
       params
     });
   },
@@ -351,6 +351,28 @@ export default {
     return request({
       host: hostList.test,
       url: '/api/Jobexp/jobexpBy',
+      params,
+      method: 'get'
+    });
+  },
+  createUserSkill (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Skills/create',
+      params
+    });
+  },
+  updateUserSkill (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Skills/update',
+      params
+    });
+  },
+  getUserSkill (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Skills/skillsBy',
       params,
       method: 'get'
     });
