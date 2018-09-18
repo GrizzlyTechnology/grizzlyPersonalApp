@@ -286,13 +286,13 @@ export default {
     },
 
     async getEducation () {
-      console.log('resumeId:' + this.id);
+      // console.log('resumeId:' + this.id);
       tools.showProgress();
       const response = await service.getUserEducation({
         resumeId: this.id
       });
       tools.hideProgress();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.education = response.result.educationExpInfo.map(row =>
@@ -371,12 +371,7 @@ export default {
       }
     },
     openWebPage (data) {
-      window.api.openApp({
-        androidPkg: 'android.intent.action.VIEW',
-        uri: data.url
-      }, function (ret, err) {
-        console.log(JSON.stringify(ret));
-      });
+      tools.openWebPage('http://www.baidu.com');
     },
     baseInfoEdit () {
       tools.openWin({
