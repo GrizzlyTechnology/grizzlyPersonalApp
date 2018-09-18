@@ -90,7 +90,7 @@ adapter.skillAdapter = function (data) {
   return {
     ...data,
     label: data.skillname,
-    value: dictMap.skillLevel[data.proficiency]
+    value: data.proficiency * 20
   };
 };
 

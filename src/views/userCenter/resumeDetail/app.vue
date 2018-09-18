@@ -62,7 +62,7 @@
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="skillsEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
-      <SkillLine v-for="row in skills" :key="row.label" :title="row.label" :value="row.value" />
+      <SkillLine v-for="row in skills" :key="row.id" :title="row.label" :value="row.value" />
       <div slot="info">
         暂无技能评价
       </div>
@@ -396,6 +396,7 @@ export default {
     openWebPage (data) {
       tools.openWebPage('http://www.baidu.com');
     },
+
     baseInfoEdit () {
       tools.openWin({
         name: 'userBaseinfo',
@@ -515,6 +516,7 @@ export default {
         }
       });
     },
+
     jobEdit () {
       tools.openWin({
         name: 'userJobHistroy',
@@ -532,6 +534,7 @@ export default {
         }
       });
     },
+
     skillsEdit () {
       tools.openWin({
         name: 'userSkills',
@@ -549,6 +552,7 @@ export default {
         }
       });
     },
+
     opusEdit () {
       tools.openWin({
         name: 'userSkills',
@@ -619,13 +623,13 @@ export default {
       background-color: #eee;
     }
   }
-  .mint-cell-text{
+  .mint-cell-text {
     color: #333;
     .ell();
     display: block;
     width: 90%;
   }
-  .mint-cell-label{
+  .mint-cell-label {
     .ell();
     width: 90%;
   }
@@ -655,7 +659,7 @@ export default {
   right: 15px;
 }
 .opusRow {
-   position: absolute;
+  position: absolute;
   left: 0;
   right: 0;
   top: 0;
