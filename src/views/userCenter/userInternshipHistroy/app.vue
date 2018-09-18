@@ -51,7 +51,7 @@ export default {
     async unLink (ids) {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
-        internshipExps: ids,
+        internShipExps: ids,
         resumeId: this.id
       });
       tools.hideProgress();

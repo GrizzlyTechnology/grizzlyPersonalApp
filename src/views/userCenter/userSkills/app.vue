@@ -2,25 +2,21 @@
   <div class="content">
     <div class="bodyer">
       <div class="listCon">
-        <CellSwipe class="rowList" v-for="(row,index) in list" value="oko" :key="row.id" :right="[
-          {
-            content: '编辑',
-            style: { background: '#07A9EA', color: '#fff' },
-            handler: () => {edit(row,index)}
-          },{
+        <CellSwipe class="rowList" v-for="(row,index) in list" value="oko" :key="row.id" :right="[{
             content: '删除',
             style: { background: '#e7585a', color: '#fff' },
             handler: () => {del(row,index)}
           }
         ]">
           <SkillLine class="skill" :title="row.label" :value="row.value" />
+          <i class="mu-icon icon-right isLink" />
         </CellSwipe>
       </div>
     </div>
     <div class="footer">
       <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">添加技能评价</Button>
     </div>
-    <Popup v-model="isShow" position="bottom" pop-transition="popup-fade" :closeOnClickModal="false" class="myPopup">
+    <!-- <Popup v-model="isShow" position="bottom" pop-transition="popup-fade" :closeOnClickModal="false" class="myPopup">
       <div class="myPopupTopBar">
         <span class="cancel" @click="cancel">取消</span>
         <span class="ok" @click="confirm">保存</span>
@@ -35,91 +31,117 @@
         </FormItem>
 
       </Form>
-    </Popup>
+    </Popup> -->
   </div>
 </template>
 
 <script>
 // import _ from 'lodash';
-import { CellSwipe, Popup } from 'mint-ui';
-import { Button, TextField, Slider } from 'muse-ui';
-import { Form, FormItem } from 'muse-ui/lib/Form';
+import { CellSwipe } from 'mint-ui';
+import { Button } from 'muse-ui';
+// import { Form, FormItem } from 'muse-ui/lib/Form';
 
 import tools from 'util/tools';
 import dictMap from 'util/dictMap';
 import service from 'service';
 import SkillLine from 'components/SkillLine';
-// import adapter from 'util/adapter';
+import adapter from 'util/adapter';
 
 // import AreaSelected from 'components/AreaSelected';
-const defaultForm = {
-  label: '',
-  value: 1
-};
+// const defaultForm = {
+//   label: '',
+//   value: 1
+// };
 export default {
   data () {
     return {
-      msg: '',
-      isShow: false,
-      isEdit: false,
+      // msg: '',
+      // isShow: false,
+      // isEdit: false,
       id: window.api ? window.api.pageParam.id : null,
-      form: { ...defaultForm },
-      labelRules: [
-        { validate: val => !!val, message: '必须填写技能名称' },
-        {
-          validate: val => {
-            let b = true;
-            if (this.isEdit === false) {
-              this.list.forEach(r => {
-                if (r.label === val) {
-                  b = false;
-                }
-              });
-            }
-            return b;
-          },
-          message: '技能名称已存在'
-        }
-      ],
-      list: window.api ? window.api.pageParam.skills : []
-      // list: [
+      // form: { ...defaultForm },
+      // labelRules: [
+      //   { validate: val => !!val, message: '必须填写技能名称' },
       //   {
-      //     label: 'js',
-      //     value: 21
-      //   },
-      //   {
-      //     label: 'php',
-      //     value: 35
-      //   },
-      //   {
-      //     label: 'java',
-      //     value: 78
-      //   },
-      //   {
-      //     label: 'node',
-      //     value: 99
+      //     validate: val => {
+      //       let b = true;
+      //       if (this.isEdit === false) {
+      //         this.list.forEach(r => {
+      //           if (r.label === val) {
+      //             b = false;
+      //           }
+      //         });
+      //       }
+      //       return b;
+      //     },
+      //     message: '技能名称已存在'
       //   }
-      // ]
+      // ],
+      // list: []
+      list: [{
+        id: 0,
+        uid: 0,
+        skillname: '技能名1',
+        proficiency: 1
+      }, {
+        id: 1,
+        uid: 0,
+        skillname: '技能名2',
+        proficiency: 2
+      }, {
+        id: 2,
+        uid: 0,
+        skillname: '技能名3',
+        proficiency: 3
+      }, {
+        id: 3,
+        uid: 0,
+        skillname: '技能名4',
+        proficiency: 4
+      }, {
+        id: 4,
+        uid: 0,
+        skillname: '技能名5',
+        proficiency: 5
+      }].map(r => adapter.skillAdapter(r))
     };
   },
   components: {
     Button,
     CellSwipe,
-    SkillLine,
-    Popup,
-    Form,
-    FormItem,
-    TextField,
-    Slider
+    SkillLine
+    // Popup,
+    // Form,
+    // FormItem,
+    // TextField
+    // Slider
   },
   computed: {
     level () {
-      return dictMap.skillLevel[
-        parseInt((this.form.value === 0 ? 1 : this.form.value) / 20)
-      ];
+      return dictMap.skillLevel[parseInt((this.form.value === 0 ? 1 : this.form.value) / 20)];
     }
   },
   methods: {
+    async getList () {
+      tools.showProgress();
+      const response = await service.getUserSkill({
+        resumeId: this.id
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.skills = response.result.skillsInfo.map(row =>
+            adapter.skillAdapter(row)
+          );
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '技能获取失败'
+          });
+          break;
+      }
+    },
     async updateSkills (skills) {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
@@ -129,15 +151,16 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.list = JSON.parse(skills);
-          this.isShow = false;
-          this.$refs.form.clear();
-          this.curRow = -1;
+          this.getList();
+          // this.list = JSON.parse(skills);
+          // this.isShow = false;
+          // this.$refs.form.clear();
+          // this.curRow = -1;
           break;
         default:
           tools.toast({
             position: 'top',
-            message: this.msg
+            message: '技能删除失败'
           });
           break;
       }
@@ -153,46 +176,47 @@ export default {
                 if (r.label !== data.label) {
                   return r;
                 }
-              })
+              }).map(r => r.id).join(',')
             )
           );
-          this.msg = '技能删除失败';
         }
       });
     },
     edit (data, index) {
-      this.isShow = true;
-      this.isEdit = true;
-      this.curRow = index;
-      this.msg = '技能编辑失败';
-      this.form = { ...data };
+      // this.isShow = true;
+      // this.isEdit = true;
+      // this.curRow = index;
+      // this.msg = '技能编辑失败';
+      // this.form = { ...data };
     },
     create () {
-      this.isShow = true;
-      this.isEdit = false;
-      this.msg = '技能创建失败';
-      this.form = { ...defaultForm };
-    },
-    cancel () {
-      this.isShow = false;
-      this.curRow = -1;
-      this.$refs.form.clear();
-    },
-    confirm () {
-      this.$refs.form.validate().then(result => {
-        if (result === true) {
-          const list = [...this.list];
-          if (this.isEdit === true) {
-            list[this.curRow] = this.form;
-          } else {
-            list.push(this.form);
-          }
-          this.updateSkills(JSON.stringify(list));
-        }
-      });
+      // this.isShow = true;
+      // this.isEdit = false;
+      // this.msg = '技能创建失败';
+      // this.form = { ...defaultForm };
     }
+    // cancel () {
+    //   this.isShow = false;
+    //   this.curRow = -1;
+    //   this.$refs.form.clear();
+    // },
+    // confirm () {
+    //   this.$refs.form.validate().then(result => {
+    //     if (result === true) {
+    //       const list = [...this.list];
+    //       if (this.isEdit === true) {
+    //         list[this.curRow] = this.form;
+    //       } else {
+    //         list.push(this.form);
+    //       }
+    //       this.updateSkills(JSON.stringify(list));
+    //     }
+    //   });
+    // }
   },
-  mounted () {}
+  mounted () {
+    this.getList();
+  }
 };
 </script>
 <style lang="less">
@@ -244,7 +268,7 @@ export default {
 }
 .isLink {
   position: absolute;
-  top: 16px;
+  top: 19px;
   right: 15px;
   font-size: 16px;
 }
@@ -257,6 +281,7 @@ export default {
   }
   .skill {
     color: #333;
+    margin-right: 35px;
   }
 }
 .footer {
