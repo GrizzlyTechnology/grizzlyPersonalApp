@@ -152,8 +152,11 @@ export default {
 </script>
 <style lang="less">
 .rowList{
-    .mint-cell-wrapper {
+  .mint-cell-wrapper {
     background-image: none;
+  }
+  .mint-cell-swipe-button{
+    line-height: 56px;
   }
 }
 </style>
@@ -172,19 +175,21 @@ export default {
 }
 .isLink {
   position: absolute;
-  top: 15px;
+  top: 18px;
   right: 15px;
   font-size: 16px;
 }
 .rowList {
   font-size: 16px;
   background-color: #fff;
+  height: 56px;
   &:active {
     background-color: #eee;
   }
   .title {
     .ell();
     padding: 0 15px;
+    line-height: 56px;
   }
 }
 .footer{

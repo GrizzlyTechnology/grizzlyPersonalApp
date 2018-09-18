@@ -139,9 +139,6 @@ export default {
 </script>
 <style lang="less">
 .rowList {
-  .mint-cell {
-    min-height: 54px;
-  }
   .mint-cell-wrapper {
     background-image: none;
   }
@@ -151,6 +148,9 @@ export default {
   .mint-cell-value {
     display: block;
     width: 100%;
+  }
+  .mint-cell-swipe-button{
+    line-height: 56px;
   }
 }
 </style>
@@ -169,7 +169,7 @@ export default {
 }
 .isLink {
   position: absolute;
-  top: 16px;
+  top: 19px;
   right: 15px;
   font-size: 16px;
 }
@@ -177,11 +177,13 @@ export default {
   border-bottom: 1px @grayLine solid;
   font-size: 16px;
   background-color: #fff;
+  height: 56px;
   &:active {
     background-color: #eee;
   }
   .title {
     color: #333;
+    padding-top: 9px;
     .ell();
   }
   .label {

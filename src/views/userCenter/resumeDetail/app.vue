@@ -58,18 +58,14 @@
       </div>
     </Panel>
 
-    <Panel title="技能评价">
-      <SkillLine title="Axure" :value="0" />
-      <SkillLine title="Axure" :value="10" />
-      <SkillLine title="Axure" :value="20" />
-      <SkillLine title="Axure" :value="30" />
-      <SkillLine title="Axure" :value="40" />
-      <SkillLine title="Axure" :value="50" />
-      <SkillLine title="Axure" :value="60" />
-      <SkillLine title="Axure" :value="70" />
-      <SkillLine title="Axure" :value="80" />
-      <SkillLine title="Axure" :value="90" />
-      <SkillLine title="Axure" :value="100" />
+    <Panel title="技能评价" :noContent="skills.length===0" v-if="isNotDetail|| skills.length>0">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="skillsEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <SkillLine v-for="row in skills" :key="row.label" :title="row.label" :value="row.value" />
+      <div slot="info">
+        暂无技能评价
+      </div>
     </Panel>
     <Panel title="期望工作" :label="isRequired">
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="expectedWorkEdit">
@@ -82,12 +78,28 @@
       <Cell title="当前状态" :value="currentStateText"></Cell>
       <Cell title="到岗时间" :value="timeToPostText"></Cell>
     </Panel>
+    <Panel title="作品展示" :noContent="opus.length===0" v-if="isNotDetail|| opus.length>0">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="opusEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <Cell v-for="row in opus" :key="row.id" class="opus">
+        <div @click="openWebPage(row)" class="opusRow">
+          <span class="mint-cell-text">{{row.title}}</span>
+          <span class="mint-cell-label">{{row.url}}</span>
+        </div>
+        <i class="mu-icon icon-right isLink" />
+      </Cell>
+      <div slot="info">
+        暂无作品展示
+      </div>
+    </Panel>
   </div>
   </div>
 </template>
 
 <script>
 import moment from 'moment';
+// import isJson from 'is-json';
 
 import service from 'service';
 import tools from 'util/tools';
@@ -103,7 +115,7 @@ import SkillLine from 'components/SkillLine';
 export default {
   data () {
     return {
-      type: window.api ? window.api.pageParam.type : 'edit',
+      type: window.api ? window.api.pageParam.type : 'detail',
       id: window.api ? window.api.pageParam.id : null,
       introduction: '',
       baseInfo: {
@@ -128,7 +140,22 @@ export default {
       education: [],
       internship: [],
       project: [],
-      job: []
+      job: [],
+      skills: [],
+      opus: [
+        {
+          id: 0,
+          uid: 0,
+          title: '作品名',
+          url: 'www.baidu.com'
+        },
+        {
+          id: 1,
+          uid: 0,
+          title: '作品名',
+          url: 'www.baidu.com'
+        }
+      ]
     };
   },
   components: {
@@ -237,11 +264,16 @@ export default {
       // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.baseInfo = adapter.baseInfoAdapter(response.result.resumeInfo[0]);
+          this.baseInfo = adapter.baseInfoAdapter(
+            response.result.resumeInfo[0]
+          );
           this.expectedWork = adapter.expectedWorkAdapter(
             response.result.resumeInfo[0]
           );
           this.introduction = response.result.resumeInfo[0].introduction || '';
+          if (response.result.resumeInfo[0].skills) {
+            this.skills = JSON.parse(response.result.resumeInfo[0].skills);
+          }
           // alert(this.baseInfo.houseHold[0].label);
           break;
         default:
@@ -254,14 +286,18 @@ export default {
     },
 
     async getEducation () {
+      console.log('resumeId:' + this.id);
       tools.showProgress();
       const response = await service.getUserEducation({
         resumeId: this.id
       });
       tools.hideProgress();
+      console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.education = response.result.educationExpInfo.map(row => adapter.educationAdapter(row));
+          this.education = response.result.educationExpInfo.map(row =>
+            adapter.educationAdapter(row)
+          );
           break;
         default:
           tools.toast({
@@ -280,7 +316,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.internship = response.result.internshipExpInfo.map(row => adapter.internshipAdapter(row));
+          this.internship = response.result.internshipExpInfo.map(row =>
+            adapter.internshipAdapter(row)
+          );
           break;
         default:
           tools.toast({
@@ -299,7 +337,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.project = response.result.projectExpInfo.map(row => adapter.projectAdapter(row));
+          this.project = response.result.projectExpInfo.map(row =>
+            adapter.projectAdapter(row)
+          );
           break;
         default:
           tools.toast({
@@ -318,7 +358,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.job = response.result.jobExpInfo.map(row => adapter.jobAdapter(row));
+          this.job = response.result.jobExpInfo.map(row =>
+            adapter.jobAdapter(row)
+          );
           break;
         default:
           tools.toast({
@@ -328,7 +370,14 @@ export default {
           break;
       }
     },
-
+    openWebPage (data) {
+      window.api.openApp({
+        androidPkg: 'android.intent.action.VIEW',
+        uri: data.url
+      }, function (ret, err) {
+        console.log(JSON.stringify(ret));
+      });
+    },
     baseInfoEdit () {
       tools.openWin({
         name: 'userBaseinfo',
@@ -464,6 +513,42 @@ export default {
           id: this.id
         }
       });
+    },
+    skillsEdit () {
+      tools.openWin({
+        name: 'userSkills',
+        url: '../win.html',
+        title: '技能评价管理',
+        fname: 'userSkills_f',
+        furl: './userCenter/userSkills.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getUserBaseInfo();
+        },
+        data: {
+          nameSpace: 'userSkills',
+          id: this.id,
+          skills: this.skills
+        }
+      });
+    },
+    opusEdit () {
+      tools.openWin({
+        name: 'userSkills',
+        url: '../win.html',
+        title: '技能评价管理',
+        fname: 'userSkills_f',
+        furl: './userCenter/userSkills.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getUserBaseInfo();
+        },
+        data: {
+          nameSpace: 'userSkills',
+          id: this.id,
+          skills: this.skills
+        }
+      });
     }
   },
 
@@ -492,6 +577,7 @@ export default {
 };
 </script>
 <style lang="less">
+@import url("../../../assets/css/base.less");
 .moduleBodyer {
   .mint-cell {
     .mint-cell-wrapper,
@@ -501,10 +587,33 @@ export default {
     }
   }
 }
+.opus {
+  .mint-cell-allow-right {
+    display: none;
+  }
+  .mint-cell-value {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    &:active {
+      background-color: #eee;
+    }
+  }
+  .mint-cell-text{
+    color: #333;
+    .ell();
+    display: block;
+    width: 90%;
+  }
+  .mint-cell-label{
+    .ell();
+    width: 90%;
+  }
+}
 </style>
 <style lang="less" scoped>
-.infoNotice {
-}
 .introduction {
   padding: 15px;
   line-height: 1.8;
@@ -517,5 +626,22 @@ export default {
   float: right;
   font-size: 14px;
   margin-top: 8px;
+}
+.opus {
+  height: 56px;
+}
+.isLink {
+  position: absolute;
+  top: 19px;
+  font-size: 16px;
+  right: 15px;
+}
+.opusRow {
+   position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 14px 0 0 10px;
 }
 </style>

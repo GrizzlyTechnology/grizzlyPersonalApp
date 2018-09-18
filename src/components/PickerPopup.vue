@@ -1,5 +1,5 @@
 <template>
-  <Popup v-model="isShow" position="bottom" pop-transition="popup-fade" :closeOnClickModal="true" class="myPopup">
+  <Popup v-model="isShow" position="bottom" pop-transition="popup-fade" :closeOnClickModal="false" class="myPopup">
     <div class="myPopupTopBar">
       <span class="cancel" @click="cancel">{{ cancelText }}</span>
       <span class="ok" @click="confirm">{{ confirmText }}</span>

@@ -285,7 +285,8 @@ export default {
     return request({
       host: hostList.test,
       url: '/api/Educationexp/educationexpBy',
-      params
+      params,
+      method: 'get'
     });
   },
   createUserInternship (params) {
@@ -313,7 +314,7 @@ export default {
   createUserProject (params) {
     return request({
       host: hostList.test,
-      url: '/api/Projectpexp/create',
+      url: '/api/Projectexp/create',
       params
     });
   },
