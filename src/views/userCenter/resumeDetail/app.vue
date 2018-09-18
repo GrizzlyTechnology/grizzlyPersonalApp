@@ -522,8 +522,7 @@ export default {
         },
         data: {
           nameSpace: 'userSkills',
-          id: this.id,
-          skills: this.skills
+          id: this.id
         }
       });
     },

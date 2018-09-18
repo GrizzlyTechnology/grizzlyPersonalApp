@@ -48,11 +48,11 @@ adapter.educationAdapter = function (data) {
 adapter.internshipAdapter = function (data) {
   return {
     ...data,
-    starTime: data.startime * 1000,
+    starttime: data.starttime * 1000,
     endTime: data.endtime * 1000,
     companyName: data.companyname,
     jobContent: data.jobcontent,
-    head: moment(data.startime * 1000).format('YYYY年MM月') + ' - ' + moment(data.endtime * 1000).format('YYYY年MM月'),
+    head: moment(data.starttime * 1000).format('YYYY年MM月') + ' - ' + moment(data.endtime * 1000).format('YYYY年MM月'),
     title: data.companyname + ' / ' + data.post,
     info: data.jobcontent.replace(/\n|\r\n/g, '<br/>')
   };
@@ -61,7 +61,7 @@ adapter.internshipAdapter = function (data) {
 adapter.projectAdapter = function (data) {
   return {
     ...data,
-    starTime: data.starttime * 1000,
+    starttime: data.starttime * 1000,
     endTime: data.endtime * 1000,
     projectName: data.projectname,
     porjectDec: data.porjectdec,
@@ -74,11 +74,11 @@ adapter.projectAdapter = function (data) {
 adapter.jobAdapter = function (data) {
   return {
     ...data,
-    starTime: data.startime * 1000,
+    starttime: data.starttime * 1000,
     endTime: data.endtime * 1000,
     companyName: data.companyname,
     jobContent: data.jobcontent,
-    head: moment(data.startime * 1000).format('YYYY年MM月') + ' - ' + moment(data.endtime * 1000).format('YYYY年MM月'),
+    head: moment(data.starttime * 1000).format('YYYY年MM月') + ' - ' + moment(data.endtime * 1000).format('YYYY年MM月'),
     title: data.companyname + ' / ' + data.post,
     info: data.jobcontent.replace(/\n|\r\n/g, '<br/>')
   };

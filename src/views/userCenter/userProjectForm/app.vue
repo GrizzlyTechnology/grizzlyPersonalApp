@@ -9,7 +9,7 @@
           <FormItem label="项目职责" prop="duty" :rules="dutyRules">
             <TextField v-model="form.duty"></TextField>
           </FormItem>
-          <FormItem label="项目时间" prop="starTime" :rules="workingTimeRules">
+          <FormItem label="项目时间" prop="startTime" :rules="workingTimeRules">
             <DateInput class="dateInput" type="month" :value="starTimeText" :max-date="new Date()" @change="changeStarTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
             <span class="joiner">至</span>
             <DateInput class="dateInput" type="month" :value="endTimeText" :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
@@ -49,19 +49,19 @@ export default {
         projectName: window.api && window.api.pageParam.project ? window.api.pageParam.project.projectName : '',
         duty: window.api && window.api.pageParam.project ? window.api.pageParam.project.duty : '',
         endTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.endTime : Date.now().valueOf(),
-        starTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.starTime : Date.now().valueOf(),
+        startTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.startTime : Date.now().valueOf(),
         porjectDec: window.api && window.api.pageParam.project ? window.api.pageParam.project.porjectDec : ''
       },
       projectNameRules: [{ validate: val => !!val, message: '必须填写项目名称' }],
       dutyRules: [{ validate: val => val, message: '必须填写项目职责' }],
       workingTimeRules: [
-        { validate: val => this.form.starTime <= this.form.endTime, message: '开始时间不能在结束时间之后' }
+        { validate: val => this.form.startTime <= this.form.endTime, message: '开始时间不能在结束时间之后' }
       ]
     };
   },
   computed: {
     starTimeText () {
-      return new Date(this.form.starTime);
+      return new Date(this.form.startTime);
     },
     endTimeText () {
       return new Date(this.form.endTime);
@@ -126,7 +126,7 @@ export default {
       }
     },
     changeStarTime (date) {
-      this.form.starTime = date.valueOf();
+      this.form.startTime = date.valueOf();
     },
     changeEndTime (date) {
       this.form.endTime = date.valueOf();
