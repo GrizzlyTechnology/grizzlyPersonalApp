@@ -214,17 +214,17 @@ export default {
     //     : '';
     // },
     workTypeText () {
-      return this.expectedWork.workType !== null
+      return this.expectedWork.workType
         ? dictMap.workType[Number(this.expectedWork.workType)]
         : '';
     },
     currentStateText () {
-      return this.expectedWork.currentState !== null
+      return this.expectedWork.currentState
         ? dictMap.currentState[Number(this.expectedWork.currentState)]
         : '';
     },
     timeToPostText () {
-      return this.expectedWork.timeToPost !== null
+      return this.expectedWork.timeToPost
         ? dictMap.timeToPost[Number(this.expectedWork.timeToPost)]
         : '';
     }
@@ -594,18 +594,18 @@ export default {
         switch (window.api.pageParam.from) {
           case 'userBaseInfo': // 创建基本信息后的回调
             this.getUserBaseInfo();
-            window.api.closeWin({
-              name: 'userBaseInfo'
-            });
+            // window.api.closeWin({
+            //   name: 'userBaseInfo'
+            // });
             break;
           default:
             // this.getAll();
             this.getUserBaseInfo();
-            this.getEducation();
-            this.getInternship();
-            this.getProject();
-            this.getJob();
-            this.getSkill();
+            // this.getEducation();
+            // this.getInternship();
+            // this.getProject();
+            // this.getJob();
+            // this.getSkill();
             break;
         }
       }

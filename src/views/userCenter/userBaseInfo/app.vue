@@ -125,20 +125,21 @@ export default {
           //   position: 'top',
           //   message: '基本信息创建成功'
           // });
-          tools.openWin({
-            name: 'resumeDetail',
-            url: '../win.html',
-            title: '我的简历',
-            fname: 'resumeDetail_f',
-            furl: './userCenter/resumeDetail.html',
-            hasLeft: 1,
-            data: {
-              nameSpace: 'resumeDetail',
-              from: 'userBaseInfo',
-              id: response.result.resumeInfo.id,
-              type: 'edit'
-            }
-          });
+          // tools.openWin({
+          //   name: 'resumeDetail',
+          //   url: '../win.html',
+          //   title: '我的简历',
+          //   fname: 'resumeDetail_f',
+          //   furl: './userCenter/resumeDetail.html',
+          //   hasLeft: 1,
+          //   data: {
+          //     nameSpace: 'resumeDetail',
+          //     from: 'userBaseInfo',
+          //     id: response.result.resumeInfo.id,
+          //     type: 'edit'
+          //   }
+          // });
+          tools.closeWin(response.result.resumeInfo.id);
           break;
         default:
           tools.toast({
