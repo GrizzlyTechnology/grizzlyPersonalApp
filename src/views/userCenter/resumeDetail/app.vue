@@ -82,18 +82,28 @@
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="opusEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
-      <Cell v-for="row in opus" :key="row.id" class="opus">
-        <div @click="openWebPage(row)" class="opusRow">
-          <span class="mint-cell-text">{{row.title}}</span>
-          <span class="mint-cell-label">{{row.url}}</span>
-        </div>
-        <i class="mu-icon icon-right isLink" />
-      </Cell>
+      <Navbar v-model="tabActive" class="tabHeader">
+        <TabItem id="tabContainer0">作品图片</TabItem>
+        <TabItem id="tabContainer1">在线作品</TabItem>
+      </Navbar>
+      <TabContainer v-model="tabActive" swipeable>
+        <TabContainerItem id="tabContainer0">
+          okooko
+        </TabContainerItem>
+        <TabContainerItem id="tabContainer1">
+          <Cell v-for="row in opus" :key="row.id" class="opus">
+            <div @click="openWebPage(row)" class="opusRow">
+              <span class="mint-cell-text">{{row.title}}</span>
+              <span class="mint-cell-label">{{row.url}}</span>
+            </div>
+            <i class="mu-icon icon-right isLink" />
+          </Cell>
+        </TabContainerItem>
+      </TabContainer>
       <div slot="info">
         暂无作品展示
       </div>
     </Panel>
-  </div>
   </div>
 </template>
 
@@ -107,7 +117,7 @@ import dictMap from 'util/dictMap';
 import adapter from 'util/adapter';
 
 import { Button, Icon } from 'muse-ui';
-import { Cell } from 'mint-ui';
+import { Cell, TabContainer, TabContainerItem, Navbar, TabItem } from 'mint-ui';
 import Panel from 'components/Panel';
 import StepVertical from 'components/StepVertical';
 import SkillLine from 'components/SkillLine';
@@ -115,6 +125,7 @@ import SkillLine from 'components/SkillLine';
 export default {
   data () {
     return {
+      tabActive: 'tabContainer0',
       type: window.api ? window.api.pageParam.type : 'detail',
       id: window.api ? window.api.pageParam.id : null,
       introduction: '',
@@ -164,7 +175,11 @@ export default {
     Panel,
     StepVertical,
     SkillLine,
-    Icon
+    Icon,
+    TabContainer,
+    TabContainerItem,
+    Navbar,
+    TabItem
   },
   computed: {
     isNotDetail () {
@@ -199,17 +214,17 @@ export default {
     //     : '';
     // },
     workTypeText () {
-      return this.expectedWork.workType !== null
+      return this.expectedWork.workType
         ? dictMap.workType[Number(this.expectedWork.workType)]
         : '';
     },
     currentStateText () {
-      return this.expectedWork.currentState !== null
+      return this.expectedWork.currentState
         ? dictMap.currentState[Number(this.expectedWork.currentState)]
         : '';
     },
     timeToPostText () {
-      return this.expectedWork.timeToPost !== null
+      return this.expectedWork.timeToPost
         ? dictMap.timeToPost[Number(this.expectedWork.timeToPost)]
         : '';
     }
@@ -292,12 +307,12 @@ export default {
         resumeId: this.id
       });
       tools.hideProgress();
-      // console.log(JSON.stringify(response));
+      console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.education = response.result.educationExpInfo.map(row =>
+          this.education = response.result.educationExpInfo ? response.result.educationExpInfo.map(row =>
             adapter.educationAdapter(row)
-          );
+          ) : [];
           break;
         default:
           tools.toast({
@@ -316,9 +331,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.internship = response.result.internshipExpInfo.map(row =>
+          this.internship = response.result.internshipExpInfo ? response.result.internshipExpInfo.map(row =>
             adapter.internshipAdapter(row)
-          );
+          ) : [];
           break;
         default:
           tools.toast({
@@ -338,9 +353,9 @@ export default {
       // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.project = response.result.projectExpInfo.map(row =>
+          this.project = response.result.projectExpInfo ? response.result.projectExpInfo.map(row =>
             adapter.projectAdapter(row)
-          );
+          ) : [];
           break;
         default:
           tools.toast({
@@ -359,9 +374,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.job = response.result.jobExpInfo.map(row =>
+          this.job = response.result.jobExpInfo ? response.result.jobExpInfo.map(row =>
             adapter.jobAdapter(row)
-          );
+          ) : [];
           break;
         default:
           tools.toast({
@@ -380,9 +395,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.skills = response.result.skillsInfo.map(row =>
+          this.skills = response.result.skillsInfo ? response.result.skillsInfo.map(row =>
             adapter.skillAdapter(row)
-          );
+          ) : [];
           break;
         default:
           tools.toast({
@@ -579,9 +594,9 @@ export default {
         switch (window.api.pageParam.from) {
           case 'userBaseInfo': // 创建基本信息后的回调
             this.getUserBaseInfo();
-            window.api.closeWin({
-              name: 'userBaseInfo'
-            });
+            // window.api.closeWin({
+            //   name: 'userBaseInfo'
+            // });
             break;
           default:
             // this.getAll();
@@ -632,6 +647,24 @@ export default {
   .mint-cell-label {
     .ell();
     width: 90%;
+  }
+}
+.tabHeader {
+  .mint-tab-item-label {
+    color: #666;
+    font-size: 14px;
+  }
+  .is-selected {
+    .mint-tab-item-label {
+      color: @baseColor;
+    }
+  }
+  .mint-tab-item{
+    border-bottom: 1px solid #ddd;
+  }
+  .mint-tab-item.is-selected{
+    border-bottom: 1px solid @baseColor;
+    margin-bottom: 0;
   }
 }
 </style>
