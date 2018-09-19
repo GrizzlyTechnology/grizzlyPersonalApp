@@ -66,12 +66,6 @@ export default {
         workType: window.api.pageParam.expectedWork.workType || dictMap.workType[0],
         currentState: window.api.pageParam.expectedWork.currentState || dictMap.currentState[0],
         timeToPost: window.api.pageParam.expectedWork.timeToPost || dictMap.timeToPost[0]
-        // desiredPosition: '',
-        // expectedSalary: dictMap.expectedSalary[0],
-        // expectedCity: '',
-        // workType: dictMap.workType[0],
-        // currentState: dictMap.currentState[0],
-        // timeToPost: dictMap.timeToPost[0]
       },
       desiredPositionRules: [
         { validate: val => !!val, message: '必须填写期望职位' }
