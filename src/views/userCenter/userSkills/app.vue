@@ -8,8 +8,10 @@
             handler: () => {del(row,index)}
           }
         ]">
-          <SkillLine class="skill" :title="row.label" :value="row.value" />
+        <div @click="edit(row)">
+          <SkillLine class="skill" :title="row.label" :value="row.value"/>
           <i class="mu-icon icon-right isLink" />
+        </div>
         </CellSwipe>
       </div>
     </div>
@@ -55,10 +57,11 @@ import adapter from 'util/adapter';
 export default {
   data () {
     return {
+      id: window.api ? window.api.pageParam.id : null,
+      list: []
       // msg: '',
       // isShow: false,
       // isEdit: false,
-      id: window.api ? window.api.pageParam.id : null,
       // form: { ...defaultForm },
       // labelRules: [
       //   { validate: val => !!val, message: '必须填写技能名称' },
@@ -77,33 +80,32 @@ export default {
       //     message: '技能名称已存在'
       //   }
       // ],
-      // list: []
-      list: [{
-        id: 0,
-        uid: 0,
-        skillname: '技能名1',
-        proficiency: 1
-      }, {
-        id: 1,
-        uid: 0,
-        skillname: '技能名2',
-        proficiency: 2
-      }, {
-        id: 2,
-        uid: 0,
-        skillname: '技能名3',
-        proficiency: 3
-      }, {
-        id: 3,
-        uid: 0,
-        skillname: '技能名4',
-        proficiency: 4
-      }, {
-        id: 4,
-        uid: 0,
-        skillname: '技能名5',
-        proficiency: 5
-      }].map(r => adapter.skillAdapter(r))
+      // list: [{
+      //   id: 0,
+      //   uid: 0,
+      //   skillname: '技能名1',
+      //   proficiency: 1
+      // }, {
+      //   id: 1,
+      //   uid: 0,
+      //   skillname: '技能名2',
+      //   proficiency: 2
+      // }, {
+      //   id: 2,
+      //   uid: 0,
+      //   skillname: '技能名3',
+      //   proficiency: 3
+      // }, {
+      //   id: 3,
+      //   uid: 0,
+      //   skillname: '技能名4',
+      //   proficiency: 4
+      // }, {
+      //   id: 4,
+      //   uid: 0,
+      //   skillname: '技能名5',
+      //   proficiency: 5
+      // }].map(r => adapter.skillAdapter(r))
     };
   },
   components: {
@@ -152,10 +154,6 @@ export default {
       switch (response.code) {
         case 0:
           this.getList();
-          // this.list = JSON.parse(skills);
-          // this.isShow = false;
-          // this.$refs.form.clear();
-          // this.curRow = -1;
           break;
         default:
           tools.toast({
@@ -166,34 +164,56 @@ export default {
       }
     },
     del (data, index) {
-      tools.confirm({
-        title: '确认',
-        content: `删除 ${data.label} 技能？`,
-        callback: () => {
-          this.updateSkills(
-            JSON.stringify(
-              this.list.filter(r => {
-                if (r.label !== data.label) {
-                  return r;
-                }
-              }).map(r => r.id).join(',')
-            )
-          );
+      // tools.confirm({
+      //   title: '确认',
+      //   content: `删除 ${data.label} 技能？`,
+      //   callback: () => {
+      this.updateSkills(
+        JSON.stringify(
+          this.list.filter(r => {
+            if (r.label !== data.label) {
+              return r;
+            }
+          }).map(r => r.id).join(',')
+        )
+      );
+      //   }
+      // });
+    },
+    edit (data) {
+      tools.openWin({
+        name: 'userSkillForm',
+        url: '../win.html',
+        title: '编辑技能评估',
+        fname: 'userSkillForm_f',
+        furl: './userCenter/userSkillForm.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'userSkillForm',
+          id: data.id,
+          skill: data,
+          callback: (ret, err) => {
+            this.getList();
+          }
         }
       });
     },
-    edit (data, index) {
-      // this.isShow = true;
-      // this.isEdit = true;
-      // this.curRow = index;
-      // this.msg = '技能编辑失败';
-      // this.form = { ...data };
-    },
     create () {
-      // this.isShow = true;
-      // this.isEdit = false;
-      // this.msg = '技能创建失败';
-      // this.form = { ...defaultForm };
+      tools.openWin({
+        name: 'userSkillForm',
+        url: '../win.html',
+        title: '创建技能评估',
+        fname: 'userSkillForm_f',
+        furl: './userCenter/userSkillForm.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'userSkillForm',
+          resumeId: this.id,
+          callback: (ret, err) => {
+            this.getList();
+          }
+        }
+      });
     }
     // cancel () {
     //   this.isShow = false;

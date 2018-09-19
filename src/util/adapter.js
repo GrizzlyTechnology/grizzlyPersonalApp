@@ -89,6 +89,7 @@ adapter.jobAdapter = function (data) {
 adapter.skillAdapter = function (data) {
   return {
     ...data,
+    skillName: data.skillname,
     label: data.skillname,
     value: data.proficiency * 20
   };
