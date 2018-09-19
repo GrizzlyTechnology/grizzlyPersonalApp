@@ -88,18 +88,15 @@
       </Navbar>
       <TabContainer v-model="tabActive" swipeable>
         <TabContainerItem id="tabContainer0">
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
+          <div v-if="opusPic.length>0" class="infoNotice">
+            暂无作品图片
+          </div>
         </TabContainerItem>
         <TabContainerItem id="tabContainer1">
-          <Cell v-for="row in opus" :key="row.id" class="opus">
+          <div v-if="opusOnline.length===0" class="infoNotice">
+            暂无在线作品
+          </div>
+          <Cell v-for="row in opusOnline" :key="row.id" class="opus">
             <div @click="openWebPage(row)" class="opusRow">
               <span class="mint-cell-text">{{row.title}}</span>
               <span class="mint-cell-label">{{row.url}}</span>
@@ -112,6 +109,7 @@
         暂无作品展示
       </div>
     </Panel>
+    <img style="width:50%" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2725994775,4150096866&fm=26&gp=0.jpg" />
   </div>
 </template>
 
@@ -165,14 +163,57 @@ export default {
         {
           id: 0,
           uid: 0,
-          title: '作品名',
-          url: 'www.baidu.com'
+          title: '图片作品',
+          type: 0,
+          url: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2725994775,4150096866&fm=26&gp=0.jpg'
         },
         {
           id: 1,
           uid: 0,
-          title: '作品名',
-          url: 'www.baidu.com'
+          type: 1,
+          title: '线上作品',
+          url: 'https://www.baidu.com'
+        },
+        {
+          id: 2,
+          uid: 0,
+          title: '图片作品',
+          type: 0,
+          url: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2725994775,4150096866&fm=26&gp=0.jpg'
+        },
+        {
+          id: 3,
+          uid: 0,
+          type: 1,
+          title: '线上作品',
+          url: 'https://www.baidu.com'
+        },
+        {
+          id: 4,
+          uid: 0,
+          title: '图片作品',
+          type: 0,
+          url: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2725994775,4150096866&fm=26&gp=0.jpg'
+        },
+        {
+          id: 5,
+          uid: 0,
+          type: 1,
+          title: '线上作品',
+          url: 'https://www.baidu.com'
+        }, {
+          id: 6,
+          uid: 0,
+          title: '图片作品',
+          type: 0,
+          url: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2725994775,4150096866&fm=26&gp=0.jpg'
+        },
+        {
+          id: 7,
+          uid: 0,
+          type: 1,
+          title: '线上作品',
+          url: 'https://www.baidu.com'
         }
       ]
     };
@@ -190,6 +231,20 @@ export default {
     TabItem
   },
   computed: {
+    opusPic () {
+      return this.opus.filter(r => {
+        if (r.type === 0) {
+          return r;
+        }
+      });
+    },
+    opusOnline () {
+      return this.opus.filter(r => {
+        if (r.type === 1) {
+          return r;
+        }
+      });
+    },
     isNotDetail () {
       return this.type === 'creat' || this.type === 'edit';
     },
@@ -315,7 +370,7 @@ export default {
         resumeId: this.id
       });
       // tools.hideProgress();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.education = response.result.educationExpInfo
@@ -423,7 +478,7 @@ export default {
     },
 
     openWebPage (data) {
-      tools.openWebPage('http://www.baidu.com');
+      tools.openWebPage(data.url);
     },
 
     baseInfoEdit () {
@@ -712,5 +767,12 @@ export default {
   top: 0;
   bottom: 0;
   padding: 14px 0 0 10px;
+}
+.infoNotice {
+  overflow: hidden;
+  background-color: #e4f2fb;
+  padding: 20px 15px;
+  text-align: center;
+  color: #a2d4f7;
 }
 </style>
