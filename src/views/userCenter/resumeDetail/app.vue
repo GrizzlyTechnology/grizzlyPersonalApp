@@ -214,17 +214,17 @@ export default {
     //     : '';
     // },
     workTypeText () {
-      return this.expectedWork.workType
+      return this.expectedWork.workType || this.expectedWork.workType === 0
         ? dictMap.workType[Number(this.expectedWork.workType)]
         : '';
     },
     currentStateText () {
-      return this.expectedWork.currentState
+      return this.expectedWork.currentState || this.expectedWork.currentState === 0
         ? dictMap.currentState[Number(this.expectedWork.currentState)]
         : '';
     },
     timeToPostText () {
-      return this.expectedWork.timeToPost
+      return this.expectedWork.timeToPost || this.expectedWork.timeToPost === 0
         ? dictMap.timeToPost[Number(this.expectedWork.timeToPost)]
         : '';
     }
@@ -310,9 +310,11 @@ export default {
       console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.education = response.result.educationExpInfo ? response.result.educationExpInfo.map(row =>
-            adapter.educationAdapter(row)
-          ) : [];
+          this.education = response.result.educationExpInfo
+            ? response.result.educationExpInfo.map(row =>
+              adapter.educationAdapter(row)
+            )
+            : [];
           break;
         default:
           tools.toast({
@@ -331,9 +333,11 @@ export default {
       // tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.internship = response.result.internshipExpInfo ? response.result.internshipExpInfo.map(row =>
-            adapter.internshipAdapter(row)
-          ) : [];
+          this.internship = response.result.internshipExpInfo
+            ? response.result.internshipExpInfo.map(row =>
+              adapter.internshipAdapter(row)
+            )
+            : [];
           break;
         default:
           tools.toast({
@@ -353,9 +357,11 @@ export default {
       // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.project = response.result.projectExpInfo ? response.result.projectExpInfo.map(row =>
-            adapter.projectAdapter(row)
-          ) : [];
+          this.project = response.result.projectExpInfo
+            ? response.result.projectExpInfo.map(row =>
+              adapter.projectAdapter(row)
+            )
+            : [];
           break;
         default:
           tools.toast({
@@ -374,9 +380,9 @@ export default {
       // tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.job = response.result.jobExpInfo ? response.result.jobExpInfo.map(row =>
-            adapter.jobAdapter(row)
-          ) : [];
+          this.job = response.result.jobExpInfo
+            ? response.result.jobExpInfo.map(row => adapter.jobAdapter(row))
+            : [];
           break;
         default:
           tools.toast({
@@ -395,9 +401,9 @@ export default {
       // tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.skills = response.result.skillsInfo ? response.result.skillsInfo.map(row =>
-            adapter.skillAdapter(row)
-          ) : [];
+          this.skills = response.result.skillsInfo
+            ? response.result.skillsInfo.map(row => adapter.skillAdapter(row))
+            : [];
           break;
         default:
           tools.toast({
@@ -659,10 +665,10 @@ export default {
       color: @baseColor;
     }
   }
-  .mint-tab-item{
+  .mint-tab-item {
     border-bottom: 1px solid #ddd;
   }
-  .mint-tab-item.is-selected{
+  .mint-tab-item.is-selected {
     border-bottom: 1px solid @baseColor;
     margin-bottom: 0;
   }
