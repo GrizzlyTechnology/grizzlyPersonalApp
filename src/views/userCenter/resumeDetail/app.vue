@@ -82,18 +82,27 @@
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="opusEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
-      <Cell v-for="row in opus" :key="row.id" class="opus">
-        <div @click="openWebPage(row)" class="opusRow">
-          <span class="mint-cell-text">{{row.title}}</span>
-          <span class="mint-cell-label">{{row.url}}</span>
-        </div>
-        <i class="mu-icon icon-right isLink" />
-      </Cell>
+      <Navbar v-model="tabActive" class="tabHeader">
+        <TabItem id="tabContainer0">作品图片</TabItem>
+        <TabItem id="tabContainer1">在线作品</TabItem>
+      </Navbar>
+      <TabContainer v-model="tabActive" swipeable>
+        <TabContainerItem id="tabContainer0">
+        </TabContainerItem>
+        <TabContainerItem id="tabContainer1">
+          <Cell v-for="row in opus" :key="row.id" class="opus">
+            <div @click="openWebPage(row)" class="opusRow">
+              <span class="mint-cell-text">{{row.title}}</span>
+              <span class="mint-cell-label">{{row.url}}</span>
+            </div>
+            <i class="mu-icon icon-right isLink" />
+          </Cell>
+        </TabContainerItem>
+      </TabContainer>
       <div slot="info">
         暂无作品展示
       </div>
     </Panel>
-  </div>
   </div>
 </template>
 
@@ -107,7 +116,7 @@ import dictMap from 'util/dictMap';
 import adapter from 'util/adapter';
 
 import { Button, Icon } from 'muse-ui';
-import { Cell } from 'mint-ui';
+import { Cell, TabContainer, TabContainerItem, Navbar, TabItem } from 'mint-ui';
 import Panel from 'components/Panel';
 import StepVertical from 'components/StepVertical';
 import SkillLine from 'components/SkillLine';
@@ -115,6 +124,7 @@ import SkillLine from 'components/SkillLine';
 export default {
   data () {
     return {
+      tabActive: 'tabContainer0',
       type: window.api ? window.api.pageParam.type : 'detail',
       id: window.api ? window.api.pageParam.id : null,
       introduction: '',
@@ -164,7 +174,11 @@ export default {
     Panel,
     StepVertical,
     SkillLine,
-    Icon
+    Icon,
+    TabContainer,
+    TabContainerItem,
+    Navbar,
+    TabItem
   },
   computed: {
     isNotDetail () {
@@ -632,6 +646,23 @@ export default {
   .mint-cell-label {
     .ell();
     width: 90%;
+  }
+}
+.tabHeader {
+  .mint-tab-item-label {
+    color: #666;
+    font-size: 14px;
+  }
+  .is-selected {
+    .mint-tab-item-label {
+      color: @baseColor;
+    }
+  }
+  .mint-tab-item{
+    border-bottom: 2px solid #eee;
+  }
+  .mint-tab-item.is-selected{
+    border-bottom: 2px solid @baseColor;
   }
 }
 </style>

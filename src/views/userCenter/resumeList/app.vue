@@ -55,14 +55,15 @@ export default {
       tools.showProgress();
       const response = await service.getUserBaseInfo();
       tools.hideProgress();
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.list = [response.result.resumeInfo[0]];
+          this.list = response.result.resumeInfo.length > 0 ? [response.result.resumeInfo[0]] : [];
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '简历列表获取失败'
+            message: '简历列表n获取失败'
           });
           break;
       }
