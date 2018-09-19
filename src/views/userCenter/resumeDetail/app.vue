@@ -88,6 +88,7 @@
       </Navbar>
       <TabContainer v-model="tabActive" swipeable>
         <TabContainerItem id="tabContainer0">
+          okooko
         </TabContainerItem>
         <TabContainerItem id="tabContainer1">
           <Cell v-for="row in opus" :key="row.id" class="opus">
@@ -659,10 +660,11 @@ export default {
     }
   }
   .mint-tab-item{
-    border-bottom: 2px solid #eee;
+    border-bottom: 1px solid #ddd;
   }
   .mint-tab-item.is-selected{
-    border-bottom: 2px solid @baseColor;
+    border-bottom: 1px solid @baseColor;
+    margin-bottom: 0;
   }
 }
 </style>
