@@ -55,9 +55,10 @@ export default {
       tools.showProgress();
       const response = await service.getUserBaseInfo();
       tools.hideProgress();
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.list = [response.result.resumeInfo[0]];
+          this.list = response.result.resumeInfo.length > 0 ? [response.result.resumeInfo[0]] : [];
           break;
         default:
           tools.toast({
@@ -111,6 +112,23 @@ export default {
             phone: '', // true string手机
             email: '', // true string 邮箱
             ...baseInfo
+          },
+          callback: (ret, err) => {
+            this.getList();
+            tools.openWin({
+              name: 'resumeDetail',
+              url: '../win.html',
+              title: '我的简历',
+              fname: 'resumeDetail_f',
+              furl: './userCenter/resumeDetail.html',
+              hasLeft: 1,
+              data: {
+                nameSpace: 'resumeDetail',
+                from: 'userBaseInfo',
+                id: ret.value,
+                type: 'edit'
+              }
+            });
           }
         }
       });
