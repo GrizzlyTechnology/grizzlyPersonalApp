@@ -57,10 +57,11 @@ import adapter from 'util/adapter';
 export default {
   data () {
     return {
+      id: window.api ? window.api.pageParam.id : null,
+      list: []
       // msg: '',
       // isShow: false,
       // isEdit: false,
-      id: window.api ? window.api.pageParam.id : null,
       // form: { ...defaultForm },
       // labelRules: [
       //   { validate: val => !!val, message: '必须填写技能名称' },
@@ -79,33 +80,32 @@ export default {
       //     message: '技能名称已存在'
       //   }
       // ],
-      // list: []
-      list: [{
-        id: 0,
-        uid: 0,
-        skillname: '技能名1',
-        proficiency: 1
-      }, {
-        id: 1,
-        uid: 0,
-        skillname: '技能名2',
-        proficiency: 2
-      }, {
-        id: 2,
-        uid: 0,
-        skillname: '技能名3',
-        proficiency: 3
-      }, {
-        id: 3,
-        uid: 0,
-        skillname: '技能名4',
-        proficiency: 4
-      }, {
-        id: 4,
-        uid: 0,
-        skillname: '技能名5',
-        proficiency: 5
-      }].map(r => adapter.skillAdapter(r))
+      // list: [{
+      //   id: 0,
+      //   uid: 0,
+      //   skillname: '技能名1',
+      //   proficiency: 1
+      // }, {
+      //   id: 1,
+      //   uid: 0,
+      //   skillname: '技能名2',
+      //   proficiency: 2
+      // }, {
+      //   id: 2,
+      //   uid: 0,
+      //   skillname: '技能名3',
+      //   proficiency: 3
+      // }, {
+      //   id: 3,
+      //   uid: 0,
+      //   skillname: '技能名4',
+      //   proficiency: 4
+      // }, {
+      //   id: 4,
+      //   uid: 0,
+      //   skillname: '技能名5',
+      //   proficiency: 5
+      // }].map(r => adapter.skillAdapter(r))
     };
   },
   components: {
