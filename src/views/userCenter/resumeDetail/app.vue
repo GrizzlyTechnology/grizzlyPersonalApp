@@ -307,12 +307,12 @@ export default {
         resumeId: this.id
       });
       tools.hideProgress();
-      // console.log(JSON.stringify(response));
+      console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.education = response.result.educationExpInfo.map(row =>
+          this.education = response.result.educationExpInfo ? response.result.educationExpInfo.map(row =>
             adapter.educationAdapter(row)
-          );
+          ) : [];
           break;
         default:
           tools.toast({
@@ -331,9 +331,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.internship = response.result.internshipExpInfo.map(row =>
+          this.internship = response.result.internshipExpInfo ? response.result.internshipExpInfo.map(row =>
             adapter.internshipAdapter(row)
-          );
+          ) : [];
           break;
         default:
           tools.toast({
@@ -353,9 +353,9 @@ export default {
       // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.project = response.result.projectExpInfo.map(row =>
+          this.project = response.result.projectExpInfo ? response.result.projectExpInfo.map(row =>
             adapter.projectAdapter(row)
-          );
+          ) : [];
           break;
         default:
           tools.toast({
@@ -374,9 +374,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.job = response.result.jobExpInfo.map(row =>
+          this.job = response.result.jobExpInfo ? response.result.jobExpInfo.map(row =>
             adapter.jobAdapter(row)
-          );
+          ) : [];
           break;
         default:
           tools.toast({
@@ -395,9 +395,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.skills = response.result.skillsInfo.map(row =>
+          this.skills = response.result.skillsInfo ? response.result.skillsInfo.map(row =>
             adapter.skillAdapter(row)
-          );
+          ) : [];
           break;
         default:
           tools.toast({
@@ -601,11 +601,11 @@ export default {
           default:
             // this.getAll();
             this.getUserBaseInfo();
-            // this.getEducation();
-            // this.getInternship();
-            // this.getProject();
-            // this.getJob();
-            // this.getSkill();
+            this.getEducation();
+            this.getInternship();
+            this.getProject();
+            this.getJob();
+            this.getSkill();
             break;
         }
       }
