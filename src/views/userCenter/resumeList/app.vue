@@ -63,7 +63,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '简历列表n获取失败'
+            message: '简历列表获取失败'
           });
           break;
       }
