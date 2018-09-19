@@ -302,11 +302,11 @@ export default {
 
     async getEducation () {
       // console.log('resumeId:' + this.id);
-      tools.showProgress();
+      // tools.showProgress();
       const response = await service.getUserEducation({
         resumeId: this.id
       });
-      tools.hideProgress();
+      // tools.hideProgress();
       console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
@@ -324,11 +324,11 @@ export default {
     },
 
     async getInternship () {
-      tools.showProgress();
+      // tools.showProgress();
       const response = await service.getUserInternship({
         resumeId: this.id
       });
-      tools.hideProgress();
+      // tools.hideProgress();
       switch (response.code) {
         case 0:
           this.internship = response.result.internshipExpInfo ? response.result.internshipExpInfo.map(row =>
@@ -345,11 +345,11 @@ export default {
     },
 
     async getProject () {
-      tools.showProgress();
+      // tools.showProgress();
       const response = await service.getUserProject({
         resumeId: this.id
       });
-      tools.hideProgress();
+      // tools.hideProgress();
       // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
@@ -367,11 +367,11 @@ export default {
     },
 
     async getJob () {
-      tools.showProgress();
+      // tools.showProgress();
       const response = await service.getUserJob({
         resumeId: this.id
       });
-      tools.hideProgress();
+      // tools.hideProgress();
       switch (response.code) {
         case 0:
           this.job = response.result.jobExpInfo ? response.result.jobExpInfo.map(row =>
@@ -388,11 +388,11 @@ export default {
     },
 
     async getSkill () {
-      tools.showProgress();
+      // tools.showProgress();
       const response = await service.getUserSkill({
         resumeId: this.id
       });
-      tools.hideProgress();
+      // tools.hideProgress();
       switch (response.code) {
         case 0:
           this.skills = response.result.skillsInfo ? response.result.skillsInfo.map(row =>
