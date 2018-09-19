@@ -88,7 +88,15 @@
       </Navbar>
       <TabContainer v-model="tabActive" swipeable>
         <TabContainerItem id="tabContainer0">
-          okooko
+         <div>okooko</div>
+         <div>okooko</div>
+         <div>okooko</div>
+         <div>okooko</div>
+         <div>okooko</div>
+         <div>okooko</div>
+         <div>okooko</div>
+         <div>okooko</div>
+         <div>okooko</div>
         </TabContainerItem>
         <TabContainerItem id="tabContainer1">
           <Cell v-for="row in opus" :key="row.id" class="opus">
