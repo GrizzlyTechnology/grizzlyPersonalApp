@@ -183,10 +183,10 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          tools.toast({
-            position: 'top',
-            message: '期望工作编辑成功'
-          });
+          // tools.toast({
+          //   position: 'top',
+          //   message: '期望工作编辑成功'
+          // });
           tools.closeWin();
           break;
         default:
