@@ -86,20 +86,23 @@
         <TabItem id="tabContainer0">作品图片</TabItem>
         <TabItem id="tabContainer1">在线作品</TabItem>
       </Navbar>
-      <TabContainer v-model="tabActive" swipeable>
+      <TabContainer v-model="tabActive">
         <TabContainerItem id="tabContainer0">
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
-         <div>okooko</div>
+          <div v-if="opusPic.length===0" class="infoNotice">
+            暂无作品图片
+          </div>
+          <div class="picList">
+            <div class="picCon" v-for="row in opusPic" :key="row.id" >
+              <div class="con" :style="{backgroundImage:'url('+row.url+')'}"/>
+              <div class="picTitle">{{row.title}}</div>
+            </div>
+          </div>
         </TabContainerItem>
         <TabContainerItem id="tabContainer1">
-          <Cell v-for="row in opus" :key="row.id" class="opus">
+          <div v-if="opusOnline.length===0" class="infoNotice">
+            暂无在线作品
+          </div>
+          <Cell v-for="row in opusOnline" :key="row.id" class="opus">
             <div @click="openWebPage(row)" class="opusRow">
               <span class="mint-cell-text">{{row.title}}</span>
               <span class="mint-cell-label">{{row.url}}</span>
@@ -165,14 +168,62 @@ export default {
         {
           id: 0,
           uid: 0,
-          title: '作品名',
-          url: 'www.baidu.com'
+          title: '图片作品',
+          type: 0,
+          url:
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
         },
         {
           id: 1,
           uid: 0,
-          title: '作品名',
-          url: 'www.baidu.com'
+          type: 1,
+          title: '线上作品',
+          url: 'https://www.baidu.com'
+        },
+        {
+          id: 2,
+          uid: 0,
+          title: '图片作品',
+          type: 0,
+          url:
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
+        },
+        {
+          id: 3,
+          uid: 0,
+          type: 1,
+          title: '线上作品',
+          url: 'https://www.baidu.com'
+        },
+        {
+          id: 4,
+          uid: 0,
+          title: '图片作品',
+          type: 0,
+          url:
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
+        },
+        {
+          id: 5,
+          uid: 0,
+          type: 1,
+          title: '线上作品',
+          url: 'https://www.baidu.com'
+        },
+        {
+          id: 6,
+          uid: 0,
+          title: '图片作品',
+          type: 0,
+          url:
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
+        },
+        {
+          id: 7,
+          uid: 0,
+          type: 1,
+          title: '线上作品',
+          url: 'https://www.baidu.com'
         }
       ]
     };
@@ -190,6 +241,20 @@ export default {
     TabItem
   },
   computed: {
+    opusPic () {
+      return this.opus.filter(r => {
+        if (r.type === 0) {
+          return r;
+        }
+      });
+    },
+    opusOnline () {
+      return this.opus.filter(r => {
+        if (r.type === 1) {
+          return r;
+        }
+      });
+    },
     isNotDetail () {
       return this.type === 'creat' || this.type === 'edit';
     },
@@ -227,7 +292,8 @@ export default {
         : '';
     },
     currentStateText () {
-      return this.expectedWork.currentState || this.expectedWork.currentState === 0
+      return this.expectedWork.currentState ||
+        this.expectedWork.currentState === 0
         ? dictMap.currentState[Number(this.expectedWork.currentState)]
         : '';
     },
@@ -315,7 +381,7 @@ export default {
         resumeId: this.id
       });
       // tools.hideProgress();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.education = response.result.educationExpInfo
@@ -423,7 +489,7 @@ export default {
     },
 
     openWebPage (data) {
-      tools.openWebPage('http://www.baidu.com');
+      tools.openWebPage(data.url);
     },
 
     baseInfoEdit () {
@@ -712,5 +778,46 @@ export default {
   top: 0;
   bottom: 0;
   padding: 14px 0 0 10px;
+}
+.infoNotice {
+  overflow: hidden;
+  background-color: #e4f2fb;
+  padding: 20px 15px;
+  text-align: center;
+  color: #a2d4f7;
+}
+.picList{
+  font-size: 0;
+  margin:-5px;
+}
+.picCon {
+  width: 50%;
+  padding-top: 50%;
+  display: inline-block;
+  position: relative;
+  .con{
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #eee;
+  }
+  .picTitle{
+    position: absolute;
+    z-index: 1;
+    color:#fff;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    height: 30px;
+    background-color: rgba(0,0,0,0.5);
+    font-size: 14px;
+    padding-left: 5px;
+    line-height: 30px;
+  }
 }
 </style>
