@@ -650,11 +650,11 @@ export default {
 
     opusEdit () {
       tools.openWin({
-        name: 'userSkills',
+        name: 'userOpus',
         url: '../win.html',
-        title: '技能评价管理',
-        fname: 'userSkills_f',
-        furl: './userCenter/userSkills.html',
+        title: '作品展示管理',
+        fname: 'userOpus_f',
+        furl: './userCenter/userOpus.html',
         hasLeft: 1,
         LCB: () => {
           this.getUserBaseInfo();
@@ -686,6 +686,7 @@ export default {
             this.getProject();
             this.getJob();
             this.getSkill();
+            this.getOpus();
             break;
         }
       }

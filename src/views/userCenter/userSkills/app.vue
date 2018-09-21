@@ -132,7 +132,7 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.skills = response.result.skillsInfo ? response.result.skillsInfo.map(row =>
+          this.list = response.result.skillsInfo ? response.result.skillsInfo.map(row =>
             adapter.skillAdapter(row)
           ) : [];
           break;
