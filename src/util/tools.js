@@ -640,10 +640,9 @@ u.openWin = function (params) {
       op.pageParam.data = data;
     }
 
-
     setTimeout(function () {
       window.api.openWin(op);
-    }, 350)
+    }, 100);
   } else if (furl) {
     window.location.href = furl.replace('./', '/');
   }
@@ -766,7 +765,7 @@ u.openWebPage = function (url) {
       default:
         break;
     }
-  }else{
+  } else {
     window.open(url);
   }
 }

@@ -657,7 +657,7 @@ export default {
         furl: './userCenter/userOpus.html',
         hasLeft: 1,
         LCB: () => {
-          this.getUserBaseInfo();
+          this.getOpus();
         },
         data: {
           nameSpace: 'userSkills',

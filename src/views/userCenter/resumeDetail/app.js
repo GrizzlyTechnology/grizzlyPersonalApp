@@ -5,9 +5,6 @@ import 'muse-ui/lib/styles/base.less';
 import 'assets/css/global.less';
 import 'assets/fonts/iconfont.css';
 // import vueTap from 'v-tap';
-import { Lazyload } from 'mint-ui';
-// Vue.use(vueTap);
-Vue.use(Lazyload);
 
 if (process.env === 'production') {
   window.apiready = function () {
