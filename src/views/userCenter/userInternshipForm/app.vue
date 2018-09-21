@@ -9,8 +9,8 @@
           <FormItem label="岗位" prop="post" :rules="postRules">
             <TextField v-model="form.post"></TextField>
           </FormItem>
-          <FormItem label="在职时间" prop="starTime" :rules="workingTimeRules">
-            <DateInput class="dateInput" type="month" :value="starTimeText" :max-date="new Date()" @change="changeStarTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
+          <FormItem label="在职时间" prop="startTime" :rules="workingTimeRules">
+            <DateInput class="dateInput" type="month" :value="startTimeText" :max-date="new Date()" @change="changeStartTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
             <span class="joiner">至</span>
             <DateInput class="dateInput" type="month" :value="endTimeText" :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
@@ -48,20 +48,20 @@ export default {
       form: {
         companyName: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.companyName : '',
         endTime: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.endTime : Date.now().valueOf(),
-        starTime: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.starTime : Date.now().valueOf(),
+        startTime: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.startTime : Date.now().valueOf(),
         jobContent: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.jobContent : '',
         post: window.api && window.api.pageParam.internship ? window.api.pageParam.internship.post : ''
       },
       companyNameRules: [{ validate: val => !!val, message: '必须填写公司名称' }],
       postRules: [{ validate: val => val, message: '必须填写岗位' }],
       workingTimeRules: [
-        { validate: val => this.form.starTime <= this.form.endTime, message: '开始时间不能在结束时间之后' }
+        { validate: val => this.form.startTime <= this.form.endTime, message: '开始时间不能在结束时间之后' }
       ]
     };
   },
   computed: {
-    starTimeText () {
-      return new Date(this.form.starTime);
+    startTimeText () {
+      return new Date(this.form.startTime);
     },
     endTimeText () {
       return new Date(this.form.endTime);
@@ -121,8 +121,8 @@ export default {
           break;
       }
     },
-    changeStarTime (date) {
-      this.form.starTime = date.valueOf();
+    changeStartTime (date) {
+      this.form.startTime = date.valueOf();
     },
     changeEndTime (date) {
       this.form.endTime = date.valueOf();

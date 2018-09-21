@@ -354,5 +354,27 @@ export default {
       params,
       method: 'get'
     });
+  },
+  createUserSkill (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Skills/create',
+      params
+    });
+  },
+  updateUserSkill (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Skills/update',
+      params
+    });
+  },
+  getUserSkill (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Skills/skillsBy',
+      params,
+      method: 'get'
+    });
   }
 };
