@@ -1,20 +1,52 @@
 <template>
   <div class="content">
-    <div class="bodyer">
-      <Navbar v-model="tabActive" class="tabHeader">
-        <TabItem id="tabContainer0">作品图片</TabItem>
-        <TabItem id="tabContainer1">在线作品</TabItem>
-      </Navbar>
+    <Navbar v-model="tabActive" class="tabHeader">
+      <TabItem id="tabContainer0">作品图片</TabItem>
+      <TabItem id="tabContainer1">在线作品</TabItem>
+    </Navbar>
+    <div class="bodyer" id="bodyer">
+      <CellSwipe v-if="tabActive==='tabContainer0'" v-for="row in opusPic" :key="row.id" class="opus" :right="[
+          {
+            content: '删除',
+            style: { background: '#e7585a', color: '#fff' },
+            handler: () => {del(row)}
+          }
+        ]">
+        <div @click="edit(row)" class="opusRow opusPicRow">
+          <img v-lazy.bodyer="row.url" class="pic"/>
+          <span class="mint-cell-text">{{row.title}}</span>
+        </div>
+        <i class="mu-icon icon-right isLink" />
+      </CellSwipe>
+      <CellSwipe v-if="tabActive==='tabContainer1'" v-for="row in opusOnline" :key="row.id" class="opus" :right="[
+          {
+            content: '删除',
+            style: { background: '#e7585a', color: '#fff' },
+            handler: () => {del(row)}
+          }
+        ]">
+        <div @click="edit(row)" class="opusRow">
+          <span class="mint-cell-text">{{row.title}}</span>
+          <span class="mint-cell-label">{{row.url}}</span>
+        </div>
+        <i class="mu-icon icon-right isLink" />
+      </CellSwipe>
     </div>
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">添加实习经历</Button>
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">{{tabActive==='tabContainer0'?'创建作品图片':'创建在线作品'}}</Button>
     </div>
   </div>
 </template>
 
 <script>
 // import _ from 'lodash';
-import { CellSwipe, TabContainer, TabContainerItem, Navbar, TabItem } from 'mint-ui';
+import {
+  CellSwipe,
+  TabContainer,
+  TabContainerItem,
+  Navbar,
+  TabItem
+} from 'mint-ui';
 import { Button } from 'muse-ui';
 import tools from 'util/tools';
 import service from 'service';
@@ -101,14 +133,14 @@ export default {
   },
   computed: {
     opusPic () {
-      return this.opus.filter(r => {
+      return this.list.filter(r => {
         if (r.type === 0) {
           return r;
         }
       });
     },
     opusOnline () {
-      return this.opus.filter(r => {
+      return this.list.filter(r => {
         if (r.type === 1) {
           return r;
         }
@@ -143,9 +175,11 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.list = response.result.internshipExpInfo ? response.result.internshipExpInfo.map(row =>
-            adapter.internshipAdapter(row)
-          ) : [];
+          this.list = response.result.internshipExpInfo
+            ? response.result.internshipExpInfo.map(row =>
+              adapter.internshipAdapter(row)
+            )
+            : [];
           break;
         default:
           tools.toast({
@@ -157,11 +191,14 @@ export default {
     },
     del (data) {
       this.unLink(
-        this.list.filter(r => {
-          if (r.id !== data.id) {
-            return r;
-          }
-        }).map(r => r.id).join(',')
+        this.list
+          .filter(r => {
+            if (r.id !== data.id) {
+              return r;
+            }
+          })
+          .map(r => r.id)
+          .join(',')
       );
     },
     edit (data) {
@@ -183,15 +220,31 @@ export default {
       });
     },
     create () {
+      const base =
+        this.tabActive === 'tabContainer0'
+          ? {
+            name: 'userPicOpisForm',
+            url: '../win.html',
+            title: '创建作品图片',
+            fname: 'userPicOpisForm_f',
+            furl: './userCenter/userPicOpisForm.html'
+          }
+          : {
+            name: 'userOnlineOpisForm',
+            url: '../win.html',
+            title: '创建在线作品',
+            fname: 'userOnlineOpisForm_f',
+            furl: './userCenter/userOnlineOpisForm.html'
+          };
+
       tools.openWin({
-        name: 'userInternshipForm',
-        url: '../win.html',
-        title: '创建实习经历',
-        fname: 'userInternshipForm_f',
-        furl: './userCenter/userInternshipForm.html',
+        ...base,
         hasLeft: 1,
         data: {
-          nameSpace: 'userInternshipForm',
+          nameSpace:
+            this.tabActive === 'tabContainer0'
+              ? 'userPicOpisForm'
+              : 'userOnlineOpisForm',
           resumeId: this.id,
           callback: (ret, err) => {
             this.getList();
@@ -201,27 +254,12 @@ export default {
     }
   },
   mounted () {
-    this.getList();
+    // this.getList();
   }
 };
 </script>
 <style lang="less">
 @import url("../../../assets/css/base.less");
-.rowList {
-  .mint-cell-wrapper {
-    background-image: none;
-  }
-  .mint-cell-title {
-    display: none;
-  }
-  .mint-cell-value {
-    display: block;
-    width: 100%;
-  }
-  .mint-cell-swipe-button{
-    line-height: 56px;
-  }
-}
 .tabHeader {
   .mint-tab-item-label {
     color: #666;
@@ -240,6 +278,19 @@ export default {
     margin-bottom: 0;
   }
 }
+.opus {
+  .mint-cell-wrapper {
+    background-image: none;
+    border-bottom: 1px solid #eee;
+    height: 56px;
+  }
+  .mint-cell-swipe-button {
+    line-height: 56px;
+  }
+  &:active {
+    background-color: #eee;
+  }
+}
 </style>
 
 <style lang="less" scoped>
@@ -254,31 +305,35 @@ export default {
   flex: 1;
   overflow: auto;
 }
+.footer {
+  height: 44px;
+}
 .isLink {
   position: absolute;
   top: 19px;
+  font-size: 16px;
   right: 15px;
-  font-size: 16px;
 }
-.rowList {
-  border-bottom: 1px @grayLine solid;
-  font-size: 16px;
-  background-color: #fff;
-  height: 56px;
-  &:active {
-    background-color: #eee;
-  }
-  .title {
+.opusRow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 14px 0 0 10px;
+  .mint-cell-text {
     color: #333;
-    padding-top: 9px;
-    .ell();
-  }
-  .label {
-    font-size: 14px;
-    padding-top: 5px;
   }
 }
-.footer {
-  height: 44px;
+.pic {
+  position: absolute;
+  height: 56px;
+  width: 56px;
+  left: 0;
+  top: 0;
+}
+.opusPicRow {
+  padding-left: 65px;
+  padding-top: 18px;
 }
 </style>
