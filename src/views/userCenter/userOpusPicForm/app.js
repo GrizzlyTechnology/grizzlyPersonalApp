@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './app.vue';
 import 'muse-ui/lib/styles/base.less';
-// import 'muse-ui/lib/styles/theme.less';
+import 'element-ui/lib/theme-chalk/index.css';
 import 'assets/css/global.less';
 import 'assets/fonts/iconfont.css';
 

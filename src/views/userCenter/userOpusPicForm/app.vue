@@ -8,6 +8,9 @@
           </FormItem>
           <FormItem label="作品地址" prop="url">
             <input type="hidden" v-model="form.url" />
+            <Upload list-type="picture-card" action="https://jsonplaceholder.typicode.com/posts/">
+              <i class="el-icon-upload"></i>
+            </Upload>
           </FormItem>
         </Form>
       </div>
@@ -22,6 +25,7 @@
 import service from 'service';
 // import moment from 'moment';
 import { Button, TextField } from 'muse-ui';
+import Upload from 'element-ui/lib/upload';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 // import regexps from 'util/regexps';
 import tools from 'util/tools';
@@ -50,7 +54,8 @@ export default {
     Button,
     Form,
     FormItem,
-    TextField
+    TextField,
+    Upload
   },
   methods: {
     async create () {
