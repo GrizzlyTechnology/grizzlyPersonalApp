@@ -86,7 +86,7 @@
         <TabItem id="tabContainer0">作品图片</TabItem>
         <TabItem id="tabContainer1">在线作品</TabItem>
       </Navbar>
-      <TabContainer v-model="tabActive">
+      <TabContainer v-model="tabActive" :swipeable="true">
         <TabContainerItem id="tabContainer0">
           <div v-if="opusPic.length===0" class="infoNotice">
             暂无作品图片

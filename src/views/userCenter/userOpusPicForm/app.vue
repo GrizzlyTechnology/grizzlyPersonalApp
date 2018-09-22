@@ -6,10 +6,10 @@
           <FormItem label="作品名称" prop="title" :rules="titleRules">
             <TextField v-model="form.title"></TextField>
           </FormItem>
-          <FormItem label="作品地址" prop="url">
+          <FormItem label="作品图片" prop="url" :rules="urlRules">
             <input type="hidden" v-model="form.url" />
-            <Upload list-type="picture-card" action="https://jsonplaceholder.typicode.com/posts/">
-              <i class="el-icon-upload"></i>
+            <Upload accept="image/*" class="uploader" action="https://jsonplaceholder.typicode.com/posts/" list-type="picture-card" :multiple="false" :limit="1" :file-list="fileList" >
+            <i class="el-icon-plus"></i>
             </Upload>
           </FormItem>
         </Form>
@@ -24,7 +24,7 @@
 <script>
 import service from 'service';
 // import moment from 'moment';
-import { Button, TextField } from 'muse-ui';
+import { Button, TextField, Icon } from 'muse-ui';
 import Upload from 'element-ui/lib/upload';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 // import regexps from 'util/regexps';
@@ -34,6 +34,7 @@ import tools from 'util/tools';
 export default {
   data () {
     return {
+      fileList: [],
       id: window.api ? window.api.pageParam.id : null,
       form: {
         title:
@@ -44,10 +45,10 @@ export default {
           window.api && window.api.pageParam.opus
             ? window.api.pageParam.opus.url
             : '',
-        type: 1
+        type: 0
       },
-      titleRules: [{ validate: val => !!val, message: '必须填写作品名称' }]
-      // urlRules: [{ validate: val => regexps.httpUrl.test(val), message: '请填写正确的作品地址' }]
+      titleRules: [{ validate: val => !!val, message: '必须填写作品名称' }],
+      urlRules: [{ validate: val => !!val, message: '必须上传作品图片' }]
     };
   },
   components: {
@@ -55,7 +56,8 @@ export default {
     Form,
     FormItem,
     TextField,
-    Upload
+    Upload,
+    Icon
   },
   methods: {
     async create () {
@@ -111,6 +113,19 @@ export default {
   mounted () {}
 };
 </script>
+<style lang="less">
+.uploader {
+  height: 148px;
+  width: 148px;
+  overflow: hidden;
+  .el-icon-plus{
+    font-size: 50px;
+    position: relative;
+    top: 15px;
+  }
+}
+</style>
+
 <style lang="less" scoped>
 @import url("../../../assets/css/base.less");
 .content {
@@ -129,7 +144,4 @@ export default {
   width: 20%;
   text-align: center;
 }
-// .startDateTime{
-//   bottom: 50px;
-// }
 </style>
