@@ -6,8 +6,8 @@
           <FormItem label="作品名称" prop="title" :rules="titleRules">
             <TextField v-model="form.title"></TextField>
           </FormItem>
-          <FormItem label="作品地址" prop="url" :rules="urlRules">
-            <TextField v-model="form.url" placeholder="作品地址必须以http或https开头"></TextField>
+          <FormItem label="作品地址" prop="url">
+            <input type="hidden" v-model="form.url" />
           </FormItem>
         </Form>
       </div>
@@ -23,7 +23,7 @@ import service from 'service';
 // import moment from 'moment';
 import { Button, TextField } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
-import regexps from 'util/regexps';
+// import regexps from 'util/regexps';
 import tools from 'util/tools';
 // import dictMap from 'util/dictMap';
 // import dictMap from 'util/dictMap';
@@ -32,12 +32,18 @@ export default {
     return {
       id: window.api ? window.api.pageParam.id : null,
       form: {
-        title: window.api && window.api.pageParam.opus ? window.api.pageParam.opus.title : '',
-        url: window.api && window.api.pageParam.opus ? window.api.pageParam.opus.url : '',
+        title:
+          window.api && window.api.pageParam.opus
+            ? window.api.pageParam.opus.title
+            : '',
+        url:
+          window.api && window.api.pageParam.opus
+            ? window.api.pageParam.opus.url
+            : '',
         type: 1
       },
-      titleRules: [{ validate: val => !!val, message: '必须填写作品名称' }],
-      urlRules: [{ validate: val => regexps.httpUrl.test(val), message: '请填写正确的作品地址' }]
+      titleRules: [{ validate: val => !!val, message: '必须填写作品名称' }]
+      // urlRules: [{ validate: val => regexps.httpUrl.test(val), message: '请填写正确的作品地址' }]
     };
   },
   components: {
@@ -61,7 +67,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '在线作品创建失败，请稍后重试！！'
+            message: '作品图片创建失败，请稍后重试！！'
           });
           break;
       }
@@ -80,7 +86,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '在线作品编辑失败，请稍后重试！！'
+            message: '作品图片编辑失败，请稍后重试！！'
           });
           break;
       }
@@ -111,10 +117,10 @@ export default {
   flex: 1;
   overflow: auto;
 }
-.dateInput{
+.dateInput {
   width: 40%;
 }
-.joiner{
+.joiner {
   width: 20%;
   text-align: center;
 }

@@ -50,7 +50,7 @@ import {
 import { Button } from 'muse-ui';
 import tools from 'util/tools';
 import service from 'service';
-import adapter from 'util/adapter';
+// import adapter from 'util/adapter';
 
 // import AreaSelected from 'components/AreaSelected';
 export default {
@@ -169,22 +169,18 @@ export default {
     },
     async getList () {
       tools.showProgress();
-      const response = await service.getUserInternship({
+      const response = await service.getUserOpus({
         resumeId: this.id
       });
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.list = response.result.internshipExpInfo
-            ? response.result.internshipExpInfo.map(row =>
-              adapter.internshipAdapter(row)
-            )
-            : [];
+          this.list = response.result.opusInfo ? response.result.opusInfo : [];
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '实习经历列表获取失败'
+            message: '作品列表获取失败'
           });
           break;
       }
@@ -200,6 +196,24 @@ export default {
           .map(r => r.id)
           .join(',')
       );
+    },
+    picEdit (data) {
+      tools.openWin({
+        name: 'userOpusPicForm',
+        url: '../win.html',
+        title: '编辑在线作品',
+        fname: 'userOpusPicForm_f',
+        furl: './userCenter/userOpusPicForm.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'userOpusPicForm',
+          id: data.id,
+          opus: data,
+          callback: (ret, err) => {
+            this.getList();
+          }
+        }
+      });
     },
     onlineEdit (data) {
       tools.openWin({
