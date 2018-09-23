@@ -17,6 +17,18 @@
             <TextField readonly v-model="houseHoldText" @click="houseHoldHandle">
             </TextField>
           </FormItem>
+          <FormItem label="现居地" prop="addressText" :rules="addressRules">
+            <TextField readonly v-model="addressText" @click="addressHandle"></TextField>
+          </FormItem>
+          <FormItem label="街道" prop="street" :rules="streetRules">
+            <TextField v-model="form.street"></TextField>
+          </FormItem>
+          <FormItem label="手机号码" prop="phone" :rules="phoneRules">
+            <TextField v-model="form.phone"></TextField>
+          </FormItem>
+          <FormItem label="电子邮箱" prop="email" :rules="emailRules">
+            <TextField v-model="form.email"></TextField>
+          </FormItem>
         </Form>
       </div>
     </div>
