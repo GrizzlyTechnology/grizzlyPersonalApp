@@ -12,7 +12,7 @@
             handler: () => {del(row)}
           }
         ]">
-        <div @click="edit(row)" class="opusRow opusPicRow">
+        <div @click="picEdit(row)" class="opusRow opusPicRow">
           <img v-lazy.bodyer="row.url" class="pic"/>
           <span class="mint-cell-text">{{row.title}}</span>
         </div>
@@ -25,7 +25,7 @@
             handler: () => {del(row)}
           }
         ]">
-        <div @click="edit(row)" class="opusRow">
+        <div @click="onlineEdit(row)" class="opusRow">
           <span class="mint-cell-text">{{row.title}}</span>
           <span class="mint-cell-label">{{row.url}}</span>
         </div>
@@ -50,7 +50,7 @@ import {
 import { Button } from 'muse-ui';
 import tools from 'util/tools';
 import service from 'service';
-import adapter from 'util/adapter';
+// import adapter from 'util/adapter';
 
 // import AreaSelected from 'components/AreaSelected';
 export default {
@@ -151,7 +151,7 @@ export default {
     async unLink (ids) {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
-        internShipExps: ids,
+        opus: ids,
         resumeId: this.id
       });
       tools.hideProgress();
@@ -162,29 +162,25 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '实习经历删除失败'
+            message: '作品删除失败'
           });
           break;
       }
     },
     async getList () {
       tools.showProgress();
-      const response = await service.getUserInternship({
+      const response = await service.getUserOpus({
         resumeId: this.id
       });
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.list = response.result.internshipExpInfo
-            ? response.result.internshipExpInfo.map(row =>
-              adapter.internshipAdapter(row)
-            )
-            : [];
+          this.list = response.result.opusInfo ? response.result.opusInfo : [];
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '实习经历列表获取失败'
+            message: '作品列表获取失败'
           });
           break;
       }
@@ -201,18 +197,36 @@ export default {
           .join(',')
       );
     },
-    edit (data) {
+    picEdit (data) {
       tools.openWin({
-        name: 'userInternshipForm',
+        name: 'userOpusPicForm',
         url: '../win.html',
-        title: '编辑实习经历',
-        fname: 'userInternshipForm_f',
-        furl: './userCenter/userInternshipForm.html',
+        title: '编辑在线作品',
+        fname: 'userOpusPicForm_f',
+        furl: './userCenter/userOpusPicForm.html',
         hasLeft: 1,
         data: {
-          nameSpace: 'userInternshipForm',
+          nameSpace: 'userOpusPicForm',
           id: data.id,
-          internship: data,
+          opus: data,
+          callback: (ret, err) => {
+            this.getList();
+          }
+        }
+      });
+    },
+    onlineEdit (data) {
+      tools.openWin({
+        name: 'userOpusOnlineForm',
+        url: '../win.html',
+        title: '编辑在线作品',
+        fname: 'userOpusOnlineForm_f',
+        furl: './userCenter/userOpusOnlineForm.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'userOpusOnlineForm',
+          id: data.id,
+          opus: data,
           callback: (ret, err) => {
             this.getList();
           }
@@ -223,18 +237,18 @@ export default {
       const base =
         this.tabActive === 'tabContainer0'
           ? {
-            name: 'userPicOpisForm',
+            name: 'userOpusPicForm',
             url: '../win.html',
             title: '创建作品图片',
-            fname: 'userPicOpisForm_f',
-            furl: './userCenter/userPicOpisForm.html'
+            fname: 'userOpusPicForm_f',
+            furl: './userCenter/userOpusPicForm.html'
           }
           : {
-            name: 'userOnlineOpisForm',
+            name: 'userOpusOnlineForm',
             url: '../win.html',
             title: '创建在线作品',
-            fname: 'userOnlineOpisForm_f',
-            furl: './userCenter/userOnlineOpisForm.html'
+            fname: 'userOpusOnlineForm_f',
+            furl: './userCenter/userOpusOnlineForm.html'
           };
 
       tools.openWin({
@@ -243,8 +257,8 @@ export default {
         data: {
           nameSpace:
             this.tabActive === 'tabContainer0'
-              ? 'userPicOpisForm'
-              : 'userOnlineOpisForm',
+              ? 'userOpusPicForm'
+              : 'userOpusOnlineForm',
           resumeId: this.id,
           callback: (ret, err) => {
             this.getList();
@@ -254,7 +268,7 @@ export default {
     }
   },
   mounted () {
-    // this.getList();
+    this.getList();
   }
 };
 </script>

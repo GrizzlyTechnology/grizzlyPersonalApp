@@ -86,14 +86,14 @@
         <TabItem id="tabContainer0">作品图片</TabItem>
         <TabItem id="tabContainer1">在线作品</TabItem>
       </Navbar>
-      <TabContainer v-model="tabActive">
+      <TabContainer v-model="tabActive" :swipeable="true">
         <TabContainerItem id="tabContainer0">
           <div v-if="opusPic.length===0" class="infoNotice">
             暂无作品图片
           </div>
           <div class="picList">
-            <div class="picCon" v-for="row in opusPic" :key="row.id" >
-              <div class="con" :style="{backgroundImage:'url('+row.url+')'}"/>
+            <div class="picCon" v-for="row in opusPic" :key="row.id">
+              <div class="con" :style="{backgroundImage:'url('+row.url+')'}" />
               <div class="picTitle">{{row.title}}</div>
             </div>
           </div>
@@ -487,7 +487,24 @@ export default {
           break;
       }
     },
-
+    async getOpus () {
+      // tools.showProgress();
+      const response = await service.getUserOpus({
+        resumeId: this.id
+      });
+      // tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.opus = response.result.opusInfo ? response.result.opusInfo : [];
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '作品列表获取失败'
+          });
+          break;
+      }
+    },
     openWebPage (data) {
       tools.openWebPage(data.url);
     },
@@ -787,16 +804,16 @@ export default {
   text-align: center;
   color: #a2d4f7;
 }
-.picList{
+.picList {
   font-size: 0;
-  margin:-5px;
+  margin: -5px;
 }
 .picCon {
   width: 50%;
   padding-top: 50%;
   display: inline-block;
   position: relative;
-  .con{
+  .con {
     position: absolute;
     left: 5px;
     top: 5px;
@@ -807,15 +824,15 @@ export default {
     background-repeat: no-repeat;
     background-color: #eee;
   }
-  .picTitle{
+  .picTitle {
     position: absolute;
     z-index: 1;
-    color:#fff;
+    color: #fff;
     bottom: 5px;
     left: 5px;
     right: 5px;
     height: 30px;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     font-size: 14px;
     padding-left: 5px;
     line-height: 30px;

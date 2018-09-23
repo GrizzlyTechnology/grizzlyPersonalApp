@@ -376,5 +376,27 @@ export default {
       params,
       method: 'get'
     });
+  },
+  createUserOpus (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Opus/create',
+      params
+    });
+  },
+  updateUserOpus (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Opus/update',
+      params
+    });
+  },
+  getUserOpus (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/Opus/opusBy',
+      params,
+      method: 'get'
+    });
   }
 };
