@@ -4,14 +4,14 @@
       <div class='flexCon'>
         <span @click="areaHandle" class='araeBox'>
           <i class='iconfont icon-weizhi-blue'></i>{{areaText}}</span>
-        <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
+        <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue"  label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
           <i class='iconfont icon-suosou' @click='submit'></i>
         </AutoComplete>
       </div>
     </div>
     <div class="p15 mt25 bgWhite">
       <SubHeader>猜你要搜</SubHeader>
-      <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.id' @click="chipHandle">{{chip.value}}</Chip>
+      <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.value' @click="chipHandle">{{chip}}</Chip>
     </div>
   </div>
 </template>
@@ -29,32 +29,15 @@ export default {
         area: null
       },
       area: [],
-      defaultResult: [
-        // 'Apple',
-        // 'Banana',
-        // 'Orange',
-        // 'Durian',
-        // 'Lemon',
-        // 'Peach',
-        // 'Cherry',
-        // 'Berry',
-        // 'Core',
-        // 'Fig',
-        // 'Haw',
-        // 'Melon',
-        // 'Plum',
-        // 'Pear',
-        // 'Peanut',
-        // 'Other'
-      ],
+      defaultResult: [],
       labelPosition: 'right',
       chips: [
-        { id: 1, value: '产品经理' },
-        { id: 2, value: '网络科技' },
-        { id: 3, value: '信息科技' },
-        { id: 4, value: '前端工程师' },
-        { id: 5, value: '生物科技' },
-        { id: 6, value: '医药科技' }
+        '产品经理',
+        '网络科技',
+        '信息科技',
+        '前端工程师',
+        '生物科技',
+        '医药科技'
       ]
     };
   },
@@ -92,6 +75,22 @@ export default {
           tools.toast({
             position: 'top',
             message: '搜索失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+
+    // 职位搜索
+    async getAllSearchValue () {
+      const response = await service.getAllPosition(this.form.keyWord);
+      switch (response.code) {
+        case 0:
+          this.defaultResult = response.result.info;
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '搜索失败，请重试'
           });
           break;
       }
