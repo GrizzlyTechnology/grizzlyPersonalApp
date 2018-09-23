@@ -3,20 +3,11 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form">
-          <FormItem label="自我描述" prop="introduction" :rules="introductionRules">
-            <TextField
-              v-model="form.introduction"
-              multi-line
-              :max-length="255"
-              :rows="10"
-              :rows-max="10"
-            />
-          </FormItem>
         </Form>
       </div>
     </div>
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">保存</Button>
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">{{id?'保存':'下一步'}}</Button>
     </div>
   </div>
 </template>
@@ -28,7 +19,7 @@ import { Button, TextField, Radio, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
 import tools from 'util/tools';
-alert(3);
+alert(8);
 // import dictMap from 'util/dictMap';
 export default {
   data () {
@@ -95,44 +86,106 @@ export default {
     Button,
     Form,
     FormItem,
-    TextField
+    TextField,
+    Radio,
+    DateInput
   },
   methods: {
+    async create () {
+      tools.showProgress();
+      const response = await service.createUserBaesInfo(this.form);
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          tools.closeWin(response.result.resumeInfo.id);
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '基本信息创建失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
     async edit () {
       tools.showProgress();
+      // console.log(JSON.stringify({
+      //   ...this.form,
+      //   resumeId: this.id
+      // }));
       const response = await service.updateUserBaesInfo({
-        resumeId: this.id,
-        introduction: this.form.introduction
+        ...this.form,
+        resumeId: this.id
       });
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          tools.toast({
-            position: 'top',
-            message: '自我描述编辑成功'
-          });
+          // tools.toast({
+          //   position: 'top',
+          //   message: '基本信息编辑成功'
+          // });
           tools.closeWin();
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '自我描述编辑失败，请稍后重试！！'
+            message: '基本信息编辑失败，请稍后重试！！'
           });
           break;
       }
     },
-
+    changeBirthday (date) {
+      this.form.birthday = date.valueOf();
+    },
+    houseHoldHandle () {
+      tools.openWin({
+        name: 'areaSelector',
+        url: '../win.html',
+        title: '选择户籍',
+        fname: 'areaSelector_f',
+        furl: './common/areaSelector.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'areaSelector',
+          area: this.form.houseHold,
+          level: 2,
+          callback: (ret, err) => {
+            this.form.houseHold = ret.value;
+          }
+        }
+      });
+    },
+    addressHandle () {
+      tools.openWin({
+        name: 'areaSelector',
+        url: '../win.html',
+        title: '选择现居地',
+        fname: 'areaSelector_f',
+        furl: './common/areaSelector.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'areaSelector',
+          area: this.form.address,
+          level: 3,
+          callback: (ret, err) => {
+            this.form.address = ret.value;
+          }
+        }
+      });
+    },
     submit () {
       this.$refs.form.validate().then((result) => {
         if (result === true) {
-          this.edit();
+          if (this.id) {
+            this.edit();
+          } else {
+            this.create();
+          }
         }
       });
     }
   },
-  mounted () {
-
-  }
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>
