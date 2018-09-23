@@ -515,7 +515,7 @@ export default {
         url: '../win.html',
         title: '编辑基本信息',
         fname: 'userBaseinfo_f',
-        furl: './userCenter/userBaseinfo.html',
+        furl: './userCenter/userBaseInfo.html',
         hasLeft: 1,
         data: {
           nameSpace: 'userBaseinfo',
@@ -527,7 +527,6 @@ export default {
         }
       });
     },
-
     introductionEdit () {
       tools.openWin({
         name: 'userIntroduction',
