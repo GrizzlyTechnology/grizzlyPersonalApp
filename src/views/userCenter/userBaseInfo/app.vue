@@ -52,7 +52,7 @@ export default {
       id: window.api.pageParam.id || null,
       form: {
         name: window.api.pageParam.baseInfo.name || '', // true string 真实姓名
-        sex: window.api.pageParam.baseInfo.sex !== null ? window.api.pageParam.baseInfo.sex : 1, // true string 性别
+        sex: window.api.pageParam.baseInfo.sex ? window.api.pageParam.baseInfo.sex : 1, // true string 性别
         birthday:
           window.api.pageParam.baseInfo.birthday || Date.now().valueOf(), // true string生日
         houseHold: window.api.pageParam.baseInfo.houseHold || [], // true string 籍贯
@@ -125,20 +125,21 @@ export default {
           //   position: 'top',
           //   message: '基本信息创建成功'
           // });
-          tools.openWin({
-            name: 'resumeDetail',
-            url: '../win.html',
-            title: '我的简历',
-            fname: 'resumeDetail_f',
-            furl: './userCenter/resumeDetail.html',
-            hasLeft: 1,
-            data: {
-              nameSpace: 'resumeDetail',
-              from: 'userBaseInfo',
-              id: response.result.resumeInfo.id,
-              type: 'edit'
-            }
-          });
+          // tools.openWin({
+          //   name: 'resumeDetail',
+          //   url: '../win.html',
+          //   title: '我的简历',
+          //   fname: 'resumeDetail_f',
+          //   furl: './userCenter/resumeDetail.html',
+          //   hasLeft: 1,
+          //   data: {
+          //     nameSpace: 'resumeDetail',
+          //     from: 'userBaseInfo',
+          //     id: response.result.resumeInfo.id,
+          //     type: 'edit'
+          //   }
+          // });
+          tools.closeWin(response.result.resumeInfo.id);
           break;
         default:
           tools.toast({

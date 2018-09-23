@@ -16,7 +16,7 @@ import dictMap from 'util/dictMap';
 export default {
   computed: {
     level () {
-      return dictMap.skillLevel[parseInt((this.value === 0 ? 1 : this.value) / 20)];
+      return dictMap.skillLevel[(this.value / 20) - 1];
     }
   },
   props: {

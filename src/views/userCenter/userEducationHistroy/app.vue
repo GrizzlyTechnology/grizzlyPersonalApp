@@ -75,9 +75,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.list = response.result.educationExpInfo.map(row =>
+          this.list = response.result.educationExpInfo ? response.result.educationExpInfo.map(row =>
             adapter.educationAdapter(row)
-          );
+          ) : [];
           break;
         default:
           tools.toast({
