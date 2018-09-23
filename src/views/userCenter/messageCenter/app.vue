@@ -68,40 +68,40 @@
 </template>
 
 <script>
-import { Tabs } from "muse-ui";
-import { Tab } from "muse-ui/lib/Tabs";
+import { Tabs } from 'muse-ui';
+import { Tab } from 'muse-ui/lib/Tabs';
 import {
   List,
   ListItem,
   ListItemContent,
   ListItemTitle,
   ListItemSubTitle
-} from "muse-ui/lib/List";
+} from 'muse-ui/lib/List';
 
 export default {
-  data() {
+  data () {
     return {
       active2: 0,
       news: [
         {
           id: 1,
-          date: "2018年5月10日",
-          class: "系统消息",
-          imgSrc: "../../../assets/img/gz.jpg",
+          date: '2018年5月10日',
+          class: '系统消息',
+          imgSrc: '../../../assets/img/gz.jpg',
           con:
-            "恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！"
+            '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
         },
         {
           id: 2,
-          date: "2018年11月10日",
-          class: "系统消息",
-          con: "gjghjghj33453453453453453454！"
+          date: '2018年11月10日',
+          class: '系统消息',
+          con: 'gjghjghj33453453453453453454！'
         },
         {
           id: 3,
-          date: "2018年3月10日",
-          class: "系统消息",
-          con: "sdfgsdfsdfsdfsdf！"
+          date: '2018年3月10日',
+          class: '系统消息',
+          con: 'sdfgsdfsdfsdfsdf！'
         }
       ]
     };
