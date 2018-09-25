@@ -1,10 +1,10 @@
 <template>
 <div class="dhx-imagesPopup" v-if="isShow">
   <Popup v-model="isShow" pop-transition="popup-fade" :closeOnClickModal="false">
-    <Swipe :auto="0" :show-indicators="false" :continuous="false" :showIndicators="false" :prevent="true" :stopPropagation="true">
-      <SwipeItem>1</SwipeItem>
-      <SwipeItem>2</SwipeItem>
-      <SwipeItem>3</SwipeItem>
+    <Swipe :auto="0" :defaultIndex="index" :show-indicators="false" :continuous="false" :showIndicators="false" :prevent="true" :stopPropagation="true">
+      <SwipeItem v-for="(url,index) in urlList" :key="index">
+        <div class="imgCon" :style="{backgroundImage:'url('+url+')'}"></div>
+      </SwipeItem>
     </Swipe>
   </Popup>
     <Icon value=":el-icon-close" color="#fff" class="close" :size="24" @click="cancel"/>
@@ -28,6 +28,10 @@ export default {
       default: function () {
         return [];
       }
+    },
+    index: {
+      type: Number,
+      default: 0
     },
     description: {
       type: String,
@@ -85,5 +89,15 @@ export default {
   z-index: 3000;
   top: 10px;
   right: 10px;
+}
+.imgCon{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 </style>

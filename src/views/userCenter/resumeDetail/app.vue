@@ -122,8 +122,8 @@
       <div :key="row.id" v-for="row in honor">
         <div class="listTitle">{{row.title}}</div>
         <div class="picList">
-          <div class="picCon" v-for="file in row.files"  :key="file.url">
-            <div class="con" @click="imagesPopupOpen" :style="{backgroundImage:'url('+file.url+')'}" />
+          <div class="picCon" v-for="(file,index) in row.files"  :key="file.url">
+            <div class="con" @click="imagesPopupOpen(row.files,index)" :style="{backgroundImage:'url('+file.url+')'}" />
           </div>
         </div>
       </div>
@@ -131,7 +131,7 @@
         暂无作品展示
       </div>
     </Panel>
-    <ImagesPopup ref="imagesPopup"></ImagesPopup>
+    <ImagesPopup ref="imagesPopup" :urlList="urlList" :index="urlListIndex"></ImagesPopup>
   </div>
 </template>
 
@@ -154,6 +154,8 @@ import ImagesPopup from 'components/ImagesPopup';
 export default {
   data () {
     return {
+      urlList: [],
+      urlListIndex: 0,
       tabActive: 'tabContainer0',
       type: window.api ? window.api.pageParam.type : 'detail',
       id: window.api ? window.api.pageParam.id : null,
@@ -249,13 +251,13 @@ export default {
         {
           id: 0,
           uid: 0,
-          title: '图片作品',
+          title: '大灰熊大灰熊大灰熊大灰熊',
           files: [{
-            url: 'https://timgsa.baidu.com/timg?r=1&image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
-            path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
+            url: 'http://photocdn.sohu.com/20060801/Img244557955.jpg',
+            path: 'http://photocdn.sohu.com/20060801/Img244557955.jpg'
           }, {
-            url: 'https://timgsa.baidu.com/timg?r=2&image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
-            path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
+            url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg',
+            path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg'
           }, {
             url: 'https://timgsa.baidu.com/timg?r=3&image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
             path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
@@ -719,7 +721,9 @@ export default {
         }
       });
     },
-    imagesPopupOpen () {
+    imagesPopupOpen (list, index) {
+      this.urlList = list.map(r => r.url);
+      this.urlListIndex = index;
       this.$refs.imagesPopup.open();
     }
   },
