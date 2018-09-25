@@ -117,9 +117,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          window.api.sendEvent({
-            name: 'event'
-          });
+          // window.api.sendEvent({
+          //   name: 'event'
+          // });
           window.api.closeToWin({
             name: 'root'
           });

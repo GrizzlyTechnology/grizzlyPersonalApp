@@ -52,14 +52,18 @@ export default {
       id: window.api.pageParam.id || null,
       form: {
         name: window.api.pageParam.baseInfo.name || '', // true string 真实姓名
-        sex: window.api.pageParam.baseInfo.sex ? window.api.pageParam.baseInfo.sex : 1, // true string 性别
+        sex: window.api.pageParam.baseInfo.sex || window.api.pageParam.baseInfo.sex === 0
+          ? window.api.pageParam.baseInfo.sex
+          : 1, // true string 性别
         birthday:
           window.api.pageParam.baseInfo.birthday || Date.now().valueOf(), // true string生日
         houseHold: window.api.pageParam.baseInfo.houseHold || [], // true string 籍贯
         address: window.api.pageParam.baseInfo.address || [],
         street: window.api.pageParam.baseInfo.street || '',
         phone: window.api.pageParam.baseInfo.phone || '', // true string手机
-        email: window.api.pageParam.baseInfo.email || '' // true string 邮箱
+        email: window.api.pageParam.baseInfo.email || '', // true string 邮箱
+
+        introduction: window.api.pageParam.introduction
       },
       nameRules: [{ validate: val => !!val, message: '必须填写姓名' }],
       birthdayRules: [{ validate: val => val, message: '必须填写出生年月' }],
@@ -121,24 +125,6 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          // tools.toast({
-          //   position: 'top',
-          //   message: '基本信息创建成功'
-          // });
-          // tools.openWin({
-          //   name: 'resumeDetail',
-          //   url: '../win.html',
-          //   title: '我的简历',
-          //   fname: 'resumeDetail_f',
-          //   furl: './userCenter/resumeDetail.html',
-          //   hasLeft: 1,
-          //   data: {
-          //     nameSpace: 'resumeDetail',
-          //     from: 'userBaseInfo',
-          //     id: response.result.resumeInfo.id,
-          //     type: 'edit'
-          //   }
-          // });
           tools.closeWin(response.result.resumeInfo.id);
           break;
         default:
@@ -216,7 +202,7 @@ export default {
       });
     },
     submit () {
-      this.$refs.form.validate().then((result) => {
+      this.$refs.form.validate().then(result => {
         if (result === true) {
           if (this.id) {
             this.edit();
