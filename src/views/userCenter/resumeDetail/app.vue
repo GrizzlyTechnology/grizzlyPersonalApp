@@ -78,7 +78,7 @@
       <Cell title="当前状态" :value="currentStateText"></Cell>
       <Cell title="到岗时间" :value="timeToPostText"></Cell>
     </Panel>
-    <Panel title="作品展示" :noContent="opus.length===0" v-if="isNotDetail|| opus.length>0">
+    <!-- <Panel title="作品展示" :noContent="opus.length===0" v-if="isNotDetail|| opus.length>0">
       <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="opusEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
@@ -114,7 +114,24 @@
       <div slot="info">
         暂无作品展示
       </div>
+    </Panel> -->
+    <Panel title="作品展示" :noContent="opus.length===0" v-if="isNotDetail|| opus.length>0">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="opusEdit">
+        <Icon left value=":icon-75bianji" />编辑
+      </Button>
+      <div :key="row.id" v-for="row in honor">
+        <div class="listTitle">{{row.title}}</div>
+        <div class="picList">
+          <div class="picCon" v-for="file in row.files"  :key="file.url">
+            <div class="con" @click="imagesPopupOpen" :style="{backgroundImage:'url('+file.url+')'}" />
+          </div>
+        </div>
+      </div>
+      <div slot="info">
+        暂无作品展示
+      </div>
     </Panel>
+    <ImagesPopup ref="imagesPopup"></ImagesPopup>
   </div>
 </template>
 
@@ -132,6 +149,7 @@ import { Cell, TabContainer, TabContainerItem, Navbar, TabItem } from 'mint-ui';
 import Panel from 'components/Panel';
 import StepVertical from 'components/StepVertical';
 import SkillLine from 'components/SkillLine';
+import ImagesPopup from 'components/ImagesPopup';
 
 export default {
   data () {
@@ -169,9 +187,10 @@ export default {
           id: 0,
           uid: 0,
           title: '图片作品',
-          type: 0,
-          url:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
+          files: [{
+            url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
+            path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
+          }]
         },
         {
           id: 1,
@@ -225,6 +244,23 @@ export default {
           title: '线上作品',
           url: 'https://www.baidu.com'
         }
+      ],
+      honor: [
+        {
+          id: 0,
+          uid: 0,
+          title: '图片作品',
+          files: [{
+            url: 'https://timgsa.baidu.com/timg?r=1&image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
+            path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
+          }, {
+            url: 'https://timgsa.baidu.com/timg?r=2&image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
+            path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
+          }, {
+            url: 'https://timgsa.baidu.com/timg?r=3&image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
+            path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
+          }]
+        }
       ]
     };
   },
@@ -238,7 +274,8 @@ export default {
     TabContainer,
     TabContainerItem,
     Navbar,
-    TabItem
+    TabItem,
+    ImagesPopup
   },
   computed: {
     opusPic () {
@@ -350,7 +387,7 @@ export default {
         resumeId: this.id
       });
       tools.hideProgress();
-      // console.log(JSON.stringify(response));
+      console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.baseInfo = adapter.baseInfoAdapter(
@@ -681,6 +718,9 @@ export default {
           skills: this.skills
         }
       });
+    },
+    imagesPopupOpen () {
+      this.$refs.imagesPopup.open();
     }
   },
 
@@ -836,5 +876,9 @@ export default {
     padding-left: 5px;
     line-height: 30px;
   }
+}
+.listTitle{
+  padding: 10px;
+  font-size:14px;
 }
 </style>
