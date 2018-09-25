@@ -1,80 +1,47 @@
 <template>
   <div class="content">
     <div class='p15'>
-      <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' label="" v-model="value" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
-        <i class='iconfont icon-suosou'></i>
-      </AutoComplete>
-      <Form ref="form" :model="form" class="mu-demo-form" :label-position="labelPosition" label-width="45">
-        <FormItem label="地区" prop="areaText">
-          <TextField v-model="form.area" readonly @click="areaHandle"></TextField>
-        </FormItem>
-        <FormItem label="行业" prop="industryText">
-          <TextField v-model="form.industry" readonly @click="industryHandle"></TextField>
-        </FormItem>
-        <FormItem label="职能" prop="dutiesText">
-          <TextField v-model="form.duties" readonly @click="dutiesHandle"></TextField>
-        </FormItem>
-      </Form>
-      <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="searchPush">搜索</Button>
+      <div class='flexCon'>
+        <span @click="areaHandle" class='araeBox'>
+          <i class='iconfont icon-weizhi-blue'></i>{{areaText}}</span>
+        <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue"  label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
+          <i class='iconfont icon-suosou' @click='submit'></i>
+        </AutoComplete>
+      </div>
     </div>
-    <div class="p15 mt25">
+    <div class="p15 mt25 bgWhite">
       <SubHeader>猜你要搜</SubHeader>
-      <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.id' @click="chipHandle">{{chip.value}}</Chip>
+      <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.value' @click="chipHandle">{{chip}}</Chip>
     </div>
   </div>
 </template>
 
 <script>
 import service from 'service';
-import { Search, Cell, Toast } from 'mint-ui';
-import { TextField, Button, SubHeader, Chip, AutoComplete } from 'muse-ui';
-import { Form, FormItem } from 'muse-ui/lib/Form';
+import { Toast } from 'mint-ui';
+import { SubHeader, Chip, AutoComplete } from 'muse-ui';
 import tools from 'util/tools';
 export default {
   data () {
     return {
-      value: '',
-      defaultResult: [
-        'Apple',
-        'Banana',
-        'Orange',
-        'Durian',
-        'Lemon',
-        'Peach',
-        'Cherry',
-        'Berry',
-        'Core',
-        'Fig',
-        'Haw',
-        'Melon',
-        'Plum',
-        'Pear',
-        'Peanut',
-        'Other'
-      ],
       form: {
-        area: '',
-        industry: '',
-        duties: ''
+        keyWord: '',
+        area: null
       },
+      area: [],
+      defaultResult: [],
       labelPosition: 'right',
       chips: [
-        { id: 1, value: '产品经理' },
-        { id: 2, value: '网络科技' },
-        { id: 3, value: '信息科技' },
-        { id: 4, value: '前端工程师' },
-        { id: 5, value: '生物科技' },
-        { id: 6, value: '医药科技' }
+        '产品经理',
+        '网络科技',
+        '信息科技',
+        '前端工程师',
+        '生物科技',
+        '医药科技'
       ]
     };
   },
   components: {
-    Search,
-    Form,
-    FormItem,
-    TextField,
-    Button,
-    Cell,
     SubHeader,
     Chip,
     Toast,
@@ -82,7 +49,7 @@ export default {
   },
   computed: {
     areaText () {
-      return this.form.area.map(row => row.label).join(' / ');
+      return this.area.length > 0 ? this.area[this.area.length - 1].label : '全国';
     },
     filterResult () {
       return this.defaultResult.filter(value =>
@@ -91,8 +58,8 @@ export default {
     }
   },
   methods: {
-    async searchJob () {
-      const response = await service.searchJob(this.form);
+    async searchBoxValue () {
+      const response = await service.searchBoxValue(this.form);
       switch (response.code) {
         case 0:
           tools.openWin({
@@ -112,23 +79,18 @@ export default {
           break;
       }
     },
-    async searchBoxValue () {
-      const response = await service.searchBoxValue(this.value);
+
+    // 职位搜索
+    async getAllSearchValue () {
+      const response = await service.getAllPosition(this.form.keyWord);
       switch (response.code) {
         case 0:
-          tools.openWin({
-            name: 'jobSearchList',
-            url: '../win.html',
-            title: '所有职位',
-            fname: 'jobSearchList_f',
-            furl: './hr/jobSearchList.html',
-            hasLeft: 1
-          });
+          this.defaultResult = response.result.info;
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '搜索失败，请稍后重试！！'
+            message: '搜索失败，请重试'
           });
           break;
       }
@@ -164,46 +126,13 @@ export default {
         hasLeft: 1,
         data: {
           nameSpace: 'areaSelector',
-          area: this.form.houseHold,
+          area: this.area,
           level: 2,
-          callback: 'houseHoldCallback'
+          callback: (ret, err) => {
+            this.area = ret.value;
+          }
         }
       });
-    },
-    industryHandle () {
-      tools.openWin({
-        name: 'industrySelector',
-        url: '../win.html',
-        title: '选择行业',
-        fname: 'industrySelector_f',
-        furl: 'industrySelector.html',
-        hasLeft: 1
-        // data: {
-        //   nameSpace: "industrySelector",
-        //   area: this.form.houseHold,
-        //   level: 2,
-        //   callback: "houseHoldCallback"
-        // }
-      });
-    },
-    dutiesHandle () {
-      tools.openWin({
-        name: 'dutiesSelector',
-        url: '../win.html',
-        title: '选择职能',
-        fname: 'dutiesSelector_f',
-        furl: 'dutiesSelector.html',
-        hasLeft: 1
-        // data: {
-        //   nameSpace: "industrySelector",
-        //   area: this.form.houseHold,
-        //   level: 2,
-        //   callback: "houseHoldCallback"
-        // }
-      });
-    },
-    searchPush () {
-      this.searchJob();
     },
     chipHandle () {
       this.searchChipValue();
@@ -228,26 +157,47 @@ export default {
 @import url("../../../assets/css/base.less");
 
 .p15 {
-  background: #fff;
   padding: 15px;
 }
 
-.mu-input.searchBox {
-  width: 100%;
-  margin-bottom: 25px;
+.bgWhite {
+  background: #fff;
 }
-.searchBox .mu-text-field.mu-input-content {
+
+.flexCon {
+  display: flex;
+  align-items: center;
   border: 1px solid #009688;
+  border-radius: 5px;
+  padding-left: 5px;
+  background: #fff;
+}
+.araeBox{
+  width: 20%;
+  overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+
+.mu-input.searchBox {
+  width: 80%;
+  min-height: auto;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 body .mu-secondary-text-color {
   color: #009688;
 }
 
-.searchBox .iconfont {
+.flexCon .iconfont {
   font-size: 20px;
   color: #009688;
-  margin-right: 10px;
+  margin-right: 15px;
+}
+
+.flexCon .iconfont.icon-weizhi-blue{
+  margin-right: 0;
 }
 
 .searchBox input {
