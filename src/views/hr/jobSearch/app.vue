@@ -4,7 +4,7 @@
       <div class='flexCon'>
         <span @click="areaHandle" class='araeBox'>
           <i class='iconfont icon-weizhi-blue'></i>{{areaText}}</span>
-        <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue"  label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
+        <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue" label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
           <i class='iconfont icon-suosou' @click='submit'></i>
         </AutoComplete>
       </div>
@@ -17,27 +17,27 @@
 </template>
 
 <script>
-import service from 'service';
-import { Toast } from 'mint-ui';
-import { SubHeader, Chip, AutoComplete } from 'muse-ui';
-import tools from 'util/tools';
+import service from "service";
+import { Toast } from "mint-ui";
+import { SubHeader, Chip, AutoComplete } from "muse-ui";
+import tools from "util/tools";
 export default {
-  data () {
+  data() {
     return {
       form: {
-        keyWord: '',
+        keyWord: "",
         area: null
       },
       area: [],
       defaultResult: [],
-      labelPosition: 'right',
+      labelPosition: "right",
       chips: [
-        '产品经理',
-        '网络科技',
-        '信息科技',
-        '前端工程师',
-        '生物科技',
-        '医药科技'
+        "产品经理",
+        "网络科技",
+        "信息科技",
+        "前端工程师",
+        "生物科技",
+        "医药科技"
       ]
     };
   },
@@ -48,40 +48,47 @@ export default {
     AutoComplete
   },
   computed: {
-    areaText () {
-      return this.area.length > 0 ? this.area[this.area.length - 1].label : '全国';
+    areaText() {
+      return this.area.length > 0
+        ? this.area[this.area.length - 1].label
+        : "全国";
     },
-    filterResult () {
+    filterResult() {
       return this.defaultResult.filter(value =>
-        new RegExp(this.value, 'i').test(value)
+        new RegExp(this.value, "i").test(value)
       );
     }
   },
   methods: {
-    async searchBoxValue () {
+    async searchBoxValue() {
       const response = await service.searchBoxValue(this.form);
       switch (response.code) {
         case 0:
           tools.openWin({
-            name: 'jobSearchList',
-            url: '../win.html',
-            title: '所有职位',
-            fname: 'jobSearchList_f',
-            furl: './hr/jobSearchList.html',
-            hasLeft: 1
+            name: "jobSearchList",
+            url: "../win.html",
+            title: "所有职位",
+            fname: "jobSearchList_f",
+            furl: "./hr/jobSearchList.html",
+            hasLeft: 1,
+            data: {
+              nameSpace: "jobSearchList",
+              area: this.form.area,
+              keyWord:  this.form.keyWord
+            }
           });
           break;
         default:
           tools.toast({
-            position: 'top',
-            message: '搜索失败，请稍后重试！！'
+            position: "top",
+            message: "搜索失败，请稍后重试！！"
           });
           break;
       }
     },
 
     // 职位搜索
-    async getAllSearchValue () {
+    async getAllSearchValue() {
       const response = await service.getAllPosition(this.form.keyWord);
       switch (response.code) {
         case 0:
@@ -89,43 +96,43 @@ export default {
           break;
         default:
           tools.toast({
-            position: 'top',
-            message: '搜索失败，请重试'
+            position: "top",
+            message: "搜索失败，请重试"
           });
           break;
       }
     },
-    async searchChipValue () {
+    async searchChipValue() {
       const response = await service.searchChipValue(this.value);
       switch (response.code) {
         case 0:
           tools.openWin({
-            name: 'jobSearchList',
-            url: '../win.html',
-            title: '所有职位',
-            fname: 'jobSearchList_f',
-            furl: './hr/jobSearchList.html',
+            name: "jobSearchList",
+            url: "../win.html",
+            title: "所有职位",
+            fname: "jobSearchList_f",
+            furl: "./hr/jobSearchList.html",
             hasLeft: 1
           });
           break;
         default:
           tools.toast({
-            position: 'top',
-            message: '搜索失败，请稍后重试！！'
+            position: "top",
+            message: "搜索失败，请稍后重试！！"
           });
           break;
       }
     },
-    areaHandle () {
+    areaHandle() {
       tools.openWin({
-        name: 'areaSelector',
-        url: '../win.html',
-        title: '选择地区',
-        fname: 'areaSelector_f',
-        furl: './common/areaSelector.html',
+        name: "areaSelector",
+        url: "../win.html",
+        title: "选择地区",
+        fname: "areaSelector_f",
+        furl: "./common/areaSelector.html",
         hasLeft: 1,
         data: {
-          nameSpace: 'areaSelector',
+          nameSpace: "areaSelector",
           area: this.area,
           level: 2,
           callback: (ret, err) => {
@@ -134,17 +141,17 @@ export default {
         }
       });
     },
-    chipHandle () {
+    chipHandle() {
       this.searchChipValue();
     },
-    submit () {
+    submit() {
       this.searchBoxValue();
     }
   },
-  mounted () {
+  mounted() {
     tools.addEventListener(
       {
-        name: 'houseHoldCallback'
+        name: "houseHoldCallback"
       },
       (ret, err) => {
         this.form.houseHold = ret.value;
@@ -172,11 +179,11 @@ export default {
   padding-left: 5px;
   background: #fff;
 }
-.araeBox{
+.araeBox {
   width: 20%;
   overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mu-input.searchBox {
@@ -196,7 +203,7 @@ body .mu-secondary-text-color {
   margin-right: 15px;
 }
 
-.flexCon .iconfont.icon-weizhi-blue{
+.flexCon .iconfont.icon-weizhi-blue {
   margin-right: 0;
 }
 

@@ -254,9 +254,8 @@ export default {
   searchBoxValue (params) {
     return request({
       host: hostList.test,
-      url: '/api/Hr/searchBoxValue',
-      params,
-      method: 'get'
+      url: '/api/job/search',
+      params
     });
   },
 

@@ -4,31 +4,22 @@
       <List textline="two-line" class='bodyer'>
         <Form :model="{}">
 
-            <div v-for='list in lists'  :key="list.id">
-              <ListItem avatar :ripple="false" button class='listItem' >
-                <ListAction>
-                  <Checkbox v-model="checkboxModel" :value='list.id'  @change='check'></Checkbox>
-                </ListAction>
-                <ListItemContent @click="jobDetails">
-                  <ListItemTitle>{{list.position}}
-                    <span class='claim'>{{list.claim}}</span>
-                  </ListItemTitle>
-                  <ListItemSubTitle>
-                    {{list.companyName}}
-                  </ListItemSubTitle>
-                </ListItemContent>
-                <ListAction @click="jobDetails">
-                  <ListItemAfterText class='salaryRange'>{{list.salaryRange}}</ListItemAfterText>
-                  <ListItemAfterText>{{list.date}}</ListItemAfterText>
-                </ListAction>
-              </ListItem>
-              <Divider></Divider>
-            </div>
-
-          <div class='p16 fixBox'>
-            <Checkbox v-model='checked' v-on:change='checkedAll' label='全选'></Checkbox>
-            <Button color="info" class='collection' @click="collectionBtn">收藏</Button>
-            <Button color="primary" class='deliveryButton' @click="deliveryBtn">立即投递</Button>
+          <div v-for='list in lists' v-model="lists" :key="list.id">
+            <ListItem avatar :ripple="false" button class='listItem'>
+              <ListItemContent @click="jobDetails">
+                <ListItemTitle>{{list.position}}
+                  <span class='claim'>{{list.claim}}</span>
+                </ListItemTitle>
+                <ListItemSubTitle>
+                  {{list.companyName}}
+                </ListItemSubTitle>
+              </ListItemContent>
+              <ListAction @click="jobDetails">
+                <ListItemAfterText class='salaryRange'>{{list.salaryRange}}</ListItemAfterText>
+                <ListItemAfterText>{{list.date}}</ListItemAfterText>
+              </ListAction>
+            </ListItem>
+            <Divider></Divider>
           </div>
         </Form>
       </List>
@@ -37,9 +28,9 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import { Checkbox, Divider, Form, Button, LoadMore } from 'muse-ui';
-import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { Toast } from "mint-ui";
+import { Divider, Form, Button, LoadMore } from "muse-ui";
+import { Container, Row, Col } from "muse-ui/lib/Grid";
 import {
   List,
   ListItem,
@@ -48,84 +39,18 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from 'muse-ui/lib/List';
-import tool from 'util/tools';
-import service from 'service';
+} from "muse-ui/lib/List";
+import tool from "util/tools";
+import service from "service";
 export default {
-  data () {
+  data() {
     return {
       num: 10,
       refreshing: false,
       loading: false,
-      lists: [
-        {
-          id: '1',
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        },
-        {
-          id: '2',
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        },
-        {
-          id: '3',
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        },
-        {
-          id: '4',
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        },
-        {
-          id: '5',
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        },
-        {
-          id: '6',
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        },
-        {
-          id: '7',
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        },
-        {
-          id: '8',
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        }
-      ],
-      checkboxModel: [],
-      jobIds: [],
-      checked: false
+      lists: [],
+      keyWord:window.api.pageParam.keyWord,
+      area:window.api.pageParam.area || []
     };
   },
   components: {
@@ -137,7 +62,6 @@ export default {
     ListItemSubTitle,
     ListAction,
     ListItemAfterText,
-    Checkbox,
     Divider,
     Row,
     Col,
@@ -147,97 +71,48 @@ export default {
     Toast
   },
   methods: {
-    jobDetails () {
+    // 列表数据
+    async listsData() {
+      const response = await service.searchBoxValue({
+        keyWord:this.keyWord,
+        area:this.area
+        });
+      switch (response.code) {
+        case 0:
+          this.lists = response.result.list;
+          break;
+        default:
+          Toast({
+            position: "top",
+            message: "加载失败，请稍后重试！！"
+          });
+          break;
+      }
+    },
+
+    jobDetails() {
       tool.openWin({
-        name: 'jobDetails',
-        url: '../win.html',
-        title: '职位详情',
-        fname: 'jobDetails_f',
-        furl: './hr/jobDetails.html',
+        name: "jobDetails",
+        url: "../win.html",
+        title: "职位详情",
+        fname: "jobDetails_f",
+        furl: "./hr/jobDetails.html",
         hasLeft: 1,
         hasRight: 1
       });
     },
-    async addToCollection () {
-      // 加入收藏夹
-      if (this.jobIds.length !== 0) {
-        const response = await service.addToCollection({ ids: this.jobIds });
-        switch (response.code) {
-          case 0:
-            Toast({
-              position: 'top',
-              message: '收藏成功！'
-            });
-            break;
-          default:
-            Toast({
-              position: 'top',
-              message: '收藏失败，请稍后重试！！'
-            });
-            break;
-        }
-      } else {
-        Toast({
-          position: 'top',
-          message: '请选择职位！'
-        });
-      }
-    },
-    async postJob () {
-      if (this.jobIds.length !== 0) {
-        const response = await service.postJob({ ids: this.jobIds });
-        switch (response.code) {
-          case 0:
-            Toast({
-              position: 'top',
-              message: '投递成功！'
-            });
-            break;
-          default:
-            Toast({
-              position: 'top',
-              message: '投递失败，请稍后重试！！'
-            });
-            break;
-        }
-      } else {
-        Toast({
-          position: 'top',
-          message: '请选择职位！'
-        });
-      }
-    },
-    check (value) {
-      this.jobIds = value;
-    },
-    checkedAll: function () {
-      if (!this.checked) {
-        // 实现反选
-        this.checkboxModel = [];
-      } else {
-        // 实现全选
-        this.checkboxModel = [];
-        this.lists.forEach(item => this.checkboxModel.push(item.id));
-      }
-    },
-    jobDetail: function () {
+    jobDetail: function() {
       tool.openWin({
-        name: 'zcgl',
-        url: '../win.html',
-        title: '职位详情',
-        fname: 'jobDetails_f',
-        furl: './hr/jobDetails.html',
+        name: "zcgl",
+        url: "../win.html",
+        title: "职位详情",
+        fname: "jobDetails_f",
+        furl: "./hr/jobDetails.html",
         hasLeft: 1,
         hasRight: 1
       });
     },
-    collectionBtn () {
-      this.addToCollection();
-    },
-    deliveryBtn () {
-      this.postJob();
-    },
-    refresh () {
+    refresh() {
       this.refreshing = true;
       this.$refs.container.scrollTop = 0;
       setTimeout(() => {
@@ -245,7 +120,7 @@ export default {
         this.num = 10;
       }, 2000);
     },
-    load () {
+    load() {
       this.loading = true;
       setTimeout(() => {
         this.loading = false;
@@ -254,26 +129,16 @@ export default {
     }
   },
   watch: {
-    // 深度 watcher
-    checkboxModel: {
-      handler: function (val, oldVal) {
-        if (this.checkboxModel.length === this.lists.length) {
-          this.checked = true;
-        } else {
-          this.checked = false;
-        }
-      },
-      deep: true
-    }
+
   },
-  mounted () {
-    // this.getList();
+  mounted() {
+    this.listsData();
   }
 };
 </script>
 <style lang="less" scoped>
 @import url("../../../assets/css/base.less");
-.container{
+.container {
   padding: 0px;
 }
 .demo-loadmore-content {
@@ -305,23 +170,5 @@ export default {
 
 .listItem {
   background: #fff;
-}
-
-.collection {
-  margin: 0 10px;
-}
-
-// .allPostion {
-//   padding-bottom: 56px;
-// }
-
-.fixBox {
-  position: fixed;
-  bottom: 0px;
-  width: 100%;
-  padding: 10px;
-  border-top: 1px solid #eee;
-  display: flex;
-  justify-content: space-around;
 }
 </style>
