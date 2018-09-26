@@ -1,9 +1,7 @@
 <template>
-  <Container ref="container" class="demo-loadmore-content">
+  <Container ref="container" class="demo-loadmore-content container">
     <LoadMore @refresh="refresh" :refreshing="refreshing" :loading="loading" @load="load">
-      <List textline="two-line" class='bodyer'>
-        <Form :model="{}">
-
+      <List textline="two-line" class='bodyer' v-if="lists.length > 0">
           <div v-for='list in lists' v-model="lists" :key="list.id">
             <ListItem avatar :ripple="false" button class='listItem'>
               <ListItemContent @click="jobDetails">
@@ -21,15 +19,17 @@
             </ListItem>
             <Divider></Divider>
           </div>
-        </Form>
       </List>
+      <div v-else class='bodyer noList'>
+        暂无记录
+      </div>
     </LoadMore>
   </Container>
 </template>
 
 <script>
 import { Toast } from "mint-ui";
-import { Divider, Form, Button, LoadMore } from "muse-ui";
+import { Divider, Button, LoadMore } from "muse-ui";
 import { Container, Row, Col } from "muse-ui/lib/Grid";
 import {
   List,
@@ -65,7 +65,6 @@ export default {
     Divider,
     Row,
     Col,
-    Form,
     Button,
     LoadMore,
     Toast
@@ -140,6 +139,14 @@ export default {
 @import url("../../../assets/css/base.less");
 .container {
   padding: 0px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bodyer {
+  flex: 1;
+  overflow: auto;
 }
 .demo-loadmore-content {
   flex: 1;
@@ -170,5 +177,13 @@ export default {
 
 .listItem {
   background: #fff;
+}
+
+.noList{
+  display: flex;
+align-items: center;
+justify-content: center;
+font-size: 14px;
+color: #333;
 }
 </style>

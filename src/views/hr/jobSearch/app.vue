@@ -60,11 +60,9 @@ export default {
     }
   },
   methods: {
-    async searchBoxValue() {
-      const response = await service.searchBoxValue(this.form);
-      switch (response.code) {
-        case 0:
-          tools.openWin({
+    // 点击搜索
+   search(){
+      tools.openWin({
             name: "jobSearchList",
             url: "../win.html",
             title: "所有职位",
@@ -77,17 +75,9 @@ export default {
               keyWord:  this.form.keyWord
             }
           });
-          break;
-        default:
-          tools.toast({
-            position: "top",
-            message: "搜索失败，请稍后重试！！"
-          });
-          break;
-      }
-    },
+   },
 
-    // 职位搜索
+    // 获取职位
     async getAllSearchValue() {
       const response = await service.getAllPosition(this.form.keyWord);
       switch (response.code) {
@@ -145,18 +135,10 @@ export default {
       this.searchChipValue();
     },
     submit() {
-      this.searchBoxValue();
+      this.search();
     }
   },
   mounted() {
-    tools.addEventListener(
-      {
-        name: "houseHoldCallback"
-      },
-      (ret, err) => {
-        this.form.houseHold = ret.value;
-      }
-    );
   }
 };
 </script>
