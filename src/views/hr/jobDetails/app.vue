@@ -1,30 +1,29 @@
 <template>
   <Container>
     <Card class='positionNameBox'>
-      <CardTitle title='产品经理' sub-title='8-20万'>
-        <span class="claim">7-10万</span>
+      <CardTitle :title='position' :sub-title='firewood'>
       </CardTitle>
       <Row class='p16'>
         <Col span="3">
         <div class="grid-cell">
           <Icon size="16" value=":icon-chanpin"></Icon>
-          3年经验</div>
+          {{experience}}年经验</div>
         </Col>
         <Col span="3">
         <div class="grid-cell">
           <Icon size="16" value=":icon-chanpin"></Icon>
-          大专
+          {{education}}
         </div>
         </Col>
         <Col span="3">
         <div class="grid-cell">
           <Icon size="16" value=":icon-chanpin"></Icon>
-          镇江</div>
+          {{workPlace}}</div>
         </Col>
         <Col span="3">
         <div class="grid-cell">
           <Icon size="16" value=":icon-chanpin"></Icon>
-          人数：10</div>
+          人数：{{recruitsNum}}</div>
         </Col>
       </Row>
     </Card>
@@ -32,40 +31,29 @@
       <ListItem avatar :ripple="false" button class='listItem whiteBg'>
         <ListAction>
           <Avatar>
-            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt="">
+            <img :src="companyImgSrc" alt="">
           </Avatar>
         </ListAction>
         <ListItemContent @click="companyInfo">
           <ListItemTitle>
-            飞龙信息发展股份有限公司
+            {{companyName}}
           </ListItemTitle>
           <ListItemSubTitle>
-            <span>上市公司</span>
-            <span>500-1000人</span>
-            <span>电子商务</span>
+            <span>{{nature}}</span>
+            <span>{{scale}}人</span>
+            <span>{{industry}}</span>
           </ListItemSubTitle>
         </ListItemContent>
       </ListItem>
     </List>
     <CardText class='whiteBg detailBox'>
       <h2 class='titleBox'>职位描述</h2>
-      <h3>
-        岗位职责:
-      </h3>
-      <p>
-        1、负责零售后台/CRM等云平台产品规划设计，包括需求沟通与分析、产品设计（包括产品方案、功能和原型等的设计）、需求文档的撰写等； 2、全程负责 整个产品的全生命周期，通过产品数据监控、调研和分析，提出优化改进建议，完成产品的持续迭代优化；
-      </p>
-      <h3>
-        任职要求:
-      </h3>
-      <p>
-        1、负责零售后台/CRM等云平台产品规划设计，包括需求沟通与分析、产品设计（包括产品方案、功能和原型等的设计）、需求文档的撰写等； 2、全程负责 整个产品的全生命周期，通过产品数据监控、调研和分析，提出优化改进建议，完成产品的持续迭代优化；
-      </p>
+     <p>{{workDescription}}</p>
     </CardText>
     <CardText class='whiteBg detailBox mt8'>
       <h2 class='titleBox'>工作地址</h2>
       <p class='spaceBetween'>
-        飞龙信息发展股份有限公司
+        {{address}}
         <Icon size='14' value=":icon-jinru" right></Icon>
       </p>
     </CardText>
@@ -118,6 +106,20 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
+      id:1,
+      position:'产品经理',
+      firewood:'8-20万',
+      experience:'3',
+      education:'大专',
+      workPlace:'镇江',
+      recruitsNum:'10',
+      companyImgSrc:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',
+      companyName:'飞龙信息发展股份有限公司',
+      nature:'上市公司',
+      scale:'500-1000',
+      industry:'电子商务',
+      workDescription:'1、负责零售后台/CRM等云平台产品规划设计，包括需求沟通与分析、产品设计（包括产品方案、功能和原型等的设计）、需求文档的撰写等； 2、全程负责 整个产品的全生命周期，通过产品数据监控、调研和分析，提出优化改进建议，完成产品的持续迭代优化；',
+      address:'飞龙信息发展股份有限公司',
       lists: [
         {
           id: 1,
