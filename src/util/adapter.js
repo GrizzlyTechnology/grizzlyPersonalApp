@@ -99,7 +99,8 @@ adapter.honorAdapter = function (data) {
   return {
     ...data,
     honorDate: data.honorDate * 1000,
-    honorDateText: moment(data.honorDate * 1000).format('YYYY年MM月DD日')
+    honorDateText: moment(data.honorDate * 1000).format('YYYY年MM月DD日'),
+    desc: data.desc ? data.desc.replace(/\n|\r\n/g, '<br/>') : ''
   };
 };
 export default adapter;

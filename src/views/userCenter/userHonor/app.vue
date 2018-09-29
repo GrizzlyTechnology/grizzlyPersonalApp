@@ -1,42 +1,35 @@
 <template>
   <div class="content">
-    <div class="bodyer">
-      <div class="listCon">
-        <CellSwipe class="rowList" v-for="(row,index) in list" value="oko" :key="row.id" :right="[{
+    <div class="bodyer" id="bodyer">
+      <CellSwipe v-if="tabActive==='tabContainer0'" v-for="row in opusPic" :key="row.id" class="opus" :right="[
+          {
             content: '删除',
             style: { background: '#e7585a', color: '#fff' },
-            handler: () => {del(row,index)}
+            handler: () => {del(row)}
           }
         ]">
-        <div @click="edit(row)">
-          <SkillLine class="skill" :title="row.label" :value="row.value"/>
-          <i class="mu-icon icon-right isLink" />
+        <div @click="picEdit(row)" class="opusRow opusPicRow">
+          <img v-lazy.bodyer="row.url" class="pic"/>
+          <span class="mint-cell-text">{{row.title}}</span>
         </div>
-        </CellSwipe>
-      </div>
+        <i class="mu-icon icon-right isLink" />
+      </CellSwipe>
+      <CellSwipe v-if="tabActive==='tabContainer1'" v-for="row in opusOnline" :key="row.id" class="opus" :right="[
+          {
+            content: '删除',
+            style: { background: '#e7585a', color: '#fff' },
+            handler: () => {del(row)}
+          }
+        ]">
+        <div @click="onlineEdit(row)" class="opusRow">
+          <span class="mint-cell-text">{{row.title}}</span>
+          <span class="mint-cell-label">{{row.url}}</span>
+        </div>
+        <i class="mu-icon icon-right isLink" />
+      </CellSwipe>
     </div>
-    <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">添加技能评价</Button>
-    </div>
-    <!-- <Popup v-model="isShow" position="bottom" pop-transition="popup-fade" :closeOnClickModal="false" class="myPopup">
-      <div class="myPopupTopBar">
-        <span class="cancel" @click="cancel">取消</span>
-        <span class="ok" @click="confirm">保存</span>
-      </div>
-      <Form ref="form" class="form" :model="form">
-        <FormItem label="技能名称" prop="label" :rules="labelRules">
-          <TextField :readonly="isEdit" v-model="form.label"></TextField>
-        </FormItem>
-        <FormItem label="能力值" prop="major">
-          <span class="level">{{level}}</span>
-          <Slider class="skillLevel" v-model="form.value" :min="1" :step="1" color="#009688" thumb-color="#009688" track-color="#ebebeb" />
-        </FormItem>
-
-      </Form>
-    </Popup> -->
   </div>
 </template>
-
 <script>
 // import _ from 'lodash';
 import { CellSwipe } from 'mint-ui';
@@ -58,7 +51,7 @@ export default {
   data () {
     return {
       id: window.api ? window.api.pageParam.id : null,
-      list: []
+      // list: []
       // msg: '',
       // isShow: false,
       // isEdit: false,
@@ -80,32 +73,32 @@ export default {
       //     message: '技能名称已存在'
       //   }
       // ],
-      // list: [{
-      //   id: 0,
-      //   uid: 0,
-      //   skillname: '技能名1',
-      //   proficiency: 1
-      // }, {
-      //   id: 1,
-      //   uid: 0,
-      //   skillname: '技能名2',
-      //   proficiency: 2
-      // }, {
-      //   id: 2,
-      //   uid: 0,
-      //   skillname: '技能名3',
-      //   proficiency: 3
-      // }, {
-      //   id: 3,
-      //   uid: 0,
-      //   skillname: '技能名4',
-      //   proficiency: 4
-      // }, {
-      //   id: 4,
-      //   uid: 0,
-      //   skillname: '技能名5',
-      //   proficiency: 5
-      // }].map(r => adapter.skillAdapter(r))
+      list: [
+        {
+          id: 0,
+          uid: 0,
+          title: '大灰熊大灰熊大灰熊大灰熊',
+          honorDate: 1538180201,
+          files: [
+            {
+              url: 'http://photocdn.sohu.com/20060801/Img244557955.jpg',
+              resources: 'http://photocdn.sohu.com/20060801/Img244557955.jpg'
+            },
+            {
+              url:
+                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg',
+              resources:
+                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg'
+            },
+            {
+              url:
+                'https://timgsa.baidu.com/timg?r=3&image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
+              resources:
+                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
+            }
+          ]
+        }
+      ].map(r => adapter.honorAdapter(r))
     };
   },
   components: {
@@ -118,36 +111,32 @@ export default {
     // TextField
     // Slider
   },
-  computed: {
-    level () {
-      return dictMap.skillLevel[parseInt((this.form.value === 0 ? 1 : this.form.value) / 20)];
-    }
-  },
+
   methods: {
     async getList () {
       tools.showProgress();
-      const response = await service.getUserSkill({
+      const response = await service.getUserHonor({
         resumeId: this.id
       });
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.list = response.result.skillsInfo ? response.result.skillsInfo.map(row =>
-            adapter.skillAdapter(row)
-          ) : [];
+          this.list = response.result.honorsInfo
+            ? response.result.honorInfo.map(row => adapter.honorAdapter(row))
+            : [];
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '技能获取失败'
+            message: '荣誉获取失败'
           });
           break;
       }
     },
-    async updateSkills (skills) {
+    async updateHonor (honors) {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
-        skills,
+        honors,
         resumeId: this.id
       });
       tools.hideProgress();
@@ -158,7 +147,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '技能删除失败'
+            message: '荣誉删除失败'
           });
           break;
       }
@@ -168,13 +157,16 @@ export default {
       //   title: '确认',
       //   content: `删除 ${data.label} 技能？`,
       //   callback: () => {
-      this.updateSkills(
+      this.updateHonor(
         JSON.stringify(
-          this.list.filter(r => {
-            if (r.label !== data.label) {
-              return r;
-            }
-          }).map(r => r.id).join(',')
+          this.list
+            .filter(r => {
+              if (r.label !== data.label) {
+                return r;
+              }
+            })
+            .map(r => r.id)
+            .join(',')
         )
       );
       //   }
@@ -240,40 +232,21 @@ export default {
 };
 </script>
 <style lang="less">
-.rowList {
-  .mint-cell {
-    min-height: 54px;
-  }
+@import url("../../../assets/css/base.less");
+.opus {
   .mint-cell-wrapper {
     background-image: none;
-  }
-  .mint-cell-title {
-    display: none;
-  }
-  .mint-cell-value {
-    display: block;
-    width: 100%;
+    border-bottom: 1px solid #eee;
+    height: 56px;
   }
   .mint-cell-swipe-button {
     line-height: 56px;
   }
-}
-.skillLevel {
-  .mu-slider-fill,
-  .mu-slider-track {
-    height: 5px;
-  }
-  .mu-slider-thumb {
-    top: 13px;
-    width: 15px;
-    height: 15px;
-  }
-  .mu-slider-display-value {
-    font-size: 14px;
+  &:active {
+    background-color: #eee;
   }
 }
 </style>
-
 <style lang="less" scoped>
 @import url("../../../assets/css/base.less");
 .content {
@@ -286,60 +259,35 @@ export default {
   flex: 1;
   overflow: auto;
 }
-.isLink {
-  position: absolute;
-  top: 19px;
-  right: 15px;
-  font-size: 16px;
-}
-.rowList {
-  border-bottom: 1px @grayLine solid;
-  font-size: 16px;
-  background-color: #fff;
-  &:active {
-    background-color: #eee;
-  }
-  .skill {
-    color: #333;
-    margin-right: 35px;
-  }
-}
 .footer {
   height: 44px;
 }
-
-.myPopup {
-  width: 100%;
+.isLink {
+  position: absolute;
+  top: 19px;
+  font-size: 16px;
+  right: 15px;
 }
-.cancel,
-.ok {
-  font-size: 18px;
-  width: 50%;
-  float: left;
-  text-align: center;
-  padding: 10px 0;
-  box-sizing: border-box;
-  color: #26a2ff;
-  &:active {
-    background-color: #eee;
-  }
-}
-.ok {
-  border-left: 1px #eee solid;
-}
-.myPopupTopBar {
-  font-size: 0;
-  overflow: hidden;
-  border-bottom: 1px #eee solid;
-}
-.form {
-  padding: 15px 15px 0;
-  .level {
-    position: absolute;
-    left: 55px;
-    top: 2px;
+.opusRow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 14px 0 0 10px;
+  .mint-cell-text {
     color: #333;
-    font-size: 16px;
   }
+}
+.pic {
+  position: absolute;
+  height: 56px;
+  width: 56px;
+  left: 0;
+  top: 0;
+}
+.opusPicRow {
+  padding-left: 65px;
+  padding-top: 18px;
 }
 </style>
