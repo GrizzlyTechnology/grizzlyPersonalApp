@@ -402,6 +402,31 @@ export default {
     });
   },
 
+  createUserHonor (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/hornor/create',
+      params
+    });
+  },
+
+  updateUserHonor (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/hornor/update',
+      params
+    });
+  },
+
+  getUserHonor (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/hornor/honorsBy',
+      params,
+      method: 'get'
+    });
+  },
+
   // 搜索职位或者公司
   getAllPosition (params) {
     return request({
