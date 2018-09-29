@@ -259,6 +259,8 @@ export default {
       method: 'get'
     });
   },
+
+  // 职位搜索页面--猜你要搜
   searchChipValue (params) {
     return request({
       host: hostList.test,
@@ -395,6 +397,41 @@ export default {
     return request({
       host: hostList.test,
       url: '/api/Opus/opusBy',
+      params,
+      method: 'get'
+    });
+  },
+
+  createUserHonor (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/hornor/create',
+      params
+    });
+  },
+
+  updateUserHonor (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/hornor/update',
+      params
+    });
+  },
+
+  getUserHonor (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/hornor/honorsBy',
+      params,
+      method: 'get'
+    });
+  },
+
+  // 搜索职位或者公司
+  getAllPosition (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/job/fuzzysearchtitle',
       params,
       method: 'get'
     });
