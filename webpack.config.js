@@ -127,7 +127,7 @@ let config = {
       },
       {
         test: /\.(eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
-        include: /assets/,
+        include: /assets|node_modules/,
         use: [{
           loader: 'url-loader',
           options: {
