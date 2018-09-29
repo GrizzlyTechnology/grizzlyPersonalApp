@@ -734,11 +734,29 @@ export default {
         },
         data: {
           nameSpace: 'userSkills',
-          id: this.id,
-          skills: this.skills
+          id: this.id
         }
       });
     },
+
+    honorEdit () {
+      tools.openWin({
+        name: 'userHonor',
+        url: '../win.html',
+        title: '荣誉展示管理',
+        fname: 'userHonor_f',
+        furl: './userCenter/userHonor.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.userHonor();
+        },
+        data: {
+          nameSpace: 'userHonor',
+          id: this.id
+        }
+      });
+    },
+
     imagesPopupOpen (list, index) {
       this.urlList = list.map(r => r.url);
       this.urlListIndex = index;
