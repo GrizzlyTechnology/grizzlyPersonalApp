@@ -405,7 +405,7 @@ export default {
   createUserHonor (params) {
     return request({
       host: hostList.test,
-      url: '/api/hornor/create',
+      url: '/api/Honor/create',
       params
     });
   },
@@ -413,7 +413,7 @@ export default {
   updateUserHonor (params) {
     return request({
       host: hostList.test,
-      url: '/api/hornor/update',
+      url: '/api/Honor/update',
       params
     });
   },
@@ -421,7 +421,7 @@ export default {
   getUserHonor (params) {
     return request({
       host: hostList.test,
-      url: '/api/hornor/honorsBy',
+      url: '/api/Honor/honorBy',
       params,
       method: 'get'
     });

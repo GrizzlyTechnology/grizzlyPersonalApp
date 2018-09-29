@@ -1,29 +1,17 @@
 <template>
   <div class="content">
     <div class="bodyer" id="bodyer">
-      <CellSwipe v-if="tabActive==='tabContainer0'" v-for="row in opusPic" :key="row.id" class="opus" :right="[
+      <CellSwipe v-for="row in list" :key="row.id" class="opus" :right="[
           {
             content: '删除',
             style: { background: '#e7585a', color: '#fff' },
             handler: () => {del(row)}
           }
         ]">
-        <div @click="picEdit(row)" class="opusRow opusPicRow">
-          <img v-lazy.bodyer="row.url" class="pic"/>
+        <div @click="edit(row)" class="opusRow opusPicRow">
+          <img v-lazy.bodyer="row.reslist[0].url" class="pic"/>
           <span class="mint-cell-text">{{row.title}}</span>
-        </div>
-        <i class="mu-icon icon-right isLink" />
-      </CellSwipe>
-      <CellSwipe v-if="tabActive==='tabContainer1'" v-for="row in opusOnline" :key="row.id" class="opus" :right="[
-          {
-            content: '删除',
-            style: { background: '#e7585a', color: '#fff' },
-            handler: () => {del(row)}
-          }
-        ]">
-        <div @click="onlineEdit(row)" class="opusRow">
-          <span class="mint-cell-text">{{row.title}}</span>
-          <span class="mint-cell-label">{{row.url}}</span>
+          <span class="mint-cell-label">{{row.honorDateText}}</span>
         </div>
         <i class="mu-icon icon-right isLink" />
       </CellSwipe>
@@ -37,9 +25,7 @@ import { Button } from 'muse-ui';
 // import { Form, FormItem } from 'muse-ui/lib/Form';
 
 import tools from 'util/tools';
-import dictMap from 'util/dictMap';
 import service from 'service';
-import SkillLine from 'components/SkillLine';
 import adapter from 'util/adapter';
 
 // import AreaSelected from 'components/AreaSelected';
@@ -79,7 +65,8 @@ export default {
           uid: 0,
           title: '大灰熊大灰熊大灰熊大灰熊',
           honorDate: 1538180201,
-          files: [
+          desc: '描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述',
+          reslist: [
             {
               url: 'http://photocdn.sohu.com/20060801/Img244557955.jpg',
               resources: 'http://photocdn.sohu.com/20060801/Img244557955.jpg'
@@ -103,8 +90,7 @@ export default {
   },
   components: {
     Button,
-    CellSwipe,
-    SkillLine
+    CellSwipe
     // Popup,
     // Form,
     // FormItem,
@@ -227,7 +213,7 @@ export default {
     // }
   },
   mounted () {
-    this.getList();
+    // this.getList();
   }
 };
 </script>
@@ -274,7 +260,7 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
-  padding: 14px 0 0 10px;
+  padding: 10px 0 0 10px;
   .mint-cell-text {
     color: #333;
   }
@@ -288,6 +274,5 @@ export default {
 }
 .opusPicRow {
   padding-left: 65px;
-  padding-top: 18px;
 }
 </style>
