@@ -16,6 +16,9 @@
         <i class="mu-icon icon-right isLink" />
       </CellSwipe>
     </div>
+    <div class="footer">
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">添加荣誉展示</Button>
+    </div>
   </div>
 </template>
 <script>
@@ -160,16 +163,16 @@ export default {
     },
     edit (data) {
       tools.openWin({
-        name: 'userSkillForm',
+        name: 'userHonorForm',
         url: '../win.html',
-        title: '编辑技能评估',
-        fname: 'userSkillForm_f',
-        furl: './userCenter/userSkillForm.html',
+        title: '编辑荣誉评估',
+        fname: 'userHonorForm_f',
+        furl: './userCenter/userHonorForm.html',
         hasLeft: 1,
         data: {
-          nameSpace: 'userSkillForm',
+          nameSpace: 'userHonorForm',
           id: data.id,
-          skill: data,
+          honor: data,
           callback: (ret, err) => {
             this.getList();
           }
@@ -178,14 +181,14 @@ export default {
     },
     create () {
       tools.openWin({
-        name: 'userSkillForm',
+        name: 'userHonorForm',
         url: '../win.html',
-        title: '创建技能评估',
-        fname: 'userSkillForm_f',
-        furl: './userCenter/userSkillForm.html',
+        title: '创建荣誉评估',
+        fname: 'userHonorForm_f',
+        furl: './userCenter/userHonorForm.html',
         hasLeft: 1,
         data: {
-          nameSpace: 'userSkillForm',
+          nameSpace: 'userHonorForm',
           resumeId: this.id,
           callback: (ret, err) => {
             this.getList();

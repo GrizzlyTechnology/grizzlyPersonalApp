@@ -715,7 +715,7 @@ export default {
             this.getJob();
             this.getSkill();
             // this.getOpus();
-            // this.getHonor();
+            this.getHonor();
             break;
         }
       }
