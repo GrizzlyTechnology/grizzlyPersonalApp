@@ -8,10 +8,10 @@ let BASEURL = '';
 // const TOKEN = tools.getStorage('token');
 switch (ENV) {
   case 'development':
-    BASEURL = 'test.mangotmall.com';
+    BASEURL = hostList.test;
     break;
   default:
-    BASEURL = '';
+    BASEURL = hostList.test;
     break;
 }
 
@@ -93,7 +93,7 @@ function request ({ host = '', version = '', url, params, method = 'post' }) {
 export default {
   demo (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/index/ceshi',
       params,
       method: 'post'
@@ -101,41 +101,41 @@ export default {
   },
   login (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/User/login',
       params
     });
   },
   logout () {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/User/logout'
     });
   },
   getUserInfo () {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/User/getUserByToken',
       method: 'get'
     });
   },
   registered (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/User/create',
       params
     });
   },
   getVerificationCode (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/sms/send_code',
       params
     });
   },
   checkStudent (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/student',
       params,
       method: 'get'
@@ -143,14 +143,14 @@ export default {
   },
   createStudent (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Student/create',
       params
     });
   },
   getAreaByAreaId (areaId = '') {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Area',
       params: {
         areaId
@@ -160,7 +160,7 @@ export default {
   },
   getSchoolList (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/School/getSchoolBy',
       params,
       method: 'get'
@@ -168,7 +168,7 @@ export default {
   },
   getSessionList (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/School/getYear',
       params,
       method: 'get'
@@ -176,7 +176,7 @@ export default {
   },
   getDepartmentList (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/College/collegeBySchoolAndYear',
       params,
       method: 'get'
@@ -184,7 +184,7 @@ export default {
   },
   getDisciplineList (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Major/majorBy',
       params,
       method: 'get'
@@ -192,7 +192,7 @@ export default {
   },
   getClassListBy (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Classes/classBy',
       params,
       method: 'get'
@@ -200,7 +200,7 @@ export default {
   },
   addToCollection (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Collection',
       params,
       method: 'get'
@@ -208,7 +208,7 @@ export default {
   },
   postJob (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/postJob',
       params,
       method: 'get'
@@ -216,28 +216,28 @@ export default {
   },
   createUserBaesInfo (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Resume/create',
       params
     });
   },
   deleteUserBaesInfo (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Resume/update',
       params
     });
   },
   updateUserBaesInfo (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Resume/update',
       params
     });
   },
   getUserBaseInfo (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Resume/resumeBy',
       params,
       method: 'get'
@@ -245,7 +245,7 @@ export default {
   },
   searchJob (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Hr/searchJob',
       params,
       method: 'get'
@@ -253,7 +253,7 @@ export default {
   },
   searchBoxValue (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Hr/searchBoxValue',
       params,
       method: 'get'
@@ -263,7 +263,7 @@ export default {
   // 职位搜索页面--猜你要搜
   searchChipValue (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Hr/searchChipValue',
       params,
       method: 'get'
@@ -271,21 +271,21 @@ export default {
   },
   createUserEducation (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Educationexp/create',
       params
     });
   },
   updateUserEducation (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Educationexp/update',
       params
     });
   },
   getUserEducation (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Educationexp/educationexpBy',
       params,
       method: 'get'
@@ -293,21 +293,21 @@ export default {
   },
   createUserInternship (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Internshipexp/create',
       params
     });
   },
   updateUserInternship (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Internshipexp/update',
       params
     });
   },
   getUserInternship (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Internshipexp/internshipexpBy',
       params,
       method: 'get'
@@ -315,21 +315,21 @@ export default {
   },
   createUserProject (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Projectexp/create',
       params
     });
   },
   updateUserProject (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Projectexp/update',
       params
     });
   },
   getUserProject (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Projectexp/projectexpBy',
       params,
       method: 'get'
@@ -337,21 +337,21 @@ export default {
   },
   createUserJob (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Jobexp/create',
       params
     });
   },
   updateUserJob (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Jobexp/update',
       params
     });
   },
   getUserJob (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Jobexp/jobexpBy',
       params,
       method: 'get'
@@ -359,21 +359,21 @@ export default {
   },
   createUserSkill (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Skills/create',
       params
     });
   },
   updateUserSkill (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Skills/update',
       params
     });
   },
   getUserSkill (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Skills/skillsBy',
       params,
       method: 'get'
@@ -381,21 +381,21 @@ export default {
   },
   createUserOpus (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Opus/create',
       params
     });
   },
   updateUserOpus (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Opus/update',
       params
     });
   },
   getUserOpus (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/Opus/opusBy',
       params,
       method: 'get'
@@ -404,24 +404,24 @@ export default {
 
   createUserHonor (params) {
     return request({
-      host: hostList.test,
-      url: '/api/hornor/create',
+      host: BASEURL,
+      url: '/api/Honor/create',
       params
     });
   },
 
   updateUserHonor (params) {
     return request({
-      host: hostList.test,
-      url: '/api/hornor/update',
+      host: BASEURL,
+      url: '/api/Honor/update',
       params
     });
   },
 
   getUserHonor (params) {
     return request({
-      host: hostList.test,
-      url: '/api/hornor/honorsBy',
+      host: BASEURL,
+      url: '/api/Honor/honorBy',
       params,
       method: 'get'
     });
@@ -430,7 +430,7 @@ export default {
   // 搜索职位或者公司
   getAllPosition (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/job/fuzzysearchtitle',
       params,
       method: 'get'

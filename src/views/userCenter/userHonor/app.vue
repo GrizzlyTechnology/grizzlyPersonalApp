@@ -1,32 +1,23 @@
 <template>
   <div class="content">
     <div class="bodyer" id="bodyer">
-      <CellSwipe v-if="tabActive==='tabContainer0'" v-for="row in opusPic" :key="row.id" class="opus" :right="[
+      <CellSwipe v-for="row in list" :key="row.id" class="opus" :right="[
           {
             content: '删除',
             style: { background: '#e7585a', color: '#fff' },
             handler: () => {del(row)}
           }
         ]">
-        <div @click="picEdit(row)" class="opusRow opusPicRow">
-          <img v-lazy.bodyer="row.url" class="pic"/>
+        <div @click="edit(row)" class="opusRow opusPicRow">
+          <img v-lazy.bodyer="row.reslist[0].url" class="pic"/>
           <span class="mint-cell-text">{{row.title}}</span>
+          <span class="mint-cell-label">{{row.honorDateText}}</span>
         </div>
         <i class="mu-icon icon-right isLink" />
       </CellSwipe>
-      <CellSwipe v-if="tabActive==='tabContainer1'" v-for="row in opusOnline" :key="row.id" class="opus" :right="[
-          {
-            content: '删除',
-            style: { background: '#e7585a', color: '#fff' },
-            handler: () => {del(row)}
-          }
-        ]">
-        <div @click="onlineEdit(row)" class="opusRow">
-          <span class="mint-cell-text">{{row.title}}</span>
-          <span class="mint-cell-label">{{row.url}}</span>
-        </div>
-        <i class="mu-icon icon-right isLink" />
-      </CellSwipe>
+    </div>
+    <div class="footer">
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">添加荣誉展示</Button>
     </div>
   </div>
 </template>
@@ -37,9 +28,7 @@ import { Button } from 'muse-ui';
 // import { Form, FormItem } from 'muse-ui/lib/Form';
 
 import tools from 'util/tools';
-import dictMap from 'util/dictMap';
 import service from 'service';
-import SkillLine from 'components/SkillLine';
 import adapter from 'util/adapter';
 
 // import AreaSelected from 'components/AreaSelected';
@@ -73,38 +62,12 @@ export default {
       //     message: '技能名称已存在'
       //   }
       // ],
-      list: [
-        {
-          id: 0,
-          uid: 0,
-          title: '大灰熊大灰熊大灰熊大灰熊',
-          honorDate: 1538180201,
-          files: [
-            {
-              url: 'http://photocdn.sohu.com/20060801/Img244557955.jpg',
-              resources: 'http://photocdn.sohu.com/20060801/Img244557955.jpg'
-            },
-            {
-              url:
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg',
-              resources:
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg'
-            },
-            {
-              url:
-                'https://timgsa.baidu.com/timg?r=3&image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
-              resources:
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
-            }
-          ]
-        }
-      ].map(r => adapter.honorAdapter(r))
+      list: []
     };
   },
   components: {
     Button,
-    CellSwipe,
-    SkillLine
+    CellSwipe
     // Popup,
     // Form,
     // FormItem,
@@ -174,16 +137,16 @@ export default {
     },
     edit (data) {
       tools.openWin({
-        name: 'userSkillForm',
+        name: 'userHonorForm',
         url: '../win.html',
-        title: '编辑技能评估',
-        fname: 'userSkillForm_f',
-        furl: './userCenter/userSkillForm.html',
+        title: '编辑荣誉评估',
+        fname: 'userHonorForm_f',
+        furl: './userCenter/userHonorForm.html',
         hasLeft: 1,
         data: {
-          nameSpace: 'userSkillForm',
+          nameSpace: 'userHonorForm',
           id: data.id,
-          skill: data,
+          honor: data,
           callback: (ret, err) => {
             this.getList();
           }
@@ -192,14 +155,14 @@ export default {
     },
     create () {
       tools.openWin({
-        name: 'userSkillForm',
+        name: 'userHonorForm',
         url: '../win.html',
-        title: '创建技能评估',
-        fname: 'userSkillForm_f',
-        furl: './userCenter/userSkillForm.html',
+        title: '创建荣誉评估',
+        fname: 'userHonorForm_f',
+        furl: './userCenter/userHonorForm.html',
         hasLeft: 1,
         data: {
-          nameSpace: 'userSkillForm',
+          nameSpace: 'userHonorForm',
           resumeId: this.id,
           callback: (ret, err) => {
             this.getList();
@@ -274,7 +237,7 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
-  padding: 14px 0 0 10px;
+  padding: 10px 0 0 10px;
   .mint-cell-text {
     color: #333;
   }
@@ -288,6 +251,5 @@ export default {
 }
 .opusPicRow {
   padding-left: 65px;
-  padding-top: 18px;
 }
 </style>
