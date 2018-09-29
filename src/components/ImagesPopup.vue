@@ -80,8 +80,8 @@ export default {
 .dhx-imagesPopup {
   .mint-popup{
   width: 100%;
-  height: 100%;
-  // padding-top: 133%;
+  // height: 100%;
+  padding-top: 133%;
   background-color: #000;
   }
 }

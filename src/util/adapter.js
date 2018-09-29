@@ -1,7 +1,7 @@
 import isJson from 'is-json';
 import moment from 'moment';
 
-import dictMap from 'util/dictMap';
+// import dictMap from 'util/dictMap';
 
 const adapter = {};
 
@@ -95,4 +95,11 @@ adapter.skillAdapter = function (data) {
   };
 };
 
+adapter.honorAdapter = function (data) {
+  return {
+    ...data,
+    honorDate: data.honorDate * 1000,
+    honorDateText: moment(data.honorDate * 1000).format('YYYY年MM月DD日')
+  };
+};
 export default adapter;
