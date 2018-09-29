@@ -10,7 +10,7 @@
             <DateInput :value="honorDateText" :max-date="new Date()" @change="changeHonorDate" format="YYYY年MM月DD日" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
           <FormItem label="荣誉图片" prop="fileList" :rules="fileListRules">
-            <Upload accept="image/*" :class="{uploader:true, hideUploader: fileList.length>=6 }" list-type="picture-card" name="file" :with-credentials="true" :multiple="false" :data="{type:2}" :headers="headers" :action="actionUrl" :limit="max" :file-list="fileList" :on-remove="remove" :on-success="success">
+            <Upload accept="image/*" :class="uploaderClass" list-type="picture-card" name="file" :with-credentials="true" :multiple="false" :data="{type:2}" :headers="headers" :action="actionUrl" :limit="max" :file-list="fileList" :on-change="change" :on-progress="progress" :on-remove="remove" :on-success="success" :before-upload="beforeUpload" :on-error="error">
               <i class="el-icon-plus"></i>
             </Upload>
           </FormItem>
@@ -31,55 +31,29 @@ import Upload from 'element-ui/lib/upload';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 // import regexps from 'util/regexps';
 import tools from 'util/tools';
+import { hostList } from 'service/mock';
+
 // import dictMap from 'util/dictMap';
 // import dictMap from 'util/dictMap';
 export default {
   data () {
     return {
-      actionUrl: 'https://jsonplaceholder.typicode.com/posts/',
+      uploaderClass: 'uploader',
+      actionUrl: 'http://' + (process.env === 'development' ? hostList.test : hostList.test) + '/api/Userresources/create',
+      // actionUrl: 'https://jsonplaceholder.typicode.com/posts/',
       headers: {
         MG_code:
           '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O',
         MG_key: '5b10fed636fcf',
-        MG_token:
-          process.env !== 'production'
-            ? '6f8bade35ef87e5a6aa623519ef973582dc25205'
-            : tools.getStorage('token') || ''
+        MG_token: process.env !== 'production' ? '6f8bade35ef87e5a6aa623519ef973582dc25205' : tools.getStorage('token') || ''
       },
+      maxSize: 10,
       max: 6,
-      fileList: [
-        {
-          id: 0,
-          url: 'http://photocdn.sohu.com/20060801/Img244557955.jpg',
-          resources: 'http://photocdn.sohu.com/20060801/Img244557955.jpg'
-        },
-        {
-          id: 1,
-          url:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg',
-          resources:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg'
-        },
-        {
-          id: 2,
-          url:
-            'https://timgsa.baidu.com/timg?r=3&image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
-          resources:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
-        }
-      ],
-      // fileList: window.api && window.api.pageParam.honor
-      //   ? window.api.pageParam.honor.reslist : [],
+      fileList: window.api && window.api.pageParam.honor ? window.api.pageParam.honor.reslist : [],
       id: window.api ? window.api.pageParam.id : null,
       form: {
-        title:
-          window.api && window.api.pageParam.honor
-            ? window.api.pageParam.honor.title
-            : '',
-        honorDate:
-          window.api && window.api.pageParam.honor
-            ? window.api.pageParam.honor.honorDate
-            : Date.now()
+        title: window.api && window.api.pageParam.honor ? window.api.pageParam.honor.title : '',
+        honorDate: window.api && window.api.pageParam.honor ? window.api.pageParam.honor.honorDate : Date.now()
       },
       titleRules: [{ validate: val => !!val, message: '必须填写作品名称' }],
       fileListRules: [
@@ -108,7 +82,7 @@ export default {
   methods: {
     async create () {
       tools.showProgress();
-      const response = await service.createUserOpus({
+      const response = await service.createUserHonor({
         ...this.form,
         resids: this.fileList.map(r => r.id),
         resumeId: window.api.pageParam.resumeId
@@ -121,15 +95,16 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '作品图片创建失败，请稍后重试！！'
+            message: '荣誉展示创建失败，请稍后重试！！'
           });
           break;
       }
     },
     async edit () {
       tools.showProgress();
-      const response = await service.updateUserOpus({
-        opusId: this.id,
+      const response = await service.updateUserHonor({
+        honorId: this.id,
+        resids: this.fileList.map(r => r.id),
         ...this.form
       });
       tools.hideProgress();
@@ -140,10 +115,64 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '作品图片编辑失败，请稍后重试！！'
+            message: '荣誉展示编辑失败，请稍后重试！！'
           });
           break;
       }
+    },
+    change (file) {
+      console.log('change: ' + JSON.stringify(file));
+      switch (file.status) {
+        case 'ready':
+          this.uploaderClass = 'uploader hideUploader';
+          break;
+        default:
+          break;
+      }
+      // this.uploaderClass = 'uploader hideUploader';
+    },
+    progress () {
+      // this.uploaderClass = 'uploader hideUploader';
+    },
+    beforeUpload (file) {
+      if (file.size > this.maxSize * 1024 * 1024) {
+        tools.toast({
+          position: 'top',
+          message: '图片最大' + this.maxSize + 'M'
+        });
+        this.uploaderClass = 'uploader';
+        return false;
+      }
+    },
+    error (e, file, fileList) {
+      console.log(JSON.stringify(e));
+      this.uploaderClass = 'uploader';
+    },
+    success (response, file, fileList) {
+      this.uploaderClass = 'uploader';
+      console.log(JSON.stringify(fileList));
+      switch (response.code) {
+        case 0:
+          this.fileList.push(
+            {
+              id: response.result.file.id,
+              url: response.result.file.url
+            }
+          );
+          if (this.fileList.length >= this.max) {
+            this.uploaderClass = 'uploader hideUploader';
+          }
+          break;
+
+        default:
+          tools.toast({
+            position: 'top',
+            message: response.message
+          });
+          break;
+      }
+
+      // console.log(response, fileList);
     },
     remove (file, fileList) {
       this.fileList = fileList.map(r => {
@@ -152,15 +181,9 @@ export default {
           url: r.url
         };
       });
-    },
-    success (response, file, fileList) {
-      this.fileList = fileList.map(r => {
-        return {
-          id: r.id || response.id,
-          url: r.url
-        };
-      });
-      // console.log(response, fileList);
+      if (this.fileList.length < this.max) {
+        this.uploaderClass = 'uploader';
+      }
     },
     changeHonorDate (date) {
       this.form.honorDate = date.valueOf();

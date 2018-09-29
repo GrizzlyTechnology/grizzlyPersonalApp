@@ -62,33 +62,7 @@ export default {
       //     message: '技能名称已存在'
       //   }
       // ],
-      list: [
-        {
-          id: 0,
-          uid: 0,
-          title: '大灰熊大灰熊大灰熊大灰熊',
-          honorDate: 1538180201,
-          desc: '描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述',
-          reslist: [
-            {
-              url: 'http://photocdn.sohu.com/20060801/Img244557955.jpg',
-              resources: 'http://photocdn.sohu.com/20060801/Img244557955.jpg'
-            },
-            {
-              url:
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg',
-              resources:
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg'
-            },
-            {
-              url:
-                'https://timgsa.baidu.com/timg?r=3&image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
-              resources:
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
-            }
-          ]
-        }
-      ].map(r => adapter.honorAdapter(r))
+      list: []
     };
   },
   components: {
@@ -216,7 +190,7 @@ export default {
     // }
   },
   mounted () {
-    // this.getList();
+    this.getList();
   }
 };
 </script>
