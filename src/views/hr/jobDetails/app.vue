@@ -7,7 +7,8 @@
         <Col span="3">
         <div class="grid-cell">
           <Icon size="16" value=":icon-chanpin"></Icon>
-          {{experience}}经验</div>
+          {{experience}}经验
+        </div>
         </Col>
         <Col span="3">
         <div class="grid-cell">
@@ -18,12 +19,14 @@
         <Col span="3">
         <div class="grid-cell">
           <Icon size="16" value=":icon-chanpin"></Icon>
-          {{workCity}}</div>
+          {{workCity}}
+        </div>
         </Col>
         <Col span="3">
         <div class="grid-cell">
           <Icon size="16" value=":icon-chanpin"></Icon>
-          人数：{{recruitsNum}}</div>
+          人数：{{recruitsNum}}
+        </div>
         </Col>
       </Row>
     </Card>
@@ -62,7 +65,7 @@
         <h2 class='titleBox spaceBetween'>所有职位</h2>
       </CardText>
       <div v-for='jobs in lists' :key="jobs.id">
-        <ListItem avatar :ripple="false" button class='listItem'  @click="jobDetails(jobs.id)">
+        <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(jobs.id)">
           <ListItemContent>
             <ListItemTitle>{{jobs.position}}
               <span class='claim'>{{jobs.claim}}</span>
@@ -80,15 +83,15 @@
       </div>
     </List>
     <div class='p16 fixBox whiteBg'>
-      <Button color="primary" full-width class='deliveryButton'>立即投递</Button>
+      <Button color="primary" full-width class='deliveryButton' @click='delivery'>立即投递</Button>
     </div>
   </Container>
 </template>
 
 <script>
 import { Toast } from "mint-ui";
-import { Container, Row, Col } from 'muse-ui/lib/Grid';
-import { CardTitle, CardText } from 'muse-ui/lib/Card';
+import { Container, Row, Col } from "muse-ui/lib/Grid";
+import { CardTitle, CardText } from "muse-ui/lib/Card";
 import {
   List,
   ListItem,
@@ -97,26 +100,26 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from 'muse-ui/lib/List';
-import { Card, Icon, Avatar, Divider, Button } from 'muse-ui';
-import tool from 'util/tools';
+} from "muse-ui/lib/List";
+import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
+import tool from "util/tools";
 import service from "service";
 export default {
-  data () {
+  data() {
     return {
-      id:7,
-      position:'',
-      firewood:'',
-      experience:'',
-      education:'',
-      workCity:'',
-      recruitsNum:'',
-      companyImgSrc:'',
-      companyName:'',
-      nature:'',
-      industry:'',
-      workDescription:'',
-      workPlace:'',
+      id: window.api.pageParam.id,
+      position: "",
+      firewood: "",
+      experience: "",
+      education: "",
+      workCity: "",
+      recruitsNum: "",
+      companyImgSrc: "",
+      companyName: "",
+      nature: "",
+      industry: "",
+      workDescription: "",
+      workPlace: "",
       lists: []
     };
   },
@@ -141,11 +144,13 @@ export default {
     Toast
   },
   methods: {
-     // 页面数据
+    // 页面数据
     async detailsData() {
-      const response = await service.getDetailsData({id:7});
+      const response = await service.getDetailsData({ id: this.id });
       switch (response.code) {
         case 0:
+          console.log(this.id);
+
           this.position = response.result.position;
           this.firewood = response.result.firewood;
           this.experience = response.result.experience;
@@ -163,39 +168,56 @@ export default {
         default:
           Toast({
             position: "top",
-            message: "加载失败，请稍后重试！！"
+            message: "获取失败，请稍后重试！！"
           });
           break;
       }
     },
-   jobDetails(id) {
-         tool.openWin({
-          name: "jobDetails",
-          url: "../win.html",
-          title: "职位详情",
-          fname: "jobDetails_f",
-          furl: "./hr/jobDetails.html",
-          hasLeft: 1,
-          hasRight: 1,
-          data:{
-            id:id
-          }
-        });
-    },
-    companyInfo () {
+    jobDetails(id) {
       tool.openWin({
-        name: 'companyInfo',
-        url: '../win.html',
-        title: '企业介绍',
-        fname: 'companyInfo_f',
-        furl: './hr/companyInfo.html',
+        name: "jobDetails",
+        url: "../win.html",
+        title: "职位详情",
+        fname: "jobDetails_f",
+        furl: "./hr/jobDetails.html",
+        hasLeft: 1,
+        hasRight: 1,
+        data: {
+          id: id
+        }
+      });
+    },
+    companyInfo() {
+      tool.openWin({
+        name: "companyInfo",
+        url: "../win.html",
+        title: "企业介绍",
+        fname: "companyInfo_f",
+        furl: "./hr/companyInfo.html",
         hasLeft: 1,
         hasRight: 1
       });
+    },
+    async delivery() {
+      const response = await service.pushDelivery({ id: this.id });
+      switch (response.code) {
+        case 0:
+          Toast({
+            position: "top",
+            message: "投递成功！"
+          });
+          break;
+        default:
+          Toast({
+            position: "top",
+            message: "投递失败，请稍后重试！！"
+          });
+          break;
+      }
     }
   },
-  mounted () {
-this.detailsData();
+  mounted() {
+    this.detailsData();
   }
 };
 </script>
@@ -286,7 +308,7 @@ this.detailsData();
   font-size: 14px;
 }
 
-.allPostion{
+.allPostion {
   padding-bottom: 56px;
 }
 
@@ -294,12 +316,12 @@ this.detailsData();
   padding-bottom: 0;
 }
 
-.fixBox{
-  position:fixed;
+.fixBox {
+  position: fixed;
   bottom: 0px;
   width: 100%;
   padding: 10px;
-  border-top:1px solid #eee;
+  border-top: 1px solid #eee;
   display: flex;
   justify-content: space-around;
 }

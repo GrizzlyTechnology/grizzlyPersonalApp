@@ -243,21 +243,11 @@ export default {
       method: 'get'
     });
   },
-  searchJob (params) {
-    return request({
-      host: BASEURL,
-      url: '/api/Hr/searchJob',
-      params,
-      method: 'get'
-    });
-  },
+  //职位搜索
   searchBoxValue (params) {
     return request({
-      host: hostList.test,
-      url: '/api/job/search',
-      params,
       host: BASEURL,
-      url: '/api/Hr/searchBoxValue',
+      url: '/api/job/search',
       params,
       method: 'get'
     });
@@ -442,10 +432,18 @@ export default {
   // 职位详情
   getDetailsData (params) {
     return request({
-      host: hostList.test,
+      host: BASEURL,
       url: '/api/job/info',
       params,
       method: 'get'
+    });
+  },
+  //投递简历
+  pushDelivery(params) {
+    return request({
+      host: BASEURL,
+      url: 'api/Job/deliveryreresume',
+      params
     });
   }
 };
