@@ -9,7 +9,7 @@
           }
         ]">
         <div @click="edit(row)" class="opusRow opusPicRow">
-          <img v-lazy.bodyer="row.reslist.length > 0?row.reslist[0].coverUrl:''" class="pic"/>
+          <img :src="row.reslist.length > 0?row.reslist[0].coverUrl:''" class="pic"/>
           <span class="mint-cell-text">{{row.title}}</span>
           <span class="mint-cell-label">{{row.honorDateText}}</span>
         </div>
