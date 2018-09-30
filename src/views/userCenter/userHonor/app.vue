@@ -9,7 +9,7 @@
           }
         ]">
         <div @click="edit(row)" class="opusRow opusPicRow">
-          <img v-lazy.bodyer="row.reslist[0].url" class="pic"/>
+          <img v-lazy.bodyer="row.reslist.length > 0?row.reslist[0].coverUrl:''" class="pic"/>
           <span class="mint-cell-text">{{row.title}}</span>
           <span class="mint-cell-label">{{row.honorDateText}}</span>
         </div>
@@ -31,48 +31,16 @@ import tools from 'util/tools';
 import service from 'service';
 import adapter from 'util/adapter';
 
-// import AreaSelected from 'components/AreaSelected';
-// const defaultForm = {
-//   label: '',
-//   value: 1
-// };
 export default {
   data () {
     return {
       id: window.api ? window.api.pageParam.id : null,
-      // list: []
-      // msg: '',
-      // isShow: false,
-      // isEdit: false,
-      // form: { ...defaultForm },
-      // labelRules: [
-      //   { validate: val => !!val, message: '必须填写技能名称' },
-      //   {
-      //     validate: val => {
-      //       let b = true;
-      //       if (this.isEdit === false) {
-      //         this.list.forEach(r => {
-      //           if (r.label === val) {
-      //             b = false;
-      //           }
-      //         });
-      //       }
-      //       return b;
-      //     },
-      //     message: '技能名称已存在'
-      //   }
-      // ],
       list: []
     };
   },
   components: {
     Button,
     CellSwipe
-    // Popup,
-    // Form,
-    // FormItem,
-    // TextField
-    // Slider
   },
 
   methods: {
@@ -82,9 +50,10 @@ export default {
         resumeId: this.id
       });
       tools.hideProgress();
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.list = response.result.honorsInfo
+          this.list = response.result.honorInfo
             ? response.result.honorInfo.map(row => adapter.honorAdapter(row))
             : [];
           break;

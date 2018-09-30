@@ -9,10 +9,16 @@
           <FormItem label="颁发时间" prop="honorDate">
             <DateInput :value="honorDateText" :max-date="new Date()" @change="changeHonorDate" format="YYYY年MM月DD日" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
+          <FormItem label="荣誉描述" prop="desc">
+            <TextField v-model="form.desc"  multi-line
+              :max-length="100"
+              :rows="5"
+              :rows-max="5"></TextField>
+          </FormItem>
           <FormItem label="荣誉图片" prop="fileList" :rules="fileListRules">
             <div class="picList">
               <div class="picCon" v-for="(file,index) in fileList" :key="file.id">
-                <div class="con" :style="{backgroundImage:'url('+file.url+')'}" />
+                <div class="con" :style="{backgroundImage:'url('+file.coverUrl+')'}" />
                 <div class="con del">
                   <i class="el-icon-delete" @click="remove(file,index)"></i>
                 </div>
@@ -80,7 +86,10 @@ export default {
         honorDate:
           window.api && window.api.pageParam.honor
             ? window.api.pageParam.honor.honorDate
-            : Date.now()
+            : Date.now(),
+        desc: window.api && window.api.pageParam.honor
+          ? window.api.pageParam.honor.desc
+          : ''
       },
       titleRules: [{ validate: val => !!val, message: '必须填写作品名称' }],
       fileListRules: [
@@ -112,7 +121,7 @@ export default {
       tools.showProgress();
       const response = await service.createUserHonor({
         ...this.form,
-        resids: this.fileList.map(r => r.id),
+        resids: this.fileList.map(r => r.id).join(','),
         resumeId: window.api.pageParam.resumeId
       });
       tools.hideProgress();
@@ -187,7 +196,8 @@ export default {
           urlAry[urlAry.length - 1] = '450_' + urlAry[urlAry.length - 1];
           this.fileList.push({
             id: response.result.file.id,
-            url: urlAry.join('/')
+            url: response.result.file.url,
+            coverUrl: urlAry.join('/')
           });
           if (this.fileList.length >= this.max) {
             this.uploaderHide = true;
@@ -205,7 +215,7 @@ export default {
       // console.log(response, fileList);
     },
     remove (file, index) {
-      alert(index);
+      this.fileList.splice(index, 1);
       if (this.fileList.length < this.max) {
         this.uploaderHide = false;
       }
@@ -215,7 +225,7 @@ export default {
     },
     submit () {
       this.$refs.form.validate().then(result => {
-        console.log(result);
+        // console.log(result);
         if (result === true) {
           if (this.id) {
             this.edit();

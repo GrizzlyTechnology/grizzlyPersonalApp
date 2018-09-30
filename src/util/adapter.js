@@ -96,11 +96,16 @@ adapter.skillAdapter = function (data) {
 };
 
 adapter.honorAdapter = function (data) {
+  data.reslist.forEach(r => {
+    const urlAry = r.url.split('/');
+    urlAry[urlAry.length - 1] = '450_' + urlAry[urlAry.length - 1];
+    r.coverUrl = urlAry.join('/');
+  });
   return {
     ...data,
-    honorDate: data.honorDate * 1000,
-    honorDateText: moment(data.honorDate * 1000).format('YYYY年MM月DD日'),
-    desc: data.desc ? data.desc.replace(/\n|\r\n/g, '<br/>') : ''
+    honorDate: data.honordate * 1000,
+    honorDateText: moment(data.honordate * 1000).format('YYYY年MM月DD日')
+    // desc: data.desc ? data.desc.replace(/\n|\r\n/g, '<br/>') : ''
   };
 };
 export default adapter;

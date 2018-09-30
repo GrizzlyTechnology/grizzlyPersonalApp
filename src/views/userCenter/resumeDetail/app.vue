@@ -128,7 +128,7 @@
         </div>
         <div class="picList">
           <div class="picCon" v-for="(file,index) in row.reslist" :key="file.url">
-            <div class="con" @click="imagesPopupOpen(row.reslist,index, row.desc)" :style="{backgroundImage:'url('+file.url+')'}" />
+            <div class="con" @click="imagesPopupOpen(row.reslist,index, row.desc)" :style="{backgroundImage:'url('+file.coverUrl+')'}" />
           </div>
         </div>
       </div>
@@ -317,7 +317,7 @@ export default {
         resumeId: this.id
       });
       tools.hideProgress();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.baseInfo = adapter.baseInfoAdapter(
@@ -478,6 +478,7 @@ export default {
         resumeId: this.id
       });
       // tools.hideProgress();
+      console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.honor = response.result.honorInfo ? response.result.honorInfo.map(r => adapter.honorAdapter(r)) : [];
@@ -688,7 +689,7 @@ export default {
 
     imagesPopupOpen (list, index, description) {
       this.urlList = list.map((r, i) => {
-        this.imagesDesc[i] = description;
+        this.imagesDesc[i] = description.replace(/\n|\r\n/g, '<br/>');
         return r.url;
       });
       this.urlListIndex = index;
