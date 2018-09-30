@@ -140,9 +140,9 @@ export default {
     async edit () {
       tools.showProgress();
       const response = await service.updateUserHonor({
-        honorId: this.id,
-        resids: this.fileList.map(r => r.id),
-        ...this.form
+        ...this.form,
+        resids: this.fileList.map(r => r.id).join(','),
+        honorId: this.id
       });
       tools.hideProgress();
       switch (response.code) {
