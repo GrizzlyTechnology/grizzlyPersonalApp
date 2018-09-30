@@ -65,7 +65,7 @@ export default {
           break;
       }
     },
-    async updateHonor (honors) {
+    async unLink (honors) {
       tools.showProgress();
       const response = await service.updateUserBaesInfo({
         honors,
@@ -85,24 +85,16 @@ export default {
       }
     },
     del (data, index) {
-      // tools.confirm({
-      //   title: '确认',
-      //   content: `删除 ${data.label} 技能？`,
-      //   callback: () => {
-      this.updateHonor(
-        JSON.stringify(
-          this.list
-            .filter(r => {
-              if (r.label !== data.label) {
-                return r;
-              }
-            })
-            .map(r => r.id)
-            .join(',')
-        )
+      this.unLink(
+        this.list
+          .filter(r => {
+            if (r.id !== data.id) {
+              return r;
+            }
+          })
+          .map(r => r.id)
+          .join(',')
       );
-      //   }
-      // });
     },
     edit (data) {
       tools.openWin({
@@ -139,24 +131,6 @@ export default {
         }
       });
     }
-    // cancel () {
-    //   this.isShow = false;
-    //   this.curRow = -1;
-    //   this.$refs.form.clear();
-    // },
-    // confirm () {
-    //   this.$refs.form.validate().then(result => {
-    //     if (result === true) {
-    //       const list = [...this.list];
-    //       if (this.isEdit === true) {
-    //         list[this.curRow] = this.form;
-    //       } else {
-    //         list.push(this.form);
-    //       }
-    //       this.updateSkills(JSON.stringify(list));
-    //     }
-    //   });
-    // }
   },
   mounted () {
     this.getList();
