@@ -10,9 +10,22 @@
             <DateInput :value="honorDateText" :max-date="new Date()" @change="changeHonorDate" format="YYYY年MM月DD日" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
           <FormItem label="荣誉图片" prop="fileList" :rules="fileListRules">
-            <Upload accept="image/*" :class="uploaderClass" list-type="picture-card" name="file" :with-credentials="true" :multiple="false" :data="{type:2}" :headers="headers" :action="actionUrl" :limit="max" :file-list="fileList" :on-change="change" :on-progress="progress" :on-remove="remove" :on-success="success" :before-upload="beforeUpload" :on-error="error">
-              <i class="el-icon-plus"></i>
-            </Upload>
+            <div class="picList">
+              <div class="picCon" v-for="(file,index) in fileList" :key="file.id">
+                <div class="con" :style="{backgroundImage:'url('+file.url+')'}" />
+                <div class="con del">
+                  <i class="el-icon-delete" @click="remove(file,index)"></i>
+                </div>
+              </div>
+              <div :class="{uploader:true,hide:fileList.length>=6}">
+                <Upload ref="uploader" accept="image/*" list-type="picture-card" name="file" :class="{hide:uploaderHide}" :show-file-list="false" :with-credentials="true" :multiple="false" :data="{type:2}" :headers="headers" :action="actionUrl" :limit="max" :file-list="fileList" :on-change="change" :on-progress="progress" :on-success="success" :before-upload="beforeUpload" :on-error="error">
+                  <i class="el-icon-plus"></i>
+                </Upload>
+                <div :class="{hide:!uploaderHide,progressPercent:true}">
+                  <Progress type="circle" :percentage="progressPercent" />
+                </div>
+              </div>
+            </div>
           </FormItem>
         </Form>
       </div>
@@ -28,6 +41,7 @@ import service from 'service';
 // import moment from 'moment';
 import { Button, TextField, DateInput } from 'muse-ui';
 import Upload from 'element-ui/lib/upload';
+import Progress from 'element-ui/lib/progress';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 // import regexps from 'util/regexps';
 import tools from 'util/tools';
@@ -38,22 +52,35 @@ import { hostList } from 'service/mock';
 export default {
   data () {
     return {
-      uploaderClass: 'uploader',
+      uploaderHide: false,
+      progressPercent: 0,
       actionUrl: 'http://' + (process.env === 'development' ? hostList.test : hostList.test) + '/api/Userresources/create',
       // actionUrl: 'https://jsonplaceholder.typicode.com/posts/',
       headers: {
         MG_code:
           '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O',
         MG_key: '5b10fed636fcf',
-        MG_token: process.env !== 'production' ? '6f8bade35ef87e5a6aa623519ef973582dc25205' : tools.getStorage('token') || ''
+        MG_token:
+          process.env !== 'production'
+            ? '6f8bade35ef87e5a6aa623519ef973582dc25205'
+            : tools.getStorage('token') || ''
       },
       maxSize: 10,
       max: 6,
-      fileList: window.api && window.api.pageParam.honor ? window.api.pageParam.honor.reslist : [],
+      fileList:
+        window.api && window.api.pageParam.honor
+          ? window.api.pageParam.honor.reslist
+          : [],
       id: window.api ? window.api.pageParam.id : null,
       form: {
-        title: window.api && window.api.pageParam.honor ? window.api.pageParam.honor.title : '',
-        honorDate: window.api && window.api.pageParam.honor ? window.api.pageParam.honor.honorDate : Date.now()
+        title:
+          window.api && window.api.pageParam.honor
+            ? window.api.pageParam.honor.title
+            : '',
+        honorDate:
+          window.api && window.api.pageParam.honor
+            ? window.api.pageParam.honor.honorDate
+            : Date.now()
       },
       titleRules: [{ validate: val => !!val, message: '必须填写作品名称' }],
       fileListRules: [
@@ -77,7 +104,8 @@ export default {
     FormItem,
     TextField,
     Upload,
-    DateInput
+    DateInput,
+    Progress
   },
   methods: {
     async create () {
@@ -121,17 +149,19 @@ export default {
       }
     },
     change (file) {
-      console.log('change: ' + JSON.stringify(file));
+      // console.log('change: ' + JSON.stringify(file));
       switch (file.status) {
         case 'ready':
-          this.uploaderClass = 'uploader hideUploader';
+          this.progressPercent = 0;
+          this.uploaderHide = true;
           break;
         default:
           break;
       }
       // this.uploaderClass = 'uploader hideUploader';
     },
-    progress () {
+    progress (file) {
+      this.progressPercent = parseInt(file.percent);
       // this.uploaderClass = 'uploader hideUploader';
     },
     beforeUpload (file) {
@@ -140,27 +170,27 @@ export default {
           position: 'top',
           message: '图片最大' + this.maxSize + 'M'
         });
-        this.uploaderClass = 'uploader';
+        this.uploaderHide = false;
         return false;
       }
     },
     error (e, file, fileList) {
-      console.log(JSON.stringify(e));
-      this.uploaderClass = 'uploader';
+      // console.log(JSON.stringify(e));
+      this.uploaderHide = false;
     },
     success (response, file, fileList) {
-      this.uploaderClass = 'uploader';
-      console.log(JSON.stringify(fileList));
+      this.uploaderHide = false;
+      // console.log(JSON.stringify(fileList));
       switch (response.code) {
         case 0:
-          this.fileList.push(
-            {
-              id: response.result.file.id,
-              url: response.result.file.url
-            }
-          );
+          const urlAry = response.result.file.url.split('/');
+          urlAry[urlAry.length - 1] = '450_' + urlAry[urlAry.length - 1];
+          this.fileList.push({
+            id: response.result.file.id,
+            url: urlAry.join('/')
+          });
           if (this.fileList.length >= this.max) {
-            this.uploaderClass = 'uploader hideUploader';
+            this.uploaderHide = true;
           }
           break;
 
@@ -174,15 +204,10 @@ export default {
 
       // console.log(response, fileList);
     },
-    remove (file, fileList) {
-      this.fileList = fileList.map(r => {
-        return {
-          id: r.id,
-          url: r.url
-        };
-      });
+    remove (file, index) {
+      alert(index);
       if (this.fileList.length < this.max) {
-        this.uploaderClass = 'uploader';
+        this.uploaderHide = false;
       }
     },
     changeHonorDate (date) {
@@ -190,6 +215,7 @@ export default {
     },
     submit () {
       this.$refs.form.validate().then(result => {
+        console.log(result);
         if (result === true) {
           if (this.id) {
             this.edit();
@@ -205,14 +231,49 @@ export default {
 </script>
 <style lang="less">
 .uploader {
+  width: 50%;
+  padding-top: 50%;
+  position: relative;
+  display: inline-block;
+  .progressPercent {
+    background-color: #fbfdff;
+    border: 1px dashed #c0ccda;
+    box-sizing: border-box;
+    position: relative;
+    .el-progress--circle {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -75px 0 0 -75px;
+      width: 150px !important;
+      height: 150px !important;
+    }
+    .el-progress-circle {
+      width: 150px !important;
+      height: 150px !important;
+    }
+  }
+  .progressPercent,
+  .el-upload--picture-card {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+  }
   .el-icon-plus {
     font-size: 50px;
-    position: relative;
-    top: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -25px 0 0 -25px;
   }
 }
-.hideUploader{
-  .el-upload{
+.hideUploader {
+  .el-upload {
     display: none;
   }
 }
@@ -228,5 +289,46 @@ export default {
 .bodyer {
   flex: 1;
   overflow: auto;
+}
+.hide {
+  display: none;
+}
+.picList {
+  font-size: 0;
+  margin: -5px;
+  width: 100%;
+}
+.picCon {
+  width: 50%;
+  padding-top: 50%;
+  display: inline-block;
+  position: relative;
+  .con {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #eee;
+  }
+
+  .del{
+    display: none;
+    background-color:rgba(0,0,0,.5);
+    .el-icon-delete{
+      color:#fff;
+      font-size:30px;
+      position: absolute;
+      left: 50%;
+      top:50%;
+      margin: -15px 0 0 -15px;
+    }
+  }
+  &:hover .del{
+    display: block;
+  }
 }
 </style>
