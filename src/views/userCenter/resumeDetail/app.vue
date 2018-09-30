@@ -115,23 +115,28 @@
         暂无作品展示
       </div>
     </Panel> -->
-    <Panel title="作品展示" :noContent="opus.length===0" v-if="isNotDetail|| opus.length>0">
-      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="opusEdit">
+    <Panel title="荣誉展示" :noContent="honor.length===0" v-if="isNotDetail|| honor.length>0">
+      <Button v-if="type==='edit'" class="editBtn" slot="end" flat color="#009688" @click="honorEdit">
         <Icon left value=":icon-75bianji" />编辑
       </Button>
       <div :key="row.id" v-for="row in honor">
-        <div class="listTitle">{{row.title}}</div>
+        <div class="listTitle">
+          {{row.title}}
+        </div>
+        <div class="listDate">
+          {{row.honorDateText}}
+        </div>
         <div class="picList">
-          <div class="picCon" v-for="(file,index) in row.files"  :key="file.url">
-            <div class="con" @click="imagesPopupOpen(row.files,index)" :style="{backgroundImage:'url('+file.url+')'}" />
+          <div class="picCon" v-for="(file,index) in row.reslist" :key="file.url">
+            <div class="con" @click="imagesPopupOpen(row.reslist,index, row.desc)" :style="{backgroundImage:'url('+file.url+')'}" />
           </div>
         </div>
       </div>
       <div slot="info">
-        暂无作品展示
+        暂无荣誉展示
       </div>
     </Panel>
-    <ImagesPopup ref="imagesPopup" :urlList="urlList" :index="urlListIndex"></ImagesPopup>
+    <ImagesPopup ref="imagesPopup" :urlList="urlList" :index="urlListIndex" :description="imagesDesc"></ImagesPopup>
   </div>
 </template>
 
@@ -155,6 +160,7 @@ export default {
   data () {
     return {
       urlList: [],
+      imagesDesc: {},
       urlListIndex: 0,
       tabActive: 'tabContainer0',
       type: window.api ? window.api.pageParam.type : 'detail',
@@ -184,86 +190,8 @@ export default {
       project: [],
       job: [],
       skills: [],
-      opus: [
-        {
-          id: 0,
-          uid: 0,
-          title: '图片作品',
-          files: [{
-            url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
-            path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
-          }]
-        },
-        {
-          id: 1,
-          uid: 0,
-          type: 1,
-          title: '线上作品',
-          url: 'https://www.baidu.com'
-        },
-        {
-          id: 2,
-          uid: 0,
-          title: '图片作品',
-          type: 0,
-          url:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
-        },
-        {
-          id: 3,
-          uid: 0,
-          type: 1,
-          title: '线上作品',
-          url: 'https://www.baidu.com'
-        },
-        {
-          id: 4,
-          uid: 0,
-          title: '图片作品',
-          type: 0,
-          url:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
-        },
-        {
-          id: 5,
-          uid: 0,
-          type: 1,
-          title: '线上作品',
-          url: 'https://www.baidu.com'
-        },
-        {
-          id: 6,
-          uid: 0,
-          title: '图片作品',
-          type: 0,
-          url:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
-        },
-        {
-          id: 7,
-          uid: 0,
-          type: 1,
-          title: '线上作品',
-          url: 'https://www.baidu.com'
-        }
-      ],
-      honor: [
-        {
-          id: 0,
-          uid: 0,
-          title: '大灰熊大灰熊大灰熊大灰熊',
-          files: [{
-            url: 'http://photocdn.sohu.com/20060801/Img244557955.jpg',
-            path: 'http://photocdn.sohu.com/20060801/Img244557955.jpg'
-          }, {
-            url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg',
-            path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537852584880&di=e6aa4d4489d71e518c40304c2dcf0897&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F86d6277f9e2f0708a84c923de224b899a901f246.jpg'
-          }, {
-            url: 'https://timgsa.baidu.com/timg?r=3&image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690',
-            path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537412951566&di=18b588c557aed8fe9d47927c1d8dfde7&imgtype=0&src=http%3A%2F%2Fs11.sinaimg.cn%2Fmw690%2F006qsdYzzy78Eo0oJXI6a%26690'
-          }]
-        }
-      ]
+      opus: [],
+      honor: []
     };
   },
   components: {
@@ -544,6 +472,24 @@ export default {
           break;
       }
     },
+    async getHonor () {
+      // tools.showProgress();
+      const response = await service.getUserHonor({
+        resumeId: this.id
+      });
+      // tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.honor = response.result.honorInfo ? response.result.honorInfo.map(r => adapter.honorAdapter(r)) : [];
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '荣誉列表获取失败'
+          });
+          break;
+      }
+    },
     openWebPage (data) {
       tools.openWebPage(data.url);
     },
@@ -566,6 +512,7 @@ export default {
         }
       });
     },
+
     introductionEdit () {
       tools.openWin({
         name: 'userIntroduction',
@@ -716,13 +663,34 @@ export default {
         },
         data: {
           nameSpace: 'userSkills',
-          id: this.id,
-          skills: this.skills
+          id: this.id
         }
       });
     },
-    imagesPopupOpen (list, index) {
-      this.urlList = list.map(r => r.url);
+
+    honorEdit () {
+      tools.openWin({
+        name: 'userHonor',
+        url: '../win.html',
+        title: '荣誉展示管理',
+        fname: 'userHonor_f',
+        furl: './userCenter/userHonor.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getHonor();
+        },
+        data: {
+          nameSpace: 'userHonor',
+          id: this.id
+        }
+      });
+    },
+
+    imagesPopupOpen (list, index, description) {
+      this.urlList = list.map((r, i) => {
+        this.imagesDesc[i] = description;
+        return r.url;
+      });
       this.urlListIndex = index;
       this.$refs.imagesPopup.open();
     }
@@ -746,7 +714,8 @@ export default {
             this.getProject();
             this.getJob();
             this.getSkill();
-            this.getOpus();
+            // this.getOpus();
+            this.getHonor();
             break;
         }
       }
@@ -881,8 +850,13 @@ export default {
     line-height: 30px;
   }
 }
-.listTitle{
-  padding: 10px;
-  font-size:14px;
+.listTitle {
+  padding: 10px 10px 0;
+  font-size: 14px;
+}
+.listDate {
+  font-size: 14px;
+  padding: 0 10px 10px;
+  color: #999;
 }
 </style>
