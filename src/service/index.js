@@ -409,5 +409,14 @@ export default {
       params,
       method: 'get'
     });
+  },
+  // 职位详情
+  getDetailsData (params) {
+    return request({
+      host: hostList.test,
+      url: '/api/job/info',
+      params,
+      method: 'get'
+    });
   }
 };

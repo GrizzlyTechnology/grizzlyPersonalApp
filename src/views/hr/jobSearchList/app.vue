@@ -3,8 +3,8 @@
     <LoadMore @refresh="refresh" :refreshing="refreshing" :loading="loading" @load="load">
       <List textline="two-line" class='bodyer' v-if="lists.length > 0">
           <div v-for='list in lists' v-model="lists" :key="list.id">
-            <ListItem avatar :ripple="false" button class='listItem'>
-              <ListItemContent @click="jobDetails">
+            <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(list.id)">
+              <ListItemContent >
                 <ListItemTitle>{{list.position}}
                   <span class='claim'>{{list.claim}}</span>
                 </ListItemTitle>
@@ -12,7 +12,7 @@
                   {{list.companyName}}
                 </ListItemSubTitle>
               </ListItemContent>
-              <ListAction @click="jobDetails">
+              <ListAction>
                 <ListItemAfterText class='salaryRange'>{{list.salaryRange}}</ListItemAfterText>
                 <ListItemAfterText>{{list.date}}</ListItemAfterText>
               </ListAction>
@@ -45,7 +45,6 @@ import service from "service";
 export default {
   data() {
     return {
-      num: 10,
       refreshing: false,
       loading: false,
       lists: [],
@@ -88,42 +87,35 @@ export default {
           break;
       }
     },
-
-    jobDetails() {
-      tool.openWin({
-        name: "jobDetails",
-        url: "../win.html",
-        title: "职位详情",
-        fname: "jobDetails_f",
-        furl: "./hr/jobDetails.html",
-        hasLeft: 1,
-        hasRight: 1
-      });
-    },
-    jobDetail: function() {
-      tool.openWin({
-        name: "zcgl",
-        url: "../win.html",
-        title: "职位详情",
-        fname: "jobDetails_f",
-        furl: "./hr/jobDetails.html",
-        hasLeft: 1,
-        hasRight: 1
-      });
+    jobDetails(id) {
+         tool.openWin({
+          name: "jobDetails",
+          url: "../win.html",
+          title: "职位详情",
+          fname: "jobDetails_f",
+          furl: "./hr/jobDetails.html",
+          hasLeft: 1,
+          hasRight: 1,
+          data:{
+            id:id
+          }
+        });
     },
     refresh() {
       this.refreshing = true;
       this.$refs.container.scrollTop = 0;
       setTimeout(() => {
         this.refreshing = false;
-        this.num = 10;
+        this.lists.length = 10;
+        console.log(this.lists.length)
       }, 2000);
     },
     load() {
       this.loading = true;
       setTimeout(() => {
         this.loading = false;
-        this.num += 10;
+        this.lists.length += 10;
+        console.log(this.lists.length)
       }, 2000);
     }
   },
@@ -139,9 +131,10 @@ export default {
 @import url("../../../assets/css/base.less");
 .container {
   padding: 0px;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height:100vh;
+  overflow: scroll;
 }
 
 .bodyer {
