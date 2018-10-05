@@ -37,7 +37,7 @@
             <img :src="companyImgSrc" alt="">
           </Avatar>
         </ListAction>
-        <ListItemContent @click="companyInfo">
+        <ListItemContent @click="companyInfo(enterpriseId)">
           <ListItemTitle>
             {{companyName}}
           </ListItemTitle>
@@ -56,7 +56,6 @@
       <h2 class='titleBox'>工作地址</h2>
       <p class='spaceBetween'>
         {{workPlace}}
-        <Icon size='14' value=":icon-jinru" right></Icon>
       </p>
     </CardText>
 
@@ -89,9 +88,9 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import { Container, Row, Col } from "muse-ui/lib/Grid";
-import { CardTitle, CardText } from "muse-ui/lib/Card";
+import { Toast } from 'mint-ui';
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { CardTitle, CardText } from 'muse-ui/lib/Card';
 import {
   List,
   ListItem,
@@ -100,27 +99,29 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from "muse-ui/lib/List";
-import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
-import tool from "util/tools";
-import service from "service";
+} from 'muse-ui/lib/List';
+import { Card, Icon, Avatar, Divider, Button } from 'muse-ui';
+import tool from 'util/tools';
+import service from 'service';
 export default {
-  data() {
+  data () {
     return {
       id: window.api.pageParam.id,
-      position: "",
-      firewood: "",
-      experience: "",
-      education: "",
-      workCity: "",
-      recruitsNum: "",
-      companyImgSrc: "",
-      companyName: "",
-      nature: "",
-      industry: "",
-      workDescription: "",
-      workPlace: "",
-      lists: []
+      position: '',
+      firewood: '',
+      experience: '',
+      education: '',
+      workCity: '',
+      recruitsNum: '',
+      companyImgSrc: '',
+      companyName: '',
+      nature: '',
+      industry: '',
+      workDescription: '',
+      workPlace: '',
+      enterpriseId: '',
+      lists: [],
+      rList: []
     };
   },
   components: {
@@ -145,12 +146,10 @@ export default {
   },
   methods: {
     // 页面数据
-    async detailsData() {
+    async detailsData () {
       const response = await service.getDetailsData({ id: this.id });
       switch (response.code) {
         case 0:
-          console.log(this.id);
-
           this.position = response.result.position;
           this.firewood = response.result.firewood;
           this.experience = response.result.experience;
@@ -164,22 +163,23 @@ export default {
           this.industry = response.result.industry;
           this.workDescription = response.result.workDescription;
           this.lists = response.result.lists;
+          this.enterpriseId = response.result.enterpriseId;
           break;
         default:
           Toast({
-            position: "top",
-            message: "获取失败，请稍后重试！！"
+            position: 'top',
+            message: '获取失败，请稍后重试！！'
           });
           break;
       }
     },
-    jobDetails(id) {
+    jobDetails (id) {
       tool.openWin({
-        name: "jobDetails",
-        url: "../win.html",
-        title: "职位详情",
-        fname: "jobDetails_f",
-        furl: "./hr/jobDetails.html",
+        name: 'jobDetails_' + id,
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobDetails_f_' + id,
+        furl: './hr/jobDetails.html',
         hasLeft: 1,
         hasRight: 1,
         data: {
@@ -187,36 +187,62 @@ export default {
         }
       });
     },
-    companyInfo() {
+    companyInfo (enterpriseId) {
       tool.openWin({
-        name: "companyInfo",
-        url: "../win.html",
-        title: "企业介绍",
-        fname: "companyInfo_f",
-        furl: "./hr/companyInfo.html",
+        name: 'companyInfo',
+        url: '../win.html',
+        title: '企业介绍',
+        fname: 'companyInfo_f',
+        furl: './hr/companyInfo.html',
         hasLeft: 1,
-        hasRight: 1
+        hasRight: 1,
+        data: {
+          enterpriseId: enterpriseId
+        }
       });
     },
-    async delivery() {
-      const response = await service.pushDelivery({ id: this.id });
+    async delivery () {
+      tool.showProgress();
+      const response = await service.getUserBaseInfo({});
       switch (response.code) {
         case 0:
-          Toast({
-            position: "top",
-            message: "投递成功！"
+          let rList = response.result.resumeInfo.length > 0 ? response.result.resumeInfo[0] : [];
+          const responses = await service.pushDelivery({
+            id: this.id,
+            resumeId: rList.id
           });
+          tool.hideProgress();
+          switch (responses.code) {
+            case 0:
+              Toast({
+                position: 'center',
+                message: '简历投递成功！'
+              });
+              break;
+            case 101:
+              Toast({
+                position: 'center',
+                message: '已经投递过该职位！！'
+              });
+              break;
+            default:
+              Toast({
+                position: 'center',
+                message: '投递失败，请稍后重试！！'
+              });
+              break;
+          }
           break;
         default:
           Toast({
-            position: "top",
-            message: "投递失败，请稍后重试！！"
+            position: 'top',
+            message: '暂无简历，请增加简历！'
           });
           break;
       }
     }
   },
-  mounted() {
+  mounted () {
     this.detailsData();
   }
 };

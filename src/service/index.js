@@ -243,7 +243,7 @@ export default {
       method: 'get'
     });
   },
-  //职位搜索
+  // 职位搜索
   searchBoxValue (params) {
     return request({
       host: BASEURL,
@@ -438,11 +438,19 @@ export default {
       method: 'get'
     });
   },
-  //投递简历
-  pushDelivery(params) {
+  // 投递简历
+  pushDelivery (params) {
     return request({
       host: BASEURL,
-      url: 'api/Job/deliveryreresume',
+      url: '/api/Job/deliveryreresume',
+      params
+    });
+  },
+  // 获取公司信息
+  getCompanyInfo (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Job/deliveryreresume',
       params
     });
   }

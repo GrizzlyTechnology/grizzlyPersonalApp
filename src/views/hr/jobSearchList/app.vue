@@ -2,7 +2,7 @@
   <Container ref="container" class="demo-loadmore-content container">
     <LoadMore @refresh="refresh" :refreshing="refreshing" :loading="loading" @load="load">
       <List textline="two-line" class='bodyer' v-if="lists.length > 0">
-          <div v-for='list in lists' v-model="lists" :key="list.id">
+          <div v-for='list in lists' :key="list.id">
             <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(list.id)">
               <ListItemContent >
                 <ListItemTitle>{{list.position}}
@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import { Divider, Button, LoadMore } from "muse-ui";
-import { Container, Row, Col } from "muse-ui/lib/Grid";
+import { Toast } from 'mint-ui';
+import { Divider, Button, LoadMore } from 'muse-ui';
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
 import {
   List,
   ListItem,
@@ -39,17 +39,17 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from "muse-ui/lib/List";
-import tool from "util/tools";
-import service from "service";
+} from 'muse-ui/lib/List';
+import tool from 'util/tools';
+import service from 'service';
 export default {
-  data() {
+  data () {
     return {
       refreshing: false,
       loading: false,
       lists: [],
-      keyWord:window.api.pageParam.keyWord,
-      area:window.api.pageParam.area || []
+      keyWord: window.api.pageParam.keyWord,
+      area: window.api.pageParam.area || []
     };
   },
   components: {
@@ -70,59 +70,59 @@ export default {
   },
   methods: {
     // 列表数据
-    async listsData() {
+    async listsData () {
       const response = await service.searchBoxValue({
-        keyWord:this.keyWord,
-        area:this.area
-        });
+        keyWord: this.keyWord,
+        area: this.area
+      });
       switch (response.code) {
         case 0:
           this.lists = response.result.list;
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
-    jobDetails(id) {
-         tool.openWin({
-          name: "jobDetails",
-          url: "../win.html",
-          title: "职位详情",
-          fname: "jobDetails_f",
-          furl: "./hr/jobDetails.html",
-          hasLeft: 1,
-          hasRight: 1,
-          data:{
-            id:id
-          }
-        });
+    jobDetails (id) {
+      tool.openWin({
+        name: 'jobDetails_' + id,
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobDetails_f_' + id,
+        furl: './hr/jobDetails.html',
+        hasLeft: 1,
+        hasRight: 1,
+        data: {
+          id: id
+        }
+      });
     },
-    refresh() {
+    refresh () {
       this.refreshing = true;
       this.$refs.container.scrollTop = 0;
       setTimeout(() => {
         this.refreshing = false;
         this.lists.length = 10;
-        console.log(this.lists.length)
+        console.log(this.lists.length);
       }, 2000);
     },
-    load() {
+    load () {
       this.loading = true;
       setTimeout(() => {
         this.loading = false;
         this.lists.length += 10;
-        console.log(this.lists.length)
+        console.log(this.lists.length);
       }, 2000);
     }
   },
   watch: {
 
   },
-  mounted() {
+  mounted () {
     this.listsData();
   }
 };
