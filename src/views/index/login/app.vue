@@ -91,6 +91,12 @@ export default {
           tools.setStorage('token', response.result.token);
           tools.setStorage('phone', response.result.userinfo.phone);
           tools.setStorage('userInfo', response.result.userinfo);
+          //绑定极光推送的别名为id
+          var ajpush = window.api.require('ajpush');
+          var param = {alias:uinfo.id};
+          ajpush.bindAliasAndTags(param,function(ret) {
+                var statusCode = ret.statusCode;
+          });
           window.api.sendEvent({
             name: 'event'
           });

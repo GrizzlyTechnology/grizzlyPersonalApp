@@ -7,6 +7,11 @@ import 'assets/fonts/iconfont.css';
 
 if (process.env === 'production') {
   window.apiready = function () {
+    api.addEventListener({
+        name:'swiperight'
+    }, function(ret, err){        
+       alert('向右轻扫');
+    });
     new Vue({
       el: '#app',
       render: h => h(App)
