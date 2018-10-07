@@ -601,6 +601,7 @@ u.openWin = function (params) {
       name,
       url,
       bounces: false,
+      slidBackEnabled:false,
       pageParam: {
         ...winData,
       }

@@ -21,7 +21,7 @@ var ajpush = window.api.require('ajpush');
     }
 ajpush.getRegistrationId(function(ret) {
     var registrationId = ret.id;
-    alert(registrationId);
+    //alert(registrationId);
 });
 // 应用在前台状态会监听
 ajpush.setListener(
