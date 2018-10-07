@@ -1,11 +1,12 @@
 <template>
   <Container>
-    <Button full-width large class="buttom" color="red" @click="submit">退出登录</Button>
+    <Button full-width large class="buttom" color="red" @click="logout">退出登录</Button>
   </Container>
 </template>
 
 <script>
-import tool from 'util/tools';
+import tools from 'util/tools';
+import service from 'service';
 import { Container, Row, Col, Flex } from 'muse-ui/lib/Grid';
 import { Button } from 'muse-ui';
 import Paper from 'muse-ui/lib/Paper';
@@ -23,14 +24,34 @@ export default {
     Button
   },
   methods: {
-    submit () {
-      tool.clearStorage('token');
-      window.api.sendEvent({
-        name: 'event'
-      });
-      window.api.closeToWin({
-        name: 'root'
-      });
+      async query () {
+      tools.showProgress();
+      const response = await service.logout();
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+            tools.clearStorage('token');
+            tools.openWin({
+                name: 'login',
+                url: '../win.html',
+                title: '登录',
+                fname: 'login_f',
+                furl: './index/login.html',
+                data:{
+                    comefrom:'systemSet'
+                }
+            });
+        break;
+        default:
+        tools.toast({
+            position: 'top',
+            message: response.message,
+          });
+          break;
+      }
+      },
+    logout () {
+      this.query();
     }
   },
   mounted () {}
