@@ -97,7 +97,7 @@ export default {
     }
   },
   mounted () {
-    tools.fixStatusBar(tools.dom('.container'));
+    //tools.fixStatusBar(tools.dom('.ucHeader'));
   }
 };
 </script>
