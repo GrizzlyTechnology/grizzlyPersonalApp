@@ -21,9 +21,7 @@
     </List>
     <CardText class='whiteBg detailBox'>
       <h2 class='titleBox'>公司介绍</h2>
-      <p>
-        {{companyIntro}}
-      </p>
+       <div v-html="companyIntro"></div>
     </CardText>
     <CardText class='whiteBg detailBox mt8'>
       <h2 class='titleBox'>公司地址</h2>
@@ -117,7 +115,23 @@ export default {
           this.scale = response.result.scale;
           this.industry = response.result.industry;
           this.companyIntro = response.result.companyIntro;
+          this.comapnyAddress = response.result.comapnyAddress;
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '获取失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    async companyAllJob () {
+      const response = await service.getCompanyJob({ enterpriseId: this.enterpriseId });
+      switch (response.code) {
+        case 0:
           this.lists = response.result.lists;
+          console.log(response.result.lists);
+          console.log(response.result);
           break;
         default:
           Toast({
@@ -142,7 +156,10 @@ export default {
       });
     }
   },
-  mounted () {}
+  mounted () {
+    this.detailsData();
+    this.companyAllJob();
+  }
 };
 </script>
 <style lang="less" scoped>

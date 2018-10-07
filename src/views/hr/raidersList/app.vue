@@ -1,10 +1,10 @@
 <template>
  <List textline="three-line" >
    <div  v-for='raiders in raidersList' :key="raiders.id">
-    <ListItem :ripple="false" button class='listBg'  @click="raidersArticle">
-      <ListAction class='listAction'>
+    <ListItem :ripple="false" button class='listBg'  @click="raidersArticle(raiders.id)">
+      <ListAction class='listAction' v-show='raiders.thumb !==""'>
         <Paper class="imgSpace" :z-depth="5">
-          <img :src="raiders.path" class='raidersImg'>
+          <img :src="raiders.thumb" class='raidersImg'>
         </Paper>
       </ListAction>
       <ListItemContent>
@@ -20,18 +20,16 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui';
 import { Paper, Divider } from 'muse-ui';
 import { List, ListItem, ListAction, ListItemContent, ListItemTitle, ListItemSubTitle } from 'muse-ui/lib/List';
+import service from 'service';
 import tool from 'util/tools';
 export default {
   data () {
     return {
-      raidersList: [
-        { id: 1, path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' },
-        { id: 2, path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' },
-        { id: 3, path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' },
-        { id: 4, path: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg', title: '初次面试，为啥企业要求带简历后还得再写一个简历？', content: '昨天和学弟聊天，说起他最近在找工作的事情，HR约他初次面试，要他带一份简历....' }
-      ]
+      cid: 1, // 文章分类id,写死
+      raidersList: []
     };
   },
   components: {
@@ -45,7 +43,21 @@ export default {
     ListItemSubTitle
   },
   methods: {
-    raidersArticle () {
+    async raidersListData () {
+      const response = await service.getrRaidersList({ cid: this.cid });
+      switch (response.code) {
+        case 0:
+          this.raidersList = response.result.raidersList;
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '获取失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    raidersArticle (id) {
       tool.openWin({
         name: 'raidersArticle',
         url: '../win.html',
@@ -53,11 +65,15 @@ export default {
         fname: 'raidersArticle_f',
         furl: './hr/raidersArticle.html',
         hasLeft: 1,
-        hasRight: 1
+        hasRight: 1,
+        data: {
+          id: id
+        }
       });
     }
   },
   mounted () {
+    this.raidersListData();
   }
 };
 </script>

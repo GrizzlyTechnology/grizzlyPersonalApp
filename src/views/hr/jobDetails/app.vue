@@ -342,6 +342,9 @@ export default {
   padding-bottom: 0;
 }
 
+.mu-item-action{
+  height: auto;
+}
 .fixBox {
   position: fixed;
   bottom: 0px;

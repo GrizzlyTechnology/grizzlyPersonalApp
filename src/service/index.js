@@ -450,8 +450,36 @@ export default {
   getCompanyInfo (params) {
     return request({
       host: BASEURL,
-      url: '/api/Job/deliveryreresume',
-      params
+      url: '/api/Enterprise/info',
+      params,
+      method: 'get'
+    });
+  },
+  // 获取企业所有招聘
+  getCompanyJob (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Job/seljobsbyenterpriseid',
+      params,
+      method: 'get'
+    });
+  },
+  // 获取职场攻略
+  getrRaidersList (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Content/lists',
+      params,
+      method: 'get'
+    });
+  },
+  // 获取职场攻略内容
+  getRaidersArticleData (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Content/info',
+      params,
+      method: 'get'
     });
   }
 };
