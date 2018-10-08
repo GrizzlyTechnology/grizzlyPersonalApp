@@ -18,7 +18,7 @@
         <i class="mu-icon icon-right isLink" />
         <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999"/>
       </Cell>
-      <Cell class="ucCell" icon="../../../assets/img/headpic.png">
+      <Cell class="ucCell">
         <div class="ucCellCon" @click="resumeList">
           <span class="ucCellTitle">简历管理</span>
         </div>
@@ -97,7 +97,7 @@ export default {
     }
   },
   mounted () {
-    //tools.fixStatusBar(tools.dom('.ucHeader'));
+    // tools.fixStatusBar(tools.dom('.ucHeader'));
   }
 };
 </script>

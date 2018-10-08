@@ -30,14 +30,13 @@ export default {
     }
   },
   mounted () {
-    var obj = this;
-    obj.init();
+    this.init();
     tool.addEventListener(
       {
         name: 'event'
       },
       function (ret, err) {
-        obj.init();
+        this.init();
       }
     );
   }
