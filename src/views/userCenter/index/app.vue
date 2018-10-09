@@ -5,7 +5,7 @@
       <span class="ucNickname">人头原子弹
         <Icon :size="16" value=":icon-nv1" color="#FFF" /></span>
       <span class="ucSchoole">镇江高等专科学校 <span class="ucClass">电气系 / 电气专业</span></span>
-      <span class="ucSetting" @click="systemSet">
+      <span class="ucSetting" @click="setting">
         <Icon :size="14" value=":el-icon-setting" color="#FFF" />
         设置
       </span>
@@ -16,14 +16,14 @@
           <span class="ucCellTitle">完善学生信息</span>
         </div>
         <i class="mu-icon icon-right isLink" />
-        <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999"/>
+        <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
       </Cell>
-      <Cell class="ucCell" icon="../../../assets/img/headpic.png">
+      <Cell class="ucCell">
         <div class="ucCellCon" @click="resumeList">
           <span class="ucCellTitle">简历管理</span>
         </div>
         <i class="mu-icon icon-right isLink" />
-        <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999"/>
+        <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
       </Cell>
     </div>
   </div>
@@ -85,13 +85,13 @@ export default {
         hasLeft: 1
       });
     },
-    systemSet () {
+    setting () {
       tools.openWin({
-        name: 'systemSet',
+        name: 'setting',
         url: '../win.html',
-        title: '系统设置',
-        fname: 'systemSet_f',
-        furl: './userCenter/systemSet.html',
+        title: '设置',
+        fname: 'setting_f',
+        furl: './userCenter/setting.html',
         hasLeft: 1
       });
     }
@@ -144,7 +144,7 @@ export default {
 }
 .ucCell {
   position: relative;
-  .ucCellCon{
+  .ucCellCon {
     position: absolute;
     left: 0;
     top: 0;
@@ -153,13 +153,13 @@ export default {
     &:active {
       background-color: #eee;
     }
-    .ucCellTitle{
+    .ucCellTitle {
       line-height: 56px;
       color: #333;
       margin-left: 48px;
     }
   }
-  .mu-icon{
+  .mu-icon {
     z-index: 1;
     position: relative;
   }
