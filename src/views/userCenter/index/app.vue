@@ -1,11 +1,11 @@
 <template>
   <div class="content">
     <div class="ucHeader">
-      <div class="ucAvatar"></div>
-      <span class="ucNickname">人头原子弹
-        <Icon :size="16" value=":icon-nv1" color="#FFF" /></span>
+      <div class="ucAvatar" :style="{backgroundImage:'url:(../../../assets/img/headpic.png)'}"></div>
+      <span class="ucNickname">{{nickname}}
+        <Icon :size="16" :value="sex===1?':icon-nan2':':icon-nv1'" :color="sex===1?'#61bce8':'#fd7777'" /></span>
       <span class="ucSchoole">镇江高等专科学校 <span class="ucClass">电气系 / 电气专业</span></span>
-      <span class="ucSetting" @click="systemSet">
+      <span class="ucSetting" @click="setting">
         <Icon :size="14" value=":el-icon-setting" color="#FFF" />
         设置
       </span>
@@ -16,48 +16,31 @@
           <span class="ucCellTitle">完善学生信息</span>
         </div>
         <i class="mu-icon icon-right isLink" />
-        <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999"/>
+        <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
       </Cell>
-      <Cell class="ucCell" icon="../../../assets/img/headpic.png">
+      <Cell class="ucCell">
         <div class="ucCellCon" @click="resumeList">
           <span class="ucCellTitle">简历管理</span>
         </div>
         <i class="mu-icon icon-right isLink" />
-        <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999"/>
+        <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
       </Cell>
     </div>
   </div>
-  <!-- <Container>
-    <Row>
-      <Col span="3" offset="9" @click="systemSet"> 设置
-      </Col>
-    </Row>
-    <Row class="wrapper" align-items="center">
-      <Flex class="headpic" justify-content="center" fill>
-        <Paper class="paper" circle :z-depth="1"></Paper>
-      </Flex>
-      <Flex class="info" justify-content="center" fill>
-        <div class="nickname">nickname</div>
-        <div class="atter">无锡职业技术学院
-          <span class="atter-more">计算机32102班</span>
-        </div>
-      </Flex>
-    </Row>
-    <Button full-width large class="buttom" color="red" @click="studentInfo">完善学生信息</Button>
-    <Button full-width large class="buttom" color="red" @click="resumeList">简历管理</Button>
-
-  </Container> -->
 </template>
 
 <script>
 import { Icon } from 'muse-ui';
 import { Cell } from 'mint-ui';
 import tools from 'util/tools';
+import service from 'service';
 
 export default {
   data () {
     return {
-      userInfo: tools.getStorage('userInfo')
+      nickname: '暂无',
+      sex: 1,
+      headphoto: null
     };
   },
   components: {
@@ -65,6 +48,25 @@ export default {
     Cell
   },
   methods: {
+    async getUserinfo () {
+      tools.showProgress();
+      const response = await service.getUserInfo();
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          console.log(JSON.stringify(response));
+          this.nickname = response.result.userInfo.nickname;
+          this.sex = response.result.userInfo.sex;
+          this.headphoto = response.result.userInfo.headphoto;
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '用户信息获取失败'
+          });
+          break;
+      }
+    },
     studentInfo () {
       tools.openWin({
         name: 'userArea',
@@ -85,19 +87,25 @@ export default {
         hasLeft: 1
       });
     },
-    systemSet () {
+    setting () {
       tools.openWin({
-        name: 'systemSet',
+        name: 'setting',
         url: '../win.html',
-        title: '系统设置',
-        fname: 'systemSet_f',
-        furl: './userCenter/systemSet.html',
-        hasLeft: 1
+        title: '设置',
+        fname: 'setting_f',
+        furl: './userCenter/setting.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'setting',
+          callback: (ret, err) => {
+            this.getUserinfo();
+          }
+        }
       });
     }
   },
   mounted () {
-    //tools.fixStatusBar(tools.dom('.ucHeader'));
+    this.getUserinfo();
   }
 };
 </script>
@@ -115,7 +123,7 @@ export default {
   width: 80px;
   border-radius: 40px;
   background-color: #fff;
-  background-image: url("../../../assets/img/headpic.png");
+  // background-image: url("../../../assets/img/headpic.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -144,7 +152,7 @@ export default {
 }
 .ucCell {
   position: relative;
-  .ucCellCon{
+  .ucCellCon {
     position: absolute;
     left: 0;
     top: 0;
@@ -153,13 +161,13 @@ export default {
     &:active {
       background-color: #eee;
     }
-    .ucCellTitle{
+    .ucCellTitle {
       line-height: 56px;
       color: #333;
       margin-left: 48px;
     }
   }
-  .mu-icon{
+  .mu-icon {
     z-index: 1;
     position: relative;
   }
@@ -175,43 +183,4 @@ export default {
     right: 15px;
   }
 }
-// .container {
-//   padding: 20px;
-//   background: @baseColor;
-//   height: 110px;
-//   .headpic {
-//     height: 80px;
-//     width: 90px;
-//     .paper {
-//       height: 80px;
-//       width: 80px;
-//       background-image: url("../../../assets/img/headpic.png");
-//       background-repeat: no-repeat;
-//       background-position: center;
-//       background-size: cover;
-//     }
-//   }
-//   .row {
-//     .col {
-//       line-height: 40px;
-//       text-align: right;
-//       color: @grayFont;
-//       font-size: @h3;
-//     }
-//   }
-//   .info {
-//     line-height: 30px;
-//     color: @grayFont;
-//     .nickname {
-//       font-size: @h1;
-//     }
-//     .atter {
-//       font-size: @h3;
-//       color: @grayFontSmallTil;
-//       .atter-more {
-//         margin-left: 5px;
-//       }
-//     }
-//   }
-// }
 </style>
