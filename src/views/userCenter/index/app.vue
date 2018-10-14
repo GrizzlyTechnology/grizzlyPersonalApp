@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="ucHeader">
-      <div class="ucAvatar" :style="{backgroundImage:'url:(\'' + headphoto + '\')'}"></div>
+      <div class="ucAvatar" :style="{backgroundImage:'url(' + headphoto + ')'}"></div>
       <span class="ucNickname">{{nickname}}
         <Icon :size="16" :value="sex===1?':icon-nan2':':icon-nv1'" :color="sex===1?'#61bce8':'#fd7777'" /></span>
       <span class="ucSchoole">镇江高等专科学校 <span class="ucClass">电气系 / 电气专业</span></span>
