@@ -65,7 +65,7 @@ export default {
         sex: 1,
         identity: '',
         phone: '',
-        nrolmenttime: (new Date()).valueOf(),
+        nrolmentTime: (new Date()).valueOf(),
         year: userInfo.year.value,
         college: userInfo.college[0].value,
         major: userInfo.major.value,
@@ -93,11 +93,12 @@ export default {
   },
   computed: {
     startDateTimeText () {
-      return new Date(this.form.nrolmenttime) || Date.now();
+      return new Date(this.form.nrolmentTime) || Date.now();
     }
   },
   methods: {
     async create () {
+      console.log(JSON.stringify(this.form));
       const response = await service.createStudent(this.form);
       switch (response.code) {
         case 0:
@@ -105,8 +106,10 @@ export default {
             position: 'top',
             message: '学生信息创建成功！'
           });
+          tools.sendEvent('studentInfoListCallback');
+          // todo 身份列表 studentInfoListCallback
           window.api.closeToWin({
-            name: 'root'
+            name: 'studentInfoList'
           });
           break;
         default:
@@ -133,7 +136,7 @@ export default {
       }
     },
     changeStartDateTime (date) {
-      this.form.nrolmenttime = date.valueOf();
+      this.form.nrolmentTime = date.valueOf();
     },
     submit () {
       this.$refs.form.validate().then((result) => {
