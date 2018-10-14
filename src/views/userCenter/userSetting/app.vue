@@ -1,17 +1,25 @@
 <template>
   <div>
     <div class="avatarCell">
-       <div class="ucAvatar" :style="{backgroundImage:'url(' + headphoto + ')'}">
-
-       </div>
-       <Upload
+      <Progress
+        :class="{avatarProgress:true,hide:!uploaderHide}"
+        type="circle"
+        :percentage="progressPercent"
+        :width="80"
+      />
+      <div
+        class="ucAvatar"
+        :style="{backgroundImage:'url(' + headphoto + ')'}"
+      >
+      </div>
+      <Upload
         ref="uploader"
         accept="image/*"
         name="file"
         :show-file-list="false"
         :with-credentials="true"
         :multiple="false"
-        :data="{type:2}"
+        :data="{type:1}"
         :headers="headers"
         :action="actionUrl"
         :limit="max"
@@ -22,8 +30,8 @@
         :before-upload="beforeUpload"
         :on-error="error"
       >
-         <Button :disabled="uploaderHide" color="#009688" textColor="#ffffff" :style="{marginTop:'10px',boxShadow: '0 0 0'}">上传头像</Button>
-       </Upload>
+        <Button :disabled="uploaderHide" color="#009688" textColor="#ffffff" :style="{marginTop:'10px',boxShadow: '0 0 0'}">上传头像</Button>
+      </Upload>
     </div>
     <Cell class="ucCell link">
       <div class="ucCellCon" @click="userSetting">
@@ -80,6 +88,7 @@
 <script>
 import { Button, Icon } from 'muse-ui';
 import { Cell } from 'mint-ui';
+import Progress from 'element-ui/lib/progress';
 import Upload from 'element-ui/lib/upload';
 import tools from 'util/tools';
 import dictMap from 'util/dictMap';
@@ -119,7 +128,8 @@ export default {
     Icon,
     Cell,
     Button,
-    Upload
+    Upload,
+    Progress
   },
   methods: {
     async getUserinfo () {
@@ -179,21 +189,14 @@ export default {
     },
     success (response, file, fileList) {
       this.uploaderHide = false;
-      // console.log(JSON.stringify(fileList));
+      console.log(JSON.stringify(fileList));
       switch (response.code) {
         case 0:
           const urlAry = response.result.file.url.split('/');
           urlAry[urlAry.length - 1] = '450_' + urlAry[urlAry.length - 1];
-          this.fileList.push({
-            id: response.result.file.id,
-            url: response.result.file.url,
-            coverUrl: urlAry.join('/')
-          });
-          if (this.fileList.length >= this.max) {
-            this.uploaderHide = true;
-          }
+          this.headphoto = urlAry.join('/');
+          this.fileList = [];
           break;
-
         default:
           tools.toast({
             position: 'top',
@@ -230,6 +233,9 @@ export default {
 </script>
 <style lang="less">
 @import url("../../../assets/css/base.less");
+.hide {
+  display: none;
+}
 .ucAvatar {
   display: inline-block;
   height: 80px;
@@ -245,6 +251,14 @@ export default {
   font-size: 0;
   padding: 20px;
   text-align: center;
+  position: relative;
+  .avatarProgress{
+    background-color: rgba(0,0,0,0.25);
+    border-radius: 40px;
+    position: absolute;
+    left: 50%;
+    margin-left: -40px;
+  }
 }
 .ucCell {
   &.link{
