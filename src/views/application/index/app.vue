@@ -1,14 +1,15 @@
 <template>
   <div>
-      <br/>
-      <br/>
-      <br/>
-      这是应用页面
-    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <p @click='outsideSchool'>校外实习</p>
+  </div>
 </template>
 
 <script>
-
+import tool from 'util/tools';
 export default {
   data () {
     return {
@@ -19,10 +20,18 @@ export default {
 
   },
   methods: {
-
+    outsideSchool () {
+      tool.openWin({
+        name: 'outsideSchool',
+        url: '../win.html',
+        title: '校外实习',
+        fname: 'outsideSchool_f',
+        furl: './application/outsideSchool.html',
+        hasLeft: 1
+      });
+    }
   },
-  mounted () {
-  }
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>
