@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="ucHeader">
-      <div class="ucAvatar" :style="{backgroundImage:'url:(../../../assets/img/headpic.png)'}"></div>
+      <div class="ucAvatar" :style="{backgroundImage:'url(' + headphoto + ')'}"></div>
       <span class="ucNickname">{{nickname}}
         <Icon :size="16" :value="sex===1?':icon-nan2':':icon-nv1'" :color="sex===1?'#61bce8':'#fd7777'" /></span>
       <span class="ucSchoole">镇江高等专科学校 <span class="ucClass">电气系 / 电气专业</span></span>
@@ -12,8 +12,8 @@
     </div>
     <div class="bodyer">
       <Cell class="ucCell">
-        <div class="ucCellCon" @click="studentInfo">
-          <span class="ucCellTitle">完善学生信息</span>
+        <div class="ucCellCon" @click="studentInfoList">
+          <span class="ucCellTitle">学籍管理</span>
         </div>
         <i class="mu-icon icon-right isLink" />
         <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
@@ -40,7 +40,7 @@ export default {
     return {
       nickname: '暂无',
       sex: 1,
-      headphoto: null
+      headphoto: '../assets/img/headpic.png'
     };
   },
   components: {
@@ -57,7 +57,7 @@ export default {
           console.log(JSON.stringify(response));
           this.nickname = response.result.userInfo.nickname;
           this.sex = response.result.userInfo.sex;
-          this.headphoto = response.result.userInfo.headphoto;
+          this.headphoto = response.result.userInfo.headphoto === null ? this.headphoto : response.result.userInfo.headphoto;
           break;
         default:
           tools.toast({
@@ -67,13 +67,13 @@ export default {
           break;
       }
     },
-    studentInfo () {
+    studentInfoList () {
       tools.openWin({
-        name: 'userArea',
+        name: 'studentInfoList',
         url: '../win.html',
-        title: '选择地区',
-        fname: 'userArea_f',
-        furl: './userCenter/userArea.html',
+        title: '学籍管理',
+        fname: 'studentInfoList_f',
+        furl: './userCenter/studentInfoList.html',
         hasLeft: 1
       });
     },

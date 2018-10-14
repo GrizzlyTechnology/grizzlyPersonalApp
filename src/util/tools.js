@@ -628,6 +628,13 @@ u.openWin = function (params) {
         },
         data.callback
       );
+
+      // api.addEventListener({
+      //   name: 'swiperight'
+      // }, function (ret, err) {
+      //   alert('向右轻扫');
+      // });
+
       data.eventName = eventName;
       delete data.callback;
     }
