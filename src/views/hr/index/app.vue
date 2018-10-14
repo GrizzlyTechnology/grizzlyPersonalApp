@@ -27,100 +27,85 @@
     <div class='bgWhite space15'>
       <h2 class='titleB'>名企推荐</h2>
       <Row class='mqtj' gutter>
-        <Col span="4">
-        <div class="grid-cell"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt=""></div>
-        </Col>
-        <Col span="4">
-        <div class="grid-cell"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt=""></div>
-
-        </Col>
-        <Col span="4">
-        <div class="grid-cell"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt=""></div>
-
-        </Col>
-         <Col span="4">
-        <div class="grid-cell"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt=""></div>
-        </Col>
-        <Col span="4">
-        <div class="grid-cell"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt=""></div>
-
-        </Col>
-        <Col span="4">
-        <div class="grid-cell"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt=""></div>
-
+        <Col span="4" v-for='company in companys.slice(0,6)' :key='company.id'>
+        <div class="grid-cell">
+          <img :src="company.imgSrc" alt="">
+        </div>
         </Col>
       </Row>
     </div>
     <h2 class='titleA'><span></span> 适合你的职位 <span></span></h2>
     <div class='bgWhite '>
-       <List textline="two-line" v-if="suitablesLists.length > 0">
-          <div v-for='suitablesList in suitablesLists' :key="suitablesList.id">
-            <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(suitablesList.id)">
-              <ListItemContent >
-                <ListItemTitle>{{suitablesList.position}}
-                  <span class='claim'>{{suitablesList.claim}}</span>
-                </ListItemTitle>
-                <ListItemSubTitle>
-                  {{suitablesList.companyName}}
-                </ListItemSubTitle>
-              </ListItemContent>
-              <ListAction>
-                <ListItemAfterText class='salaryRange'>{{suitablesList.salaryRange}}</ListItemAfterText>
-                <ListItemAfterText>{{suitablesList.date}}</ListItemAfterText>
-              </ListAction>
-            </ListItem>
-            <Divider></Divider>
-          </div>
+      <List textline="two-line" v-if="suitablesLists.length > 0">
+        <div v-for='suitablesList in suitablesLists.slice(0,6)' :key="suitablesList.id">
+          <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(suitablesList.id)">
+            <ListItemContent>
+              <ListItemTitle>{{suitablesList.position}}
+                <span class='claim'>{{suitablesList.claim}}</span>
+              </ListItemTitle>
+              <ListItemSubTitle>
+                {{suitablesList.companyName}}
+              </ListItemSubTitle>
+            </ListItemContent>
+            <ListAction>
+              <ListItemAfterText class='salaryRange'>{{suitablesList.salaryRange}}</ListItemAfterText>
+              <ListItemAfterText>{{suitablesList.date}}</ListItemAfterText>
+            </ListAction>
+          </ListItem>
+          <Divider></Divider>
+        </div>
       </List>
     </div>
     <div class="adv"></div>
     <!-- <img src="../../../assets/img/adv.jpg" alt="" class='adv'> -->
     <div class='bgWhite hotJobs'>
-      <h2 class='titleB'>热门职位 <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon></h2>
+      <h2 class='titleB'>热门职位 <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
+      </h2>
     </div>
     <div class='bgWhite'>
-    <List textline="two-line" v-if="suitablesLists.length > 0">
-          <div v-for='suitablesList in suitablesLists' :key="suitablesList.id">
-            <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(suitablesList.id)">
-              <ListItemContent >
-                <ListItemTitle>{{suitablesList.position}}
-                  <span class='claim'>{{suitablesList.claim}}</span>
-                </ListItemTitle>
-                <ListItemSubTitle>
-                  {{suitablesList.companyName}}
-                </ListItemSubTitle>
-              </ListItemContent>
-              <ListAction>
-                <ListItemAfterText class='salaryRange'>{{suitablesList.salaryRange}}</ListItemAfterText>
-                <ListItemAfterText>{{suitablesList.date}}</ListItemAfterText>
-              </ListAction>
-            </ListItem>
-            <Divider></Divider>
-          </div>
+      <List textline="two-line" v-if="suitablesLists.length > 0">
+        <div v-for='suitablesList in suitablesLists.slice(0,6)' :key="suitablesList.id">
+          <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(suitablesList.id)">
+            <ListItemContent>
+              <ListItemTitle>{{suitablesList.position}}
+                <span class='claim'>{{suitablesList.claim}}</span>
+              </ListItemTitle>
+              <ListItemSubTitle>
+                {{suitablesList.companyName}}
+              </ListItemSubTitle>
+            </ListItemContent>
+            <ListAction>
+              <ListItemAfterText class='salaryRange'>{{suitablesList.salaryRange}}</ListItemAfterText>
+              <ListItemAfterText>{{suitablesList.date}}</ListItemAfterText>
+            </ListAction>
+          </ListItem>
+          <Divider></Divider>
+        </div>
       </List>
     </div>
-     <div class='bgWhite hotJobs'>
-      <h2 class='titleB' @click="raidersListAll()">职场攻略 <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon></h2>
+    <div class='bgWhite hotJobs'>
+      <h2 class='titleB' @click="raidersListAll()">职场攻略 <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
+      </h2>
     </div>
     <div class='bgWhite'>
- <List textline="three-line" >
-   <div  v-for='raiders in raidersList' :key="raiders.id">
-    <ListItem :ripple="false" button class='listBg'  @click="raidersArticle(raiders.id)">
-        <ListAction class='listAction' v-show='raiders.thumb !==""'>
-        <Paper class="imgSpace" :z-depth="5">
-          <img :src="raiders.thumb" class='raidersImg'>
-        </Paper>
-      </ListAction>
-      <ListItemContent>
-        <ListItemTitle>{{raiders.title}}</ListItemTitle>
-        <ListItemSubTitle>
-         {{raiders.content}}
-        </ListItemSubTitle>
-      </ListItemContent>
-    </ListItem>
-    <Divider></Divider>
-    </div>
-  </List>
+      <List textline="three-line">
+        <div v-for='raiders in raidersList.slice(0,6)' :key="raiders.id">
+          <ListItem :ripple="false" button class='listBg' @click="raidersArticle(raiders.id)">
+            <ListAction class='listAction' v-show='raiders.thumb !==""'>
+              <Paper class="imgSpace" :z-depth="5">
+                <img :src="raiders.thumb" class='raidersImg'>
+              </Paper>
+            </ListAction>
+            <ListItemContent>
+              <ListItemTitle>{{raiders.title}}</ListItemTitle>
+              <ListItemSubTitle>
+                {{raiders.content}}
+              </ListItemSubTitle>
+            </ListItemContent>
+          </ListItem>
+          <Divider></Divider>
+        </div>
+      </List>
     </div>
     <!-- <br />
     <br />
@@ -150,6 +135,28 @@ import {
 export default {
   data () {
     return {
+      companys: [
+        {
+          id: 1,
+          imgSrc:
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg'
+        },
+        {
+          id: 2,
+          imgSrc:
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg'
+        },
+        {
+          id: 3,
+          imgSrc:
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg'
+        },
+        {
+          id: 4,
+          imgSrc:
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg'
+        }
+      ],
       carouselImg1:
         'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',
       carouselImg2:
@@ -167,7 +174,7 @@ export default {
       defaultResult: [],
       labelPosition: 'right',
       cid: 1, // 文章分类id,写死
-      raidersList: []// 职场攻略列表
+      raidersList: [] // 职场攻略列表
     };
   },
   components: {
@@ -413,25 +420,25 @@ body .mu-secondary-text-color {
   justify-content: space-between;
 }
 
-.titleA{
- font-size: 14px;
+.titleA {
+  font-size: 14px;
   line-height: 1;
   color: #999;
   font-weight: normal;
   text-align: center;
-  margin-top:25px;
+  margin-top: 25px;
 }
 
 .titleA span {
-display: inline-block;
-vertical-align: 3px;
-width: 25px;
-height: 1px;
-background: #999;
+  display: inline-block;
+  vertical-align: 3px;
+  width: 25px;
+  height: 1px;
+  background: #999;
 }
 
-.col{
-  margin-top:8px;
+.col {
+  margin-top: 8px;
   margin-bottom: 8px;
 }
 
@@ -450,32 +457,32 @@ background: #999;
   color: #009688;
   font-size: 14px;
 }
-.mu-item-action{
+.mu-item-action {
   height: auto;
 }
 
-.mu-list{
+.mu-list {
   padding-bottom: 0;
 }
 
-.hotJobs{
-  padding:15px 15px 0;
-  margin-top:15px;
+.hotJobs {
+  padding: 15px 15px 0;
+  margin-top: 15px;
 }
-.hotJobs h2{
+.hotJobs h2 {
   margin-bottom: 0;
 }
-.listAction{
+.listAction {
   min-width: 70px;
 }
-.imgSpace{
-padding: 5px;
+.imgSpace {
+  padding: 5px;
 }
-.raidersImg{
+.raidersImg {
   width: 50px;
   display: block;
 }
-.adv{
+.adv {
   background: url(../../../assets/img/adv.jpg);
   background-size: 100%;
   width: 100%;
