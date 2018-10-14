@@ -73,7 +73,8 @@
           </div>
       </List>
     </div>
-    <img src="../../../assets/img/adv.jpg" alt="" class='adv'>
+    <div class="adv"></div>
+    <!-- <img src="../../../assets/img/adv.jpg" alt="" class='adv'> -->
     <div class='bgWhite hotJobs'>
       <h2 class='titleB'>热门职位 <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon></h2>
     </div>
@@ -457,11 +458,6 @@ background: #999;
   padding-bottom: 0;
 }
 
-.adv{
-  width: 100%;
-  margin: 10px 0;
-}
-
 .hotJobs{
   padding:15px 15px 0;
   margin-top:15px;
@@ -478,5 +474,12 @@ padding: 5px;
 .raidersImg{
   width: 50px;
   display: block;
+}
+.adv{
+  background: url(../../../assets/img/adv.jpg);
+  background-size: 100%;
+  width: 100%;
+  height: 100px;
+  margin: 15px 0;
 }
 </style>
