@@ -156,14 +156,14 @@ export default {
     }
   },
   mounted () {
-    tools.addEventListener(
-      {
-        name: 'resumeListCallback'
-      },
-      (ret, err) => {
-        this.getList();
-      }
-    );
+    // tools.addEventListener(
+    //   {
+    //     name: 'resumeListCallback'
+    //   },
+    //   (ret, err) => {
+    //     this.getList();
+    //   }
+    // );
     this.getList();
   }
 };

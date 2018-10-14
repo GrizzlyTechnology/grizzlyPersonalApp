@@ -106,9 +106,10 @@ export default {
             position: 'top',
             message: '学生信息创建成功！'
           });
-          // todo 身份列表
+          tools.sendEvent('studentInfoListCallback');
+          // todo 身份列表 studentInfoListCallback
           window.api.closeToWin({
-            name: 'main'
+            name: 'studentInfoList'
           });
           break;
         default:

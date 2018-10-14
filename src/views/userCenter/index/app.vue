@@ -12,7 +12,7 @@
     </div>
     <div class="bodyer">
       <Cell class="ucCell">
-        <div class="ucCellCon" @click="studentInfo">
+        <div class="ucCellCon" @click="studentInfoList">
           <span class="ucCellTitle">学籍管理</span>
         </div>
         <i class="mu-icon icon-right isLink" />
@@ -67,13 +67,13 @@ export default {
           break;
       }
     },
-    studentInfo () {
+    studentInfoList () {
       tools.openWin({
-        name: 'userArea',
+        name: 'studentInfoList',
         url: '../win.html',
-        title: '选择地区',
-        fname: 'userArea_f',
-        furl: './userCenter/userArea.html',
+        title: '学籍管理',
+        fname: 'studentInfoList_f',
+        furl: './userCenter/studentInfoList.html',
         hasLeft: 1
       });
     },
