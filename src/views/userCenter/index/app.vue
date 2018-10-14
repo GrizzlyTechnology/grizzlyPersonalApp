@@ -40,7 +40,7 @@ export default {
     return {
       nickname: '暂无',
       sex: 1,
-      headphoto: '../../../assets/img/headpic.png'
+      headphoto: '../assets/img/headpic.png'
     };
   },
   components: {
@@ -57,7 +57,7 @@ export default {
           console.log(JSON.stringify(response));
           this.nickname = response.result.userInfo.nickname;
           this.sex = response.result.userInfo.sex;
-          this.headphoto = response.result.userInfo.headphoto || this.headphoto;
+          this.headphoto = response.result.userInfo.headphoto === null ? this.headphoto : response.result.userInfo.headphoto;
           break;
         default:
           tools.toast({
