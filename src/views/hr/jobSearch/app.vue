@@ -4,7 +4,7 @@
       <div class='flexCon'>
         <span @click="areaHandle" class='araeBox'>
           <i class='iconfont icon-weizhi-blue'></i>{{areaText}}</span>
-        <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue"  label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
+        <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue" label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
           <i class='iconfont icon-suosou' @click='submit'></i>
         </AutoComplete>
       </div>
@@ -49,7 +49,9 @@ export default {
   },
   computed: {
     areaText () {
-      return this.area.length > 0 ? this.area[this.area.length - 1].label : '全国';
+      return this.area.length > 0
+        ? this.area[this.area.length - 1].label
+        : '全国';
     },
     filterResult () {
       return this.defaultResult.filter(value =>
@@ -58,29 +60,24 @@ export default {
     }
   },
   methods: {
-    async searchBoxValue () {
-      const response = await service.searchBoxValue(this.form);
-      switch (response.code) {
-        case 0:
-          tools.openWin({
-            name: 'jobSearchList',
-            url: '../win.html',
-            title: '所有职位',
-            fname: 'jobSearchList_f',
-            furl: './hr/jobSearchList.html',
-            hasLeft: 1
-          });
-          break;
-        default:
-          tools.toast({
-            position: 'top',
-            message: '搜索失败，请稍后重试！！'
-          });
-          break;
-      }
+    // 点击搜索
+    search () {
+      tools.openWin({
+        name: 'jobSearchList',
+        url: '../win.html',
+        title: '所有职位',
+        fname: 'jobSearchList_f',
+        furl: './hr/jobSearchList.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'jobSearchList',
+          area: this.form.area,
+          keyWord: this.form.keyWord
+        }
+      });
     },
 
-    // 职位搜索
+    // 获取职位
     async getAllSearchValue () {
       const response = await service.getAllPosition(this.form.keyWord);
       switch (response.code) {
@@ -138,18 +135,10 @@ export default {
       this.searchChipValue();
     },
     submit () {
-      this.searchBoxValue();
+      this.search();
     }
   },
   mounted () {
-    tools.addEventListener(
-      {
-        name: 'houseHoldCallback'
-      },
-      (ret, err) => {
-        this.form.houseHold = ret.value;
-      }
-    );
   }
 };
 </script>
@@ -172,11 +161,11 @@ export default {
   padding-left: 5px;
   background: #fff;
 }
-.araeBox{
+.araeBox {
   width: 20%;
   overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mu-input.searchBox {
@@ -196,7 +185,7 @@ body .mu-secondary-text-color {
   margin-right: 15px;
 }
 
-.flexCon .iconfont.icon-weizhi-blue{
+.flexCon .iconfont.icon-weizhi-blue {
   margin-right: 0;
 }
 

@@ -22,7 +22,8 @@ export default {
   },
   data () {
     return {
-      bottomNavValue: 0
+      bottomNavValue: 0,
+      comeFrom:window.api.pageParam.comefrom,
     };
   },
   components: {
@@ -71,6 +72,13 @@ export default {
     }
   },
   mounted () {
+      if(window.api.pageParam.comefrom!==undefined){
+        setTimeout(function(){
+            window.api.closeWin({
+                name: window.api.pageParam.comefrom
+            });
+        },500);
+      }
     this.bottomNavValue = 0;
     this.mainGroup();
   }

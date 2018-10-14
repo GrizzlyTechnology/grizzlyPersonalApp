@@ -58,7 +58,7 @@ export default {
       ],
       argeeRules: [{ validate: val => !!val, message: '必须同意用户协议' }],
       validateForm: {
-        phone: '',
+        phone: tools.getStorage('phone'),
         password: '',
         isAgree: true
       },
@@ -83,7 +83,7 @@ export default {
       const response = await service.login({
         phone: this.validateForm.phone,
         passWord: this.validateForm.password,
-        deviceId: '1232321'
+        deviceId: window.api.deviceId
       });
       tools.hideProgress();
       switch (response.code) {
@@ -91,15 +91,26 @@ export default {
           tools.setStorage('token', response.result.token);
           tools.setStorage('phone', response.result.userinfo.phone);
           tools.setStorage('userInfo', response.result.userinfo);
-          window.api.sendEvent({
-            name: 'event'
+          //绑定极光推送的别名为id
+          let ajpush = window.api.require('ajpush');
+          let param = {alias:response.result.userinfo.id};
+          ajpush.bindAliasAndTags(param,function(ret) {
+                let statusCode = ret.statusCode;
           });
-          window.api.closeWin();
+          //登录完跳转
+          window.api.openWin({
+              name: 'main',
+              url: './main.html',
+              slidBackEnabled:false,
+              pageParam: {
+                  comefrom:'login',
+                }
+          });
           break;
         default:
           tools.toast({
             position: 'top',
-            message: response.message
+            message: response.message,
           });
           break;
       }
@@ -128,7 +139,18 @@ export default {
       });
     }
   },
-  mounted () {}
+  mounted () {
+      if(window.api.pageParam.comefrom!==undefined){
+        setTimeout(function(){
+            window.api.closeWin({
+                name: window.api.pageParam.comefrom
+            });
+            window.api.closeWin({
+                name: 'main'
+            });
+        },500);
+      }
+  }
 };
 </script>
 

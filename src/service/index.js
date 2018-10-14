@@ -243,18 +243,11 @@ export default {
       method: 'get'
     });
   },
-  searchJob (params) {
-    return request({
-      host: BASEURL,
-      url: '/api/Hr/searchJob',
-      params,
-      method: 'get'
-    });
-  },
+  // 职位搜索
   searchBoxValue (params) {
     return request({
       host: BASEURL,
-      url: '/api/Hr/searchBoxValue',
+      url: '/api/job/search',
       params,
       method: 'get'
     });
@@ -432,6 +425,59 @@ export default {
     return request({
       host: BASEURL,
       url: '/api/job/fuzzysearchtitle',
+      params,
+      method: 'get'
+    });
+  },
+  // 职位详情
+  getDetailsData (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/job/info',
+      params,
+      method: 'get'
+    });
+  },
+  // 投递简历
+  pushDelivery (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Job/deliveryreresume',
+      params
+    });
+  },
+  // 获取公司信息
+  getCompanyInfo (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Enterprise/info',
+      params,
+      method: 'get'
+    });
+  },
+  // 获取企业所有招聘
+  getCompanyJob (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Job/seljobsbyenterpriseid',
+      params,
+      method: 'get'
+    });
+  },
+  // 获取职场攻略
+  getrRaidersList (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Content/lists',
+      params,
+      method: 'get'
+    });
+  },
+  // 获取职场攻略内容
+  getRaidersArticleData (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Content/info',
       params,
       method: 'get'
     });
