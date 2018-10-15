@@ -258,6 +258,9 @@ export default {
     position: absolute;
     left: 50%;
     margin-left: -40px;
+    .el-progress__text{
+      color: #fff;
+    }
   }
 }
 .ucCell {
