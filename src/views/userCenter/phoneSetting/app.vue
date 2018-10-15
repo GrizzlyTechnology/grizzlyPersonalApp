@@ -3,19 +3,18 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form">
-          <FormItem v-if="haveEmail" label="原邮箱" prop="email" :rules="emailRules">
-            <TextField v-model="form.oldEmail"></TextField>
+          <FormItem label="原手机" prop="oldPhone" :rules="phoneRules">
+            <TextField v-model="form.oldPhone"></TextField>
           </FormItem>
-          <FormItem label="新邮箱" prop="email" :rules="emailRules">
-            <TextField v-model="form.email"></TextField>
+          <FormItem label="新手机" prop="phone" :rules="phoneRules">
+            <TextField v-model="form.phone"></TextField>
           </FormItem>
-          <FormItem label="邮箱验证码" prop="emailCode" :rules="verificationCodeRules">
-            <TextField v-model="form.emailCode" class="verificationCode"></TextField>
+          <FormItem label="验证码" prop="emailCode" :rules="verificationCodeRules">
+            <TextField v-model="form.messageCode" class="verificationCode"></TextField>
             <Button color="#009688" textColor="#ffffff" class="getVerificationCode" :disabled="verificationCodeBtnText !=='获取验证码'" @click="getVerificationCode">
               {{verificationCodeBtnText}}
             </Button>
           </FormItem>
-          请登录{{haveEmail?'原':'新'}}邮箱查看邮件，获取邮箱验证码
         </Form>
       </div>
     </div>
@@ -39,13 +38,12 @@ export default {
     return {
       maxTime: 60,
       verificationCodeBtnText: '获取验证码',
-      haveEmail: window.api ? window.api.pageParam.haveEmail : false,
       form: {
-        oldEmail: '',
-        email: '', // true string 真实姓名
-        emailCode: ''
+        oldPhone: '',
+        phone: '',
+        messageCode: ''
       },
-      emailRules: [{ validate: val => regexps.email.test(val), message: '请填写正确的Email地址' }],
+      phoneRules: [{ validate: val => regexps.mobPhone.test(val), message: '请填写正确的手机号码' }],
       verificationCodeRules: [
         { validate: val => !!val, message: '请填写验证码' }
       ]
@@ -60,7 +58,7 @@ export default {
   methods: {
     async getVerificationCode () {
       const response = await service.getVerificationCode({
-        phone: this.form.oldEmail
+        phone: this.form.oldPhone
       });
       switch (response.code) {
         case 0:
@@ -76,24 +74,6 @@ export default {
           tools.toast({
             position: 'top',
             message: '验证码获取失败'
-          });
-          break;
-      }
-    },
-    async create () {
-      tools.showProgress();
-      const response = await service.updateUserBaesInfo({
-        ...this.form
-      });
-      tools.hideProgress();
-      switch (response.code) {
-        case 0:
-          tools.closeWin();
-          break;
-        default:
-          tools.toast({
-            position: 'top',
-            message: '邮箱创建失败，请稍后重试！！'
           });
           break;
       }
@@ -119,11 +99,7 @@ export default {
     submit () {
       this.$refs.form.validate().then(result => {
         if (result === true) {
-          if (window.api.pageParam.haveEmail) {
-            this.edit();
-          } else {
-            this.create();
-          }
+          this.edit();
         }
       });
     }

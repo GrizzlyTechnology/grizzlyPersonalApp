@@ -69,14 +69,14 @@
       <i class="mu-icon icon-right isLink" />
     </Cell>
     <Cell class="ucCell link">
-      <div class="ucCellCon">
+      <div class="ucCellCon" @click="phoneSetting">
         <span class="ucCellTitle">手机</span>
         <span class="ucCellLabel">{{phone}}</span>
       </div>
       <i class="mu-icon icon-right isLink" />
     </Cell>
     <Cell class="ucCell link">
-      <div class="ucCellCon">
+      <div class="ucCellCon" @click="passwordSetting">
         <span class="ucCellTitle">密码</span>
         <span class="ucCellLabel">******</span>
       </div>
@@ -234,21 +234,43 @@ export default {
         hasLeft: 1,
         data: {
           nameSpace: 'emailSetting',
-          email: this.userInfo.email,
+          haveEmail: !!this.userInfo.email,
           callback: (ret, err) => {
             this.getUserinfo();
           }
         }
       });
     },
-    systemSetting () {
+    passwordSetting () {
       tools.openWin({
-        name: 'systemSetting',
+        name: 'passwordSetting',
         url: '../win.html',
-        title: '系统设置',
-        fname: 'systemSetting_f',
-        furl: './userCenter/systemSetting.html',
-        hasLeft: 1
+        title: '密码设置',
+        fname: 'passwordSetting_f',
+        furl: './userCenter/passwordSetting.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'passwordSetting',
+          callback: (ret, err) => {
+            this.getUserinfo();
+          }
+        }
+      });
+    },
+    phoneSetting () {
+      tools.openWin({
+        name: 'phoneSetting',
+        url: '../win.html',
+        title: '密码设置',
+        fname: 'phoneSetting_f',
+        furl: './userCenter/phoneSetting.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'phoneSetting',
+          callback: (ret, err) => {
+            this.getUserinfo();
+          }
+        }
       });
     }
   },
