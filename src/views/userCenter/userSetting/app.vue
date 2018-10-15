@@ -62,7 +62,7 @@
       <i class="mu-icon icon-right isLink" />
     </Cell>
     <Cell class="ucCell link">
-      <div class="ucCellCon">
+      <div class="ucCellCon" @click="emailSetting">
         <span class="ucCellTitle">邮箱</span>
         <span class="ucCellLabel">{{email}}</span>
       </div>
@@ -121,7 +121,8 @@ export default {
       identity: '暂无',
       sex: dictMap.sex[dictMap.male],
       registertime: '暂无',
-      headphoto: '../assets/img/headpic.png'
+      headphoto: '../assets/img/headpic.png',
+      userInfo: {}
     };
   },
   components: {
@@ -138,6 +139,7 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
+          this.userInfo = response.result.userInfo;
           const phone = response.result.userInfo.phone;
           const emailArray = response.result.userInfo.email !== null ? response.result.userInfo.email.split('@') : [];
 
@@ -215,7 +217,24 @@ export default {
         hasLeft: 1,
         data: {
           nameSpace: 'nicknameSetting',
-          nickname: this.nickname,
+          nickname: this.userInfo.nickname,
+          callback: (ret, err) => {
+            this.getUserinfo();
+          }
+        }
+      });
+    },
+    emailSetting () {
+      tools.openWin({
+        name: 'emailSetting',
+        url: '../win.html',
+        title: '邮箱设置',
+        fname: 'emailSetting_f',
+        furl: './userCenter/emailSetting.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'emailSetting',
+          email: this.userInfo.email,
           callback: (ret, err) => {
             this.getUserinfo();
           }
