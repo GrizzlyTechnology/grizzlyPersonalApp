@@ -34,7 +34,7 @@
       </Upload>
     </div>
     <Cell class="ucCell link">
-      <div class="ucCellCon" @click="userSetting">
+      <div class="ucCellCon" @click="nicknameSetting">
         <span class="ucCellTitle">昵称</span>
         <span class="ucCellLabel">{{nickname}}</span>
       </div>
@@ -205,14 +205,21 @@ export default {
           break;
       }
     },
-    userSetting () {
+    nicknameSetting () {
       tools.openWin({
-        name: 'userSetting',
+        name: 'nicknameSetting',
         url: '../win.html',
-        title: '个人设置',
-        fname: 'userSetting_f',
-        furl: './userCenter/userSetting.html',
-        hasLeft: 1
+        title: '昵称设置',
+        fname: 'nicknameSetting_f',
+        furl: './userCenter/nicknameSetting.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'nicknameSetting',
+          nickname: this.nickname,
+          callback: (ret, err) => {
+            this.getUserinfo();
+          }
+        }
       });
     },
     systemSetting () {
