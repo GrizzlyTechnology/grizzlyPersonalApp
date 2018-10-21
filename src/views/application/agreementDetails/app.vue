@@ -18,31 +18,15 @@
     <!-- <div>
 
     </div> -->
+    <ImagesPopup ref="imagesPopup" :urlList="this.agreementImgs" :index="urlListIndex"></ImagesPopup>
     <Row class='whiteBg space15' gutter>
-      <Col span="6" @click="openSimpleDialog">
-      <div class="grid-cell">
-        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt="">
-      </div>
-      <Dialog width="560" :open.sync="openSimple" class='pDialog'>
-        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt="">
-        <Button slot="actions" flat color="primary" @click="closeSimpleDialog">Close</Button>
-      </Dialog>
-      </Col>
-      <Col span="6">
-      <div class="grid-cell">
-        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt="">
-      </div>
-      </Col>
-      <Col span="6">
-      <div class="grid-cell">
-        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt="">
-      </div>
-      </Col>
-      <Col span="6">
-      <div class="grid-cell">
-        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt="">
-      </div>
-      </Col>
+      <template v-for='agreementImg in agreementImgs'>
+        <Col span="6" @click='imagesPopupOpen' :key='agreementImg.id'>
+        <div class="grid-cell" :key='agreementImg.id'>
+          <img :src="agreementImg" alt="">
+        </div>
+        </Col>
+      </template>
     </Row>
   </div>
 </template>
@@ -59,12 +43,20 @@ import {
   ListItemTitle,
   ListItemAfterText
 } from 'muse-ui/lib/List';
+import ImagesPopup from 'components/ImagesPopup';
 // import { Row, Col, Container } from 'muse-ui/lib/Grid';
 // import tool from 'util/tools';
 export default {
   data () {
     return {
-      openSimple: false
+      // openSimple: false,
+      agreementImgs: [
+        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',
+        'http://img.zcool.cn/community/0125fd5770dfa50000018c1b486f15.jpg@1280w_1l_2o_100sh.jpg',
+        'http://pic29.nipic.com/20130511/9252150_174018365301_2.jpg',
+        'http://pic19.nipic.com/20120308/4970979_102637717125_2.jpg'
+      ],
+      urlListIndex: 0
     };
   },
   components: {
@@ -78,14 +70,12 @@ export default {
     Row,
     Col,
     Dialog,
-    Button
+    Button,
+    ImagesPopup
   },
   methods: {
-    openSimpleDialog () {
-      this.openSimple = true;
-    },
-    closeSimpleDialog () {
-      this.openSimple = false;
+    imagesPopupOpen () {
+      this.$refs.imagesPopup.open();
     }
   },
   mounted () {}
@@ -113,7 +103,7 @@ export default {
   width: 100%;
 }
 
-.pDialog .mu-dialog-body img{
+.pDialog .mu-dialog-body img {
   width: 100%;
 }
 </style>

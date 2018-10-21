@@ -1,35 +1,24 @@
 <template>
   <div>
-    <SubHeader>
-      目前在职：
-    </SubHeader>
-    <Card>
-      <CardHeader title="大灰熊科技有限公司" sub-title="技术部 研发组"></CardHeader>
-    </Card>
     <Container>
       <Row>
-        <Col span="6">
-        <div class="grid-cell"><span class='cGreen'><i class='iconfont icon-jianli'></i></span>实习履历</div>
-        </Col>
-        <Col span="6">
-        <div class="grid-cell"><span class='cOrange'><i class='iconfont icon-details'></i></span>学习履历</div>
-        </Col>
-        <Col span="6">
+        <Col span="12">
         <div class="grid-cell" @click='internshipAgreement'><span class='cBlue'><i class='iconfont icon-xieyi'></i></span>实习协议</div>
+
         </Col>
-        <Col span="6">
+        <Col span="12">
         <div class="grid-cell"><span class='cRed'><i class='iconfont icon-kaohepingjia'></i></span>实习考核</div>
         </Col>
-        <Col span="6">
+        <Col span="12">
         <div class="grid-cell"><span class='cYellow'><i class='iconfont icon-jihua'></i></span>实习计划</div>
         </Col>
-        <Col span="6">
+        <Col span="12">
         <div class="grid-cell"><span class='cPurple'><i class='iconfont icon-baogao'></i></span>实习报告</div>
         </Col>
-        <Col span="6">
+        <Col span="12">
         <div class="grid-cell"><span class='cLightGreen'><i class='iconfont icon-rizhi'></i></span>实习日志 </div>
         </Col>
-        <Col span="6">
+        <Col span="12">
         <div class="grid-cell"><span class='cBrown'><i class='iconfont icon-zongjie'></i></span>实习总结</div>
         </Col>
       </Row>
@@ -39,8 +28,8 @@
 </template>
 
 <script>
-import { SubHeader, Card } from 'muse-ui';
-import { CardHeader } from 'muse-ui/lib/Card';
+// import { } from 'muse-ui';
+// import { CardHeader } from 'muse-ui/lib/Card';
 import { Row, Col, Container } from 'muse-ui/lib/Grid';
 import tool from 'util/tools';
 export default {
@@ -48,9 +37,6 @@ export default {
     return {};
   },
   components: {
-    SubHeader,
-    Card,
-    CardHeader,
     Row,
     Col,
     Container
@@ -58,11 +44,11 @@ export default {
   methods: {
     internshipAgreement () {
       tool.openWin({
-        name: 'internshipAgreement',
+        name: 'agreementDetails',
         url: '../win.html',
         title: '实习协议',
-        fname: 'internshipAgreement_f',
-        furl: './application/internshipAgreement.html',
+        fname: 'agreementDetails_f',
+        furl: './application/agreementDetails.html',
         hasLeft: 1
       });
     }
@@ -78,22 +64,17 @@ export default {
 
 .container{
   background: #fff;
-  margin-top:15px ;
 }
 
 .grid-cell{
   display: flex;
-  height: 100px;
+  padding: 10px 0;
   align-items: center;
-  justify-content: center;
+  color: #333;
 }
 
 .col{
   border-bottom: 1px solid #f5f5f5;
-}
-
-.col:nth-child(odd){
-border-right: 1px solid #f5f5f5;
 }
 
 .grid-cell span{
@@ -103,20 +84,12 @@ height: 40px;
 justify-content: center;
 align-items: center;
 border-radius: 8px;
-margin-right: 5px;
+margin-right: 15px;
 }
 
 .grid-cell .iconfont{
 font-size: 22px;
 color: #fff;
-}
-
-.cOrange{
-  background: #fbae44;
-}
-
-.cGreen{
-  background: #4fca6f;
 }
 
 .cBlue{
