@@ -4,21 +4,17 @@
       <div class="ucCellCon" @click="settingNotice">
         <span class="ucCellTitle">推送通知</span>
         <span class="ucCellLabel">
-          <muSwitch color="#009688" v-model="notice"></muSwitch>
+          <MuSwitch color="#009688" v-model="notice"></MuSwitch>
         </span>
       </div>
     </Cell>
-    <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="logout">退出登录</Button>
-    </div>
   </div>
 </template>
 
 <script>
 import tools from 'util/tools';
 import service from 'service';
-import { Button } from 'muse-ui';
-import muSwitch from 'muse-ui/lib/Switch';
+import MuSwitch from 'muse-ui/lib/Switch';
 import { Cell } from 'mint-ui';
 
 export default {
@@ -28,9 +24,8 @@ export default {
     };
   },
   components: {
-    Button,
     Cell,
-    muSwitch
+    MuSwitch
   },
   methods: {
     async query () {
@@ -69,10 +64,8 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url("../../../assets/css/base.less");
-.footer{
-  margin: 15px;
-}
 .ucCell {
+  min-height: 56px;
   &.link{
     .isLink{
       display: block;
