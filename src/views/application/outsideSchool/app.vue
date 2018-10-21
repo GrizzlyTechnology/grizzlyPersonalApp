@@ -1,59 +1,60 @@
 <template>
   <Container>
     <Stepper :active-step="0" orientation="vertical" :linear="false">
-      <Step>
-        <StepLabel>
-          <Card>
-            <p>2011.10—至今</p>
-            <CardHeader title="大灰熊科技有限公司" sub-title="技术部 研发组"></CardHeader>
-          </Card>
-          <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
-        </StepLabel>
-      </Step>
-      <Step>
-        <StepLabel>
-          <Card>
-            <p>2011.05—2015.02</p>
-            <CardHeader title="大灰熊科技有限公司" sub-title="技术部 研发组"></CardHeader>
-          </Card>
-           <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
-        </StepLabel>
-      </Step>
-      <Step>
-        <StepLabel>
-          <Card>
-            <p>1999.05—2011.04</p>
-            <CardHeader title="大灰熊科技有限公司" sub-title="技术部 研发组"></CardHeader>
-          </Card>
-           <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
-        </StepLabel>
-      </Step>
+      <template v-for='company in companys'>
+        <Step :key='company.id' @click='Internship'>
+          <StepLabel  class='comStepper'>
+            <Card>
+              <p>{{company.practiceTime}}</p>
+              <CardHeader :title="company.companyName" :sub-title="company.department + '  ' +company.group"></CardHeader>
+            </Card>
+            <span class='status'>{{company.practicesStatus}}</span>
+            <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail"></Icon>
+          </StepLabel>
+        </Step>
+      </template>
     </Stepper>
-    <!-- <SubHeader>
-      目前在职：
-    </SubHeader>
-    <Card>
-      <CardHeader title="大灰熊科技有限公司" sub-title="技术部 研发组"></CardHeader>
-    </Card>
-    <Card>
-      <CardHeader title="大灰熊科技有限公司" sub-title="技术部 研发组"></CardHeader>
-    </Card> -->
   </Container>
 </template>
-
 <script>
-import { SubHeader, Card, Icon } from 'muse-ui';
+import { Card, Icon } from 'muse-ui';
 import { CardHeader } from 'muse-ui/lib/Card';
 import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
 import { Container } from 'muse-ui/lib/Grid';
-// import tool from 'util/tools';
+import tool from 'util/tools';
 export default {
   data () {
-    return {};
+    return {
+      companys: [
+        {
+          id: 1,
+          practiceTime: '2015.03——至今',
+          companyName: '大灰熊科技有限公司',
+          department: '技术部',
+          group: '研发组',
+          practicesStatus: '实习中'
+        },
+        {
+          id: 2,
+          practiceTime: '2011.05—2015.02',
+          companyName: '大灰熊科技有限公司',
+          department: '技术部',
+          group: '研发组',
+          practicesStatus: '已离职'
+        },
+        {
+          id: 3,
+          practiceTime: '1999.05—2011.04',
+          companyName: '大灰熊科技有限公司',
+          department: '技术部',
+          group: '研发组',
+          practicesStatus: '已离职'
+        }
+      ]
+    };
   },
   components: {
     Container,
-    SubHeader,
     Card,
     CardHeader,
     Stepper,
@@ -62,26 +63,35 @@ export default {
     Icon
   },
   methods: {
-    // internshipAgreement () {
-    //   tool.openWin({
-    //     name: 'internshipAgreement',
-    //     url: '../win.html',
-    //     title: '实习协议',
-    //     fname: 'internshipAgreement_f',
-    //     furl: './application/internshipAgreement.html',
-    //     hasLeft: 1
-    //   });
-    // }
+    Internship () {
+      tool.openWin({
+        name: 'Internship',
+        url: '../win.html',
+        title: '校外实习',
+        fname: 'Internship_f',
+        furl: './application/Internship.html',
+        hasLeft: 1
+      });
+    }
   },
   mounted () {}
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import url("../../../assets/css/base.less");
 .mu-card {
   box-shadow: none;
   background: none;
-  width: 100%;
+  width: 75%;
+}
+
+.mu-card-header-title {
+  padding-right: 10px;
+}
+
+.status {
+  width: 15%;
+  color: #999;
 }
 
 .mu-card-header {
@@ -98,65 +108,11 @@ export default {
   padding: 30px 0;
 }
 
-.grid-cell {
-  display: flex;
-  height: 100px;
-  align-items: center;
-  justify-content: center;
+.mu-step-label.completed .mu-step-label-circle, .mu-step-label.active .mu-step-label-circle{
+  background: #009688;
 }
 
-.col {
-  border-bottom: 1px solid #f5f5f5;
-}
-
-.col:nth-child(odd) {
-  border-right: 1px solid #f5f5f5;
-}
-
-.grid-cell span {
-  display: flex;
-  width: 40px;
-  height: 40px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  margin-right: 5px;
-}
-
-.grid-cell .iconfont {
-  font-size: 22px;
-  color: #fff;
-}
-
-.cOrange {
-  background: #fbae44;
-}
-
-.cGreen {
-  background: #4fca6f;
-}
-
-.cBlue {
-  background: #a0d2f7;
-}
-
-.cYellow {
-  background: #f8dc1c;
-}
-
-.cPurple {
-  background: #eb8af7;
-}
-
-.cLightGreen {
-  background: #68dcb7;
-}
-
-.cRed {
-  background: #f9876c;
-}
-
-.cBrown {
-  background: #a45a49;
+.mu-step-label.completed .status , .mu-step-label.active .status{
+color: #009688;
 }
 </style>
