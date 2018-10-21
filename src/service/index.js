@@ -481,5 +481,14 @@ export default {
       params,
       method: 'get'
     });
+  },
+  // 名企推荐列表
+  companyRecommendList (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Enterprise/searchenteprie',
+      params,
+      method: 'get'
+    });
   }
 };
