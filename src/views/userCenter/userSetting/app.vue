@@ -191,12 +191,9 @@ export default {
     },
     success (response, file, fileList) {
       this.uploaderHide = false;
-      console.log(JSON.stringify(fileList));
       switch (response.code) {
         case 0:
-          const urlAry = response.result.file.url.split('/');
-          urlAry[urlAry.length - 1] = '450_' + urlAry[urlAry.length - 1];
-          this.headphoto = urlAry.join('/');
+          this.headphoto = tools.getPicUrl(response.result.file.url, 450);
           this.fileList = [];
           break;
         default:

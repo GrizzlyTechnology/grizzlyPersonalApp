@@ -777,6 +777,13 @@ u.openWebPage = function (url) {
     window.open(url);
   }
 }
+
+u.getPicUrl = function(string, size){
+  let sizeStr = size ? size + '_' :'';
+  const urlAry = string.split('/');
+  urlAry[urlAry.length - 1] = sizeStr + urlAry[urlAry.length - 1];
+  return urlAry.join('/');
+}
 /* end */
 
 

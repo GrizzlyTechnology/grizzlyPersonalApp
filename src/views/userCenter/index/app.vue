@@ -54,10 +54,9 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          console.log(JSON.stringify(response));
           this.nickname = response.result.userInfo.nickname;
           this.sex = response.result.userInfo.sex;
-          this.headphoto = response.result.userInfo.headphoto === null ? this.headphoto : response.result.userInfo.headphoto;
+          this.headphoto = response.result.userInfo.headphoto === null ? this.headphoto : tools.getPicUrl(response.result.userInfo.headphoto, 450);
           break;
         default:
           tools.toast({
