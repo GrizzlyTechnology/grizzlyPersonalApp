@@ -73,7 +73,10 @@ export default {
         title: '学籍管理',
         fname: 'studentInfoList_f',
         furl: './userCenter/studentInfoList.html',
-        hasLeft: 1
+        hasLeft: 1,
+        LCB: () => {
+          this.getUserinfo();
+        }
       });
     },
     resumeList () {
@@ -94,11 +97,8 @@ export default {
         fname: 'setting_f',
         furl: './userCenter/setting.html',
         hasLeft: 1,
-        data: {
-          nameSpace: 'setting',
-          callback: (ret, err) => {
-            this.getUserinfo();
-          }
+        LCB: () => {
+          this.getUserinfo();
         }
       });
     }
