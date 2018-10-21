@@ -34,7 +34,7 @@
       </Upload>
     </div>
     <Cell class="ucCell link">
-      <div class="ucCellCon" @click="userSetting">
+      <div class="ucCellCon" @click="nicknameSetting">
         <span class="ucCellTitle">昵称</span>
         <span class="ucCellLabel">{{nickname}}</span>
       </div>
@@ -62,21 +62,21 @@
       <i class="mu-icon icon-right isLink" />
     </Cell>
     <Cell class="ucCell link">
-      <div class="ucCellCon">
+      <div class="ucCellCon" @click="emailSetting">
         <span class="ucCellTitle">邮箱</span>
         <span class="ucCellLabel">{{email}}</span>
       </div>
       <i class="mu-icon icon-right isLink" />
     </Cell>
     <Cell class="ucCell link">
-      <div class="ucCellCon">
+      <div class="ucCellCon" @click="phoneSetting">
         <span class="ucCellTitle">手机</span>
         <span class="ucCellLabel">{{phone}}</span>
       </div>
       <i class="mu-icon icon-right isLink" />
     </Cell>
     <Cell class="ucCell link">
-      <div class="ucCellCon">
+      <div class="ucCellCon" @click="passwordSetting">
         <span class="ucCellTitle">密码</span>
         <span class="ucCellLabel">******</span>
       </div>
@@ -121,7 +121,8 @@ export default {
       identity: '暂无',
       sex: dictMap.sex[dictMap.male],
       registertime: '暂无',
-      headphoto: '../assets/img/headpic.png'
+      headphoto: '../assets/img/headpic.png',
+      userInfo: {}
     };
   },
   components: {
@@ -138,6 +139,7 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
+          this.userInfo = response.result.userInfo;
           const phone = response.result.userInfo.phone;
           const emailArray = response.result.userInfo.email !== null ? response.result.userInfo.email.split('@') : [];
 
@@ -205,24 +207,70 @@ export default {
           break;
       }
     },
-    userSetting () {
+    nicknameSetting () {
       tools.openWin({
-        name: 'userSetting',
+        name: 'nicknameSetting',
         url: '../win.html',
-        title: '个人设置',
-        fname: 'userSetting_f',
-        furl: './userCenter/userSetting.html',
-        hasLeft: 1
+        title: '昵称设置',
+        fname: 'nicknameSetting_f',
+        furl: './userCenter/nicknameSetting.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'nicknameSetting',
+          nickname: this.userInfo.nickname,
+          callback: (ret, err) => {
+            this.getUserinfo();
+          }
+        }
       });
     },
-    systemSetting () {
+    emailSetting () {
       tools.openWin({
-        name: 'systemSetting',
+        name: 'emailSetting',
         url: '../win.html',
-        title: '系统设置',
-        fname: 'systemSetting_f',
-        furl: './userCenter/systemSetting.html',
-        hasLeft: 1
+        title: '邮箱设置',
+        fname: 'emailSetting_f',
+        furl: './userCenter/emailSetting.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'emailSetting',
+          haveEmail: !!this.userInfo.email,
+          callback: (ret, err) => {
+            this.getUserinfo();
+          }
+        }
+      });
+    },
+    passwordSetting () {
+      tools.openWin({
+        name: 'passwordSetting',
+        url: '../win.html',
+        title: '密码设置',
+        fname: 'passwordSetting_f',
+        furl: './userCenter/passwordSetting.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'passwordSetting',
+          callback: (ret, err) => {
+            this.getUserinfo();
+          }
+        }
+      });
+    },
+    phoneSetting () {
+      tools.openWin({
+        name: 'phoneSetting',
+        url: '../win.html',
+        title: '密码设置',
+        fname: 'phoneSetting_f',
+        furl: './userCenter/phoneSetting.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'phoneSetting',
+          callback: (ret, err) => {
+            this.getUserinfo();
+          }
+        }
       });
     }
   },
