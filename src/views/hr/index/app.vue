@@ -135,28 +135,7 @@ import {
 export default {
   data () {
     return {
-      companys: [
-        {
-          id: 1,
-          imgSrc:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg'
-        },
-        {
-          id: 2,
-          imgSrc:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg'
-        },
-        {
-          id: 3,
-          imgSrc:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg'
-        },
-        {
-          id: 4,
-          imgSrc:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg'
-        }
-      ],
+      companys: [ ],
       carouselImg1:
         'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',
       carouselImg2:
@@ -261,6 +240,21 @@ export default {
     submit () {
       this.search();
     },
+    // 名企推荐列表
+    async companyRecommend () {
+      const response = await service.companyRecommendList({});
+      switch (response.code) {
+        case 0:
+          this.companys = response.result.companys;
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
     // 适合你的职位列表数据
     async listsData () {
       const response = await service.searchBoxValue({
@@ -337,6 +331,7 @@ export default {
   mounted () {
     this.listsData();
     this.raidersListData();
+    this.companyRecommend();
   }
 };
 </script>
