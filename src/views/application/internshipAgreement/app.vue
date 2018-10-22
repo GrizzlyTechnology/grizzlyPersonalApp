@@ -1,7 +1,7 @@
 <template>
-  <div class='content'>
-    <List v-if="protocols.length > 0" class='bodyer'>
-      <div v-for='protocol in protocols' :key="protocol.id">
+  <div>
+    <List>
+      <div v-for='protocol in protocols' :key="protocol.id" @click="agreementDetails">
         <ListItem>
           <ListItemTitle>
             {{protocol.companyName}}
@@ -10,7 +10,10 @@
             {{protocol.department}}
           </ListAction>
           <ListAction>
-            {{protocol.group}}
+           {{protocol.group}}
+          </ListAction>
+          <ListAction>
+            已上传
           </ListAction>
         </ListItem>
         <Divider></Divider>
@@ -26,30 +29,30 @@
 </template>
 
 <script>
-import { List, ListItem, ListAction, ListItemTitle } from "muse-ui/lib/List";
-import { Divider ,Button} from "muse-ui";
-// import tool from 'util/tools';
+import { Divider } from 'muse-ui';
+import { List, ListItem, ListAction, ListItemTitle } from 'muse-ui/lib/List';
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
       protocols: [
         {
           id: 1,
-          companyName: "江苏大灰熊科技有限公司",
-          department: "技术部",
-          group: "前端组"
+          companyName: '江苏大灰熊科技有限公司',
+          department: '技术部',
+          group: '前端组'
         },
-         {
+        {
           id: 2,
-          companyName: "江苏大灰熊科技有限公司",
-          department: "技术部",
-          group: "前端组"
+          companyName: '江苏大灰熊科技有限公司1',
+          department: '技术部',
+          group: '前端组'
         },
-          {
+        {
           id: 3,
-          companyName: "江苏大灰熊科技有限公司",
-          department: "技术部",
-          group: "前端组"
+          companyName: '江苏大灰熊科技有限公司2',
+          department: '技术部',
+          group: '前端组'
         }
       ]
     };
@@ -59,43 +62,31 @@ export default {
     ListItem,
     ListAction,
     ListItemTitle,
-    Divider,
-    Button
+    Divider
   },
-  methods: {},
-  mounted() {}
+  methods: {
+    agreementDetails () {
+      tool.openWin({
+        name: 'agreementDetails',
+        url: '../win.html',
+        title: '协议详情',
+        fname: 'agreementDetails_f',
+        furl: './application/agreementDetails.html',
+        hasLeft: 1
+      });
+    }
+  },
+  mounted () {
+  }
 };
 </script>
 <style lang="less" scoped>
 @import url("../../../assets/css/base.less");
-.content{
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-.mu-item-title {
-  width: 80%;
-}
-
-.mu-item-action {
-  margin-left: 3%;
-}
-
 .mu-list li {
   background: #fff;
-  padding: 15px 0;
+  padding: 10px 0;
 }
-
-.fixBox {
-  width: 100%;
-  padding: 10px;
-  border-top: 1px solid #eee;
-  background: #fff;
-}
-
-.bodyer{
-  flex: 1;
-  overflow: auto;
-  height: 100%;
+.mu-item-action {
+  margin-left: 10px;
 }
 </style>

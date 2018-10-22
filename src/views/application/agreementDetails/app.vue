@@ -1,0 +1,109 @@
+<template>
+  <div>
+    <List class='whiteBg'>
+      <ListItem>
+        <ListItemContent>
+          <ListItemTitle>
+            大灰熊科技有限公司
+            <!-- {{companyName}} -->
+          </ListItemTitle>
+          <ListItemSubTitle>
+            <span>技术部 </span>
+            <span>研发组</span>
+            <span class='companyInfo'>查看详情></span>
+          </ListItemSubTitle>
+        </ListItemContent>
+      </ListItem>
+    </List>
+    <!-- <div>
+
+    </div> -->
+    <ImagesPopup ref="imagesPopup" :urlList="this.agreementImgs" :index="urlListIndex"></ImagesPopup>
+    <Row class='whiteBg space15' gutter>
+      <template v-for='agreementImg in agreementImgs'>
+        <Col span="6" @click='imagesPopupOpen' :key='agreementImg.id'>
+        <div class="grid-cell" :key='agreementImg.id'>
+          <img :src="agreementImg" alt="">
+        </div>
+        </Col>
+      </template>
+    </Row>
+  </div>
+</template>
+
+<script>
+import { Dialog, Button } from 'muse-ui';
+import { Row, Col } from 'muse-ui/lib/Grid';
+import {
+  List,
+  ListItem,
+  ListAction,
+  ListItemSubTitle,
+  ListItemContent,
+  ListItemTitle,
+  ListItemAfterText
+} from 'muse-ui/lib/List';
+import ImagesPopup from 'components/ImagesPopup';
+// import { Row, Col, Container } from 'muse-ui/lib/Grid';
+// import tool from 'util/tools';
+export default {
+  data () {
+    return {
+      // openSimple: false,
+      agreementImgs: [
+        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',
+        'http://img.zcool.cn/community/0125fd5770dfa50000018c1b486f15.jpg@1280w_1l_2o_100sh.jpg',
+        'http://pic29.nipic.com/20130511/9252150_174018365301_2.jpg',
+        'http://pic19.nipic.com/20120308/4970979_102637717125_2.jpg'
+      ],
+      urlListIndex: 0
+    };
+  },
+  components: {
+    List,
+    ListItem,
+    ListAction,
+    ListItemSubTitle,
+    ListItemContent,
+    ListItemTitle,
+    ListItemAfterText,
+    Row,
+    Col,
+    Dialog,
+    Button,
+    ImagesPopup
+  },
+  methods: {
+    imagesPopupOpen () {
+      this.$refs.imagesPopup.open();
+    }
+  },
+  mounted () {}
+};
+</script>
+<style lang="less" scoped>
+@import url("../../../assets/css/base.less");
+.whiteBg {
+  background: #fff;
+}
+
+.mu-item-sub-title span {
+  margin-right: 15px;
+}
+
+.companyInfo {
+  color: #009688;
+}
+.space15 {
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.grid-cell img {
+  width: 100%;
+}
+
+.pDialog .mu-dialog-body img {
+  width: 100%;
+}
+</style>

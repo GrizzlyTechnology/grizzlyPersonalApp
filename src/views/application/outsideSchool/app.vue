@@ -1,68 +1,75 @@
 <template>
-  <div>
-    <SubHeader>
-      目前在职：
-    </SubHeader>
-    <Card>
-      <CardHeader title="大灰熊科技有限公司" sub-title="技术部 研发组"></CardHeader>
-    </Card>
-    <Container>
-      <Row>
-        <Col span="6">
-        <div class="grid-cell"><span class='cGreen'><i class='iconfont icon-jianli'></i></span>实习履历</div>
-        </Col>
-        <Col span="6">
-        <div class="grid-cell"><span class='cOrange'><i class='iconfont icon-details'></i></span>学习履历</div>
-        </Col>
-        <Col span="6">
-        <div class="grid-cell" @click='internshipAgreement'><span class='cBlue'><i class='iconfont icon-xieyi'></i></span>实习协议</div>
-        </Col>
-        <Col span="6">
-        <div class="grid-cell"><span class='cRed'><i class='iconfont icon-kaohepingjia'></i></span>实习考核</div>
-        </Col>
-        <Col span="6">
-        <div class="grid-cell"><span class='cYellow'><i class='iconfont icon-jihua'></i></span>实习计划</div>
-        </Col>
-        <Col span="6">
-        <div class="grid-cell"><span class='cPurple'><i class='iconfont icon-baogao'></i></span>实习报告</div>
-        </Col>
-        <Col span="6">
-        <div class="grid-cell"><span class='cLightGreen'><i class='iconfont icon-rizhi'></i></span>实习日志 </div>
-        </Col>
-        <Col span="6">
-        <div class="grid-cell"><span class='cBrown'><i class='iconfont icon-zongjie'></i></span>实习总结</div>
-        </Col>
-      </Row>
-    </Container>
-
-  </div>
+  <Container>
+    <Stepper :active-step="0" orientation="vertical" :linear="false">
+      <template v-for='company in companys'>
+        <Step :key='company.id' @click='Internship'>
+          <StepLabel  class='comStepper'>
+            <Card>
+              <p>{{company.practiceTime}}</p>
+              <CardHeader :title="company.companyName" :sub-title="company.department + '  ' +company.group"></CardHeader>
+            </Card>
+            <span class='status'>{{company.practicesStatus}}</span>
+            <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail"></Icon>
+          </StepLabel>
+        </Step>
+      </template>
+    </Stepper>
+  </Container>
 </template>
-
 <script>
-import { SubHeader, Card } from 'muse-ui';
+import { Card, Icon } from 'muse-ui';
 import { CardHeader } from 'muse-ui/lib/Card';
-import { Row, Col, Container } from 'muse-ui/lib/Grid';
+import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
+import { Container } from 'muse-ui/lib/Grid';
 import tool from 'util/tools';
 export default {
   data () {
-    return {};
+    return {
+      companys: [
+        {
+          id: 1,
+          practiceTime: '2015.03——至今',
+          companyName: '大灰熊科技有限公司',
+          department: '技术部',
+          group: '研发组',
+          practicesStatus: '实习中'
+        },
+        {
+          id: 2,
+          practiceTime: '2011.05—2015.02',
+          companyName: '大灰熊科技有限公司',
+          department: '技术部',
+          group: '研发组',
+          practicesStatus: '已离职'
+        },
+        {
+          id: 3,
+          practiceTime: '1999.05—2011.04',
+          companyName: '大灰熊科技有限公司',
+          department: '技术部',
+          group: '研发组',
+          practicesStatus: '已离职'
+        }
+      ]
+    };
   },
   components: {
-    SubHeader,
+    Container,
     Card,
     CardHeader,
-    Row,
-    Col,
-    Container
+    Stepper,
+    Step,
+    StepLabel,
+    Icon
   },
   methods: {
-    internshipAgreement () {
+    Internship () {
       tool.openWin({
-        name: 'internshipAgreement',
+        name: 'Internship',
         url: '../win.html',
-        title: '实习协议',
-        fname: 'internshipAgreement_f',
-        furl: './application/internshipAgreement.html',
+        title: '校外实习',
+        fname: 'Internship_f',
+        furl: './application/Internship.html',
         hasLeft: 1
       });
     }
@@ -70,77 +77,42 @@ export default {
   mounted () {}
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import url("../../../assets/css/base.less");
 .mu-card {
   box-shadow: none;
+  background: none;
+  width: 75%;
 }
 
-.container{
+.mu-card-header-title {
+  padding-right: 10px;
+}
+
+.status {
+  width: 15%;
+  color: #999;
+}
+
+.mu-card-header {
+  padding: 0;
+}
+
+.mu-card p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.container {
   background: #fff;
-  margin-top:15px ;
+  padding: 30px 0;
 }
 
-.grid-cell{
-  display: flex;
-  height: 100px;
-  align-items: center;
-  justify-content: center;
+.mu-step-label.completed .mu-step-label-circle, .mu-step-label.active .mu-step-label-circle{
+  background: #009688;
 }
 
-.col{
-  border-bottom: 1px solid #f5f5f5;
+.mu-step-label.completed .status , .mu-step-label.active .status{
+color: #009688;
 }
-
-.col:nth-child(odd){
-border-right: 1px solid #f5f5f5;
-}
-
-.grid-cell span{
- display: flex;
-width: 40px;
-height: 40px;
-justify-content: center;
-align-items: center;
-border-radius: 8px;
-margin-right: 5px;
-}
-
-.grid-cell .iconfont{
-font-size: 22px;
-color: #fff;
-}
-
-.cOrange{
-  background: #fbae44;
-}
-
-.cGreen{
-  background: #4fca6f;
-}
-
-.cBlue{
-   background: #a0d2f7;
-}
-
-.cYellow{
-   background: #f8dc1c;
-}
-
-.cPurple{
-  background: #eb8af7;
-}
-
-.cLightGreen{
-  background: #68dcb7;
-}
-
-.cRed{
-  background: #f9876c;
-}
-
-.cBrown{
-  background:#a45a49;
-}
-
 </style>
