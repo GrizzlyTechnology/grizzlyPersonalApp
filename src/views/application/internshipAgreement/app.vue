@@ -1,6 +1,6 @@
 <template>
   <div>
-    <List>
+    <List  v-if='protocols.length>0'>
       <div v-for='protocol in protocols' :key="protocol.id" @click="agreementDetails">
         <ListItem>
           <ListItemTitle>
