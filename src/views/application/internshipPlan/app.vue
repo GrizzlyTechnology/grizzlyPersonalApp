@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ExpansionPanel>
+    <ExpansionPanel :expand='true'>
       <div slot="header">前期计划</div>
       <div class='planDetail'>
         <p> <span>计划周期：</span> 2018年6月10日——2018年7月10日</p>
