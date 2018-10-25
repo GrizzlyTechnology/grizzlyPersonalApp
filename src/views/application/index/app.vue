@@ -1,32 +1,75 @@
 <template>
-  <div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <p @click='outsideSchool'>校外实习</p>
-  </div>
+  <Container>
+    <Stepper :active-step="0" orientation="vertical" :linear="false">
+      <template v-for='company in companys'>
+        <Step :key='company.id' @click='Internship'>
+          <StepLabel  class='comStepper'>
+            <Card>
+              <p>{{company.practiceTime}}</p>
+              <CardHeader :title="company.companyName" :sub-title="company.department + '  ' +company.group"></CardHeader>
+            </Card>
+            <span class='status'>{{company.practicesStatus}}</span>
+            <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail"></Icon>
+          </StepLabel>
+        </Step>
+      </template>
+    </Stepper>
+  </Container>
 </template>
-
 <script>
+import { Card, Icon } from 'muse-ui';
+import { CardHeader } from 'muse-ui/lib/Card';
+import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
+import { Container } from 'muse-ui/lib/Grid';
 import tool from 'util/tools';
 export default {
   data () {
     return {
-
+      companys: [
+        {
+          id: 1,
+          practiceTime: '2015.03——至今',
+          companyName: '大灰熊科技有限公司',
+          department: '技术部',
+          group: '研发组',
+          practicesStatus: '实习中'
+        },
+        {
+          id: 2,
+          practiceTime: '2011.05—2015.02',
+          companyName: '大灰熊科技有限公司',
+          department: '技术部',
+          group: '研发组',
+          practicesStatus: '已离职'
+        },
+        {
+          id: 3,
+          practiceTime: '1999.05—2011.04',
+          companyName: '大灰熊科技有限公司',
+          department: '技术部',
+          group: '研发组',
+          practicesStatus: '已离职'
+        }
+      ]
     };
   },
   components: {
-
+    Container,
+    Card,
+    CardHeader,
+    Stepper,
+    Step,
+    StepLabel,
+    Icon
   },
   methods: {
-    outsideSchool () {
+    Internship () {
       tool.openWin({
-        name: 'outsideSchool',
+        name: 'Internship',
         url: '../win.html',
         title: '校外实习',
-        fname: 'outsideSchool_f',
-        furl: './application/outsideSchool.html',
+        fname: 'Internship_f',
+        furl: './application/Internship.html',
         hasLeft: 1
       });
     }
@@ -34,7 +77,42 @@ export default {
   mounted () {}
 };
 </script>
-<style lang="less" scoped>
-@import url('../../../assets/css/base.less');
+<style lang="less">
+@import url("../../../assets/css/base.less");
+.mu-card {
+  box-shadow: none;
+  background: none;
+  width: 75%;
+}
 
+.mu-card-header-title {
+  padding-right: 10px;
+}
+
+.status {
+  width: 15%;
+  color: #999;
+}
+
+.mu-card-header {
+  padding: 0;
+}
+
+.mu-card p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.container {
+  background: #fff;
+  padding: 30px 0;
+}
+
+.mu-step-label.completed .mu-step-label-circle, .mu-step-label.active .mu-step-label-circle{
+  background: #009688;
+}
+
+.mu-step-label.completed .status , .mu-step-label.active .status{
+color: #009688;
+}
 </style>
