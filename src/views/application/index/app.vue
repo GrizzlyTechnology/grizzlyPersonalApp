@@ -2,7 +2,7 @@
   <Container>
     <Stepper :active-step="0" orientation="vertical" :linear="false">
       <template v-for='company in companys'>
-        <Step :key='company.id' @click='Internship'>
+        <Step :key='company.id' @click='Internship(company.id)'>
           <StepLabel  class='comStepper'>
             <Card>
               <p>{{company.practiceTime}}</p>
@@ -22,35 +22,11 @@ import { CardHeader } from 'muse-ui/lib/Card';
 import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
 import { Container } from 'muse-ui/lib/Grid';
 import tool from 'util/tools';
+import service from 'service';
 export default {
   data () {
     return {
-      companys: [
-        {
-          id: 1,
-          practiceTime: '2015.03——至今',
-          companyName: '大灰熊科技有限公司',
-          department: '技术部',
-          group: '研发组',
-          practicesStatus: '实习中'
-        },
-        {
-          id: 2,
-          practiceTime: '2011.05—2015.02',
-          companyName: '大灰熊科技有限公司',
-          department: '技术部',
-          group: '研发组',
-          practicesStatus: '已离职'
-        },
-        {
-          id: 3,
-          practiceTime: '1999.05—2011.04',
-          companyName: '大灰熊科技有限公司',
-          department: '技术部',
-          group: '研发组',
-          practicesStatus: '已离职'
-        }
-      ]
+      companys: []
     };
   },
   components: {
@@ -63,18 +39,38 @@ export default {
     Icon
   },
   methods: {
-    Internship () {
+     // 列表数据
+    async listsData () {
+      const response = await service.internshipCompany({});
+      switch (response.code) {
+        case 0:
+          this.companys = response.result.lists;
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    Internship (id) {
       tool.openWin({
         name: 'Internship',
         url: '../win.html',
         title: '校外实习',
         fname: 'Internship_f',
         furl: './application/Internship.html',
-        hasLeft: 1
+        hasLeft: 1,
+        data(){
+          companyId:id
+        }
       });
     }
   },
-  mounted () {}
+  mounted () {
+    this.listsData();
+  }
 };
 </script>
 <style lang="less">
@@ -105,7 +101,7 @@ export default {
 
 .container {
   background: #fff;
-  padding: 30px 0;
+  padding: 50px 0 30px;
 }
 
 .mu-step-label.completed .mu-step-label-circle, .mu-step-label.active .mu-step-label-circle{
