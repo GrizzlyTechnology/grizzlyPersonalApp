@@ -8,6 +8,10 @@
         :key="row.id"
         :right="[
           {
+            content: '设为默认',
+            style: { background: '#07A9EA', color: '#fff' },
+            handler: () => {setDefault(row)}
+          },          {
             content: '删除',
             style: { background: '#e7585a', color: '#fff' },
             handler: () => {del(row)}
@@ -82,6 +86,9 @@ export default {
 
     del (data) {
       alert(data.id + data.name);
+    },
+    setDefault (data) {
+
     }
   },
   mounted () {
