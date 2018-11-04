@@ -16,13 +16,13 @@
     </List>
     <ImagesPopup ref="imagesPopup" :urlList="this.agreementImgs" :index="urlListIndex"></ImagesPopup>
     <Row class='whiteBg space15' gutter>
-        <template v-for='(agreementImg,index) in agreementImgs' v-show="agreementImgs.length > 0">
-          <Col span="6" @click='imagesPopupOpen(agreementImg,index)'>
+        <div v-for='(agreementImg,index) in agreementImgs' v-show="agreementImgs.length > 0" :key='agreementImg.index'>
+          <Col span="6" @click='imagesPopupOpen(agreementImg,index)' >
           <div class="grid-cell">
             <img :src="agreementImg" alt="">
           </div>
           </Col>
-        </template>
+        </div>
         <div v-show='agreementImgs.length === 0' class='noCon'>
           <span>暂无协议</span>
           <Button color="primary">立即上传</Button>
@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import { Dialog, Button } from "muse-ui";
-import { Row, Col } from "muse-ui/lib/Grid";
+import { Dialog, Button } from 'muse-ui';
+import { Row, Col } from 'muse-ui/lib/Grid';
 import {
   List,
   ListItem,
@@ -42,16 +42,16 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from "muse-ui/lib/List";
-import ImagesPopup from "components/ImagesPopup";
+} from 'muse-ui/lib/List';
+import ImagesPopup from 'components/ImagesPopup';
 // import { Row, Col, Container } from 'muse-ui/lib/Grid';
-import tool from "util/tools";
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
-      companyName: "大灰熊科技有限公司",
-      department: "技术部",
-      group: "前端组",
+      companyName: '大灰熊科技有限公司',
+      department: '技术部',
+      group: '前端组',
       agreementImgs: [
         'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',
         'http://img.zcool.cn/community/0125fd5770dfa50000018c1b486f15.jpg@1280w_1l_2o_100sh.jpg',
@@ -76,20 +76,20 @@ export default {
     ImagesPopup
   },
   methods: {
-    imagesPopupOpen(list, index) {
+    imagesPopupOpen (list, index) {
       // this.agreementImgs = list.map((r, i) => {
       //   return r.url;
       // });
       this.urlListIndex = index;
       this.$refs.imagesPopup.open();
     },
-    companyInfo(enterpriseId) {
+    companyInfo (enterpriseId) {
       tool.openWin({
-        name: "companyInfo",
-        url: "../win.html",
-        title: "企业介绍",
-        fname: "companyInfo_f",
-        furl: "./hr/companyInfo.html",
+        name: 'companyInfo',
+        url: '../win.html',
+        title: '企业介绍',
+        fname: 'companyInfo_f',
+        furl: './hr/companyInfo.html',
         hasLeft: 1,
         hasRight: 1,
         data: {
@@ -98,7 +98,7 @@ export default {
       });
     }
   },
-  mounted() {}
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>
