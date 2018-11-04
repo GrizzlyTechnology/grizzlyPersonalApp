@@ -27,12 +27,14 @@
 </template>
 
 <script>
-import { Row, Col, Container } from "muse-ui/lib/Grid";
-import tool from "util/tools";
+import { Row, Col, Container } from 'muse-ui/lib/Grid';
+import tool from 'util/tools';
+// import service from 'service';
+// import { Toast } from 'mint-ui';
 export default {
-  data() {
+  data () {
     return {
-      companyId: window.api.pageParam.companyId
+      // companyId: window.api.pageParam.companyId
     };
   },
   components: {
@@ -41,81 +43,82 @@ export default {
     Container
   },
   methods: {
-    async internshipAgreement() {
-      const response = await service.internshipAgreement({
-        companyId: companyId
-      });
-      switch (response.code) {
-        case 0:
-          tool.openWin({
-            name: "agreementDetails",
-            url: "../win.html",
-            title: "实习协议",
-            fname: "agreementDetails_f",
-            furl: "./application/agreementDetails.html",
-            hasLeft: 1
-          });
-          break;
-        default:
-          Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
-          });
-          break;
-      }
-    },
-    internshipAssessment() {
+    // async
+    internshipAgreement () {
+      // const response = await service.internshipAgreement({
+      //   companyId: this.companyId
+      // });
+      // switch (response.code) {
+      //   case 0:
       tool.openWin({
-        name: "internshipAssessment",
-        url: "../win.html",
-        title: "实习考核",
-        fname: "internshipAssessment_f",
-        furl: "./application/internshipAssessment.html",
+        name: 'agreementDetails',
+        url: '../win.html',
+        title: '实习协议',
+        fname: 'agreementDetails_f',
+        furl: './application/agreementDetails.html',
+        hasLeft: 1
+      });
+      //     break;
+      //   default:
+      //     Toast({
+      //       position: 'top',
+      //       message: '加载失败，请稍后重试！！'
+      //     });
+      //     break;
+      // }
+    },
+    internshipAssessment () {
+      tool.openWin({
+        name: 'internshipAssessment',
+        url: '../win.html',
+        title: '实习考核',
+        fname: 'internshipAssessment_f',
+        furl: './application/internshipAssessment.html',
         hasLeft: 1
       });
     },
-    internshipPlan() {
+    internshipPlan () {
       tool.openWin({
-        name: "internshipPlan",
-        url: "../win.html",
-        title: "实习计划",
-        fname: "internshipPlan_f",
-        furl: "./application/internshipPlan.html",
+        name: 'internshipPlan',
+        url: '../win.html',
+        title: '实习计划',
+        fname: 'internshipPlan_f',
+        furl: './application/internshipPlan.html',
         hasLeft: 1
       });
     },
-    internshipReport() {
+    internshipReport () {
       tool.openWin({
-        name: "internshipReport",
-        url: "../win.html",
-        title: "实习报告",
-        fname: "internshipReport_f",
-        furl: "./application/internshipReport.html",
+        name: 'internshipReport',
+        url: '../win.html',
+        title: '实习报告',
+        fname: 'internshipReport_f',
+        furl: './application/internshipReport.html',
         hasLeft: 1
       });
     },
-    internshipLog() {
+    internshipLog () {
       tool.openWin({
-        name: "internshipLog",
-        url: "../win.html",
-        title: "实习日志",
-        fname: "internshipLog_f",
-        furl: "./application/internshipLog.html",
+        name: 'internshipLog',
+        url: '../win.html',
+        title: '实习日志',
+        fname: 'internshipLog_f',
+        furl: './application/internshipLog.html',
         hasLeft: 1
       });
     },
-    internshipSummary() {
+    internshipSummary () {
       tool.openWin({
-        name: "internshipSummary",
-        url: "../win.html",
-        title: "实习总结",
-        fname: "internshipSummary_f",
-        furl: "./application/internshipSummary.html",
+        name: 'internshipSummary',
+        url: '../win.html',
+        title: '实习总结',
+        fname: 'internshipSummary_f',
+        furl: './application/internshipSummary.html',
         hasLeft: 1
       });
     }
   },
-  mounted() {}
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>

@@ -23,30 +23,30 @@
 
 </template>
 <script>
-import { Button, Card, Icon } from "muse-ui";
-import { Container } from "muse-ui/lib/Grid";
-import { CardHeader } from "muse-ui/lib/Card";
-import { Stepper, Step, StepLabel } from "muse-ui/lib/Stepper";
-import tool from "util/tools";
+import { Button, Card, Icon } from 'muse-ui';
+import { Container } from 'muse-ui/lib/Grid';
+import { CardHeader } from 'muse-ui/lib/Card';
+import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
       logs: [
         {
           id: 1,
-          cycle: "2015.03——至今",
+          cycle: '2015.03——至今',
           content:
-            "本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板"
+            '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板'
         },
         {
           id: 2,
-          cycle: "2011.05—2015.02",
-          content: "本周在师傅指导下，学会留言板"
+          cycle: '2011.05—2015.02',
+          content: '本周在师傅指导下，学会留言板'
         },
         {
           id: 3,
-          cycle: "1999.05—2011.04",
-          content: "本周在师傅指导下，学会留言板"
+          cycle: '1999.05—2011.04',
+          content: '本周在师傅指导下，学会留言板'
         }
       ]
     };
@@ -62,28 +62,28 @@ export default {
     Icon
   },
   methods: {
-    releaseLog() {
+    releaseLog () {
       tool.openWin({
-        name: "releaseLog",
-        url: "../win.html",
-        title: "实习日志",
-        fname: "releaseLog_f",
-        furl: "./application/releaseLog.html",
+        name: 'releaseLog',
+        url: '../win.html',
+        title: '实习日志',
+        fname: 'releaseLog_f',
+        furl: './application/releaseLog.html',
         hasLeft: 1
       });
     },
-    logDetail() {
+    logDetail () {
       tool.openWin({
-        name: "logDetail",
-        url: "../win.html",
-        title: "日志详情",
-        fname: "logDetail_f",
-        furl: "./application/logDetail.html",
+        name: 'logDetail',
+        url: '../win.html',
+        title: '日志详情',
+        fname: 'logDetail_f',
+        furl: './application/logDetail.html',
         hasLeft: 1
       });
     }
   },
-  mounted() {}
+  mounted () {}
 };
 </script>
 <style lang="less">

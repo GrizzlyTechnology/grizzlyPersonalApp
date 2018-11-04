@@ -15,7 +15,7 @@
       </ListItem>
     </List>
     <ImagesPopup ref="imagesPopup" :urlList="this.agreementImgs.imgUrl" :index="urlListIndex"></ImagesPopup>
-    <Row class='whiteBg space15' gutter>
+    <Row class='whiteBg space15' gutter :rules="fileListRules">
          <div class="picList">
           <div class="picCon" v-for="(agreementImg,index) in agreementImgs"  :key='agreementImg.id'>
             <div class="con" :style="{backgroundImage:'url('+agreementImg.imgUrl+')'}" @click='imagesPopupOpen(agreementImgs,index)' />
@@ -31,7 +31,10 @@
           </div>
         </div>
     </Row>
-  </div>
+    <div class='p16 fixBox whiteBg'>
+          <Button color="#009688" textColor="#ffffff" class='mt25' :full-width="true" :style="{boxShadow: '0 0 0'}" large @click='submit'>保存</Button>
+        </div>
+      </div>
 </template>
 
 <script>
@@ -85,7 +88,15 @@ export default {
             : tool.getStorage('token') || ''
       },
       maxSize: 10,
-      max: 6
+      max: 6,
+      fileListRules: [
+        {
+          validate: val => {
+            return this.agreementImgs.length > 0;
+          },
+          message: '必须上传协议图片'
+        }
+      ]
     };
   },
   components: {
@@ -187,37 +198,24 @@ export default {
       if (this.agreementImgs.length < this.max) {
         this.uploaderHide = false;
       }
+    },
+    submit () {
+      this.$refs.form.validate().then(result => {
+        // console.log(result);
+        if (result === true) {
+          if (this.id) {
+            this.edit();
+          } else {
+            this.create();
+          }
+        }
+      });
     }
   },
   mounted () {}
 };
 </script>
-<style lang="less" scoped>
-@import url("../../../assets/css/base.less");
-.whiteBg {
-  background: #fff;
-}
-
-.mu-item-sub-title {
-  margin-top: 5px;
-}
-
-.mu-item-sub-title span {
-  margin-right: 15px;
-}
-
-.companyInfo {
-  color: #009688;
-}
-.space15 {
-  padding: 15px;
-  margin: 15px 0;
-}
-
-.pDialog .mu-dialog-body img {
-  width: 100%;
-}
-
+<style lang="less">
 .uploader {
   width: 50%;
   padding-top: 50%;
@@ -265,6 +263,47 @@ export default {
     display: none;
   }
 }
+</style>
+<style lang="less" scoped>
+@import url("../../../assets/css/base.less");
+.whiteBg {
+  background: #fff;
+}
+
+.p16 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.fixBox {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  padding: 10px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-around;
+}
+
+.mu-item-sub-title {
+  margin-top: 5px;
+}
+
+.mu-item-sub-title span {
+  margin-right: 15px;
+}
+
+.companyInfo {
+  color: #009688;
+}
+.space15 {
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.pDialog .mu-dialog-body img {
+  width: 100%;
+}
 
 .hide {
   display: none;
@@ -294,7 +333,7 @@ export default {
 
   .el-icon-delete{
       color:#009688;
-      font-size:30px;
+      font-size:22px;
       position: absolute;
       right: 0%;
       top:15px;
