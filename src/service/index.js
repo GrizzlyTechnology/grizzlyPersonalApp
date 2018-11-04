@@ -490,5 +490,14 @@ export default {
       params,
       method: 'get'
     });
+  },
+  // 实习企业列表
+  internshipCompany (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/interviewoks',
+      params,
+      method: 'get'
+    });
   }
 };

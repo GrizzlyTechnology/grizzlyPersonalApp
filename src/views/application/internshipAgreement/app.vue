@@ -1,6 +1,6 @@
 <template>
   <div>
-    <List>
+    <List  v-if='protocols.length>0'>
       <div v-for='protocol in protocols' :key="protocol.id" @click="agreementDetails">
         <ListItem>
           <ListItemTitle>
@@ -19,6 +19,12 @@
         <Divider></Divider>
       </div>
     </List>
+    <div v-else class='bodyer noList'>
+        暂无记录
+    </div>
+     <div class='p16 fixBox'>
+      <Button color="#009688" textColor="#ffffff" class='mt25' :full-width="true" :style="{boxShadow: '0 0 0'}" large @click='pushData'>上传协议</Button>
+    </div>
   </div>
 </template>
 
