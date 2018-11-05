@@ -14,13 +14,13 @@
       <i class="mu-icon icon-right isLink" />
       <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
     </Cell>
-    <Cell class="ucCell">
-      <div class="ucCellCon">
+    <!-- <Cell class="ucCell">
+      <div class="ucCellCon" @click="systemSetting">
         <span class="ucCellTitle">切换身份</span>
       </div>
       <i class="mu-icon icon-right isLink" />
       <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
-    </Cell>
+    </Cell> -->
     <div class="footer">
       <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="logout">退出登录</Button>
     </div>
