@@ -5,7 +5,8 @@
       <span class="ucNickname">{{nickname}}
         <Icon :size="16" :value="sex===1?':icon-nan2':':icon-nv1'" :color="sex===1?'#61bce8':'#fd7777'" /></span>
       <span class="ucSchoole" v-if="studentStatus!=null">镇江高等专科学校</span>
-      <span class="ucSchoole" v-if="studentStatus===null" @click="setStudentStatus">创建学籍 <Icon :size="16" value=":icon-right" color="#fff"/></span>
+      <span class="ucSchoole" v-if="studentStatus===null" @click="setStudentStatus">创建学籍
+        <Icon :size="16" value=":icon-right" color="#fff" /></span>
       <span class="ucClass" v-if="studentStatus!==null">电气系 / 电气专业</span>
       <span class="ucSetting" @click="setting">
         <Icon :size="14" value=":el-icon-setting" color="#FFF" />
@@ -25,7 +26,14 @@
           <span class="ucCellTitle">简历管理</span>
         </div>
         <i class="mu-icon icon-right isLink" />
-        <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
+        <Icon slot="icon" value=":icon-fankui" :size="28" color="#999" />
+      </Cell>
+      <Cell class="ucCell">
+        <div class="ucCellCon" @click="messageCenter">
+          <span class="ucCellTitle">消息中心</span>
+        </div>
+        <i class="mu-icon icon-right isLink" />
+        <Icon slot="icon" value=":icon-xiaoxi" :size="28" color="#999" />
       </Cell>
     </div>
   </div>
@@ -42,7 +50,7 @@ export default {
     return {
       nickname: '暂无',
       sex: 1,
-      studentStatus: {},
+      studentStatus: null,
       headphoto: '../assets/img/headpic.png'
     };
   },
@@ -52,7 +60,7 @@ export default {
   },
   methods: {
     async getStudentStatus () {
-      // this.studentStatus = {};
+      this.studentStatus = {};
     },
     async getUserinfo () {
       tools.showProgress();
@@ -76,6 +84,19 @@ export default {
       }
     },
     showMoreInfo () {},
+    messageCenter () {
+      tools.openWin({
+        name: 'messageCenter',
+        url: '../win.html',
+        title: '消息中心',
+        fname: 'messageCenter_f',
+        furl: './userCenter/messageCenter.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getUserinfo();
+        }
+      });
+    },
     studentInfoList () {
       tools.openWin({
         name: 'studentInfoList',
@@ -130,7 +151,7 @@ export default {
       {
         name: 'getStudentStatusCallBack'
       },
-      function (ret, err) {
+      (ret, err) => {
         this.getStudentStatus();
       }
     );
