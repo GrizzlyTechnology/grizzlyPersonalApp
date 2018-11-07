@@ -223,7 +223,7 @@ export default {
       this.messageLists[this.active].loading = true;
       setTimeout(() => {
         this.messageLists[this.active].loading = false;
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 5; i++) {
           this.messageLists[this.active].list.push({
             id: this.messageLists[this.active].list.length,
             date:
