@@ -9,74 +9,69 @@
         </AutoComplete>
       </div>
     </div>
-
     <Carousel hide-controls>
-      <CarouselItem>
-        <img :src="carouselImg1">
-      </CarouselItem>
-      <CarouselItem>
-        <img :src="carouselImg2">
-      </CarouselItem>
-      <CarouselItem>
-        <img :src="carouselImg3">
-      </CarouselItem>
-      <CarouselItem>
-        <img :src="carouselImg4">
-      </CarouselItem>
+      <template v-for='(carouselImg,index) in carouselImgs'>
+        <CarouselItem :key="carouselImg.index">
+          <img :src="carouselImg">
+        </CarouselItem>
+      </template>
     </Carousel>
     <div class='bgWhite space15'>
-      <h2 class='titleB'>名企推荐</h2>
+      <h2 class='titleB' @click="companyListAll()">名企推荐<Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
+      </h2>
       <Row class='mqtj' gutter>
-        <Col span="4" v-for='company in companys.slice(0,6)' :key='company.id'>
+        <Col span="4" v-for='company in companys.slice(0,6)' :key='company.id' @click="companyInfo(company.id)">
         <div class="grid-cell">
           <img :src="company.imgSrc" alt="">
         </div>
         </Col>
       </Row>
     </div>
-    <h2 class='titleA'><span></span> 适合你的职位 <span></span></h2>
-    <div class='bgWhite '>
-      <List textline="two-line" v-if="suitablesLists.length > 0">
-        <div v-for='suitablesList in suitablesLists.slice(0,6)' :key="suitablesList.id">
-          <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(suitablesList.id)">
-            <ListItemContent>
-              <ListItemTitle>{{suitablesList.position}}
-                <span class='claim'>{{suitablesList.claim}}</span>
-              </ListItemTitle>
-              <ListItemSubTitle>
-                {{suitablesList.companyName}}
-              </ListItemSubTitle>
-            </ListItemContent>
-            <ListAction>
-              <ListItemAfterText class='salaryRange'>{{suitablesList.salaryRange}}</ListItemAfterText>
-              <ListItemAfterText>{{suitablesList.date}}</ListItemAfterText>
-            </ListAction>
-          </ListItem>
-          <Divider></Divider>
-        </div>
-      </List>
-    </div>
+    <template v-if=''>
+      <h2 class='titleA'><span></span> 适合你的职位 <span></span></h2>
+      <div class='bgWhite '>
+        <List textline="two-line" v-if="suitablesLists.length > 0">
+          <div v-for='suitablesList in suitablesLists.slice(0,6)' :key="suitablesList.id">
+            <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(suitablesList.id)">
+              <ListItemContent>
+                <ListItemTitle>{{suitablesList.position}}
+                  <span class='claim'>{{suitablesList.claim}}</span>
+                </ListItemTitle>
+                <ListItemSubTitle>
+                  {{suitablesList.companyName}}
+                </ListItemSubTitle>
+              </ListItemContent>
+              <ListAction>
+                <ListItemAfterText class='salaryRange'>{{suitablesList.salaryRange}}</ListItemAfterText>
+                <ListItemAfterText>{{suitablesList.date}}</ListItemAfterText>
+              </ListAction>
+            </ListItem>
+            <Divider></Divider>
+          </div>
+        </List>
+      </div>
+    </template>
     <div class="adv"></div>
     <!-- <img src="../../../assets/img/adv.jpg" alt="" class='adv'> -->
     <div class='bgWhite hotJobs'>
-      <h2 class='titleB'>热门职位 <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
+      <h2 class='titleB' @click="hotJobListAll()">热门职位 <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
       </h2>
     </div>
     <div class='bgWhite'>
-      <List textline="two-line" v-if="suitablesLists.length > 0">
-        <div v-for='suitablesList in suitablesLists.slice(0,6)' :key="suitablesList.id">
-          <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(suitablesList.id)">
+      <List textline="two-line" v-if="hotJobs.length > 0">
+        <div v-for='hotJob in hotJobs.slice(0,6)' :key="hotJob.id">
+          <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(hotJob.id)">
             <ListItemContent>
-              <ListItemTitle>{{suitablesList.position}}
-                <span class='claim'>{{suitablesList.claim}}</span>
+              <ListItemTitle>{{hotJob.position}}
+                <span class='claim'>{{hotJob.claim}}</span>
               </ListItemTitle>
               <ListItemSubTitle>
-                {{suitablesList.companyName}}
+                {{hotJob.companyName}}
               </ListItemSubTitle>
             </ListItemContent>
             <ListAction>
-              <ListItemAfterText class='salaryRange'>{{suitablesList.salaryRange}}</ListItemAfterText>
-              <ListItemAfterText>{{suitablesList.date}}</ListItemAfterText>
+              <ListItemAfterText class='salaryRange'>{{hotJob.salaryRange}}</ListItemAfterText>
+              <ListItemAfterText>{{hotJob.date}}</ListItemAfterText>
             </ListAction>
           </ListItem>
           <Divider></Divider>
@@ -117,12 +112,12 @@
 </template>
 
 <script>
-import service from 'service';
-import { Toast } from 'mint-ui';
-import { Carousel, CarouselItem } from 'muse-ui/lib/Carousel';
-import { Paper, Divider, AutoComplete, Icon } from 'muse-ui';
-import { Container, Row, Col } from 'muse-ui/lib/Grid';
-import tool from 'util/tools';
+import service from "service";
+import { Toast } from "mint-ui";
+import { Carousel, CarouselItem } from "muse-ui/lib/Carousel";
+import { Paper, Divider, AutoComplete, Icon } from "muse-ui";
+import { Container, Row, Col } from "muse-ui/lib/Grid";
+import tool from "util/tools";
 import {
   List,
   ListItem,
@@ -131,27 +126,22 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from 'muse-ui/lib/List';
+} from "muse-ui/lib/List";
 export default {
-  data () {
+  data() {
     return {
-      companys: [ ],
-      carouselImg1:
-        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',
-      carouselImg2:
-        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',
-      carouselImg3:
-        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',
-      carouselImg4:
-        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg',
+      companys: [],
+      carouselImgs: [],
       form: {
-        keyWord: '',
+        keyWord: "",
         area: null
       },
       suitablesLists: [],
+      desiredPosition: "",
+      hotJobs: [],
       area: [],
       defaultResult: [],
-      labelPosition: 'right',
+      labelPosition: "right",
       cid: 1, // 文章分类id,写死
       raidersList: [] // 职场攻略列表
     };
@@ -175,28 +165,28 @@ export default {
     Paper
   },
   computed: {
-    areaText () {
+    areaText() {
       return this.area.length > 0
         ? this.area[this.area.length - 1].label
-        : '全国';
+        : "全国";
     },
-    filterResult () {
+    filterResult() {
       return this.defaultResult.filter(value =>
-        new RegExp(this.value, 'i').test(value)
+        new RegExp(this.value, "i").test(value)
       );
     }
   },
   methods: {
-    areaHandle () {
+    areaHandle() {
       tool.openWin({
-        name: 'areaSelector',
-        url: '../win.html',
-        title: '选择地区',
-        fname: 'areaSelector_f',
-        furl: './common/areaSelector.html',
+        name: "areaSelector",
+        url: "../win.html",
+        title: "选择地区",
+        fname: "areaSelector_f",
+        furl: "./common/areaSelector.html",
         hasLeft: 1,
         data: {
-          nameSpace: 'areaSelector',
+          nameSpace: "areaSelector",
           area: this.area,
           level: 2,
           callback: (ret, err) => {
@@ -206,16 +196,16 @@ export default {
       });
     },
     // 点击搜索
-    search () {
+    search() {
       tool.openWin({
-        name: 'jobSearchList',
-        url: '../win.html',
-        title: '所有职位',
-        fname: 'jobSearchList_f',
-        furl: './hr/jobSearchList.html',
+        name: "jobSearchList",
+        url: "../win.html",
+        title: "所有职位",
+        fname: "jobSearchList_f",
+        furl: "./hr/jobSearchList.html",
         hasLeft: 1,
         data: {
-          nameSpace: 'jobSearchList',
+          nameSpace: "jobSearchList",
           area: this.form.area,
           keyWord: this.form.keyWord
         }
@@ -223,7 +213,7 @@ export default {
     },
 
     // 获取职位
-    async getAllSearchValue () {
+    async getAllSearchValue() {
       const response = await service.getAllPosition(this.form.keyWord);
       switch (response.code) {
         case 0:
@@ -231,17 +221,32 @@ export default {
           break;
         default:
           tool.toast({
-            position: 'top',
-            message: '搜索失败，请重试'
+            position: "top",
+            message: "搜索失败，请重试"
           });
           break;
       }
     },
-    submit () {
+    submit() {
       this.search();
     },
-    // 名企推荐列表
-    async companyRecommend () {
+    // 滚动图
+    async carouselImg() {
+      const response = await service.carouselImgs({});
+      switch (response.code) {
+        case 0:
+          this.carouselImgs = response.result.carouselImgs;
+          break;
+        default:
+          Toast({
+            position: "top",
+            message: "加载失败，请稍后重试！！"
+          });
+          break;
+      }
+    },
+    // 名企推荐数据
+    async companyRecommend() {
       const response = await service.companyRecommendList({});
       switch (response.code) {
         case 0:
@@ -249,37 +254,108 @@ export default {
           break;
         default:
           Toast({
-            position: 'top',
-            message: '加载失败，请稍后重试！！'
+            position: "top",
+            message: "加载失败，请稍后重试！！"
           });
           break;
       }
     },
-    // 适合你的职位列表数据
-    async listsData () {
-      const response = await service.searchBoxValue({
-        keyWord: this.keyWord,
-        area: this.area
+    // 名企推荐所有列表
+    companyListAll() {
+      tool.openWin({
+        name: "companyList",
+        url: "../win.html",
+        title: "名企推荐",
+        fname: "companyList_f",
+        furl: "./hr/companyList.html",
+        hasLeft: 1
       });
+    },
+    // 名企推荐详情
+    companyInfo(enterpriseId) {
+      tool.openWin({
+        name: "companyInfo",
+        url: "../win.html",
+        title: "企业介绍",
+        fname: "companyInfo_f",
+        furl: "./hr/companyInfo.html",
+        hasLeft: 1,
+        hasRight: 1,
+        data: {
+          enterpriseId: enterpriseId
+        }
+      });
+    },
+
+    // 适合你的职位列表数据
+    async listsData() {
+      const response = await service.searchBoxValue({});
       switch (response.code) {
         case 0:
           this.suitablesLists = response.result.list;
           break;
         default:
           Toast({
-            position: 'top',
-            message: '加载失败，请稍后重试！！'
+            position: "top",
+            message: "加载失败，请稍后重试！！"
           });
           break;
       }
     },
-    jobDetails (id) {
+
+    //适合你的职位显示
+    // async suitablePosition() {
+    //   const response = await service.suitablePosition({});
+    //   switch (response.code) {
+    //     case 0:
+    //       this.desiredPosition = response.result.desiredPosition;
+    //       console.log(desiredPosition)
+    //       break;
+    //     default:
+    //       Toast({
+    //         position: "top",
+    //         message: "加载失败，请稍后重试！！"
+    //       });
+    //       break;
+    //   }
+    // },
+    // 热门职位列表
+    async hotJobsData() {
+      const response = await service.hotJobsData({});
+      switch (response.code) {
+        case 0:
+          this.hotJobs = response.result.list;
+          break;
+        default:
+          Toast({
+            position: "top",
+            message: "加载失败，请稍后重试！！"
+          });
+          break;
+      }
+    },
+    //所有热门职位
+    hotJobListAll() {
       tool.openWin({
-        name: 'jobDetails_' + id,
-        url: '../win.html',
-        title: '职位详情',
-        fname: 'jobDetails_f_' + id,
-        furl: './hr/jobDetails.html',
+        name: "jobSearchList",
+        url: "../win.html",
+        title: "热门职位",
+        fname: "jobSearchList_f",
+        furl: "./hr/jobSearchList.html",
+        hasLeft: 1,
+        data: {
+          istj: 1 //1是推荐 0是不推荐
+        }
+      });
+    },
+    //职位详情
+    jobDetails(id) {
+      tool.openWin({
+        name: "jobDetails_" + id,
+        url: "../win.html",
+        title: "职位详情",
+        fname: "jobDetails_f_" + id,
+        furl: "./hr/jobDetails.html",
         hasLeft: 1,
         hasRight: 1,
         data: {
@@ -288,18 +364,18 @@ export default {
       });
     },
     // 跳转到职场攻略页面
-    raidersListAll () {
+    raidersListAll() {
       tool.openWin({
-        name: 'raidersList',
-        url: '../win.html',
-        title: '职场攻略',
-        fname: 'raidersList_f',
-        furl: './hr/raidersList.html',
+        name: "raidersList",
+        url: "../win.html",
+        title: "职场攻略",
+        fname: "raidersList_f",
+        furl: "./hr/raidersList.html",
         hasLeft: 1
       });
     },
     // 获取职场攻略列表
-    async raidersListData () {
+    async raidersListData() {
       const response = await service.getrRaidersList({ cid: this.cid });
       switch (response.code) {
         case 0:
@@ -307,19 +383,19 @@ export default {
           break;
         default:
           Toast({
-            position: 'top',
-            message: '获取失败，请稍后重试！！'
+            position: "top",
+            message: "获取失败，请稍后重试！！"
           });
           break;
       }
     },
-    raidersArticle (id) {
+    raidersArticle(id) {
       tool.openWin({
-        name: 'raidersArticle',
-        url: '../win.html',
-        title: '',
-        fname: 'raidersArticle_f',
-        furl: './hr/raidersArticle.html',
+        name: "raidersArticle",
+        url: "../win.html",
+        title: "",
+        fname: "raidersArticle_f",
+        furl: "./hr/raidersArticle.html",
         hasLeft: 1,
         hasRight: 1,
         data: {
@@ -328,10 +404,12 @@ export default {
       });
     }
   },
-  mounted () {
+  mounted() {
     this.listsData();
     this.raidersListData();
     this.companyRecommend();
+    this.carouselImg();
+    this.hotJobsData();
   }
 };
 </script>
@@ -344,7 +422,9 @@ export default {
   height: 200px;
   margin-top: 68px;
 }
-
+.mu-carousel-item > img {
+  width: 100%;
+}
 .topSearch {
   position: fixed;
   padding-top: 30px;

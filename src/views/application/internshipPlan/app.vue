@@ -64,32 +64,32 @@
 
 </template>
 <script>
-import { ExpansionPanel } from "muse-ui";
+import { ExpansionPanel } from 'muse-ui';
 // import { Container } from "muse-ui/lib/Grid";
-import tool from "util/tools";
+// import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
       earlyPlan: {
-        cycle: " 2018年6月10日——2018年7月10日",
-        master: "葛明敏",
-        post: "技术部-研发组",
-        content: "跟随指导师傅熟悉业务",
-        aims: "能够独立完成一个留言板"
+        cycle: ' 2018年6月10日——2018年7月10日',
+        master: '葛明敏',
+        post: '技术部-研发组',
+        content: '跟随指导师傅熟悉业务',
+        aims: '能够独立完成一个留言板'
       },
       intermediatePlan: {
-        cycle: " 2018年6月10日——2018年7月10日",
-        master: "葛明敏",
-        post: "技术部-研发组",
-        content: "跟随指导师傅熟悉业务",
-        aims: "能够独立完成一个留言板"
+        cycle: ' 2018年6月10日——2018年7月10日',
+        master: '葛明敏',
+        post: '技术部-研发组',
+        content: '跟随指导师傅熟悉业务',
+        aims: '能够独立完成一个留言板'
       },
       latePlan: {
-        cycle: " 2018年6月10日——2018年7月10日",
-        master: "葛明敏",
-        post: "技术部-研发组",
-        content: "跟随指导师傅熟悉业务",
-        aims: "能够独立完成一个留言板"
+        cycle: ' 2018年6月10日——2018年7月10日',
+        master: '葛明敏',
+        post: '技术部-研发组',
+        content: '跟随指导师傅熟悉业务',
+        aims: '能够独立完成一个留言板'
       }
     };
   },
@@ -97,7 +97,7 @@ export default {
     ExpansionPanel
   },
   methods: {},
-  mounted() {}
+  mounted () {}
 };
 </script>
 <style lang="less">

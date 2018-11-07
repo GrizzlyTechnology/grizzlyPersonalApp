@@ -23,6 +23,7 @@ import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
 import { Container } from 'muse-ui/lib/Grid';
 import tool from 'util/tools';
 import service from 'service';
+import { Toast } from 'mint-ui';
 export default {
   data () {
     return {
@@ -39,7 +40,7 @@ export default {
     Icon
   },
   methods: {
-     // 列表数据
+    // 列表数据
     async listsData () {
       const response = await service.internshipCompany({});
       switch (response.code) {
@@ -62,8 +63,8 @@ export default {
         fname: 'Internship_f',
         furl: './application/Internship.html',
         hasLeft: 1,
-        data(){
-          companyId:id
+        data: {
+          companyId: id
         }
       });
     }

@@ -7,10 +7,6 @@
             <label for="">实习单位：</label>
            <span>江苏大灰熊科技有限公司</span>
           </div>
-           <div class='mbox'>
-            <label for="">实习地点：</label>
-           <span>江苏省镇江市润州区XX号</span>
-          </div>
           <FormItem label="实习时间：" prop="startTime"  :rules="workingTimeRules">
             <DateInput :value="internshipStart" style='width:45%' :max-date="new Date()" @change="changeStartTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
             至
@@ -24,17 +20,33 @@
             <label for="">实习岗位：</label>
            <span>研发组</span>
           </div>
-          <div class='tips'>本月已写周志3次</div>
-           <FormItem label="本周工作内容：" prop="title">
+           <div class='mbox'>
+            <label for="">指导师傅：</label>
+           <span>XXX</span>
+          </div>
+          <div class='mbox'>
+            <label for="">师傅电话：</label>
+           <span>15106111415</span>
+          </div>
+           <div class='mbox'>
+            <label for="">姓名：</label>
+           <span>XXX</span>
+          </div>
+          <div class='mbox'>
+            <label for="">班级：</label>
+           <span>信息系/3(2)班</span>
+          </div>
+          <div class='mbox'>
+            <label for="">性别：</label>
+           <span>男</span>
+          </div>
+          <div class='mbox'>
+            <label for="">学号：</label>
+           <span>23025</span>
+          </div>
+           <FormItem label="自我鉴定：" prop="title">
               <TextField multi-line
               v-model="form.workContent"
-              :max-length="100"
-              :rows="5"
-              :rows-max="5"></TextField>
-          </FormItem>
-           <FormItem label="本周收获：" prop="title">
-              <TextField multi-line
-              v-model="form.reward"
               :max-length="100"
               :rows="5"
               :rows-max="5"></TextField>
@@ -65,8 +77,7 @@ export default {
       form: {
         internshipStart: '',
         internshipEnd: '',
-        workContent: 'sdfsdfsdfsdf',
-        reward: 'dgdfgdfgdfgdfg'
+        workContent: 'sdfsdfsdfsdf'
       },
       workingTimeRules: [
         { validate: val => this.form.internshipStart <= this.form.internshipEnd, message: '开始时间不能在结束时间之后' }

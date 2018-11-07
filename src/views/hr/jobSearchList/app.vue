@@ -49,7 +49,8 @@ export default {
       loading: false,
       lists: [],
       keyWord: window.api.pageParam.keyWord,
-      area: window.api.pageParam.area || []
+      area: window.api.pageParam.area || [],
+      istj: window.api.pageParam.istj ||''
     };
   },
   components: {
@@ -73,7 +74,8 @@ export default {
     async listsData () {
       const response = await service.searchBoxValue({
         keyWord: this.keyWord,
-        area: this.area
+        area: this.area,
+        istj:this.istj
       });
       switch (response.code) {
         case 0:

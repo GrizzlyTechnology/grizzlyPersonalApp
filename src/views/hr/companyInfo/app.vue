@@ -130,8 +130,6 @@ export default {
       switch (response.code) {
         case 0:
           this.lists = response.result.lists;
-          console.log(response.result.lists);
-          console.log(response.result);
           break;
         default:
           Toast({
