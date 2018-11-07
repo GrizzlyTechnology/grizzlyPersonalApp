@@ -13,12 +13,14 @@
       </Tab>
     </Tabs>
     <TabContainer v-model="active" swipeable class="list-con">
-      <TabContainerItem v-for="key in Object.keys(messageList)" :key="key" :id="Number(key)" class="message-list">
-        <div class="message" v-for="message in messageList[key]" :key="message.id" >
-          <div class="message-head">{{message.date}}</div>
-          <div class="message-body">{{message.con}}</div>
-          <div class="message-foot"><span>查看详情</span></div>
-        </div>
+      <TabContainerItem v-for="key in Object.keys(messageList)" :ref="'container' + key" :key="key" :id="Number(key)" class="message-list">
+        <LoadMore @refresh="refresh" :refreshing="refreshing" :loading="loading" @load="load">
+          <div class="message" v-for="message in messageList[key]" :key="message.id">
+            <div class="message-head">{{message.date}} {{message.class}}</div>
+            <div class="message-body">{{message.con}}</div>
+            <div class="message-foot"><span>查看详情</span></div>
+          </div>
+        </LoadMore>
       </TabContainerItem>
     </TabContainer>
   </div>
@@ -139,7 +141,38 @@ export default {
     TabContainerItem
   },
   computed: {},
-  methods: {}
+  methods: {
+    refresh () {
+      this.refreshing = true;
+      this.$refs[`container${this.active}`].scrollTop = 0;
+      setTimeout(() => {
+        this.messageList[this.active] = [];
+        this.refreshing = false;
+        for (let i = 0; i < 10; i++) {
+          this.messageList[this.active].push({
+            id: this.messageList[this.active].length,
+            date: 'NO:' + this.messageList[this.active].length + ' 2018年11月10日',
+            class: '系统消息',
+            con: 'gjghjghj33453453453453453454！'
+          });
+        }
+      }, 2000);
+    },
+    load () {
+      this.loading = true;
+      setTimeout(() => {
+        this.loading = false;
+        for (let i = 0; i < 10; i++) {
+          this.messageList[this.active].push({
+            id: this.messageList[this.active].length,
+            date: 'NO:' + this.messageList[this.active].length + ' 2018年11月10日',
+            class: '系统消息',
+            con: 'gjghjghj33453453453453453454！'
+          });
+        }
+      }, 2000);
+    }
+  }
 };
 </script>
 <style lang="less">
@@ -151,7 +184,6 @@ export default {
 }
 .list-con {
   flex: 1;
-  -webkit-overflow-scrolling: touch;
   .mint-tab-container-wrap {
     height: 100%;
   }
@@ -159,6 +191,7 @@ export default {
     padding: 15px 0 0;
     height: 100%;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 .message {
@@ -175,7 +208,7 @@ export default {
     padding-top: 10px;
     margin-top: 15px;
     border-top: 1px solid #dddddd;
-    &:active > *{
+    &:active > * {
       background-color: #eee;
     }
   }
