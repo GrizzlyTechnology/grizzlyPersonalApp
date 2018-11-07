@@ -1,21 +1,15 @@
 <template>
   <div class="content">
-    <Tabs :value.sync="active" inverse indicator-color="#009688" color="#009688" text-color="rgba(0, 0, 0, .54)" full-width>
-      <Tab>
-        全部
-        <i class='message-tips'>99</i>
-      </Tab>
-      <Tab>
-        系统通知
-      </Tab>
-      <Tab>
-        互动
+    <Tabs :value="active" inverse indicator-color="#009688" color="#009688" text-color="rgba(0, 0, 0, .54)" full-width>
+      <Tab v-for="(messageList,index) in messageLists" :key="index" @click="changeTab(index)">
+        {{messageList.name}}
+        <i class='message-tips'>{{messageList.list.length}}</i>
       </Tab>
     </Tabs>
     <TabContainer v-model="active" swipeable class="list-con">
-      <TabContainerItem v-for="key in Object.keys(messageList)" :ref="'container' + key" :key="key" :id="Number(key)" class="message-list">
-        <LoadMore @refresh="refresh" :refreshing="refreshing" :loading="loading" @load="load">
-          <div class="message" v-for="message in messageList[key]" :key="message.id">
+      <TabContainerItem v-for="(messageList,index) in messageLists" :ref="'container' + index" :key="index" :id="index" class="message-list">
+        <LoadMore @refresh="refresh" @load="load" :refreshing="messageList.refreshing" :loading="messageList.loading">
+          <div class="message" v-for="message in messageList.list" :key="message.id">
             <div class="message-head">{{message.date}} {{message.class}}</div>
             <div class="message-body">{{message.con}}</div>
             <div class="message-foot"><span>查看详情</span></div>
@@ -44,88 +38,149 @@ export default {
       refreshing: false,
       loading: false,
       active: 0,
-      messageList: {
-        0: [
-          {
-            id: 1,
-            date: '2018年5月10日',
-            class: '系统消息',
-            imgSrc: '../../../assets/img/gz.jpg',
-            con:
-              '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-          },
-          {
-            id: 2,
-            date: '2018年11月10日',
-            class: '系统消息',
-            con: 'gjghjghj33453453453453453454！'
-          },
-          {
-            id: 3,
-            date: '2018年3月10日',
-            class: '系统消息',
-            con: 'sdfgsdfsdfsdfsdf！'
-          },
-          {
-            id: 4,
-            date: '2018年5月10日',
-            class: '系统消息',
-            imgSrc: '../../../assets/img/gz.jpg',
-            con:
-              '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-          },
-          {
-            id: 5,
-            date: '2018年11月10日',
-            class: '系统消息',
-            con: 'gjghjghj33453453453453453454！'
-          },
-          {
-            id: 6,
-            date: '2018年3月10日',
-            class: '系统消息',
-            con: 'sdfgsdfsdfsdfsdf！'
-          }
-        ],
-        1: [
-          {
-            id: 1,
-            date: '2018年5月10日',
-            class: '系统消息',
-            imgSrc: '../../../assets/img/gz.jpg',
-            con:
-              '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-          },
-          {
-            id: 2,
-            date: '2018年11月10日',
-            class: '系统消息',
-            con: 'gjghjghj33453453453453453454！'
-          },
-          {
-            id: 3,
-            date: '2018年3月10日',
-            class: '系统消息',
-            con: 'sdfgsdfsdfsdfsdf！'
-          }
-        ],
-        2: [
-          {
-            id: 1,
-            date: '2018年5月10日',
-            class: '系统消息',
-            imgSrc: '../../../assets/img/gz.jpg',
-            con:
-              '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-          },
-          {
-            id: 2,
-            date: '2018年11月10日',
-            class: '系统消息',
-            con: 'gjghjghj33453453453453453454！'
-          }
-        ]
-      }
+      messageLists: [
+        {
+          name: '全部',
+          refreshing: false,
+          loading: false,
+          list: [
+            {
+              id: 0,
+              date: '2018年5月10日',
+              class: '系统消息',
+              imgSrc: '../../../assets/img/gz.jpg',
+              con:
+                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
+            },
+            {
+              id: 1,
+              date: '2018年11月10日',
+              class: '系统消息',
+              con: 'gjghjghj33453453453453453454！'
+            },
+            {
+              id: 2,
+              date: '2018年3月10日',
+              class: '系统消息',
+              con: 'sdfgsdfsdfsdfsdf！'
+            },
+            {
+              id: 3,
+              date: '2018年5月10日',
+              class: '系统消息',
+              imgSrc: '../../../assets/img/gz.jpg',
+              con:
+                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
+            },
+            {
+              id: 4,
+              date: '2018年11月10日',
+              class: '系统消息',
+              con: 'gjghjghj33453453453453453454！'
+            },
+            {
+              id: 5,
+              date: '2018年3月10日',
+              class: '系统消息',
+              con: 'sdfgsdfsdfsdfsdf！'
+            }
+          ]
+        },
+        {
+          name: '系统通知',
+          refreshing: false,
+          loading: false,
+          list: [
+            {
+              id: 0,
+              date: '2018年5月10日',
+              class: '系统消息',
+              imgSrc: '../../../assets/img/gz.jpg',
+              con:
+                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
+            },
+            {
+              id: 1,
+              date: '2018年11月10日',
+              class: '系统消息',
+              con: 'gjghjghj33453453453453453454！'
+            },
+            {
+              id: 2,
+              date: '2018年3月10日',
+              class: '系统消息',
+              con: 'sdfgsdfsdfsdfsdf！'
+            },
+            {
+              id: 3,
+              date: '2018年5月10日',
+              class: '系统消息',
+              imgSrc: '../../../assets/img/gz.jpg',
+              con:
+                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
+            },
+            {
+              id: 4,
+              date: '2018年11月10日',
+              class: '系统消息',
+              con: 'gjghjghj33453453453453453454！'
+            },
+            {
+              id: 5,
+              date: '2018年3月10日',
+              class: '系统消息',
+              con: 'sdfgsdfsdfsdfsdf！'
+            }
+          ]
+        },
+        {
+          name: '互动',
+          refreshing: false,
+          loading: false,
+          list: [
+            {
+              id: 0,
+              date: '2018年5月10日',
+              class: '系统消息',
+              imgSrc: '../../../assets/img/gz.jpg',
+              con:
+                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
+            },
+            {
+              id: 1,
+              date: '2018年11月10日',
+              class: '系统消息',
+              con: 'gjghjghj33453453453453453454！'
+            },
+            {
+              id: 2,
+              date: '2018年3月10日',
+              class: '系统消息',
+              con: 'sdfgsdfsdfsdfsdf！'
+            },
+            {
+              id: 3,
+              date: '2018年5月10日',
+              class: '系统消息',
+              imgSrc: '../../../assets/img/gz.jpg',
+              con:
+                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
+            },
+            {
+              id: 4,
+              date: '2018年11月10日',
+              class: '系统消息',
+              con: 'gjghjghj33453453453453453454！'
+            },
+            {
+              id: 5,
+              date: '2018年3月10日',
+              class: '系统消息',
+              con: 'sdfgsdfsdfsdfsdf！'
+            }
+          ]
+        }
+      ]
     };
   },
   components: {
@@ -142,16 +197,22 @@ export default {
   },
   computed: {},
   methods: {
+    changeTab (index) {
+      this.active = index;
+    },
     refresh () {
-      this.refreshing = true;
+      this.messageLists[this.active].refreshing = true;
       this.$refs[`container${this.active}`].scrollTop = 0;
       setTimeout(() => {
-        this.messageList[this.active] = [];
-        this.refreshing = false;
+        this.messageLists[this.active].list = [];
+        this.messageLists[this.active].refreshing = false;
         for (let i = 0; i < 10; i++) {
-          this.messageList[this.active].push({
-            id: this.messageList[this.active].length,
-            date: 'NO:' + this.messageList[this.active].length + ' 2018年11月10日',
+          this.messageLists[this.active].list.push({
+            id: this.messageLists[this.active].list.length,
+            date:
+              'NO:' +
+              this.messageLists[this.active].list.length +
+              ' 2018年11月10日',
             class: '系统消息',
             con: 'gjghjghj33453453453453453454！'
           });
@@ -159,13 +220,16 @@ export default {
       }, 2000);
     },
     load () {
-      this.loading = true;
+      this.messageLists[this.active].loading = true;
       setTimeout(() => {
-        this.loading = false;
+        this.messageLists[this.active].loading = false;
         for (let i = 0; i < 10; i++) {
-          this.messageList[this.active].push({
-            id: this.messageList[this.active].length,
-            date: 'NO:' + this.messageList[this.active].length + ' 2018年11月10日',
+          this.messageLists[this.active].list.push({
+            id: this.messageLists[this.active].list.length,
+            date:
+              'NO:' +
+              this.messageLists[this.active].list.length +
+              ' 2018年11月10日',
             class: '系统消息',
             con: 'gjghjghj33453453453453453454！'
           });
