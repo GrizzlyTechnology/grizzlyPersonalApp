@@ -23,8 +23,8 @@
                   <i class="el-icon-delete" @click="remove(file,index)"></i>
                 </div>
               </div>
-              <div :class="{uploader:true,hide:fileList.length>=6}">
-                <Upload ref="uploader" accept="image/*" list-type="picture-card" name="file" :class="{hide:uploaderHide}" :show-file-list="false" :with-credentials="true" :multiple="false" :data="{type:2}" :headers="headers" :action="actionUrl" :limit="max" :file-list="fileList" :on-change="change" :on-progress="progress" :on-success="success" :before-upload="beforeUpload" :on-error="error">
+              <div :class="{uploader:true,hide:fileList.length>=max}">
+                <Upload ref="uploader" accept="image/*" list-type="picture-card" name="file" :class="{hide:uploaderHide}" :show-file-list="false" :with-credentials="true" :multiple="false" :data="{type:2}" :headers="headers" :action="actionUrl" :limit="max" :file-list="uploaderLiist" :on-change="change" :on-progress="progress" :on-success="success" :before-upload="beforeUpload" :on-error="error">
                   <i class="el-icon-plus"></i>
                 </Upload>
                 <div :class="{hide:!uploaderHide,progressPercent:true}">
@@ -73,6 +73,7 @@ export default {
       },
       maxSize: 10,
       max: 6,
+      uploaderLiist: [],
       fileList:
         window.api && window.api.pageParam.honor
           ? window.api.pageParam.honor.reslist
@@ -203,7 +204,6 @@ export default {
             this.uploaderHide = true;
           }
           break;
-
         default:
           tools.toast({
             position: 'top',
