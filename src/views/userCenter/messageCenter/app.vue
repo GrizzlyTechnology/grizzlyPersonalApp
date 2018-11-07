@@ -41,6 +41,7 @@ export default {
       messageLists: [
         {
           name: '全部',
+          page: 1,
           refreshing: false,
           loading: false,
           list: [
@@ -88,6 +89,7 @@ export default {
         },
         {
           name: '系统通知',
+          page: 1,
           refreshing: false,
           loading: false,
           list: [
@@ -135,6 +137,7 @@ export default {
         },
         {
           name: '互动',
+          page: 1,
           refreshing: false,
           loading: false,
           list: [
