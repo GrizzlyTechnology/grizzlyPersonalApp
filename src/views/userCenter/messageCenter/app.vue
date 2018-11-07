@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <Tabs :value.sync="active2" inverse indicator-color="#009688" color="#009688" text-color="rgba(0, 0, 0, .54)" full-width>
+  <div class="content">
+    <Tabs :value.sync="active" inverse indicator-color="#009688" color="#009688" text-color="rgba(0, 0, 0, .54)" full-width>
       <Tab>
         全部
-        <i class='messageTips'>5</i>
+        <i class='message-tips'>99</i>
       </Tab>
       <Tab>
         系统通知
@@ -12,64 +12,22 @@
         互动
       </Tab>
     </Tabs>
-    <div class="demo-text" v-if="active2 === 0">
-      <List>
-        <ListItem v-for='newList in news' :key="newList.id">
-          <ListItemContent>
-            <ListItemTitle>
-              {{newList.date}} {{newList.class}}
-            </ListItemTitle>
-            <ListItemSubTitle>
-              <img :src="newList.imgSrc" alt=""> {{newList.con}}
-            </ListItemSubTitle>
-            <ListItemSubTitle class='borTop'>
-              查看详情
-            </ListItemSubTitle>
-          </ListItemContent>
-        </ListItem>
-      </List>
-    </div>
-    <div class="demo-text" v-if="active2 === 1">
-      <List>
-        <ListItem v-for='newList in news' :key="newList.id">
-          <ListItemContent>
-            <ListItemTitle>
-              {{newList.date}} {{newList.class}}
-            </ListItemTitle>
-            <ListItemSubTitle>
-              <img :src="newList.imgSrc" alt=""> {{newList.con}}
-            </ListItemSubTitle>
-            <ListItemSubTitle class='borTop'>
-              查看详情
-            </ListItemSubTitle>
-          </ListItemContent>
-        </ListItem>
-      </List>
-    </div>
-    <div class="demo-text" v-if="active2 === 2">
-      <List>
-        <ListItem v-for='newList in news' :key="newList.id">
-          <ListItemContent>
-            <ListItemTitle>
-              {{newList.date}} {{newList.class}}
-            </ListItemTitle>
-            <ListItemSubTitle>
-              <img :src="newList.imgSrc" alt=""> {{newList.con}}
-            </ListItemSubTitle>
-            <ListItemSubTitle class='borTop'>
-              查看详情
-            </ListItemSubTitle>
-          </ListItemContent>
-        </ListItem>
-      </List>
-    </div>
+    <TabContainer v-model="active" swipeable class="list-con">
+      <TabContainerItem v-for="key in Object.keys(messageList)" :key="key" :id="Number(key)" class="message-list">
+        <div class="message" v-for="message in messageList[key]" :key="message.id" >
+          <div class="message-head">{{message.date}}</div>
+          <div class="message-body">{{message.con}}</div>
+          <div class="message-foot"><span>查看详情</span></div>
+        </div>
+      </TabContainerItem>
+    </TabContainer>
   </div>
-
 </template>
 
 <script>
-import { Tabs } from 'muse-ui';
+import { Tabs, LoadMore } from 'muse-ui';
 import { Tab } from 'muse-ui/lib/Tabs';
+import { TabContainer, TabContainerItem } from 'mint-ui';
 import {
   List,
   ListItem,
@@ -81,29 +39,91 @@ import {
 export default {
   data () {
     return {
-      active2: 0,
-      news: [
-        {
-          id: 1,
-          date: '2018年5月10日',
-          class: '系统消息',
-          imgSrc: '../../../assets/img/gz.jpg',
-          con:
-            '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-        },
-        {
-          id: 2,
-          date: '2018年11月10日',
-          class: '系统消息',
-          con: 'gjghjghj33453453453453453454！'
-        },
-        {
-          id: 3,
-          date: '2018年3月10日',
-          class: '系统消息',
-          con: 'sdfgsdfsdfsdfsdf！'
-        }
-      ]
+      refreshing: false,
+      loading: false,
+      active: 0,
+      messageList: {
+        0: [
+          {
+            id: 1,
+            date: '2018年5月10日',
+            class: '系统消息',
+            imgSrc: '../../../assets/img/gz.jpg',
+            con:
+              '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
+          },
+          {
+            id: 2,
+            date: '2018年11月10日',
+            class: '系统消息',
+            con: 'gjghjghj33453453453453453454！'
+          },
+          {
+            id: 3,
+            date: '2018年3月10日',
+            class: '系统消息',
+            con: 'sdfgsdfsdfsdfsdf！'
+          },
+          {
+            id: 4,
+            date: '2018年5月10日',
+            class: '系统消息',
+            imgSrc: '../../../assets/img/gz.jpg',
+            con:
+              '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
+          },
+          {
+            id: 5,
+            date: '2018年11月10日',
+            class: '系统消息',
+            con: 'gjghjghj33453453453453453454！'
+          },
+          {
+            id: 6,
+            date: '2018年3月10日',
+            class: '系统消息',
+            con: 'sdfgsdfsdfsdfsdf！'
+          }
+        ],
+        1: [
+          {
+            id: 1,
+            date: '2018年5月10日',
+            class: '系统消息',
+            imgSrc: '../../../assets/img/gz.jpg',
+            con:
+              '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
+          },
+          {
+            id: 2,
+            date: '2018年11月10日',
+            class: '系统消息',
+            con: 'gjghjghj33453453453453453454！'
+          },
+          {
+            id: 3,
+            date: '2018年3月10日',
+            class: '系统消息',
+            con: 'sdfgsdfsdfsdfsdf！'
+          }
+        ],
+        2: [
+          {
+            id: 1,
+            date: '2018年5月10日',
+            class: '系统消息',
+            imgSrc: '../../../assets/img/gz.jpg',
+            con:
+              '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
+          },
+          {
+            id: 2,
+            date: '2018年11月10日',
+            class: '系统消息',
+            con: 'gjghjghj33453453453453453454！'
+          }
+        ]
+      }
     };
   },
   components: {
@@ -113,7 +133,10 @@ export default {
     ListItem,
     ListItemContent,
     ListItemTitle,
-    ListItemSubTitle
+    ListItemSubTitle,
+    LoadMore,
+    TabContainer,
+    TabContainerItem
   },
   computed: {},
   methods: {}
@@ -121,55 +144,49 @@ export default {
 </script>
 <style lang="less">
 @import url("../../../assets/css/base.less");
-.bgW {
-  background: #fff;
-  padding-bottom: 15px;
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-
-.mu-item {
-  height: auto;
+.list-con {
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+  .mint-tab-container-wrap {
+    height: 100%;
+  }
+  .message-list {
+    padding: 15px 0 0;
+    height: 100%;
+    overflow: auto;
+  }
 }
-
-.mu-item-sub-title {
-  color: #666;
-}
-
-.mu-item-sub-title img {
-  width: 100%;
-  display: block;
-  margin-bottom: 10px;
-}
-
-.mu-item-title {
-  color: #a9a9a9;
-  font-size: 12px;
-  padding: 5px 0;
-  line-height: auto;
-  height: auto;
-}
-
-.borTop {
-  border-top: 1px solid #dddddd;
-  padding-top: 5px;
-  margin-top: 10px;
-}
-
-.colorRed {
-  color: #ff0000;
-}
-
-.mu-list li {
-  background: #fff;
+.message {
+  background-color: #fff;
+  padding: 15px;
   margin-bottom: 15px;
-  padding: 10px 0;
+  .message-head {
+    color: #a9a9a9;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  .message-foot {
+    color: #666;
+    padding-top: 10px;
+    margin-top: 15px;
+    border-top: 1px solid #dddddd;
+    &:active > *{
+      background-color: #eee;
+    }
+  }
 }
 
 .mu-tab-wrapper {
   flex-direction: row;
 }
 
-.messageTips {
-  border-radius: 50%;
+.message-tips {
+  border-radius: 14px;
   color: #fff;
   background: red;
   font-style: normal;
@@ -181,5 +198,6 @@ export default {
   text-align: center;
   line-height: 14px;
   display: inline-block;
+  min-width: 26px;
 }
 </style>
