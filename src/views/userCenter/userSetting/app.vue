@@ -149,7 +149,7 @@ export default {
           this.name = response.result.userInfo.name !== null ? response.result.userInfo.name : '暂无';
           this.identity = response.result.userInfo.identity !== null ? response.result.userInfo.identity : '暂无';
           this.sex = dictMap.sex[response.result.userInfo.sex];
-          this.headphoto = response.result.userInfo.headphoto === null ? this.headphoto : response.result.userInfo.headphoto;
+          this.headphoto = response.result.userInfo.headphoto === null ? this.headphoto : tools.getPicUrl(response.result.userInfo.headphoto, 450);
           break;
         default:
           tools.toast({
