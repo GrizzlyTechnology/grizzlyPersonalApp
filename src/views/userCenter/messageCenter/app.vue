@@ -288,6 +288,7 @@ export default {
   background: red;
   font-style: normal;
   transform: scale(0.6);
+  margin-left: 5px;
   padding: 6px;
   font-size: 16px;
   min-width: 14px;
