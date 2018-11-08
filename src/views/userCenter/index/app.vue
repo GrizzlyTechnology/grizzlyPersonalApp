@@ -1,59 +1,117 @@
 <template>
-  <Container>
-    <Row>
-      <Col span="3" offset="9" @click="systemSet"> 设置
-      </Col>
-    </Row>
-    <Row class="wrapper" align-items="center">
-      <Flex class="headpic" justify-content="center" fill>
-        <Paper class="paper" circle :z-depth="1"></Paper>
-      </Flex>
-      <Flex class="info" justify-content="center" fill>
-        <div class="nickname">nickname</div>
-        <div class="atter">无锡职业技术学院
-          <span class="atter-more">计算机32102班</span>
+  <div class="content">
+    <div class="ucHeader">
+      <div class="ucAvatar" :style="{backgroundImage:'url(' + headphoto + ')'}"></div>
+      <span class="ucNickname">{{nickname}}
+        <Icon :size="16" :value="sex===1?':icon-nan2':':icon-nv1'" :color="sex===1?'#61bce8':'#fd7777'" /></span>
+      <span class="ucSchoole" v-if="studentStatus!=null">镇江高等专科学校</span>
+      <span class="ucSchoole" v-if="studentStatus===null" @click="setStudentStatus">创建学籍
+        <Icon :size="16" value=":icon-right" color="#fff" /></span>
+      <span class="ucClass" v-if="studentStatus!==null">电气系 / 电气专业</span>
+      <span class="ucSetting" @click="setting">
+        <Icon :size="14" value=":el-icon-setting" color="#FFF" />
+        设置
+      </span>
+    </div>
+    <div class="bodyer">
+      <!-- <Cell class="ucCell">
+        <div class="ucCellCon" @click="studentInfoList">
+          <span class="ucCellTitle">学籍管理</span>
         </div>
-      </Flex>
-    </Row>
-    <Button full-width large class="buttom" color="red" @click="studentInfo">完善学生信息</Button>
-    <Button full-width large class="buttom" color="red" @click="resumeList">简历管理</Button>
-
-  </Container>
+        <i class="mu-icon icon-right isLink" />
+        <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
+      </Cell> -->
+      <Cell class="ucCell">
+        <div class="ucCellCon" @click="resumeList">
+          <span class="ucCellTitle">简历管理</span>
+        </div>
+        <i class="mu-icon icon-right isLink" />
+        <Icon slot="icon" value=":icon-fankui" :size="28" color="#999" />
+      </Cell>
+      <Cell class="ucCell">
+        <div class="ucCellCon" @click="messageCenter">
+          <span class="ucCellTitle">消息中心</span>
+        </div>
+        <i class="mu-icon icon-right isLink" />
+        <Icon slot="icon" value=":icon-xiaoxi" :size="28" color="#999" />
+      </Cell>
+    </div>
+  </div>
 </template>
 
 <script>
-import tool from 'util/tools';
-import { Button } from 'muse-ui';
-import { Container, Row, Col, Flex } from 'muse-ui/lib/Grid';
-import Paper from 'muse-ui/lib/Paper';
+import { Icon } from 'muse-ui';
+import { Cell } from 'mint-ui';
+import tools from 'util/tools';
+import service from 'service';
 
 export default {
   data () {
     return {
-      userInfo: tool.getStorage('userInfo')
+      nickname: '暂无',
+      sex: 1,
+      studentStatus: null,
+      headphoto: '../assets/img/headpic.png'
     };
   },
   components: {
-    Container,
-    Row,
-    Col,
-    Flex,
-    Paper,
-    Button
+    Icon,
+    Cell
   },
   methods: {
-    studentInfo () {
-      tool.openWin({
-        name: 'userArea',
+    async getStudentStatus () {
+      this.studentStatus = {};
+    },
+    async getUserinfo () {
+      tools.showProgress();
+      const response = await service.getUserInfo();
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.nickname = response.result.userInfo.nickname;
+          this.sex = response.result.userInfo.sex;
+          this.headphoto =
+            response.result.userInfo.headphoto === null
+              ? this.headphoto
+              : tools.getPicUrl(response.result.userInfo.headphoto, 450);
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '用户信息获取失败'
+          });
+          break;
+      }
+    },
+    showMoreInfo () {},
+    messageCenter () {
+      tools.openWin({
+        name: 'messageCenter',
         url: '../win.html',
-        title: '选择地区',
-        fname: 'userArea_f',
-        furl: './userCenter/userArea.html',
-        hasLeft: 1
+        title: '消息中心',
+        fname: 'messageCenter_f',
+        furl: './userCenter/messageCenter.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getUserinfo();
+        }
+      });
+    },
+    studentInfoList () {
+      tools.openWin({
+        name: 'studentInfoList',
+        url: '../win.html',
+        title: '学籍管理',
+        fname: 'studentInfoList_f',
+        furl: './userCenter/studentInfoList.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getUserinfo();
+        }
       });
     },
     resumeList () {
-      tool.openWin({
+      tools.openWin({
         name: 'resumeList',
         url: '../win.html',
         title: '简历管理',
@@ -62,61 +120,119 @@ export default {
         hasLeft: 1
       });
     },
-    systemSet () {
-      tool.openWin({
-        name: 'systemSet',
+    setStudentStatus () {
+      tools.openWin({
+        name: 'userArea',
         url: '../win.html',
-        title: '系统设置',
-        fname: 'systemSet_f',
-        furl: './userCenter/systemSet.html',
+        title: '选择地区',
+        fname: 'userArea_f',
+        furl: './userCenter/userArea.html',
         hasLeft: 1
+      });
+    },
+    setting () {
+      tools.openWin({
+        name: 'setting',
+        url: '../win.html',
+        title: '设置',
+        fname: 'setting_f',
+        furl: './userCenter/setting.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getUserinfo();
+        }
       });
     }
   },
   mounted () {
-    tool.fixStatusBar(tool.dom('.container'));
+    this.getUserinfo();
+    this.getStudentStatus();
+    tools.addEventListener(
+      {
+        name: 'getStudentStatusCallBack'
+      },
+      (ret, err) => {
+        this.getStudentStatus();
+      }
+    );
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import url("../../../assets/css/base.less");
-.container {
-  padding: 20px;
-  background: @baseColor;
+.ucHeader {
+  background-color: @baseColor;
   height: 150px;
-  .headpic {
-    height: 80px;
-    width: 90px;
-    .paper {
-      height: 80px;
-      width: 80px;
-      background-image: url("../../../assets/img/headpic.png");
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
+  position: relative;
+  color: #fff;
+}
+.ucAvatar {
+  position: absolute;
+  height: 80px;
+  width: 80px;
+  border-radius: 40px;
+  background-color: #fff;
+  // background-image: url("../../../assets/img/headpic.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  left: 20px;
+  top: 40px;
+}
+.ucNickname {
+  position: absolute;
+  font-size: 18px;
+  left: 120px;
+  top: 55px;
+}
+.ucSchoole {
+  position: absolute;
+  font-size: 16px;
+  left: 120px;
+  top: 85px;
+}
+.ucClass {
+  position: absolute;
+  left: 120px;
+  top: 112px;
+  font-size: 12px;
+}
+.ucSetting {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.ucCell {
+  position: relative;
+  .ucCellCon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    &:active {
+      background-color: #eee;
+    }
+    .ucCellTitle {
+      line-height: 56px;
+      color: #333;
+      margin-left: 48px;
     }
   }
-  .row {
-    .col {
-      line-height: 40px;
-      text-align: right;
-      color: @grayFont;
-      font-size: @h3;
-    }
+  .mu-icon {
+    z-index: 1;
+    position: relative;
   }
-  .info {
-    line-height: 30px;
-    color: @grayFont;
-    .nickname {
-      font-size: @h1;
-    }
-    .atter {
-      font-size: @h3;
-      color: @grayFontSmallTil;
-      .atter-more {
-        margin-left: 5px;
-      }
-    }
+  .mint-cell-wrapper {
+    background-image: none;
+    border-bottom: 1px solid #eee;
+    height: 56px;
+  }
+  .isLink {
+    position: absolute;
+    top: 19px;
+    font-size: 16px;
+    right: 15px;
   }
 }
 </style>

@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "element-ui": "^2.4.7",
+    "is-json": "^2.0.1",
     "lodash": "^4.17.10",
     "mint-ui": "^2.2.13",
     "mockjs": "^1.0.1-beta3",
@@ -20,6 +22,7 @@
     "v-tap": "^2.2.2",
     "vue": "^2.2.4"
   },
+
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.22.1",

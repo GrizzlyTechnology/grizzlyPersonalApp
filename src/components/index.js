@@ -7,6 +7,8 @@ import AreaSelected from './AreaSelected';
 import Panel from './Panel';
 import StepVertical from './StepVertical';
 import SkillLine from './SkillLine';
+import PickerPopup from './PickerPopup';
+import ImagesPopup from './ImagesPopup';
 
 export {
   AreaSelected,
@@ -17,5 +19,7 @@ export {
   SelectedRecursive,
   Panel,
   StepVertical,
-  SkillLine
+  SkillLine,
+  PickerPopup,
+  ImagesPopup
 };

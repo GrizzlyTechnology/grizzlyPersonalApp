@@ -1,77 +1,118 @@
 <template>
   <div class="content">
     <div class='p15'>
-<Search v-model="value" class='searchBox' cancel-text="取消" placeholder="搜索公司/职位" :result="seachList">
-    </Search >
-    <Form ref="form" :model="form" class="mu-demo-form" :label-position="labelPosition" label-width="45">
-      <FormItem label="地区" prop="areaText">
-        <TextField v-model="form.area" readonly @click="areaHandle"></TextField>
-      </FormItem>
-      <FormItem label="行业" prop="industryText">
-        <TextField v-model="form.industry" readonly  @click="industryHandle"></TextField>
-      </FormItem>
-      <FormItem label="职能" prop="dutiesText">
-        <TextField v-model="form.duties" readonly @click="dutiesHandle"></TextField>
-      </FormItem>
-    </Form>
-    <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="searchPush">搜索</Button>
+      <div class='flexCon'>
+        <span @click="areaHandle" class='araeBox'>
+          <i class='iconfont icon-weizhi-blue'></i>{{areaText}}</span>
+        <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue" label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
+          <i class='iconfont icon-suosou' @click='submit'></i>
+        </AutoComplete>
+      </div>
     </div>
-    <div class="p15 mt25">
-    <SubHeader>猜你要搜</SubHeader>
-    <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.id' @click="chipHandle">{{chip.value}}</Chip>
+    <div class="p15 mt25 bgWhite">
+      <SubHeader>猜你要搜</SubHeader>
+      <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.value' @click="chipHandle">{{chip}}</Chip>
     </div>
   </div>
 </template>
 
 <script>
-import { Search, Cell, Toast } from 'mint-ui';
-import { TextField, Button, SubHeader, Chip } from 'muse-ui';
-import { Form, FormItem } from 'muse-ui/lib/Form';
+import service from 'service';
+import { Toast } from 'mint-ui';
+import { SubHeader, Chip, AutoComplete } from 'muse-ui';
 import tools from 'util/tools';
 export default {
   data () {
     return {
-      value: '',
       form: {
-        area: '北京市',
-        industry: '',
-        duties: ''
+        keyWord: '',
+        area: null
       },
+      area: [],
+      defaultResult: [],
       labelPosition: 'right',
-      seachList: [
-        '222',
-        '333',
-        '44',
-        '555'
-      ],
       chips: [
-        { id: 1, value: '产品经理' },
-        { id: 2, value: '网络科技' },
-        { id: 3, value: '信息科技' },
-        { id: 4, value: '前端工程师' },
-        { id: 5, value: '生物科技' },
-        { id: 6, value: '医药科技' }
-
+        '产品经理',
+        '网络科技',
+        '信息科技',
+        '前端工程师',
+        '生物科技',
+        '医药科技'
       ]
     };
   },
   components: {
-    Search,
-    Form,
-    FormItem,
-    TextField,
-    Button,
-    Cell,
     SubHeader,
     Chip,
-    Toast
+    Toast,
+    AutoComplete
   },
   computed: {
     areaText () {
-      return this.form.area.map(row => row.label).join(' / ');
+      return this.area.length > 0
+        ? this.area[this.area.length - 1].label
+        : '全国';
+    },
+    filterResult () {
+      return this.defaultResult.filter(value =>
+        new RegExp(this.value, 'i').test(value)
+      );
     }
   },
   methods: {
+    // 点击搜索
+    search () {
+      tools.openWin({
+        name: 'jobSearchList',
+        url: '../win.html',
+        title: '所有职位',
+        fname: 'jobSearchList_f',
+        furl: './hr/jobSearchList.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'jobSearchList',
+          area: this.form.area,
+          keyWord: this.form.keyWord
+        }
+      });
+    },
+
+    // 获取职位
+    async getAllSearchValue () {
+      const response = await service.getAllPosition(this.form.keyWord);
+      switch (response.code) {
+        case 0:
+          this.defaultResult = response.result.info;
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '搜索失败，请重试'
+          });
+          break;
+      }
+    },
+    async searchChipValue () {
+      const response = await service.searchChipValue(this.value);
+      switch (response.code) {
+        case 0:
+          tools.openWin({
+            name: 'jobSearchList',
+            url: '../win.html',
+            title: '所有职位',
+            fname: 'jobSearchList_f',
+            furl: './hr/jobSearchList.html',
+            hasLeft: 1
+          });
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '搜索失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
     areaHandle () {
       tools.openWin({
         name: 'areaSelector',
@@ -82,110 +123,89 @@ export default {
         hasLeft: 1,
         data: {
           nameSpace: 'areaSelector',
-          area: this.form.houseHold,
+          area: this.area,
           level: 2,
-          callback: 'houseHoldCallback'
+          callback: (ret, err) => {
+            this.area = ret.value;
+          }
         }
       });
     },
-    industryHandle () {
-
-    },
-    dutiesHandle () {
-
-    },
-    searchPush () {
-      tools.openWin({
-        name: 'jobSearchList',
-        url: '../win.html',
-        title: '职位详情',
-        fname: 'jobSearchList_f',
-        furl: './hr/jobSearchList.html',
-        hasLeft: 1,
-        hasRight: 1
-        // data: {
-        //   nameSpace: 'areaSelector',
-        //   area: this.form.houseHold,
-        //   level: 2,
-        //   callback: 'houseHoldCallback'
-        // }
-      });
-    },
     chipHandle () {
-      tools.openWin({
-        name: 'jobSearchList',
-        url: '../win.html',
-        title: '职位详情',
-        fname: 'jobSearchList_f',
-        furl: './hr/jobSearchList.html',
-        hasLeft: 1,
-        hasRight: 1
-        // data: {
-        //   nameSpace: 'areaSelector',
-        //   area: this.form.houseHold,
-        //   level: 2,
-        //   callback: 'houseHoldCallback'
-        // }
-      });
+      this.searchChipValue();
+    },
+    submit () {
+      this.search();
     }
-
   },
   mounted () {
-    tools.addEventListener(
-      {
-        name: 'houseHoldCallback'
-      },
-      (ret, err) => {
-        this.form.houseHold = ret.value;
-      }
-    );
   }
 };
 </script>
 <style lang="less">
 @import url("../../../assets/css/base.less");
 
-.p15{
-  background: #fff;
+.p15 {
   padding: 15px;
 }
 
-.mint-search {
-  height: auto;
-  margin-bottom: 25px;
+.bgWhite {
+  background: #fff;
 }
 
-.searchBox .mint-search-list{
-  padding-top: 65px;
-  z-index: 999;
+.flexCon {
+  display: flex;
+  align-items: center;
+  border: 1px solid #009688;
+  border-radius: 5px;
+  padding-left: 5px;
+  background: #fff;
+}
+.araeBox {
+  width: 20%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.mint-searchbar{
-  background:none;
-  border:1px solid #009688;
-  border-radius: 2px;
+.mu-input.searchBox {
+  width: 80%;
+  min-height: auto;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
-.mint-searchbar-cancel,.mint-searchbar-inner .mintui-search{
+body .mu-secondary-text-color {
   color: #009688;
 }
 
-.searchBox .mint-search-list-warp{
-  background-color: #fff;
+.flexCon .iconfont {
+  font-size: 20px;
+  color: #009688;
+  margin-right: 15px;
 }
 
-.mu-sub-header{
+.flexCon .iconfont.icon-weizhi-blue {
+  margin-right: 0;
+}
+
+.searchBox input {
+  width: 100%;
+  height: 40px;
+  padding-left: 1rem;
+}
+
+.mu-sub-header {
   padding-left: 0;
 }
 
-body .mu-chip{
+body .mu-chip {
   color: #333;
   margin-left: 10px;
   margin-bottom: 10px;
 }
 
-.mt25{
+.mt25 {
   margin-top: 25px;
 }
-
 </style>

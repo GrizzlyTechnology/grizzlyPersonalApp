@@ -2,8 +2,8 @@
   <div class="footer" :style="{height:footerHeight}">
     <BottomNav class="bottomNav" :value="bottomNavValue" @change="changeIteam">
       <BottomNavItem :value="0" title="首页" icon=":icon-zhaopin1"></BottomNavItem>
-      <BottomNavItem :value="1" title="动态" icon=":icon-guanli"></BottomNavItem>
-      <BottomNavItem :value="2" title="应用" icon=":icon-chanpin"></BottomNavItem>
+      <!-- <BottomNavItem :value="1" title="动态" icon=":icon-guanli"></BottomNavItem> -->
+      <BottomNavItem :value="2" title="实习" icon=":icon-chanpin"></BottomNavItem>
       <BottomNavItem :value="3" title="我的" icon=":icon-icon-"></BottomNavItem>
     </BottomNav>
   </div>
@@ -22,7 +22,8 @@ export default {
   },
   data () {
     return {
-      bottomNavValue: 0
+      bottomNavValue: 0,
+      comeFrom: window.api.pageParam.comefrom
     };
   },
   components: {
@@ -71,6 +72,13 @@ export default {
     }
   },
   mounted () {
+    if (window.api.pageParam.comefrom !== undefined) {
+      setTimeout(function () {
+        window.api.closeWin({
+          name: window.api.pageParam.comefrom
+        });
+      }, 500);
+    }
     this.bottomNavValue = 0;
     this.mainGroup();
   }
