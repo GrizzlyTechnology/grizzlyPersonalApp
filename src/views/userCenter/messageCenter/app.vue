@@ -6,9 +6,9 @@
         <i class='message-tips'>{{messageList.list.length}}</i>
       </Tab>
     </Tabs>
-    <TabContainer v-model="active" :swipeable="!isLoading" class="list-con">
+    <TabContainer v-model="active" swipeable class="list-con">
       <TabContainerItem v-for="(messageList,index) in messageLists" :ref="'container' + index" :key="index" :id="index" class="message-list">
-        <LoadMore @refresh="refresh" @load="load" :refreshing="refreshing" :loading="loading">
+        <LoadMore @refresh="refresh" @load="load" :refreshing="messageList.refreshing" :loading="messageList.loading">
           <div class="message" v-for="message in messageList.list" :key="message.id">
             <div class="message-head">{{message.date}} {{message.class}}</div>
             <div class="message-body">{{message.con}}</div>
@@ -35,12 +35,14 @@ import {
 export default {
   data () {
     return {
-      refreshing: false,
-      loading: false,
+      // refreshing: false,
+      // loading: false,
       active: 0,
       messageLists: [
         {
           name: '全部',
+          refreshing: false,
+          loading: false,
           page: 1,
           list: [
             {
@@ -87,6 +89,8 @@ export default {
         },
         {
           name: '系统通知',
+          refreshing: false,
+          loading: false,
           page: 1,
           list: [
             {
@@ -133,6 +137,8 @@ export default {
         },
         {
           name: '互动',
+          refreshing: false,
+          loading: false,
           page: 1,
           list: [
             {
@@ -199,17 +205,17 @@ export default {
   },
   methods: {
     changeTab (index) {
-      if (!this.isLoading) {
-        this.active = index;
-      }
+      // if (!this.isLoading) {
+      this.active = index;
+      // }
     },
     refresh () {
-      if (!this.loading) {
-        this.refreshing = true;
+      if (!this.messageLists[this.active].loading) {
+        this.messageLists[this.active].refreshing = true;
         this.$refs[`container${this.active}`].scrollTop = 0;
         setTimeout(() => {
           this.messageLists[this.active].list = [];
-          this.refreshing = false;
+          this.messageLists[this.active].refreshing = false;
           for (let i = 0; i < 10; i++) {
             this.messageLists[this.active].list.push({
               id: this.messageLists[this.active].list.length,
@@ -225,10 +231,10 @@ export default {
       }
     },
     load () {
-      if (!this.refresh) {
-        this.loading = true;
+      if (!this.messageLists[this.active].refreshing) {
+        this.messageLists[this.active].loading = true;
         setTimeout(() => {
-          this.loading = false;
+          this.messageLists[this.active].loading = false;
           for (let i = 0; i < 5; i++) {
             this.messageLists[this.active].list.push({
               id: this.messageLists[this.active].list.length,
