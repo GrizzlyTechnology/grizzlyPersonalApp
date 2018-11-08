@@ -6,9 +6,9 @@
         <i class='message-tips'>{{messageList.list.length}}</i>
       </Tab>
     </Tabs>
-    <TabContainer v-model="active" swipeable class="list-con">
+    <TabContainer v-model="active" :swipeable="!isLoading" class="list-con">
       <TabContainerItem v-for="(messageList,index) in messageLists" :ref="'container' + index" :key="index" :id="index" class="message-list">
-        <LoadMore @refresh="refresh" @load="load" :refreshing="messageList.refreshing" :loading="messageList.loading">
+        <LoadMore @refresh="refresh" @load="load" :refreshing="refreshing" :loading="loading">
           <div class="message" v-for="message in messageList.list" :key="message.id">
             <div class="message-head">{{message.date}} {{message.class}}</div>
             <div class="message-body">{{message.con}}</div>
@@ -42,8 +42,6 @@ export default {
         {
           name: '全部',
           page: 1,
-          refreshing: false,
-          loading: false,
           list: [
             {
               id: 0,
@@ -90,8 +88,6 @@ export default {
         {
           name: '系统通知',
           page: 1,
-          refreshing: false,
-          loading: false,
           list: [
             {
               id: 0,
@@ -138,8 +134,6 @@ export default {
         {
           name: '互动',
           page: 1,
-          refreshing: false,
-          loading: false,
           list: [
             {
               id: 0,
@@ -198,46 +192,56 @@ export default {
     TabContainer,
     TabContainerItem
   },
-  computed: {},
+  computed: {
+    isLoading () {
+      return this.refreshing || this.loading;
+    }
+  },
   methods: {
     changeTab (index) {
-      this.active = index;
+      if (!this.isLoading) {
+        this.active = index;
+      }
     },
     refresh () {
-      this.messageLists[this.active].refreshing = true;
-      this.$refs[`container${this.active}`].scrollTop = 0;
-      setTimeout(() => {
-        this.messageLists[this.active].list = [];
-        this.messageLists[this.active].refreshing = false;
-        for (let i = 0; i < 10; i++) {
-          this.messageLists[this.active].list.push({
-            id: this.messageLists[this.active].list.length,
-            date:
+      if (!this.loading) {
+        this.refreshing = true;
+        this.$refs[`container${this.active}`].scrollTop = 0;
+        setTimeout(() => {
+          this.messageLists[this.active].list = [];
+          this.refreshing = false;
+          for (let i = 0; i < 10; i++) {
+            this.messageLists[this.active].list.push({
+              id: this.messageLists[this.active].list.length,
+              date:
               'NO:' +
               this.messageLists[this.active].list.length +
               ' 2018年11月10日',
-            class: '系统消息',
-            con: 'gjghjghj33453453453453453454！'
-          });
-        }
-      }, 2000);
+              class: '系统消息',
+              con: 'gjghjghj33453453453453453454！'
+            });
+          }
+        }, 1000);
+      }
     },
     load () {
-      this.messageLists[this.active].loading = true;
-      setTimeout(() => {
-        this.messageLists[this.active].loading = false;
-        for (let i = 0; i < 5; i++) {
-          this.messageLists[this.active].list.push({
-            id: this.messageLists[this.active].list.length,
-            date:
+      if (!this.refresh) {
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+          for (let i = 0; i < 5; i++) {
+            this.messageLists[this.active].list.push({
+              id: this.messageLists[this.active].list.length,
+              date:
               'NO:' +
               this.messageLists[this.active].list.length +
               ' 2018年11月10日',
-            class: '系统消息',
-            con: 'gjghjghj33453453453453453454！'
-          });
-        }
-      }, 2000);
+              class: '系统消息',
+              con: 'gjghjghj33453453453453453454！'
+            });
+          }
+        }, 1000);
+      }
     }
   }
 };
@@ -272,7 +276,7 @@ export default {
   }
   .message-foot {
     color: #666;
-    padding-top: 10px;
+    padding-top: 15px;
     margin-top: 15px;
     border-top: 1px solid #dddddd;
     &:active > * {
