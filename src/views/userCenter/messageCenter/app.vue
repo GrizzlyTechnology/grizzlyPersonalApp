@@ -8,7 +8,7 @@
     </Tabs>
     <TabContainer v-model="active" swipeable class="list-con">
       <TabContainerItem v-for="(messageList,index) in messageLists" :ref="'container' + index" :key="index" :id="index" class="message-list">
-        <LoadMore @refresh="refresh" @load="load" :refreshing="messageList.refreshing" :loading="messageList.loading">
+        <LoadMore @refresh="refresh(index)" @load="load(index)" :refreshing="messageList.refreshing" :loading="messageList.loading">
           <div class="message" v-for="message in messageList.list" :key="message.id">
             <div class="message-head">{{message.date}} {{message.class}}</div>
             <div class="message-body">{{message.con}}</div>
@@ -209,19 +209,19 @@ export default {
       this.active = index;
       // }
     },
-    refresh () {
-      if (!this.messageLists[this.active].loading) {
-        this.messageLists[this.active].refreshing = true;
-        this.$refs[`container${this.active}`].scrollTop = 0;
+    refresh (active) {
+      if (!this.messageLists[active].refreshing && !this.messageLists[active].loading) {
+        this.messageLists[active].refreshing = true;
+        this.$refs[`container${active}`].scrollTop = 0;
         setTimeout(() => {
-          this.messageLists[this.active].list = [];
-          this.messageLists[this.active].refreshing = false;
+          this.messageLists[active].list = [];
+          this.messageLists[active].refreshing = false;
           for (let i = 0; i < 10; i++) {
-            this.messageLists[this.active].list.push({
-              id: this.messageLists[this.active].list.length,
+            this.messageLists[active].list.push({
+              id: this.messageLists[active].list.length,
               date:
               'NO:' +
-              this.messageLists[this.active].list.length +
+              this.messageLists[active].list.length +
               ' 2018年11月10日',
               class: '系统消息',
               con: 'gjghjghj33453453453453453454！'
@@ -230,17 +230,17 @@ export default {
         }, 1000);
       }
     },
-    load () {
-      if (!this.messageLists[this.active].refreshing) {
-        this.messageLists[this.active].loading = true;
+    load (active) {
+      if (!this.messageLists[active].refreshing && !this.messageLists[active].loading) {
+        this.messageLists[active].loading = true;
         setTimeout(() => {
-          this.messageLists[this.active].loading = false;
+          this.messageLists[active].loading = false;
           for (let i = 0; i < 5; i++) {
-            this.messageLists[this.active].list.push({
-              id: this.messageLists[this.active].list.length,
+            this.messageLists[active].list.push({
+              id: this.messageLists[active].list.length,
               date:
               'NO:' +
-              this.messageLists[this.active].list.length +
+              this.messageLists[active].list.length +
               ' 2018年11月10日',
               class: '系统消息',
               con: 'gjghjghj33453453453453453454！'
