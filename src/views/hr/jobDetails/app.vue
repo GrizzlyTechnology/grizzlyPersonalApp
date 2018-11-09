@@ -88,9 +88,9 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import { Container, Row, Col } from 'muse-ui/lib/Grid';
-import { CardTitle, CardText } from 'muse-ui/lib/Card';
+import { Toast } from "mint-ui";
+import { Container, Row, Col } from "muse-ui/lib/Grid";
+import { CardTitle, CardText } from "muse-ui/lib/Card";
 import {
   List,
   ListItem,
@@ -99,27 +99,27 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from 'muse-ui/lib/List';
-import { Card, Icon, Avatar, Divider, Button } from 'muse-ui';
-import tool from 'util/tools';
-import service from 'service';
+} from "muse-ui/lib/List";
+import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
+import tool from "util/tools";
+import service from "service";
 export default {
-  data () {
+  data() {
     return {
       id: window.api.pageParam.id,
-      position: '',
-      firewood: '',
-      experience: '',
-      education: '',
-      workCity: '',
-      recruitsNum: '',
-      companyImgSrc: '',
-      companyName: '',
-      nature: '',
-      industry: '',
-      workDescription: '',
-      workPlace: '',
-      enterpriseId: '',
+      position: "",
+      firewood: "",
+      experience: "",
+      education: "",
+      workCity: "",
+      recruitsNum: "",
+      companyImgSrc: "",
+      companyName: "",
+      nature: "",
+      industry: "",
+      workDescription: "",
+      workPlace: "",
+      enterpriseId: "",
       lists: [],
       rList: []
     };
@@ -146,8 +146,10 @@ export default {
   },
   methods: {
     // 页面数据
-    async detailsData () {
+    async detailsData() {
+      tool.showProgress();
       const response = await service.getDetailsData({ id: this.id });
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           this.position = response.result.position;
@@ -167,19 +169,19 @@ export default {
           break;
         default:
           Toast({
-            position: 'top',
-            message: '获取失败，请稍后重试！！'
+            position: "top",
+            message: "获取失败，请稍后重试！！"
           });
           break;
       }
     },
-    jobDetails (id) {
+    jobDetails(id) {
       tool.openWin({
-        name: 'jobDetails_' + id,
-        url: '../win.html',
-        title: '职位详情',
-        fname: 'jobDetails_f_' + id,
-        furl: './hr/jobDetails.html',
+        name: "jobDetails_" + id,
+        url: "../win.html",
+        title: "职位详情",
+        fname: "jobDetails_f_" + id,
+        furl: "./hr/jobDetails.html",
         hasLeft: 1,
         hasRight: 1,
         data: {
@@ -187,13 +189,13 @@ export default {
         }
       });
     },
-    companyInfo (enterpriseId) {
+    companyInfo(enterpriseId) {
       tool.openWin({
-        name: 'companyInfo',
-        url: '../win.html',
-        title: '企业介绍',
-        fname: 'companyInfo_f',
-        furl: './hr/companyInfo.html',
+        name: "companyInfo",
+        url: "../win.html",
+        title: "企业介绍",
+        fname: "companyInfo_f",
+        furl: "./hr/companyInfo.html",
         hasLeft: 1,
         hasRight: 1,
         data: {
@@ -201,48 +203,52 @@ export default {
         }
       });
     },
-    async delivery () {
+    async delivery() {
       tool.showProgress();
       const response = await service.getUserBaseInfo({});
+      tool.hideProgress();
       switch (response.code) {
         case 0:
-          let rList = response.result.resumeInfo.length > 0 ? response.result.resumeInfo[0] : [];
+          let rList =
+            response.result.resumeInfo.length > 0
+              ? response.result.resumeInfo[0]
+              : [];
           const responses = await service.pushDelivery({
             id: this.id,
             resumeId: rList.id
           });
-          tool.hideProgress();
+
           switch (responses.code) {
             case 0:
               Toast({
-                position: 'center',
-                message: '简历投递成功！'
+                position: "center",
+                message: "简历投递成功！"
               });
               break;
             case 101:
               Toast({
-                position: 'center',
-                message: '已经投递过该职位！！'
+                position: "center",
+                message: "已经投递过该职位！！"
               });
               break;
             default:
               Toast({
-                position: 'center',
-                message: '投递失败，请稍后重试！！'
+                position: "center",
+                message: "投递失败，请稍后重试！！"
               });
               break;
           }
           break;
         default:
           Toast({
-            position: 'top',
-            message: '暂无简历，请增加简历！'
+            position: "top",
+            message: "暂无简历，请增加简历！"
           });
           break;
       }
     }
   },
-  mounted () {
+  mounted() {
     this.detailsData();
   }
 };
@@ -342,7 +348,7 @@ export default {
   padding-bottom: 0;
 }
 
-.mu-item-action{
+.mu-item-action {
   height: auto;
 }
 .fixBox {

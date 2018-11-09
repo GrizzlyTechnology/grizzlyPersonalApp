@@ -1,22 +1,24 @@
 <template>
-  <Container>
-    <List textline="two-line" class='companyNameBox'>
-      <div v-for='company in companys' :key="company.id">
-        <ListItem avatar :ripple="false" button class='listItem whiteBg' @click="companyInfo(company.id)">
-          <ListAction>
-            <Avatar>
-              <img :src="company.imgSrc" alt="">
-            </Avatar>
-          </ListAction>
-          <ListItemContent>
-            <ListItemTitle>
-              {{company.name}}
-            </ListItemTitle>
-          </ListItemContent>
-        </ListItem>
-        <Divider></Divider>
-      </div>
-    </List>
+  <Container ref="container" class="demo-loadmore-content">
+    <LoadMore @refresh="refresh" :refreshing="refreshing" :loading="loading" @load="load">
+      <List textline="two-line" class='companyNameBox'>
+        <div v-for='company in companys' :key="company.id">
+          <ListItem avatar :ripple="false" button class='listItem whiteBg' @click="companyInfo(company.id)">
+            <ListAction>
+              <Avatar>
+                <img :src="company.imgSrc" alt="">
+              </Avatar>
+            </ListAction>
+            <ListItemContent>
+              <ListItemTitle>
+                {{company.name}}
+              </ListItemTitle>
+            </ListItemContent>
+          </ListItem>
+          <Divider></Divider>
+        </div>
+      </List>
+    </LoadMore>
   </Container>
 </template>
 
@@ -28,15 +30,17 @@ import {
   ListItem,
   ListAction,
   ListItemContent,
-  ListItemTitle,
+  ListItemTitle
 } from "muse-ui/lib/List";
-import { Avatar, Divider, Button } from "muse-ui";
+import { Avatar, Divider, Button, LoadMore } from "muse-ui";
 import tool from "util/tools";
 import service from "service";
 export default {
   data() {
     return {
-      companys:[],
+      refreshing: false,
+      loading: false,
+      companys: []
     };
   },
   components: {
@@ -47,12 +51,15 @@ export default {
     ListItemContent,
     ListItemTitle,
     Avatar,
-    Divider
+    Divider,
+    LoadMore
   },
   methods: {
     // 页面数据
-     async companyRecommend() {
+    async companyRecommend() {
+      tool.showProgress();
       const response = await service.companyRecommendList({});
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           this.companys = response.result.companys;
@@ -65,20 +72,47 @@ export default {
           break;
       }
     },
-     companyInfo (enterpriseId) {
+    refresh() {
+      this.refreshing = true;
+      this.$refs.container.scrollTop = 0;
+      setTimeout(() => {
+        this.refreshing = false;
+        for (let i = 0; i < 10; i++) {
+          this.companys.push({
+            id: 1,
+            imgSrc: "sdfgdfgdfg",
+            name: "xvxcvxcvxcvxcv"
+          });
+        }
+      }, 2000);
+    },
+    load() {
+      this.loading = true;
+      setTimeout(() => {
+        this.loading = false;
+        for (let i = 0; i < 5; i++) {
+          this.companys.push({
+            id: 1,
+            imgSrc: "dfgdfgdfg",
+            name: "sdfsdf"
+          });
+        }
+      }, 2000);
+    },
+    companyInfo(enterpriseId) {
       tool.openWin({
-        name: 'companyInfo',
-        url: '../win.html',
-        title: '企业介绍',
-        fname: 'companyInfo_f',
-        furl: './hr/companyInfo.html',
+        name: "companyInfo",
+        url: "../win.html",
+        title: "企业介绍",
+        fname: "companyInfo_f",
+        furl: "./hr/companyInfo.html",
         hasLeft: 1,
         hasRight: 1,
         data: {
           enterpriseId: enterpriseId
         }
       });
-    },
+    }
   },
   mounted() {
     this.companyRecommend();
@@ -91,13 +125,11 @@ export default {
   padding: 0;
 }
 
-.p16 {
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.mt8 {
-  margin-top: 8px;
+.demo-loadmore-content {
+  flex: 1;
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .whiteBg {
@@ -114,32 +146,5 @@ export default {
 
 .companyNameBox .mu-avatar img {
   border-radius: 0px;
-}
-
-.titleBox {
-  font-size: 16px;
-  border-left: 3px solid #009688;
-  padding-left: 5px;
-  margin-top: 0;
-}
-
-.spaceBetween {
-  display: flex;
-  justify-content: space-between;
-}
-
-.claim {
-  color: #666;
-  font-size: 12px;
-  margin-left: 10px;
-}
-
-.salaryRange {
-  color: #009688;
-  font-size: 14px;
-}
-
-.allPostion .mu-card-text {
-  padding-bottom: 0;
 }
 </style>
