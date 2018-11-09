@@ -593,17 +593,44 @@ u.sleep = function (times) {
     }, times);
   });
 };
+
 u.openWin = function (params) {
-  const { name, url, title = '', fname, furl, hasLeft = false, hasRight = false, data = {}, ...winData } = params
+  const { LCB, name, url, title = '', fname, furl, hasLeft = false, hasRight = false, data = {}, ...winData } = params
   if (window.api) {
     let op = {
       name,
       url,
       bounces: false,
+      slidBackEnabled:false,
       pageParam: {
         ...winData,
       }
     };
+
+    //添加点击返回按钮的回调监听
+    if (typeof (LCB) === 'function') {
+      const LCBName = ('LCB' + Date.now().valueOf()) + Math.random();
+      u.addEventListener(
+        {
+          name: LCBName
+        },
+        LCB
+      );
+      op.pageParam.LCBName = LCBName;
+    }
+
+    //添加页面关闭的回调监听
+    if (typeof (data.callback) === 'function') {
+      const eventName = ('EVENT' + Date.now().valueOf()) + Math.random();
+      u.addEventListener(
+        {
+          name: eventName
+        },
+        data.callback
+      );
+      data.eventName = eventName;
+      delete data.callback;
+    }
 
     if (fname !== undefined) {
       op.pageParam.wtitle = title;
@@ -613,9 +640,10 @@ u.openWin = function (params) {
       op.pageParam.hasRight = hasRight;
       op.pageParam.data = data;
     }
+
     setTimeout(function () {
       window.api.openWin(op);
-    }, 350)
+    }, 100);
   } else if (furl) {
     window.location.href = furl.replace('./', '/');
   }
@@ -623,17 +651,127 @@ u.openWin = function (params) {
 
 u.addEventListener = function (ope = {}, callback = () => { }) {
   if (window.api) {
+    console.log('add evnet: ' + ope.name);
     window.api.addEventListener(
       ope,
       (ret, err) => {
+        console.log('evnet callback: ' + ope.name);
         callback(
           { ...ret, value: typeof (ret.value) === 'string' ? JSON.parse(ret.value) : ret.value },
           err
         );
+        if (ope.delEvent !== false) {
+          console.log('del event: ' + ope.name);
+          window.api.removeEventListener({
+            name: ope.name
+          });
+        }
       }
     );
   }
 };
+
+u.sendEvent = function (name = '', data = {}) {
+  console.log('send event: ' + name)
+  if (window.api) {
+    window.api.sendEvent({
+      name: name,
+      extra: typeof (data) === 'object' ? JSON.stringify(data) : data
+    });
+  }
+};
+
+u.closeWin = function (data = {}) {
+  if (window.api) {
+    if (window.api.pageParam.eventName && window.api.pageParam.eventName !== '') {
+      u.sendEvent(window.api.pageParam.eventName, data);
+    }
+    window.api.closeWin();
+  }
+};
+
+u.back = function () {
+  if (window.api) {
+    if (window.api.pageParam.LCBName && window.api.pageParam.LCBName !== '') {
+      u.sendEvent(window.api.pageParam.LCBName);
+    }
+    window.api.closeWin();
+  }
+};
+
+u.confirm = function (
+  {
+    title = '',
+    content = '',
+    callback = () => { }
+  }
+) {
+  if (window.api) {
+    api.confirm({
+      title,
+      msg: content,
+      buttons: ['确定', '取消']
+    }, function (ret, err) {
+      switch (ret.buttonIndex) {
+        case 1:
+          callback(ret, err);
+          break;
+        default:
+          break;
+      }
+    });
+  } else {
+    if (confirm(content) === true) {
+      callback();
+    }
+  }
+};
+
+u.urlParse = function (url) {
+  const urlObj = url.split('?');
+  const base = urlObj[0];
+  const searchAry = urlObj[1].split('&');
+  const params = {};
+
+  searchAry.foreach(r => {
+    params[r.split("=")[0]] = unescape(r.split("=")[1]);
+  });
+
+  return {
+    base,
+    params
+  };
+};
+
+u.openWebPage = function (url) {
+  if (window.api) {
+    switch (window.api.systemType) {
+      case 'android':
+        window.api.openApp({
+          androidPkg: 'android.intent.action.VIEW',
+          mimeType: 'text/html',
+          uri: url
+        }, function (ret, err) {
+        });
+        break;
+      case 'ios':
+        const { base, params } = u.urlParse(url);
+        window.api.openApp({
+          iosUrl: base,
+          appParam: {
+            appParam: params
+          }
+        });
+        break;
+      default:
+        break;
+    }
+  } else {
+    window.open(url);
+  }
+}
 /* end */
+
+
 
 export default u;

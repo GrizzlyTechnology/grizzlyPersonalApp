@@ -20,7 +20,6 @@ import { Button, Icon } from 'muse-ui';
 import SelectedRecursive from 'components/SelectedRecursive';
 
 export default {
-  name: 'userDepartment',
   data () {
     return {
       isEnd: false,

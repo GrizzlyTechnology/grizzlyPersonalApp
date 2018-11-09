@@ -47,20 +47,23 @@ import regexps from 'util/regexps';
 import tools from 'util/tools';
 // import dictMap from 'util/dictMap';
 export default {
-  name: 'userInfo',
   data () {
     return {
       id: window.api.pageParam.id || null,
       form: {
         name: window.api.pageParam.baseInfo.name || '', // true string 真实姓名
-        sex: window.api.pageParam.baseInfo.sex || 1, // true string 性别
+        sex: window.api.pageParam.baseInfo.sex || window.api.pageParam.baseInfo.sex === 0
+          ? window.api.pageParam.baseInfo.sex
+          : 1, // true string 性别
         birthday:
           window.api.pageParam.baseInfo.birthday || Date.now().valueOf(), // true string生日
         houseHold: window.api.pageParam.baseInfo.houseHold || [], // true string 籍贯
         address: window.api.pageParam.baseInfo.address || [],
         street: window.api.pageParam.baseInfo.street || '',
         phone: window.api.pageParam.baseInfo.phone || '', // true string手机
-        email: window.api.pageParam.baseInfo.email || '' // true string 邮箱
+        email: window.api.pageParam.baseInfo.email || '', // true string 邮箱
+
+        introduction: window.api.pageParam.introduction
       },
       nameRules: [{ validate: val => !!val, message: '必须填写姓名' }],
       birthdayRules: [{ validate: val => val, message: '必须填写出生年月' }],
@@ -120,27 +123,9 @@ export default {
       tools.showProgress();
       const response = await service.createUserBaesInfo(this.form);
       tools.hideProgress();
-
       switch (response.code) {
         case 0:
-          tools.toast({
-            position: 'top',
-            message: '基本信息创建成功'
-          });
-          tools.openWin({
-            name: 'resumeDetail',
-            url: '../win.html',
-            title: '我的简历',
-            fname: 'resumeDetail_f',
-            furl: './userCenter/resumeDetail.html',
-            hasLeft: 1,
-            data: {
-              nameSpace: 'resumeDetail',
-              from: 'userBaseInfo',
-              id: response.result.resumeInfo.id,
-              type: 'edit'
-            }
-          });
+          tools.closeWin(response.result.resumeInfo.id);
           break;
         default:
           tools.toast({
@@ -152,31 +137,22 @@ export default {
     },
     async edit () {
       tools.showProgress();
+      // console.log(JSON.stringify({
+      //   ...this.form,
+      //   resumeId: this.id
+      // }));
       const response = await service.updateUserBaesInfo({
-        id: this.id,
-        ...this.form
+        ...this.form,
+        resumeId: this.id
       });
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          tools.toast({
-            position: 'top',
-            message: '基本信息编辑成功'
-          });
-          tools.openWin({
-            name: 'resumeDetail',
-            url: '../win.html',
-            title: '我的简历',
-            fname: 'resumeDetail_f',
-            furl: './userCenter/resumeDetail.html',
-            hasLeft: 1,
-            data: {
-              nameSpace: 'resumeDetail',
-              from: 'userBaseInfo',
-              id: this.id,
-              type: 'edit'
-            }
-          });
+          // tools.toast({
+          //   position: 'top',
+          //   message: '基本信息编辑成功'
+          // });
+          tools.closeWin();
           break;
         default:
           tools.toast({
@@ -201,7 +177,9 @@ export default {
           nameSpace: 'areaSelector',
           area: this.form.houseHold,
           level: 2,
-          callback: 'houseHoldCallback'
+          callback: (ret, err) => {
+            this.form.houseHold = ret.value;
+          }
         }
       });
     },
@@ -217,12 +195,14 @@ export default {
           nameSpace: 'areaSelector',
           area: this.form.address,
           level: 3,
-          callback: 'addressCallback'
+          callback: (ret, err) => {
+            this.form.address = ret.value;
+          }
         }
       });
     },
     submit () {
-      this.$refs.form.validate().then((result) => {
+      this.$refs.form.validate().then(result => {
         if (result === true) {
           if (this.id) {
             this.edit();
@@ -233,27 +213,7 @@ export default {
       });
     }
   },
-  mounted () {
-    if (window.api) {
-      tools.addEventListener(
-        {
-          name: 'houseHoldCallback'
-        },
-        (ret, err) => {
-          this.form.houseHold = ret.value;
-        }
-      );
-
-      tools.addEventListener(
-        {
-          name: 'addressCallback'
-        },
-        (ret, err) => {
-          this.form.address = ret.value;
-        }
-      );
-    }
-  }
+  mounted () {}
 };
 </script>
 <style lang="less" scoped>

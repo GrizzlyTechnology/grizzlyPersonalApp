@@ -1,30 +1,32 @@
 <template>
   <Container>
     <Card class='positionNameBox'>
-      <CardTitle title='产品经理' sub-title='8-20万'>
-        <span class="claim">7-10万</span>
+      <CardTitle :title='position' :sub-title='firewood'>
       </CardTitle>
       <Row class='p16'>
         <Col span="3">
         <div class="grid-cell">
           <Icon size="16" value=":icon-chanpin"></Icon>
-          3年经验</div>
-        </Col>
-        <Col span="3">
-        <div class="grid-cell">
-          <Icon size="16" value=":icon-chanpin"></Icon>
-          大专
+          {{experience}}经验
         </div>
         </Col>
         <Col span="3">
         <div class="grid-cell">
           <Icon size="16" value=":icon-chanpin"></Icon>
-          镇江</div>
+          {{education}}
+        </div>
         </Col>
         <Col span="3">
         <div class="grid-cell">
           <Icon size="16" value=":icon-chanpin"></Icon>
-          人数：10</div>
+          {{workCity}}
+        </div>
+        </Col>
+        <Col span="3">
+        <div class="grid-cell">
+          <Icon size="16" value=":icon-chanpin"></Icon>
+          人数：{{recruitsNum}}
+        </div>
         </Col>
       </Row>
     </Card>
@@ -32,52 +34,37 @@
       <ListItem avatar :ripple="false" button class='listItem whiteBg'>
         <ListAction>
           <Avatar>
-            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535281190856&di=889bdc8c5e0d502ec811b6562768d5a8&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2Fimg2012%2F2%2F0220%2F31%2F41.jpg" alt="">
+            <img :src="companyImgSrc" alt="">
           </Avatar>
         </ListAction>
-        <ListItemContent @click="companyInfo">
+        <ListItemContent @click="companyInfo(enterpriseId)">
           <ListItemTitle>
-            飞龙信息发展股份有限公司
+            {{companyName}}
           </ListItemTitle>
           <ListItemSubTitle>
-            <span>上市公司</span>
-            <span>500-1000人</span>
-            <span>电子商务</span>
+            <span>{{nature}}</span>
+            <span>{{industry}}</span>
           </ListItemSubTitle>
         </ListItemContent>
       </ListItem>
     </List>
     <CardText class='whiteBg detailBox'>
       <h2 class='titleBox'>职位描述</h2>
-      <h3>
-        岗位职责:
-      </h3>
-      <p>
-        1、负责零售后台/CRM等云平台产品规划设计，包括需求沟通与分析、产品设计（包括产品方案、功能和原型等的设计）、需求文档的撰写等； 2、全程负责 整个产品的全生命周期，通过产品数据监控、调研和分析，提出优化改进建议，完成产品的持续迭代优化；
-      </p>
-      <h3>
-        任职要求:
-      </h3>
-      <p>
-        1、负责零售后台/CRM等云平台产品规划设计，包括需求沟通与分析、产品设计（包括产品方案、功能和原型等的设计）、需求文档的撰写等； 2、全程负责 整个产品的全生命周期，通过产品数据监控、调研和分析，提出优化改进建议，完成产品的持续迭代优化；
-      </p>
+      <div v-html="workDescription"></div>
     </CardText>
     <CardText class='whiteBg detailBox mt8'>
       <h2 class='titleBox'>工作地址</h2>
       <p class='spaceBetween'>
-        飞龙信息发展股份有限公司
-        <Icon size='14' value=":icon-jinru" right></Icon>
+        {{workPlace}}
       </p>
     </CardText>
 
     <List class='whiteBg mt8 allPostion' textline="two-line">
       <CardText>
-        <h2 class='titleBox spaceBetween' @click="jobSearchList">所有职位
-          <Icon size='14' value=":icon-jinru" right style='font-weight:normal'></Icon>
-        </h2>
+        <h2 class='titleBox spaceBetween'>所有职位</h2>
       </CardText>
       <div v-for='jobs in lists' :key="jobs.id">
-        <ListItem avatar :ripple="false" button class='listItem'  @click="jobDetails">
+        <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(jobs.id)">
           <ListItemContent>
             <ListItemTitle>{{jobs.position}}
               <span class='claim'>{{jobs.claim}}</span>
@@ -95,13 +82,13 @@
       </div>
     </List>
     <div class='p16 fixBox whiteBg'>
-      <Button color="info" class='collection'>收藏</Button>
-      <Button color="primary" class='deliveryButton'>立即投递</Button>
+      <Button color="primary" full-width class='deliveryButton' @click='delivery'>立即投递</Button>
     </div>
   </Container>
 </template>
 
 <script>
+import { Toast } from 'mint-ui';
 import { Container, Row, Col } from 'muse-ui/lib/Grid';
 import { CardTitle, CardText } from 'muse-ui/lib/Card';
 import {
@@ -115,51 +102,26 @@ import {
 } from 'muse-ui/lib/List';
 import { Card, Icon, Avatar, Divider, Button } from 'muse-ui';
 import tool from 'util/tools';
+import service from 'service';
 export default {
   data () {
     return {
-      lists: [
-        {
-          id: 1,
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        },
-        {
-          id: 2,
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        },
-        {
-          id: 3,
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        },
-        {
-          id: 4,
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        },
-        {
-          id: 5,
-          position: '产品经理',
-          claim: '3年/大专/镇江',
-          salaryRange: '6K-8K',
-          companyName: '飞龙信息发展股份有限公司',
-          date: '2018-08-06'
-        }
-      ]
+      id: window.api.pageParam.id,
+      position: '',
+      firewood: '',
+      experience: '',
+      education: '',
+      workCity: '',
+      recruitsNum: '',
+      companyImgSrc: '',
+      companyName: '',
+      nature: '',
+      industry: '',
+      workDescription: '',
+      workPlace: '',
+      enterpriseId: '',
+      lists: [],
+      rList: []
     };
   },
   components: {
@@ -179,31 +141,53 @@ export default {
     Avatar,
     CardText,
     Divider,
-    Button
+    Button,
+    Toast
   },
   methods: {
-    jobSearchList () {
-      tool.openWin({
-        name: 'jobSearchList',
-        url: '../win.html',
-        title: '所有职位',
-        fname: 'jobSearchList_f',
-        furl: './hr/jobSearchList.html',
-        hasLeft: 1
-      });
+    // 页面数据
+    async detailsData () {
+      const response = await service.getDetailsData({ id: this.id });
+      switch (response.code) {
+        case 0:
+          this.position = response.result.position;
+          this.firewood = response.result.firewood;
+          this.experience = response.result.experience;
+          this.education = response.result.education;
+          this.workCity = response.result.workCity;
+          this.workPlace = response.result.workPlace;
+          this.recruitsNum = response.result.recruitsNum;
+          this.companyImgSrc = response.result.companyImgSrc;
+          this.companyName = response.result.companyName;
+          this.nature = response.result.nature;
+          this.industry = response.result.industry;
+          this.workDescription = response.result.workDescription;
+          this.lists = response.result.lists;
+          this.enterpriseId = response.result.enterpriseId;
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '获取失败，请稍后重试！！'
+          });
+          break;
+      }
     },
-    jobDetails () {
+    jobDetails (id) {
       tool.openWin({
-        name: 'jobDetails',
+        name: 'jobDetails_' + id,
         url: '../win.html',
         title: '职位详情',
-        fname: 'jobDetails_f',
+        fname: 'jobDetails_f_' + id,
         furl: './hr/jobDetails.html',
         hasLeft: 1,
-        hasRight: 1
+        hasRight: 1,
+        data: {
+          id: id
+        }
       });
     },
-    companyInfo () {
+    companyInfo (enterpriseId) {
       tool.openWin({
         name: 'companyInfo',
         url: '../win.html',
@@ -211,11 +195,56 @@ export default {
         fname: 'companyInfo_f',
         furl: './hr/companyInfo.html',
         hasLeft: 1,
-        hasRight: 1
+        hasRight: 1,
+        data: {
+          enterpriseId: enterpriseId
+        }
       });
+    },
+    async delivery () {
+      tool.showProgress();
+      const response = await service.getUserBaseInfo({});
+      switch (response.code) {
+        case 0:
+          let rList = response.result.resumeInfo.length > 0 ? response.result.resumeInfo[0] : [];
+          const responses = await service.pushDelivery({
+            id: this.id,
+            resumeId: rList.id
+          });
+          tool.hideProgress();
+          switch (responses.code) {
+            case 0:
+              Toast({
+                position: 'center',
+                message: '简历投递成功！'
+              });
+              break;
+            case 101:
+              Toast({
+                position: 'center',
+                message: '已经投递过该职位！！'
+              });
+              break;
+            default:
+              Toast({
+                position: 'center',
+                message: '投递失败，请稍后重试！！'
+              });
+              break;
+          }
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '暂无简历，请增加简历！'
+          });
+          break;
+      }
     }
   },
-  mounted () {}
+  mounted () {
+    this.detailsData();
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -305,7 +334,7 @@ export default {
   font-size: 14px;
 }
 
-.allPostion{
+.allPostion {
   padding-bottom: 56px;
 }
 
@@ -313,12 +342,15 @@ export default {
   padding-bottom: 0;
 }
 
-.fixBox{
-  position:fixed;
+.mu-item-action{
+  height: auto;
+}
+.fixBox {
+  position: fixed;
   bottom: 0px;
   width: 100%;
   padding: 10px;
-  border-top:1px solid #eee;
+  border-top: 1px solid #eee;
   display: flex;
   justify-content: space-around;
 }

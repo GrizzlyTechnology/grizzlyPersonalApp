@@ -37,7 +37,6 @@ import { Button, Icon } from 'muse-ui';
 
 const studentInfo = tools.getStorage('userCenter/userInfo');
 export default {
-  name: 'userDiscipline',
   data () {
     return {
       isEnd: false,
