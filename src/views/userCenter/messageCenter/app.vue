@@ -41,7 +41,7 @@ export default {
       messageLists: [
         {
           name: '全部',
-          refreshing: false,
+          // refreshing: false,
           loading: false,
           page: 1,
           list: [
@@ -89,7 +89,7 @@ export default {
         },
         {
           name: '系统通知',
-          refreshing: false,
+          // refreshing: false,
           loading: false,
           page: 1,
           list: [
@@ -137,7 +137,7 @@ export default {
         },
         {
           name: '互动',
-          refreshing: false,
+          // refreshing: false,
           loading: false,
           page: 1,
           list: [
@@ -233,7 +233,7 @@ export default {
     },
     load () {
       const active = this.active;
-      if (!this.messageLists[active].refreshing) {
+      if (!this.messageLists[active].loading) {
         this.messageLists[active].loading = true;
         setTimeout(() => {
           this.messageLists[active].loading = false;
