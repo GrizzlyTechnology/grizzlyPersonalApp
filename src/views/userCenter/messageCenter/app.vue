@@ -8,7 +8,7 @@
     </Tabs>
     <TabContainer v-model="active" swipeable class="list-con">
       <TabContainerItem v-for="(messageList,index) in messageLists" :ref="'container' + index" :key="index" :id="index" class="message-list">
-        <LoadMore @refresh="refresh" @load="load" :refreshing="messageList.refreshing" :loading="messageList.loading">
+        <LoadMore @refresh="refresh(index)" @load="load(index)" :refreshing="messageList.refreshing" :loading="messageList.loading">
           <div class="message" v-for="message in messageList.list" :key="message.id">
             <div class="message-head">{{message.date}} {{message.class}}</div>
             <div class="message-body">{{message.con}}</div>
@@ -41,7 +41,7 @@ export default {
       messageLists: [
         {
           name: '全部',
-          // refreshing: false,
+          refreshing: false,
           loading: false,
           page: 1,
           list: [
@@ -89,7 +89,7 @@ export default {
         },
         {
           name: '系统通知',
-          // refreshing: false,
+          refreshing: false,
           loading: false,
           page: 1,
           list: [
@@ -137,7 +137,7 @@ export default {
         },
         {
           name: '互动',
-          // refreshing: false,
+          refreshing: false,
           loading: false,
           page: 1,
           list: [
@@ -209,9 +209,8 @@ export default {
       this.active = index;
       // }
     },
-    refresh () {
-      const active = this.active;
-      if (!this.messageLists[active].loading) {
+    refresh (active) {
+      if (!this.messageLists[active].refreshing && !this.messageLists[active].loading) {
         this.messageLists[active].refreshing = true;
         this.$refs[`container${active}`].scrollTop = 0;
         setTimeout(() => {
@@ -231,9 +230,8 @@ export default {
         }, 1000);
       }
     },
-    load () {
-      const active = this.active;
-      if (!this.messageLists[active].loading) {
+    load (active) {
+      if (!this.messageLists[active].refreshing && !this.messageLists[active].loading) {
         this.messageLists[active].loading = true;
         setTimeout(() => {
           this.messageLists[active].loading = false;
