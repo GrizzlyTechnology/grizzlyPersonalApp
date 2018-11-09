@@ -1,9 +1,9 @@
 <template>
     <Row>
-        <Col span="3" offset="3">
+        <Col span="3" offset="3" v-if="wxhas">
         <Icon size="35" value=":icon-weixin" @click="wxlogin" />
         </col>
-        <Col span="3">
+        <Col span="3" v-if="qqhas">
         <Icon size="35" value=":icon-qq" @click="qqlogin" />
         </col>
     </Row>
@@ -19,6 +19,8 @@ export default {
     return {
       qq: window.api.require("QQPlus"),
       wx: window.api.require('wx'),
+      qqhas:false,
+      wxhas:false
     };
   },
   components: {
@@ -32,11 +34,6 @@ export default {
       this.qqQuery();
     },
     async qqQuery() {
-      const isin = await this.qqInstall();
-      if (!isin) {
-        alert("未安装QQ");
-        return;
-      }
       const openId = await this.qqGoto();
       if(!openId){
           alert("QQ登录失败");
@@ -58,11 +55,9 @@ export default {
     },
     qqInstall() {
       var obj = this;
-      return new Promise((resolve) => {
-        obj.qq.installed(function(ret, err) {
-          resolve(ret.status);
+      obj.qq.installed(function(ret, err) {
+          obj.qqhas=ret.status;
         });
-      });
     },
 
     //========微信登录=======
@@ -70,11 +65,6 @@ export default {
       this.wxQuery();
     },
     async wxQuery(){
-        const isin=await this.wxInstall();
-        if(!isin){
-            alert('未安装微信应用');
-            return;
-        }
         const code=await this.wxGoto();
         if(!code){
             alert('微信登录失败');
@@ -94,11 +84,9 @@ export default {
     },
     wxInstall(){
         var obj=this;
-        return new Promise((resolve)=>{
-            obj.wx.isInstalled(function(ret, err) {
-                resolve(ret.installed);
+        obj.wx.isInstalled(function(ret, err) {
+                obj.wxhas=ret.installed;
             });
-        });
     },
     wxGoto(){
         var obj=this;
@@ -152,7 +140,10 @@ export default {
         alert("ok");
     }
   },
-  mounted() {}
+  mounted() {
+      this.qqInstall();
+      this.wxInstall();
+  }
 };
 </script>
 <style lang="less" scoped>

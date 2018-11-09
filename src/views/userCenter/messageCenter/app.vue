@@ -35,15 +35,15 @@ import {
 export default {
   data () {
     return {
-      refreshing: false,
-      loading: false,
+      // refreshing: false,
+      // loading: false,
       active: 0,
       messageLists: [
         {
           name: '全部',
-          page: 1,
           refreshing: false,
           loading: false,
+          page: 1,
           list: [
             {
               id: 0,
@@ -89,9 +89,9 @@ export default {
         },
         {
           name: '系统通知',
-          page: 1,
           refreshing: false,
           loading: false,
+          page: 1,
           list: [
             {
               id: 0,
@@ -137,9 +137,9 @@ export default {
         },
         {
           name: '互动',
-          page: 1,
           refreshing: false,
           loading: false,
+          page: 1,
           list: [
             {
               id: 0,
@@ -198,46 +198,56 @@ export default {
     TabContainer,
     TabContainerItem
   },
-  computed: {},
+  computed: {
+    isLoading () {
+      return this.refreshing || this.loading;
+    }
+  },
   methods: {
     changeTab (index) {
+      // if (!this.isLoading) {
       this.active = index;
+      // }
     },
     refresh () {
-      this.messageLists[this.active].refreshing = true;
-      this.$refs[`container${this.active}`].scrollTop = 0;
-      setTimeout(() => {
-        this.messageLists[this.active].list = [];
-        this.messageLists[this.active].refreshing = false;
-        for (let i = 0; i < 10; i++) {
-          this.messageLists[this.active].list.push({
-            id: this.messageLists[this.active].list.length,
-            date:
+      if (!this.messageLists[this.active].loading) {
+        this.messageLists[this.active].refreshing = true;
+        this.$refs[`container${this.active}`].scrollTop = 0;
+        setTimeout(() => {
+          this.messageLists[this.active].list = [];
+          this.messageLists[this.active].refreshing = false;
+          for (let i = 0; i < 10; i++) {
+            this.messageLists[this.active].list.push({
+              id: this.messageLists[this.active].list.length,
+              date:
               'NO:' +
               this.messageLists[this.active].list.length +
               ' 2018年11月10日',
-            class: '系统消息',
-            con: 'gjghjghj33453453453453453454！'
-          });
-        }
-      }, 2000);
+              class: '系统消息',
+              con: 'gjghjghj33453453453453453454！'
+            });
+          }
+        }, 1000);
+      }
     },
     load () {
-      this.messageLists[this.active].loading = true;
-      setTimeout(() => {
-        this.messageLists[this.active].loading = false;
-        for (let i = 0; i < 5; i++) {
-          this.messageLists[this.active].list.push({
-            id: this.messageLists[this.active].list.length,
-            date:
+      if (!this.messageLists[this.active].refreshing) {
+        this.messageLists[this.active].loading = true;
+        setTimeout(() => {
+          this.messageLists[this.active].loading = false;
+          for (let i = 0; i < 5; i++) {
+            this.messageLists[this.active].list.push({
+              id: this.messageLists[this.active].list.length,
+              date:
               'NO:' +
               this.messageLists[this.active].list.length +
               ' 2018年11月10日',
-            class: '系统消息',
-            con: 'gjghjghj33453453453453453454！'
-          });
-        }
-      }, 2000);
+              class: '系统消息',
+              con: 'gjghjghj33453453453453453454！'
+            });
+          }
+        }, 1000);
+      }
     }
   }
 };
@@ -272,7 +282,7 @@ export default {
   }
   .message-foot {
     color: #666;
-    padding-top: 10px;
+    padding-top: 15px;
     margin-top: 15px;
     border-top: 1px solid #dddddd;
     &:active > * {
