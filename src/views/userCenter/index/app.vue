@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <div></div>
     <div class="ucHeader">
       <div class="ucAvatar" :style="{backgroundImage:'url(' + headphoto + ')'}"></div>
       <span class="ucNickname">{{nickname}}
@@ -162,7 +163,7 @@ export default {
 @import url("../../../assets/css/base.less");
 .ucHeader {
   background-color: @baseColor;
-  height: 150px;
+  height: 140px;
   position: relative;
   color: #fff;
 }
@@ -177,30 +178,30 @@ export default {
   background-position: center;
   background-size: cover;
   left: 20px;
-  top: 40px;
+  top: 30px;
 }
 .ucNickname {
   position: absolute;
   font-size: 18px;
   left: 120px;
-  top: 55px;
+  top: 45px;
 }
 .ucSchoole {
   position: absolute;
   font-size: 16px;
   left: 120px;
-  top: 85px;
+  top: 75px;
 }
 .ucClass {
   position: absolute;
   left: 120px;
-  top: 112px;
+  top: 102px;
   font-size: 12px;
 }
 .ucSetting {
   position: absolute;
   right: 20px;
-  top: 20px;
+  top: 10px;
 }
 .ucCell {
   position: relative;
