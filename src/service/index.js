@@ -106,12 +106,12 @@ export default {
       params
     });
   },
-  otherlogin(params){
+  otherlogin (params) {
     return request({
-        host: BASEURL,
-        url: '/api/User/otherLogin',
-        params
-      });
+      host: BASEURL,
+      url: '/api/User/otherLogin',
+      params
+    });
   },
   logout () {
     return request({
