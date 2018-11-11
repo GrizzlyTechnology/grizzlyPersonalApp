@@ -1,36 +1,36 @@
 <template>
-  <Container ref="container" class="demo-loadmore-content container">
+  <Container ref="container" class="demo-loadmore-content">
     <LoadMore @refresh="refresh" :refreshing="refreshing" :loading="loading" @load="load">
-      <List textline="two-line" class='bodyer' v-if="lists.length > 0">
-          <div v-for='list in lists' :key="list.id">
-            <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(list.id)">
-              <ListItemContent >
-                <ListItemTitle>{{list.position}}
-                  <span class='claim'>{{list.claim}}</span>
-                </ListItemTitle>
-                <ListItemSubTitle>
-                  {{list.companyName}}
-                </ListItemSubTitle>
-              </ListItemContent>
-              <ListAction>
-                <ListItemAfterText class='salaryRange'>{{list.salaryRange}}</ListItemAfterText>
-                <ListItemAfterText>{{list.date}}</ListItemAfterText>
-              </ListAction>
-            </ListItem>
-            <Divider></Divider>
-          </div>
+      <List textline="two-line" v-show="lists.length > 0">
+        <div v-for='list in lists' :key="list.id">
+          <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(list.id)">
+            <ListItemContent>
+              <ListItemTitle>{{list.position}}
+                <span class='claim'>{{list.claim}}</span>
+              </ListItemTitle>
+              <ListItemSubTitle>
+                {{list.companyName}}
+              </ListItemSubTitle>
+            </ListItemContent>
+            <ListAction>
+              <ListItemAfterText class='salaryRange'>{{list.salaryRange}}</ListItemAfterText>
+              <ListItemAfterText>{{list.date}}</ListItemAfterText>
+            </ListAction>
+          </ListItem>
+          <Divider></Divider>
+        </div>
       </List>
-      <div v-else class='bodyer noList'>
-        暂无记录
-      </div>
     </LoadMore>
+    <div v-show='lists.length <= 0' class='bodyer noList'>
+      暂无记录
+    </div>
   </Container>
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import { Divider, Button, LoadMore } from 'muse-ui';
-import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { Toast } from "mint-ui";
+import { Divider, Button, LoadMore } from "muse-ui";
+import { Container, Row, Col } from "muse-ui/lib/Grid";
 import {
   List,
   ListItem,
@@ -39,18 +39,59 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from 'muse-ui/lib/List';
-import tool from 'util/tools';
-import service from 'service';
+} from "muse-ui/lib/List";
+import tool from "util/tools";
+import service from "service";
 export default {
-  data () {
+  data() {
     return {
       refreshing: false,
       loading: false,
-      lists: [],
+      lists: [
+        // {
+        //   id:'1',
+        //   position: "1111",
+        //   claim: "222",
+        //   companyName: "sdsdfsd",
+        //   salaryRange: "xddg",
+        //   date: "2010-11-11",
+        // },
+        //  {
+        //   id:'1',
+        //   position: "1111",
+        //   claim: "222",
+        //   companyName: "sdsdfsd",
+        //   salaryRange: "xddg",
+        //   date: "2010-11-11"
+        // },
+        //  {
+        //   id:'1',
+        //   position: "1111",
+        //   claim: "222",
+        //   companyName: "sdsdfsd",
+        //   salaryRange: "xddg",
+        //   date: "2010-11-11"
+        // },
+        //  {
+        //   id:'1',
+        //   position: "1111",
+        //   claim: "222",
+        //   companyName: "sdsdfsd",
+        //   salaryRange: "xddg",
+        //   date: "2010-11-11"
+        // },
+        //  {
+        //   id:'1',
+        //   position: "1111",
+        //   claim: "222",
+        //   companyName: "sdsdfsd",
+        //   salaryRange: "xddg",
+        //   date: "2010-11-11"
+        // }
+      ],
       keyWord: window.api.pageParam.keyWord,
-      area: window.api.pageParam.area || [],
-      istj: window.api.pageParam.istj ||''
+      area: window.api.pageParam.area,
+      istj: window.api.pageParam.istj || ""
     };
   },
   components: {
@@ -71,31 +112,34 @@ export default {
   },
   methods: {
     // 列表数据
-    async listsData () {
+    async listsData() {
+      tool.showProgress();
       const response = await service.searchBoxValue({
         keyWord: this.keyWord,
         area: this.area,
-        istj:this.istj
+        istj: this.istj
       });
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           this.lists = response.result.list;
+          console.log(this.lists.length);
           break;
         default:
           Toast({
-            position: 'top',
-            message: '加载失败，请稍后重试！！'
+            position: "top",
+            message: "加载失败，请稍后重试！！"
           });
           break;
       }
     },
-    jobDetails (id) {
+    jobDetails(id) {
       tool.openWin({
-        name: 'jobDetails_' + id,
-        url: '../win.html',
-        title: '职位详情',
-        fname: 'jobDetails_f_' + id,
-        furl: './hr/jobDetails.html',
+        name: "jobDetails_" + id,
+        url: "../win.html",
+        title: "职位详情",
+        fname: "jobDetails_f_" + id,
+        furl: "./hr/jobDetails.html",
         hasLeft: 1,
         hasRight: 1,
         data: {
@@ -103,28 +147,40 @@ export default {
         }
       });
     },
-    refresh () {
+    refresh() {
       this.refreshing = true;
       this.$refs.container.scrollTop = 0;
       setTimeout(() => {
         this.refreshing = false;
-        this.lists.length = 10;
-        console.log(this.lists.length);
+        for (let i = 0; i < 10; i++) {
+          this.lists.push({
+            position: "1111",
+            claim: "222",
+            companyName: "sdsdfsd",
+            salaryRange: "xddg",
+            date: "2010-11-11"
+          });
+        }
       }, 2000);
     },
-    load () {
+    load() {
       this.loading = true;
       setTimeout(() => {
         this.loading = false;
-        this.lists.length += 10;
-        console.log(this.lists.length);
+        for (let i = 0; i < 5; i++) {
+          this.lists.push({
+            position: "35345",
+            claim: "dfgdfg",
+            companyName: "111",
+            salaryRange: "dfgdfg",
+            date: "2010-11-12"
+          });
+        }
       }, 2000);
     }
   },
-  watch: {
-
-  },
-  mounted () {
+  watch: {},
+  mounted() {
     this.listsData();
   }
 };
@@ -133,10 +189,6 @@ export default {
 @import url("../../../assets/css/base.less");
 .container {
   padding: 0px;
-  display: flex;
-  flex-direction: column;
-  height:100vh;
-  overflow: scroll;
 }
 
 .bodyer {
@@ -145,6 +197,7 @@ export default {
 }
 .demo-loadmore-content {
   flex: 1;
+  height: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -159,13 +212,6 @@ export default {
   font-size: 14px;
 }
 
-.p16 {
-  padding: 16px;
-  display: flex;
-  background-color: #fff;
-  align-items: center;
-}
-
 .mu-item-action {
   height: auto;
 }
@@ -174,11 +220,11 @@ export default {
   background: #fff;
 }
 
-.noList{
+.noList {
   display: flex;
-align-items: center;
-justify-content: center;
-font-size: 14px;
-color: #333;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #333;
 }
 </style>

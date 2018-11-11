@@ -17,27 +17,27 @@
 </template>
 
 <script>
-import service from 'service';
-import { Toast } from 'mint-ui';
-import { SubHeader, Chip, AutoComplete } from 'muse-ui';
-import tools from 'util/tools';
+import service from "service";
+import { Toast } from "mint-ui";
+import { SubHeader, Chip, AutoComplete } from "muse-ui";
+import tools from "util/tools";
 export default {
-  data () {
+  data() {
     return {
       form: {
-        keyWord: '',
+        keyWord: "",
         area: null
       },
       area: [],
       defaultResult: [],
-      labelPosition: 'right',
+      labelPosition: "right",
       chips: [
-        '产品经理',
-        '网络科技',
-        '信息科技',
-        '前端工程师',
-        '生物科技',
-        '医药科技'
+        "产品经理",
+        "网络科技",
+        "信息科技",
+        "前端工程师",
+        "生物科技",
+        "医药科技"
       ]
     };
   },
@@ -48,29 +48,29 @@ export default {
     AutoComplete
   },
   computed: {
-    areaText () {
+    areaText() {
       return this.area.length > 0
         ? this.area[this.area.length - 1].label
-        : '全国';
+        : "全国";
     },
-    filterResult () {
+    filterResult() {
       return this.defaultResult.filter(value =>
-        new RegExp(this.value, 'i').test(value)
+        new RegExp(this.value, "i").test(value)
       );
     }
   },
   methods: {
     // 点击搜索
-    search () {
+    search() {
       tools.openWin({
-        name: 'jobSearchList',
-        url: '../win.html',
-        title: '所有职位',
-        fname: 'jobSearchList_f',
-        furl: './hr/jobSearchList.html',
+        name: "jobSearchList",
+        url: "../win.html",
+        title: "所有职位",
+        fname: "jobSearchList_f",
+        furl: "./hr/jobSearchList.html",
         hasLeft: 1,
         data: {
-          nameSpace: 'jobSearchList',
+          nameSpace: "jobSearchList",
           area: this.form.area,
           keyWord: this.form.keyWord
         }
@@ -78,51 +78,55 @@ export default {
     },
 
     // 获取职位
-    async getAllSearchValue () {
+    async getAllSearchValue() {
+      tool.showProgress();
       const response = await service.getAllPosition(this.form.keyWord);
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           this.defaultResult = response.result.info;
           break;
         default:
           tools.toast({
-            position: 'top',
-            message: '搜索失败，请重试'
+            position: "top",
+            message: "搜索失败，请重试"
           });
           break;
       }
     },
-    async searchChipValue () {
+    async searchChipValue() {
+      tool.showProgress();
       const response = await service.searchChipValue(this.value);
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           tools.openWin({
-            name: 'jobSearchList',
-            url: '../win.html',
-            title: '所有职位',
-            fname: 'jobSearchList_f',
-            furl: './hr/jobSearchList.html',
+            name: "jobSearchList",
+            url: "../win.html",
+            title: "所有职位",
+            fname: "jobSearchList_f",
+            furl: "./hr/jobSearchList.html",
             hasLeft: 1
           });
           break;
         default:
           tools.toast({
-            position: 'top',
-            message: '搜索失败，请稍后重试！！'
+            position: "top",
+            message: "搜索失败，请稍后重试！！"
           });
           break;
       }
     },
-    areaHandle () {
+    areaHandle() {
       tools.openWin({
-        name: 'areaSelector',
-        url: '../win.html',
-        title: '选择地区',
-        fname: 'areaSelector_f',
-        furl: './common/areaSelector.html',
+        name: "areaSelector",
+        url: "../win.html",
+        title: "选择地区",
+        fname: "areaSelector_f",
+        furl: "./common/areaSelector.html",
         hasLeft: 1,
         data: {
-          nameSpace: 'areaSelector',
+          nameSpace: "areaSelector",
           area: this.area,
           level: 2,
           callback: (ret, err) => {
@@ -131,15 +135,14 @@ export default {
         }
       });
     },
-    chipHandle () {
+    chipHandle() {
       this.searchChipValue();
     },
-    submit () {
+    submit() {
       this.search();
     }
   },
-  mounted () {
-  }
+  mounted() {}
 };
 </script>
 <style lang="less">
