@@ -1,18 +1,18 @@
 <template>
   <Card>
-      <CardTitle v-bind:title="title" class='txc'></CardTitle>
-      <Row class='p16'>
-        <Col span="6">
-        <div class="grid-cell">来源：{{source}}</div>
-        </Col>
-        <Col span="6">
-        <div class="grid-cell">{{date}}</div>
-        </Col>
-      </Row>
-      <CardText v-html='con'>
-      </CardText>
+    <CardTitle v-bind:title="title" class='txc'></CardTitle>
+    <Row class='p16'>
+      <Col span="6">
+      <div class="grid-cell">来源：{{source}}</div>
+      </Col>
+      <Col span="6">
+      <div class="grid-cell">{{date}}</div>
+      </Col>
+    </Row>
+    <CardText v-html='con'>
+    </CardText>
 
-    </Card>
+  </Card>
 </template>
 
 <script>
@@ -21,6 +21,7 @@ import { Container, Row, Col } from 'muse-ui/lib/Grid';
 import { CardTitle, CardText } from 'muse-ui/lib/Card';
 import { Card } from 'muse-ui';
 import service from 'service';
+import tool from 'util/tools';
 export default {
   data () {
     return {
@@ -41,7 +42,11 @@ export default {
   },
   methods: {
     async raidersArticleData () {
-      const response = await service.getRaidersArticleData({ ArticleId: this.ArticleId });
+      tool.showProgress();
+      const response = await service.getRaidersArticleData({
+        ArticleId: this.ArticleId
+      });
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           this.title = response.result.title;
@@ -69,7 +74,8 @@ export default {
   padding: 0 16px;
 }
 
-.txc .mu-card-title,.grid-cell{
+.txc .mu-card-title,
+.grid-cell {
   text-align: center;
 }
 

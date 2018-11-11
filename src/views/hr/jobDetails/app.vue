@@ -147,7 +147,9 @@ export default {
   methods: {
     // 页面数据
     async detailsData () {
+      tool.showProgress();
       const response = await service.getDetailsData({ id: this.id });
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           this.position = response.result.position;
@@ -204,14 +206,18 @@ export default {
     async delivery () {
       tool.showProgress();
       const response = await service.getUserBaseInfo({});
+      tool.hideProgress();
       switch (response.code) {
         case 0:
-          let rList = response.result.resumeInfo.length > 0 ? response.result.resumeInfo[0] : [];
+          let rList =
+            response.result.resumeInfo.length > 0
+              ? response.result.resumeInfo[0]
+              : [];
           const responses = await service.pushDelivery({
             id: this.id,
             resumeId: rList.id
           });
-          tool.hideProgress();
+
           switch (responses.code) {
             case 0:
               Toast({
@@ -342,7 +348,7 @@ export default {
   padding-bottom: 0;
 }
 
-.mu-item-action{
+.mu-item-action {
   height: auto;
 }
 .fixBox {
