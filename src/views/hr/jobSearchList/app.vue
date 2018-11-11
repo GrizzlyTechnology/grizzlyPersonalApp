@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import { Divider, Button, LoadMore } from "muse-ui";
-import { Container, Row, Col } from "muse-ui/lib/Grid";
+import { Toast } from 'mint-ui';
+import { Divider, Button, LoadMore } from 'muse-ui';
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
 import {
   List,
   ListItem,
@@ -39,11 +39,11 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from "muse-ui/lib/List";
-import tool from "util/tools";
-import service from "service";
+} from 'muse-ui/lib/List';
+import tool from 'util/tools';
+import service from 'service';
 export default {
-  data() {
+  data () {
     return {
       refreshing: false,
       loading: false,
@@ -91,7 +91,7 @@ export default {
       ],
       keyWord: window.api.pageParam.keyWord,
       area: window.api.pageParam.area,
-      istj: window.api.pageParam.istj || ""
+      istj: window.api.pageParam.istj || ''
     };
   },
   components: {
@@ -112,7 +112,7 @@ export default {
   },
   methods: {
     // 列表数据
-    async listsData() {
+    async listsData () {
       tool.showProgress();
       const response = await service.searchBoxValue({
         keyWord: this.keyWord,
@@ -127,19 +127,19 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
-    jobDetails(id) {
+    jobDetails (id) {
       tool.openWin({
-        name: "jobDetails_" + id,
-        url: "../win.html",
-        title: "职位详情",
-        fname: "jobDetails_f_" + id,
-        furl: "./hr/jobDetails.html",
+        name: 'jobDetails_' + id,
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobDetails_f_' + id,
+        furl: './hr/jobDetails.html',
         hasLeft: 1,
         hasRight: 1,
         data: {
@@ -147,40 +147,40 @@ export default {
         }
       });
     },
-    refresh() {
+    refresh () {
       this.refreshing = true;
       this.$refs.container.scrollTop = 0;
       setTimeout(() => {
         this.refreshing = false;
         for (let i = 0; i < 10; i++) {
           this.lists.push({
-            position: "1111",
-            claim: "222",
-            companyName: "sdsdfsd",
-            salaryRange: "xddg",
-            date: "2010-11-11"
+            position: '1111',
+            claim: '222',
+            companyName: 'sdsdfsd',
+            salaryRange: 'xddg',
+            date: '2010-11-11'
           });
         }
       }, 2000);
     },
-    load() {
+    load () {
       this.loading = true;
       setTimeout(() => {
         this.loading = false;
         for (let i = 0; i < 5; i++) {
           this.lists.push({
-            position: "35345",
-            claim: "dfgdfg",
-            companyName: "111",
-            salaryRange: "dfgdfg",
-            date: "2010-11-12"
+            position: '35345',
+            claim: 'dfgdfg',
+            companyName: '111',
+            salaryRange: 'dfgdfg',
+            date: '2010-11-12'
           });
         }
       }, 2000);
     }
   },
   watch: {},
-  mounted() {
+  mounted () {
     this.listsData();
   }
 };

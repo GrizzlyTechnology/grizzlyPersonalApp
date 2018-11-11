@@ -23,20 +23,20 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import { Container } from "muse-ui/lib/Grid";
+import { Toast } from 'mint-ui';
+import { Container } from 'muse-ui/lib/Grid';
 import {
   List,
   ListItem,
   ListAction,
   ListItemContent,
   ListItemTitle
-} from "muse-ui/lib/List";
-import { Avatar, Divider, Button, LoadMore } from "muse-ui";
-import tool from "util/tools";
-import service from "service";
+} from 'muse-ui/lib/List';
+import { Avatar, Divider, LoadMore } from 'muse-ui';
+import tool from 'util/tools';
+import service from 'service';
 export default {
-  data() {
+  data () {
     return {
       refreshing: false,
       loading: false,
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     // 页面数据
-    async companyRecommend() {
+    async companyRecommend () {
       tool.showProgress();
       const response = await service.companyRecommendList({});
       tool.hideProgress();
@@ -66,13 +66,13 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
-    refresh() {
+    refresh () {
       this.refreshing = true;
       this.$refs.container.scrollTop = 0;
       setTimeout(() => {
@@ -80,32 +80,32 @@ export default {
         for (let i = 0; i < 10; i++) {
           this.companys.push({
             id: 1,
-            imgSrc: "sdfgdfgdfg",
-            name: "xvxcvxcvxcvxcv"
+            imgSrc: 'sdfgdfgdfg',
+            name: 'xvxcvxcvxcvxcv'
           });
         }
       }, 2000);
     },
-    load() {
+    load () {
       this.loading = true;
       setTimeout(() => {
         this.loading = false;
         for (let i = 0; i < 5; i++) {
           this.companys.push({
             id: 1,
-            imgSrc: "dfgdfgdfg",
-            name: "sdfsdf"
+            imgSrc: 'dfgdfgdfg',
+            name: 'sdfsdf'
           });
         }
       }, 2000);
     },
-    companyInfo(enterpriseId) {
+    companyInfo (enterpriseId) {
       tool.openWin({
-        name: "companyInfo",
-        url: "../win.html",
-        title: "企业介绍",
-        fname: "companyInfo_f",
-        furl: "./hr/companyInfo.html",
+        name: 'companyInfo',
+        url: '../win.html',
+        title: '企业介绍',
+        fname: 'companyInfo_f',
+        furl: './hr/companyInfo.html',
         hasLeft: 1,
         hasRight: 1,
         data: {
@@ -114,7 +114,7 @@ export default {
       });
     }
   },
-  mounted() {
+  mounted () {
     this.companyRecommend();
   }
 };

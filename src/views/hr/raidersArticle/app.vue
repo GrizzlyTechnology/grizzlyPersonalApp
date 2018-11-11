@@ -16,20 +16,20 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import { Container, Row, Col } from "muse-ui/lib/Grid";
-import { CardTitle, CardText } from "muse-ui/lib/Card";
-import { Card } from "muse-ui";
-import service from "service";
-import tool from "util/tools";
+import { Toast } from 'mint-ui';
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { CardTitle, CardText } from 'muse-ui/lib/Card';
+import { Card } from 'muse-ui';
+import service from 'service';
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
       ArticleId: window.api.pageParam.id,
-      title: "",
-      source: "",
-      date: "",
-      con: ""
+      title: '',
+      source: '',
+      date: '',
+      con: ''
     };
   },
   components: {
@@ -41,7 +41,7 @@ export default {
     CardText
   },
   methods: {
-    async raidersArticleData() {
+    async raidersArticleData () {
       tool.showProgress();
       const response = await service.getRaidersArticleData({
         ArticleId: this.ArticleId
@@ -56,14 +56,14 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "获取失败，请稍后重试！！"
+            position: 'top',
+            message: '获取失败，请稍后重试！！'
           });
           break;
       }
     }
   },
-  mounted() {
+  mounted () {
     this.raidersArticleData();
   }
 };

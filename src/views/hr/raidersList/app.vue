@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import { Paper, Divider, LoadMore } from "muse-ui";
-import { Container } from "muse-ui/lib/Grid";
+import { Toast } from 'mint-ui';
+import { Paper, Divider, LoadMore } from 'muse-ui';
+import { Container } from 'muse-ui/lib/Grid';
 import {
   List,
   ListItem,
@@ -34,11 +34,11 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemSubTitle
-} from "muse-ui/lib/List";
-import service from "service";
-import tool from "util/tools";
+} from 'muse-ui/lib/List';
+import service from 'service';
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
       refreshing: false,
       loading: false,
@@ -90,7 +90,7 @@ export default {
     Container
   },
   methods: {
-    async raidersListData() {
+    async raidersListData () {
       tool.showProgress();
       const response = await service.getrRaidersList({ cid: this.cid });
       tool.hideProgress();
@@ -100,13 +100,13 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "获取失败，请稍后重试！！"
+            position: 'top',
+            message: '获取失败，请稍后重试！！'
           });
           break;
       }
     },
-    refresh() {
+    refresh () {
       this.refreshing = true;
       this.$refs.container.scrollTop = 0;
       setTimeout(() => {
@@ -114,34 +114,34 @@ export default {
         for (let i = 0; i < 10; i++) {
           this.raidersList.push({
             id: 1,
-            thumb: "",
-            title: "sdfsdf",
-            content: "sdfsdfsdfsdfsdf"
+            thumb: '',
+            title: 'sdfsdf',
+            content: 'sdfsdfsdfsdfsdf'
           });
         }
       }, 2000);
     },
-    load() {
+    load () {
       this.loading = true;
       setTimeout(() => {
         this.loading = false;
         for (let i = 0; i < 5; i++) {
           this.raidersList.push({
             id: 1,
-            thumb: "",
-            title: "sdfsdf",
-            content: "sdfsdfsdfsdfsdf"
+            thumb: '',
+            title: 'sdfsdf',
+            content: 'sdfsdfsdfsdfsdf'
           });
         }
       }, 2000);
     },
-    raidersArticle(id) {
+    raidersArticle (id) {
       tool.openWin({
-        name: "raidersArticle",
-        url: "../win.html",
-        title: "",
-        fname: "raidersArticle_f",
-        furl: "./hr/raidersArticle.html",
+        name: 'raidersArticle',
+        url: '../win.html',
+        title: '',
+        fname: 'raidersArticle_f',
+        furl: './hr/raidersArticle.html',
         hasLeft: 1,
         hasRight: 1,
         data: {
@@ -150,7 +150,7 @@ export default {
       });
     }
   },
-  mounted() {
+  mounted () {
     this.raidersListData();
   }
 };

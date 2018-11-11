@@ -500,32 +500,41 @@ export default {
       method: 'get'
     });
   },
-    // 首页滚动图
-    carouselImgs (params) {
-      return request({
-        host: BASEURL,
-        url: '/api/Content/slides',
-        params,
-        method: 'get'
-      });
-    },
-    // 首页热门职位
-    hotJobsData (params) {
-      return request({
-        host: BASEURL,
-        url: '/api/Job/recommendjobs',
-        params,
-        method: 'get'
-      });
-    },
-    //首页获取适合你的职位
-    suitablePosition (params) {
-      return request({
-        host: BASEURL,
-        url: '/api/Resume/create',
-        params,
-        method: 'get'
-      });
-    },
+  // 首页滚动图
+  carouselImgs (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Content/slides',
+      params,
+      method: 'get'
+    });
+  },
+  // 首页热门职位
+  hotJobsData (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Job/recommendjobs',
+      params,
+      method: 'get'
+    });
+  },
+  // 首页获取适合你的职位
+  suitablePosition (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Resume/create',
+      params,
+      method: 'get'
+    });
+  },
+  // 获取广告地址
+  getAdv (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Content/seladvs',
+      params,
+      method: 'get'
+    });
+  }
 
 };

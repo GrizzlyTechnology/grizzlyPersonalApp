@@ -55,9 +55,9 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import { Container, Row, Col } from "muse-ui/lib/Grid";
-import { CardTitle, CardText } from "muse-ui/lib/Card";
+import { Toast } from 'mint-ui';
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { CardTitle, CardText } from 'muse-ui/lib/Card';
 import {
   List,
   ListItem,
@@ -66,20 +66,20 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from "muse-ui/lib/List";
-import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
-import tool from "util/tools";
-import service from "service";
+} from 'muse-ui/lib/List';
+import { Card, Icon, Avatar, Divider, Button } from 'muse-ui';
+import tool from 'util/tools';
+import service from 'service';
 export default {
-  data() {
+  data () {
     return {
-      companyImgSrc: "",
-      companyName: "",
-      nature: "",
-      scale: "",
-      industry: "",
-      companyIntro: "",
-      comapnyAddress: "",
+      companyImgSrc: '',
+      companyName: '',
+      nature: '',
+      scale: '',
+      industry: '',
+      companyIntro: '',
+      comapnyAddress: '',
       enterpriseId: window.api.pageParam.enterpriseId,
       lists: []
     };
@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     // 页面数据
-    async detailsData() {
+    async detailsData () {
       tool.showProgress();
       const response = await service.getCompanyInfo({
         enterpriseId: this.enterpriseId
@@ -123,13 +123,13 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "获取失败，请稍后重试！！"
+            position: 'top',
+            message: '获取失败，请稍后重试！！'
           });
           break;
       }
     },
-    async companyAllJob() {
+    async companyAllJob () {
       tool.showProgress();
       const response = await service.getCompanyJob({
         enterpriseId: this.enterpriseId
@@ -141,19 +141,19 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "获取失败，请稍后重试！！"
+            position: 'top',
+            message: '获取失败，请稍后重试！！'
           });
           break;
       }
     },
-    jobDetails(id) {
+    jobDetails (id) {
       tool.openWin({
-        name: "jobDetails_" + id,
-        url: "../win.html",
-        title: "职位详情",
-        fname: "jobDetails_f_" + id,
-        furl: "./hr/jobDetails.html",
+        name: 'jobDetails_' + id,
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobDetails_f_' + id,
+        furl: './hr/jobDetails.html',
         hasLeft: 1,
         hasRight: 1,
         data: {
@@ -162,7 +162,7 @@ export default {
       });
     }
   },
-  mounted() {
+  mounted () {
     this.detailsData();
     this.companyAllJob();
   }
