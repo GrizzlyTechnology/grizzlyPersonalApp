@@ -13,6 +13,7 @@
 import { Row, Col } from "muse-ui/lib/Grid";
 import { Icon } from "muse-ui";
 import tools from "util/tools";
+import service from 'service';
 export default {
   props: {},
   data() {
@@ -39,7 +40,10 @@ export default {
           alert("QQ登录失败");
           return;
       }
-      alert(openId);
+        this.ologin({
+            openid:openId,
+            type:'qq'
+        });
     },
     qqGoto() {
       var obj = this;
@@ -52,6 +56,19 @@ export default {
           }
         });
       });
+    },
+    qqInfo(){
+        var obj = this;
+        return new Promise((resolve) => {
+            obj.qq.getUserInfo(function(ret, err) {
+                if (ret.status) {
+                    //api.alert({ msg: JSON.stringify(ret) });
+                    resolve(eval('(' + ret.info + ')'));
+                } else {
+                    resolve(false);
+                }
+            });
+        });
     },
     qqInstall() {
       var obj = this;
@@ -75,12 +92,10 @@ export default {
             alert('微信登录失败');
             return;
         }
-        const uinfo=await this.wxInfo(token.accessToken,token.openId);
-        if(!uinfo){
-            alert('获取用户信息失败');
-            return;
-        }
-        this.wxApi();
+        this.ologin({
+            openid:token.openId,
+            type:'wx'
+        });
     },
     wxInstall(){
         var obj=this;
@@ -136,8 +151,43 @@ export default {
             });
         });
     },
-    wxApi(){
-        alert("ok");
+    async ologin(parm){
+      const response=await service.otherlogin({
+          openId:parm.openid,
+          type:parm.type,
+          deviceId:window.api.deviceId
+      });
+      switch(response.code){
+          case 0:
+            tools.setStorage('token', response.result.token);
+            tools.setStorage('phone', response.result.userinfo.phone);
+            tools.setStorage('userInfo', response.result.userinfo);
+            //绑定极光推送的别名为id
+            let ajpush = window.api.require('ajpush');
+            let param = {alias:response.result.userinfo.id};
+            ajpush.bindAliasAndTags(param,function(ret) {
+                    let statusCode = ret.statusCode;
+            });
+            //登录完跳转
+            window.api.openWin({
+                name: 'main',
+                url: './main.html',
+                slidBackEnabled:false,
+                pageParam: {
+                    comefrom:'login',
+                    }
+            });
+          break;
+          case 1:
+            alert(JSON.stringify(parm));
+          break;
+          default:
+            tools.toast({
+                position: 'top',
+                message: response.message,
+            });
+          break;
+      }
     }
   },
   mounted() {

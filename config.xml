@@ -70,7 +70,7 @@
 
     <feature name="QQPlus">
 
-        <param name="urlScheme" value="fc93b9d1d15ae158a96cb88e64c13dd0"/>
+        <param name="urlScheme" value="tencent101513037" />
 
         <param name="apiKey" value="101513037"/>
 
