@@ -5,10 +5,9 @@
       <div class="ucAvatar" :style="{backgroundImage:'url(' + headphoto + ')'}"></div>
       <span class="ucNickname">{{nickname}}
         <Icon :size="16" :value="sex===1?':icon-nan2':':icon-nv1'" :color="sex===1?'#61bce8':'#fd7777'" /></span>
-      <span class="ucSchoole" v-if="studentStatus!=null">镇江高等专科学校</span>
-      <span class="ucSchoole" v-if="studentStatus===null" @click="setStudentStatus">创建学籍
+      <span class="ucSchoole" v-if="studentStatus!=null">{{studentStatus.schoolname}} <span class="ucClass">{{studentStatus.collegename}} / {{studentStatus.majorname}}</span></span>
+      <span class="ucSchoole" v-if="studentStatus===null" @click="bindingStudentStatus">学籍管理
         <Icon :size="16" value=":icon-right" color="#fff" /></span>
-      <span class="ucClass" v-if="studentStatus!==null">电气系 / 电气专业</span>
       <span class="ucSetting" @click="setting">
         <Icon :size="14" value=":el-icon-setting" color="#FFF" />
         设置
@@ -27,14 +26,28 @@
           <span class="ucCellTitle">简历管理</span>
         </div>
         <i class="mu-icon icon-right isLink" />
-        <Icon slot="icon" value=":icon-fankui" :size="28" color="#999" />
+        <Icon slot="icon" value=":icon-jianli" :size="28" color="#999" />
       </Cell>
       <Cell class="ucCell">
         <div class="ucCellCon" @click="messageCenter">
           <span class="ucCellTitle">消息中心</span>
         </div>
         <i class="mu-icon icon-right isLink" />
-        <Icon slot="icon" value=":icon-xiaoxi" :size="28" color="#999" />
+        <Icon slot="icon" value=":icon-xiaoxi1" :size="28" color="#999" />
+      </Cell>
+      <Cell class="ucCell">
+        <div class="ucCellCon" @click="deliveryJoy">
+          <span class="ucCellTitle">投递的职位</span>
+        </div>
+        <i class="mu-icon icon-right isLink" />
+        <Icon slot="icon" value=":icon-toudijianli" :size="28" color="#999" />
+      </Cell>
+      <Cell class="ucCell">
+        <div class="ucCellCon" @click="bindingStudentStatus">
+          <span class="ucCellTitle">学籍管理</span>
+        </div>
+        <i class="mu-icon icon-right isLink" />
+        <Icon slot="icon" value=":icon-guanli" :size="28" color="#999" />
       </Cell>
     </div>
   </div>
@@ -61,7 +74,16 @@ export default {
   },
   methods: {
     async getStudentStatus () {
-      this.studentStatus = {};
+      tools.showProgress();
+      const response = await service.getStudentInfo();
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.setStudentStatus = response.studentInfo;
+          break;
+        default:
+          break;
+      }
     },
     async getUserinfo () {
       tools.showProgress();
@@ -84,7 +106,6 @@ export default {
           break;
       }
     },
-    showMoreInfo () {},
     messageCenter () {
       tools.openWin({
         name: 'messageCenter',
@@ -98,19 +119,34 @@ export default {
         }
       });
     },
-    studentInfoList () {
+    deliveryJoy () {
       tools.openWin({
-        name: 'studentInfoList',
+        name: 'deliveryJoyList',
         url: '../win.html',
-        title: '学籍管理',
-        fname: 'studentInfoList_f',
-        furl: './userCenter/studentInfoList.html',
+        title: '投递的职位',
+        fname: 'deliveryJoyList_f',
+        furl: './userCenter/deliveryJoyList.html',
+        hasLeft: 1
+      });
+    },
+    bindingStudentStatus () {
+      tools.openWin({
+        name: 'bdingSudentInfo',
+        url: '../win.html',
+        title: '绑定学籍',
+        fname: 'bdingSudentInfo_f',
+        furl: './userCenter/bdingSudentInfo.html',
         hasLeft: 1,
-        LCB: () => {
-          this.getUserinfo();
+        data: {
+          nameSpace: 'bdingSudentInfo',
+          studentStatus: this.studentStatus,
+          callback: (ret, err) => {
+            this.getStudentStatus();
+          }
         }
       });
     },
+
     resumeList () {
       tools.openWin({
         name: 'resumeList',
@@ -147,7 +183,7 @@ export default {
   },
   mounted () {
     this.getUserinfo();
-    this.getStudentStatus();
+    // this.getStudentStatus();
     tools.addEventListener(
       {
         name: 'getStudentStatusCallBack'
@@ -193,9 +229,9 @@ export default {
   top: 75px;
 }
 .ucClass {
-  position: absolute;
-  left: 120px;
-  top: 102px;
+  // position: absolute;
+  // left: 120px;
+  // top: 102px;
   font-size: 12px;
 }
 .ucSetting {
