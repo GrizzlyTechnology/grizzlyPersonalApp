@@ -820,7 +820,6 @@ export default {
 .picList {
   font-size: 0;
   margin: -5px;
-  overflow: auto;
 }
 .picCon {
   width: 50%;

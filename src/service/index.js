@@ -155,6 +155,14 @@ export default {
       params
     });
   },
+  getStudentInfo (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Student/info',
+      params,
+      method: 'get'
+    });
+  },
   getAreaByAreaId (areaId = '') {
     return request({
       host: BASEURL,
