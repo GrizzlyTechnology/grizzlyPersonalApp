@@ -24,13 +24,6 @@
 import { Tabs, LoadMore } from 'muse-ui';
 import { Tab } from 'muse-ui/lib/Tabs';
 import { TabContainer, TabContainerItem } from 'mint-ui';
-import {
-  List,
-  ListItem,
-  ListItemContent,
-  ListItemTitle,
-  ListItemSubTitle
-} from 'muse-ui/lib/List';
 
 export default {
   data () {
@@ -189,11 +182,6 @@ export default {
   components: {
     Tabs,
     Tab,
-    List,
-    ListItem,
-    ListItemContent,
-    ListItemTitle,
-    ListItemSubTitle,
     LoadMore,
     TabContainer,
     TabContainerItem

@@ -22,7 +22,7 @@
       <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
     </Cell> -->
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="logout">退出登录</Button>
+      <Button color="#f75c5d" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="logout">退出登录</Button>
     </div>
   </div>
 </template>
