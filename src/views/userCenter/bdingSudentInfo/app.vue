@@ -1,27 +1,30 @@
 <template>
-  <div class="content">
-    <Form ref="form" :model="form" v-if="!!studentStatus===false">
-      <FormItem label="姓名" prop="name" :rules="nameRules">
-        <TextField v-model="form.name"></TextField>
-      </FormItem>
-      <FormItem label="性别" prop="sex">
-        <Radio v-model="form.sex" :value="1" label="男"></Radio>
-        <Radio v-model="form.sex" :value="0" label="女"></Radio>
-      </FormItem>
-      <FormItem label="入学时间">
-        <DateInput :value="startDateTimeText" :max-date="new Date()" @change="changeStartDateTime" format="YYYY年MM月DD日" no-display view-type="list" container="bottomSheet" />
-      </FormItem>
-      <FormItem label="身份证" prop="identity" :rules="identityRules">
-        <TextField v-model="form.identity"></TextField>
-      </FormItem>
-      <FormItem label="电话" prop="phone" :rules="phoneRules">
-        <TextField v-model="form.phone"></TextField>
-      </FormItem>
-      <FormItem label="班级码" prop="code" :rules="codeRules">
-        <TextField v-model="form.code"></TextField>
-      </FormItem>
-    </Form>
-    <Button v-if="!!studentStatus===false" color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="submit">提交学籍</Button>
+  <div>
+    <div class="content" v-if="!!studentStatus===false">
+      <Form ref="form" :model="form">
+        <FormItem label="姓名" prop="name" :rules="nameRules">
+          <TextField v-model="form.name"></TextField>
+        </FormItem>
+        <FormItem label="性别" prop="sex">
+          <Radio v-model="form.sex" :value="1" label="男"></Radio>
+          <Radio v-model="form.sex" :value="0" label="女"></Radio>
+        </FormItem>
+        <FormItem label="入学时间">
+          <DateInput :value="startDateTimeText" :max-date="new Date()" @change="changeStartDateTime" format="YYYY年MM月DD日" no-display view-type="list" container="bottomSheet" />
+        </FormItem>
+        <FormItem label="身份证" prop="identity" :rules="identityRules">
+          <TextField v-model="form.identity"></TextField>
+        </FormItem>
+        <FormItem label="电话" prop="phone" :rules="phoneRules">
+          <TextField v-model="form.phone"></TextField>
+        </FormItem>
+        <FormItem label="班级码" prop="code" :rules="codeRules">
+          <TextField v-model="form.code"></TextField>
+        </FormItem>
+      </Form>
+      <Button v-if="!!studentStatus===false" color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large @click="submit">提交学籍</Button>
+    </div>
+
     <div v-if="!!studentStatus===true">
       <Cell class="ucCell">
         <div class="ucCellCon">
@@ -33,12 +36,6 @@
         <div class="ucCellCon">
           <span class="ucCellTitle">性别</span>
           <span class="ucCellLabel">{{studentStatus.sex===0?'女':'男'}}</span>
-        </div>
-      </Cell>
-      <Cell class="ucCell">
-        <div class="ucCellCon">
-          <span class="ucCellTitle">入学时间</span>
-          <span class="ucCellLabel">{{name}}</span>
         </div>
       </Cell>
       <Cell class="ucCell">
@@ -55,26 +52,32 @@
       </Cell>
       <Cell class="ucCell">
         <div class="ucCellCon">
+          <span class="ucCellTitle">入学时间</span>
+          <span class="ucCellLabel">{{nrolmentTimeText}}</span>
+        </div>
+      </Cell>
+      <Cell class="ucCell">
+        <div class="ucCellCon">
           <span class="ucCellTitle">学校</span>
           <span class="ucCellLabel">{{studentStatus.schoolname}}</span>
         </div>
       </Cell>
       <Cell class="ucCell">
         <div class="ucCellCon">
-          <span class="ucCellTitle">学年</span>
-          <span class="ucCellLabel">{{studentStatus.yearname}}</span>
-        </div>
-      </Cell>
-      <Cell class="ucCell">
-        <div class="ucCellCon">
           <span class="ucCellTitle">院系</span>
-          <span class="ucCellLabel">{{studentStatus.collegename}}</span>
+          <span class="ucCellLabel">{{studentStatus.college}}</span>
         </div>
       </Cell>
       <Cell class="ucCell">
         <div class="ucCellCon">
           <span class="ucCellTitle">专业</span>
           <span class="ucCellLabel">{{studentStatus.majorname}}</span>
+        </div>
+      </Cell>
+      <Cell class="ucCell">
+        <div class="ucCellCon">
+          <span class="ucCellTitle">学籍</span>
+          <span class="ucCellLabel">{{studentStatus.classyear}}</span>
         </div>
       </Cell>
       <Cell class="ucCell">
@@ -86,7 +89,7 @@
       <Cell class="ucCell">
         <div class="ucCellCon">
           <span class="ucCellTitle">班主任</span>
-          <span class="ucCellLabel">{{studentStatus.teachername}}</span>
+          <span class="ucCellLabel">{{studentStatus.headmaster}}</span>
         </div>
       </Cell>
     </div>
@@ -94,7 +97,7 @@
 </template>
 
 <script>
-// import moment from 'moment';
+import moment from 'moment';
 import service from 'service';
 import { Cell } from 'mint-ui';
 import { DateInput, Button, TextField, Radio } from 'muse-ui';
@@ -143,11 +146,16 @@ export default {
   computed: {
     startDateTimeText () {
       return new Date(this.form.nrolmentTime) || Date.now();
+    },
+    nrolmentTimeText () {
+      return this.studentStatus
+        ? moment(this.studentStatus.nrolmentTime).format('YYYY年MM月DD日')
+        : '';
     }
   },
   methods: {
     async create () {
-      console.log(JSON.stringify(this.form));
+      // console.log(JSON.stringify(this.form));
       const response = await service.createStudent(this.form);
       switch (response.code) {
         case 0:
@@ -234,7 +242,7 @@ export default {
       float: right;
       line-height: 56px;
       color: #000;
-      margin-right: 45px;
+      margin-right: 15px;
     }
   }
   .mu-icon {

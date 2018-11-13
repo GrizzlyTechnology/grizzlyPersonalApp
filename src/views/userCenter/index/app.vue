@@ -5,7 +5,7 @@
       <div class="ucAvatar" :style="{backgroundImage:'url(' + headphoto + ')'}"></div>
       <span class="ucNickname">{{nickname}}
         <Icon :size="16" :value="sex===1?':icon-nan2':':icon-nv1'" :color="sex===1?'#61bce8':'#fd7777'" /></span>
-      <span class="ucSchoole" v-if="studentStatus!=null">{{studentStatus.schoolname}} <span class="ucClass">{{studentStatus.collegename}} / {{studentStatus.majorname}}</span></span>
+      <span class="ucSchoole" v-if="studentStatus!=null">{{studentStatus.schoolname}} <span class="ucClass">{{studentStatus.college}} / {{studentStatus.majorname}}</span></span>
       <span class="ucSchoole" v-if="studentStatus===null" @click="bindingStudentStatus">学籍管理
         <Icon :size="16" value=":icon-right" color="#fff" /></span>
       <span class="ucSetting" @click="setting">
@@ -76,10 +76,11 @@ export default {
     async getStudentStatus () {
       tools.showProgress();
       const response = await service.getStudentInfo();
+      console.log(JSON.stringify(response));
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.setStudentStatus = response.studentInfo;
+          this.studentStatus = response.result.studentInfo;
           break;
         default:
           break;
@@ -133,7 +134,7 @@ export default {
       tools.openWin({
         name: 'bdingSudentInfo',
         url: '../win.html',
-        title: '绑定学籍',
+        title: '学籍管理',
         fname: 'bdingSudentInfo_f',
         furl: './userCenter/bdingSudentInfo.html',
         hasLeft: 1,
@@ -183,15 +184,7 @@ export default {
   },
   mounted () {
     this.getUserinfo();
-    // this.getStudentStatus();
-    tools.addEventListener(
-      {
-        name: 'getStudentStatusCallBack'
-      },
-      (ret, err) => {
-        this.getStudentStatus();
-      }
-    );
+    this.getStudentStatus();
   }
 };
 </script>
