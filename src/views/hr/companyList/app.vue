@@ -107,7 +107,6 @@ export default {
         fname: 'companyInfo_f',
         furl: './hr/companyInfo.html',
         hasLeft: 1,
-        hasRight: 1,
         data: {
           enterpriseId: enterpriseId
         }

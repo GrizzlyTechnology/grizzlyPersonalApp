@@ -22,7 +22,7 @@
       </List>
     </LoadMore>
     <div v-show='lists.length <= 0' class='bodyer noList'>
-      暂无记录
+      暂无职位信息
     </div>
   </Container>
 </template>
@@ -90,7 +90,7 @@ export default {
         // }
       ],
       keyWord: window.api.pageParam.keyWord,
-      area: window.api.pageParam.area,
+      // area: window.api.pageParam.area,
       istj: window.api.pageParam.istj || ''
     };
   },
@@ -116,14 +116,13 @@ export default {
       tool.showProgress();
       const response = await service.searchBoxValue({
         keyWord: this.keyWord,
-        area: this.area,
+        // area: this.area,
         istj: this.istj
       });
       tool.hideProgress();
       switch (response.code) {
         case 0:
           this.lists = response.result.list;
-          console.log(this.lists.length);
           break;
         default:
           Toast({

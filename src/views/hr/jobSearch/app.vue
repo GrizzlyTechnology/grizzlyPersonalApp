@@ -2,16 +2,16 @@
   <div class="content">
     <div class='p15'>
       <div class='flexCon'>
-        <span @click="areaHandle" class='araeBox'>
-          <i class='iconfont icon-weizhi-blue'></i>{{areaText}}</span>
-        <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue" label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
+      <!-- <span @click="areaHandle" class='araeBox'>
+          <i class='iconfont icon-weizhi-blue'></i>{{areaText}}</span> -->
+       <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue" label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
           <i class='iconfont icon-suosou' @click='submit'></i>
         </AutoComplete>
       </div>
     </div>
-    <div class="p15 mt25 bgWhite">
+    <div class="p15 mt25 bgWhite" v-show="resumeList.length>=1&& count >=1 &&chips.length > 0" >
       <SubHeader>猜你要搜</SubHeader>
-      <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.value' @click="chipHandle">{{chip}}</Chip>
+      <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.index' @click="jobDetails(chip.id)">{{chip.position}}</Chip>
     </div>
   </div>
 </template>
@@ -24,21 +24,16 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
-      form: {
-        keyWord: '',
-        area: null
+       form: {
+        keyWord: ''
+        // area: ''
       },
       area: [],
       defaultResult: [],
       labelPosition: 'right',
-      chips: [
-        '产品经理',
-        '网络科技',
-        '信息科技',
-        '前端工程师',
-        '生物科技',
-        '医药科技'
-      ]
+       count: 0,
+       resumeList: [],
+      chips: []
     };
   },
   components: {
@@ -48,11 +43,11 @@ export default {
     AutoComplete
   },
   computed: {
-    areaText () {
-      return this.area.length > 0
-        ? this.area[this.area.length - 1].label
-        : '全国';
-    },
+    // areaText () {
+    //   return this.area.length > 0
+    //     ? this.area[this.area.length - 1].label
+    //     : '全国';
+    // },
     filterResult () {
       return this.defaultResult.filter(value =>
         new RegExp(this.value, 'i').test(value)
@@ -60,8 +55,29 @@ export default {
     }
   },
   methods: {
+    // 点击选择地区
+     // areaHandle () {
+    //   tool.openWin({
+    //     name: 'areaSelector',
+    //     url: '../win.html',
+    //     title: '选择地区',
+    //     fname: 'areaSelector_f',
+    //     furl: './common/areaSelector.html',
+    //     hasLeft: 1,
+    //     data: {
+    //       nameSpace: 'areaSelector',
+    //       area: this.area,
+    //       level: 2,
+    //       callback: (ret, err) => {
+    //         this.area = ret.value;
+    //       }
+    //     }
+    //   });
+    // },
     // 点击搜索
     search () {
+        // this.form.area =
+      //   this.area.length > 0 ? this.area[this.area.length - 1].value : '';
       tool.openWin({
         name: 'jobSearchList',
         url: '../win.html',
@@ -71,12 +87,11 @@ export default {
         hasLeft: 1,
         data: {
           nameSpace: 'jobSearchList',
-          area: this.form.area,
+          // area: this.form.area,
           keyWord: this.form.keyWord
         }
       });
     },
-
     // 获取职位
     async getAllSearchValue () {
       tool.showProgress();
@@ -94,55 +109,72 @@ export default {
           break;
       }
     },
-    async searchChipValue () {
+     submit () {
+      this.search();
+    },
+     async getResumeList () {
       tool.showProgress();
-      const response = await service.searchChipValue(this.value);
+      const response = await service.getUserBaseInfo();
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          tool.openWin({
-            name: 'jobSearchList',
-            url: '../win.html',
-            title: '所有职位',
-            fname: 'jobSearchList_f',
-            furl: './hr/jobSearchList.html',
-            hasLeft: 1
-          });
+          this.resumeList =
+            response.result.resumeInfo.length > 0
+              ? [response.result.resumeInfo[0]]
+              : [];
+
+          this.listsData();
           break;
         default:
           tool.toast({
             position: 'top',
-            message: '搜索失败，请稍后重试！！'
+            message: '简历列表获取失败'
           });
           break;
       }
     },
-    areaHandle () {
+    // 适合你的职位列表数据
+    async listsData () {
+      tool.showProgress();
+      const response = await service.searchBoxValue({
+        keyWord: this.resumeList[0].desiredposition
+      });
+      tool.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.chips = response.result.list;
+          this.count = response.result.count;
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    // 职位详情
+    jobDetails (id) {
       tool.openWin({
-        name: 'areaSelector',
+        name: 'jobDetails_' + id,
         url: '../win.html',
-        title: '选择地区',
-        fname: 'areaSelector_f',
-        furl: './common/areaSelector.html',
+        title: '职位详情',
+        fname: 'jobDetails_f_' + id,
+        furl: './hr/jobDetails.html',
         hasLeft: 1,
+        hasRight: 1,
         data: {
-          nameSpace: 'areaSelector',
-          area: this.area,
-          level: 2,
-          callback: (ret, err) => {
-            this.area = ret.value;
-          }
+          id: id
         }
       });
     },
     chipHandle () {
       this.searchChipValue();
-    },
-    submit () {
-      this.search();
     }
   },
-  mounted () {}
+  mounted () {
+     this.getResumeList();
+  }
 };
 </script>
 <style lang="less">
@@ -172,7 +204,8 @@ export default {
 }
 
 .mu-input.searchBox {
-  width: 80%;
+  // width: 80%;
+  width:98%;
   min-height: auto;
   padding-top: 0px;
   padding-bottom: 0px;
