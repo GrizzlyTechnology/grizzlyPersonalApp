@@ -550,6 +550,12 @@ export default {
       params,
       method: 'get'
     });
+  },
+  userSetting (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/User/update',
+      params
+    });
   }
-
 };
