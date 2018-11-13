@@ -20,7 +20,7 @@
 import service from 'service';
 import { Toast } from 'mint-ui';
 import { SubHeader, Chip, AutoComplete } from 'muse-ui';
-import tools from 'util/tools';
+import tool from 'util/tools';
 export default {
   data () {
     return {
@@ -62,7 +62,7 @@ export default {
   methods: {
     // 点击搜索
     search () {
-      tools.openWin({
+      tool.openWin({
         name: 'jobSearchList',
         url: '../win.html',
         title: '所有职位',
@@ -79,13 +79,15 @@ export default {
 
     // 获取职位
     async getAllSearchValue () {
+      tool.showProgress();
       const response = await service.getAllPosition(this.form.keyWord);
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           this.defaultResult = response.result.info;
           break;
         default:
-          tools.toast({
+          tool.toast({
             position: 'top',
             message: '搜索失败，请重试'
           });
@@ -93,10 +95,12 @@ export default {
       }
     },
     async searchChipValue () {
+      tool.showProgress();
       const response = await service.searchChipValue(this.value);
+      tool.hideProgress();
       switch (response.code) {
         case 0:
-          tools.openWin({
+          tool.openWin({
             name: 'jobSearchList',
             url: '../win.html',
             title: '所有职位',
@@ -106,7 +110,7 @@ export default {
           });
           break;
         default:
-          tools.toast({
+          tool.toast({
             position: 'top',
             message: '搜索失败，请稍后重试！！'
           });
@@ -114,7 +118,7 @@ export default {
       }
     },
     areaHandle () {
-      tools.openWin({
+      tool.openWin({
         name: 'areaSelector',
         url: '../win.html',
         title: '选择地区',
@@ -138,8 +142,7 @@ export default {
       this.search();
     }
   },
-  mounted () {
-  }
+  mounted () {}
 };
 </script>
 <style lang="less">

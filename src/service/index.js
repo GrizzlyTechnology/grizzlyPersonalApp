@@ -106,6 +106,13 @@ export default {
       params
     });
   },
+  otherlogin (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/User/otherLogin',
+      params
+    });
+  },
   logout () {
     return request({
       host: BASEURL,
@@ -531,6 +538,15 @@ export default {
     return request({
       host: BASEURL,
       url: '/api/Resume/create',
+      params,
+      method: 'get'
+    });
+  },
+  // 获取广告地址
+  getAdv (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Content/seladvs',
       params,
       method: 'get'
     });

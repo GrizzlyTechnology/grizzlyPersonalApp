@@ -1,9 +1,9 @@
 <template>
     <Row>
-        <Col span="3" offset="3">
+        <Col span="3" offset="3" v-if="wxhas">
         <Icon size="35" value=":icon-weixin" @click="wxlogin" />
         </col>
-        <Col span="3">
+        <Col span="3" v-if="qqhas">
         <Icon size="35" value=":icon-qq" @click="qqlogin" />
         </col>
     </Row>
@@ -13,12 +13,15 @@
 import { Row, Col } from "muse-ui/lib/Grid";
 import { Icon } from "muse-ui";
 import tools from "util/tools";
+import service from 'service';
 export default {
   props: {},
   data() {
     return {
       qq: window.api.require("QQPlus"),
       wx: window.api.require('wx'),
+      qqhas:false,
+      wxhas:false
     };
   },
   components: {
@@ -32,17 +35,15 @@ export default {
       this.qqQuery();
     },
     async qqQuery() {
-      const isin = await this.qqInstall();
-      if (!isin) {
-        alert("未安装QQ");
-        return;
-      }
       const openId = await this.qqGoto();
       if(!openId){
           alert("QQ登录失败");
           return;
       }
-      alert(openId);
+        this.ologin({
+            openid:openId,
+            type:'qq'
+        });
     },
     qqGoto() {
       var obj = this;
@@ -56,13 +57,24 @@ export default {
         });
       });
     },
+    qqInfo(){
+        var obj = this;
+        return new Promise((resolve) => {
+            obj.qq.getUserInfo(function(ret, err) {
+                if (ret.status) {
+                    //api.alert({ msg: JSON.stringify(ret) });
+                    resolve(eval('(' + ret.info + ')'));
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+    },
     qqInstall() {
       var obj = this;
-      return new Promise((resolve) => {
-        obj.qq.installed(function(ret, err) {
-          resolve(ret.status);
+      obj.qq.installed(function(ret, err) {
+          obj.qqhas=ret.status;
         });
-      });
     },
 
     //========微信登录=======
@@ -70,11 +82,6 @@ export default {
       this.wxQuery();
     },
     async wxQuery(){
-        const isin=await this.wxInstall();
-        if(!isin){
-            alert('未安装微信应用');
-            return;
-        }
         const code=await this.wxGoto();
         if(!code){
             alert('微信登录失败');
@@ -85,20 +92,16 @@ export default {
             alert('微信登录失败');
             return;
         }
-        const uinfo=await this.wxInfo(token.accessToken,token.openId);
-        if(!uinfo){
-            alert('获取用户信息失败');
-            return;
-        }
-        this.wxApi();
+        this.ologin({
+            openid:token.openId,
+            type:'wx'
+        });
     },
     wxInstall(){
         var obj=this;
-        return new Promise((resolve)=>{
-            obj.wx.isInstalled(function(ret, err) {
-                resolve(ret.installed);
+        obj.wx.isInstalled(function(ret, err) {
+                obj.wxhas=ret.installed;
             });
-        });
     },
     wxGoto(){
         var obj=this;
@@ -148,11 +151,49 @@ export default {
             });
         });
     },
-    wxApi(){
-        alert("ok");
+    async ologin(parm){
+      const response=await service.otherlogin({
+          openId:parm.openid,
+          type:parm.type,
+          deviceId:window.api.deviceId
+      });
+      switch(response.code){
+          case 0:
+            tools.setStorage('token', response.result.token);
+            tools.setStorage('phone', response.result.userinfo.phone);
+            tools.setStorage('userInfo', response.result.userinfo);
+            //绑定极光推送的别名为id
+            let ajpush = window.api.require('ajpush');
+            let param = {alias:response.result.userinfo.id};
+            ajpush.bindAliasAndTags(param,function(ret) {
+                    let statusCode = ret.statusCode;
+            });
+            //登录完跳转
+            window.api.openWin({
+                name: 'main',
+                url: './main.html',
+                slidBackEnabled:false,
+                pageParam: {
+                    comefrom:'login',
+                    }
+            });
+          break;
+          case 1:
+            alert(JSON.stringify(parm));
+          break;
+          default:
+            tools.toast({
+                position: 'top',
+                message: response.message,
+            });
+          break;
+      }
     }
   },
-  mounted() {}
+  mounted() {
+      this.qqInstall();
+      this.wxInstall();
+  }
 };
 </script>
 <style lang="less" scoped>

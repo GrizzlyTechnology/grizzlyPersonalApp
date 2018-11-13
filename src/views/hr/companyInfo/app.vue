@@ -21,7 +21,7 @@
     </List>
     <CardText class='whiteBg detailBox'>
       <h2 class='titleBox'>公司介绍</h2>
-       <div v-html="companyIntro"></div>
+      <div v-html="companyIntro"></div>
     </CardText>
     <CardText class='whiteBg detailBox mt8'>
       <h2 class='titleBox'>公司地址</h2>
@@ -106,7 +106,11 @@ export default {
   methods: {
     // 页面数据
     async detailsData () {
-      const response = await service.getCompanyInfo({ enterpriseId: this.enterpriseId });
+      tool.showProgress();
+      const response = await service.getCompanyInfo({
+        enterpriseId: this.enterpriseId
+      });
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           this.companyImgSrc = response.result.companyImgSrc;
@@ -126,7 +130,11 @@ export default {
       }
     },
     async companyAllJob () {
-      const response = await service.getCompanyJob({ enterpriseId: this.enterpriseId });
+      tool.showProgress();
+      const response = await service.getCompanyJob({
+        enterpriseId: this.enterpriseId
+      });
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           this.lists = response.result.lists;
