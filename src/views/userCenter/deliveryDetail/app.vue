@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="delivery">
+    <div class="delivery" @click="showPostion(id)">
       <img :src="delivery.companyLogo" class="delivery-logo" />
       <div class="delivery-head">{{delivery.position}} <span class="delivery-date">2018年5月10日投递</span></div>
       <div class="delivery-salary-range">{{delivery.salaryRange}} <span class="delivery-job-area">{{delivery.jobarea}}</span></div>
@@ -22,6 +22,7 @@
 <script>
 import StepVertical from 'components/StepVertical';
 import { Button } from 'muse-ui';
+import tools from 'util/tools';
 
 export default {
   data () {
@@ -88,7 +89,23 @@ export default {
     StepVertical
   },
   methods: {
-    async getDetail () {}
+    async getDetail () {},
+    showPostion (id) {
+      tools.openWin({
+        name: 'jobDetails_' + id,
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobDetails_f_' + id,
+        furl: '../../hr/jobDetails.html',
+        hasLeft: 1,
+        LCB: () => {
+          this.getDetail();
+        },
+        data: {
+          id: id
+        }
+      });
+    }
   },
   mounted () {
     this.getDetail();
