@@ -3,13 +3,13 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form">
-          <FormItem label="原手机" prop="oldPhone" :rules="phoneRules">
-            <TextField v-model="form.oldPhone"></TextField>
-          </FormItem>
-          <FormItem label="新手机" prop="phone" :rules="phoneRules">
+          <FormItem label="原手机" prop="phone" :rules="phoneRules">
             <TextField v-model="form.phone"></TextField>
           </FormItem>
-          <FormItem label="验证码" prop="emailCode" :rules="verificationCodeRules">
+          <FormItem label="新手机" prop="newPhone" :rules="phoneRules">
+            <TextField v-model="form.newPhone"></TextField>
+          </FormItem>
+          <FormItem label="验证码" prop="messageCode" :rules="verificationCodeRules">
             <TextField v-model="form.messageCode" class="verificationCode"></TextField>
             <Button color="#009688" textColor="#ffffff" class="getVerificationCode" :disabled="verificationCodeBtnText !=='获取验证码'" @click="getVerificationCode">
               {{verificationCodeBtnText}}
@@ -39,8 +39,8 @@ export default {
       maxTime: 60,
       verificationCodeBtnText: '获取验证码',
       form: {
-        oldPhone: '',
         phone: '',
+        newPhone: '',
         messageCode: ''
       },
       phoneRules: [{ validate: val => regexps.mobPhone.test(val), message: '请填写正确的手机号码' }],
@@ -57,32 +57,42 @@ export default {
   },
   methods: {
     async getVerificationCode () {
-      const response = await service.getVerificationCode({
-        phone: this.form.oldPhone
-      });
-      switch (response.code) {
-        case 0:
-          this.verificationCodeBtnText = 60 + ' (s)';
-          for (let i = 1; i <= this.maxTime; i++) {
-            await tools.sleep(1000);
-            this.verificationCodeBtnText = (this.maxTime - i) + '(s)';
-          }
-          this.verificationCodeBtnText = '获取验证码';
-          break;
+      if (regexps.mobPhone.test(this.form.newPhone)) {
+        const response = await service.getVerificationCode({
+          phone: this.form.newPhone
+        });
+        switch (response.code) {
+          case 0:
+            this.verificationCodeBtnText = 60 + ' (s)';
+            for (let i = 1; i <= this.maxTime; i++) {
+              await tools.sleep(1000);
+              this.verificationCodeBtnText = (this.maxTime - i) + '(s)';
+            }
+            this.verificationCodeBtnText = '获取验证码';
+            break;
 
-        default:
-          tools.toast({
-            position: 'top',
-            message: '验证码获取失败'
-          });
-          break;
+          default:
+            tools.toast({
+              position: 'top',
+              message: '验证码获取失败'
+            });
+            break;
+        }
+      } else {
+        tools.toast({
+          position: 'top',
+          message: '请填写新手机'
+        });
       }
     },
     async edit () {
       tools.showProgress();
-      const response = await service.updateUserBaesInfo({
+      const response = await service.userSetting({
         ...this.form
       });
+      console.log(JSON.stringify(this.form));
+      console.log(JSON.stringify(response));
+
       tools.hideProgress();
       switch (response.code) {
         case 0:
@@ -91,7 +101,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '邮箱修改失败，请稍后重试！！'
+            message: '手机修改失败，请稍后重试！！'
           });
           break;
       }
