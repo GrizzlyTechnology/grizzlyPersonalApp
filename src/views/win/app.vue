@@ -21,7 +21,7 @@ export default {
   data () {
     return {
       showMarker: false,
-      wtitle: window.api ? window.api.pageParam.wtitle : '测试标题',
+      wtitle: window.api ? window.api.pageParam.wtitle : '',
       hasLeft: window.api ? window.api.pageParam.hasLeft : false,
       hasRight: window.api ? window.api.pageParam.hasRight : false
     };
@@ -79,7 +79,7 @@ export default {
         pageParam: window.api.pageParam.data || {},
         rect: {
           x: 0,
-          y: headerH + 2,
+          y: headerH + 1,
           w: 'auto',
           h: 'auto'
         }
