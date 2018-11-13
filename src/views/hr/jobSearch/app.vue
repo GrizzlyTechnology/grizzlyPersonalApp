@@ -9,9 +9,9 @@
         </AutoComplete>
       </div>
     </div>
-    <div class="p15 mt25 bgWhite" v-show="resumeList.length>=1&& count >=1 &&chips.length > 0" >
+    <div class="p15 mt25 bgWhite">
       <SubHeader>猜你要搜</SubHeader>
-      <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.index' @click="jobDetails(chip.id)">{{chip.position}}</Chip>
+      <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.index' @click="jobSearchList(chip)">{{chip}}</Chip>
     </div>
   </div>
 </template>
@@ -112,38 +112,17 @@ export default {
      submit () {
       this.search();
     },
-     async getResumeList () {
-      tool.showProgress();
-      const response = await service.getUserBaseInfo();
-      tool.hideProgress();
-      switch (response.code) {
-        case 0:
-          this.resumeList =
-            response.result.resumeInfo.length > 0
-              ? [response.result.resumeInfo[0]]
-              : [];
 
-          this.listsData();
-          break;
-        default:
-          tool.toast({
-            position: 'top',
-            message: '简历列表获取失败'
-          });
-          break;
-      }
-    },
-    // 适合你的职位列表数据
-    async listsData () {
+    // 猜你要搜数据获取
+    async chipsDataList () {
       tool.showProgress();
-      const response = await service.searchBoxValue({
-        keyWord: this.resumeList[0].desiredposition
+      const response = await service.chipsData({
+       num:6
       });
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          this.chips = response.result.list;
-          this.count = response.result.count;
+          this.chips = response.result;
           break;
         default:
           Toast({
@@ -154,26 +133,23 @@ export default {
       }
     },
     // 职位详情
-    jobDetails (id) {
+     jobSearchList (position) {
       tool.openWin({
-        name: 'jobDetails_' + id,
+        name: 'jobSearchList',
         url: '../win.html',
-        title: '职位详情',
-        fname: 'jobDetails_f_' + id,
-        furl: './hr/jobDetails.html',
+        title: '所有职位',
+        fname: 'jobSearchList_f',
+        furl: './hr/jobSearchList.html',
         hasLeft: 1,
-        hasRight: 1,
         data: {
-          id: id
+          nameSpace: 'jobSearchList',
+          keyWord: position
         }
       });
-    },
-    chipHandle () {
-      this.searchChipValue();
     }
   },
   mounted () {
-     this.getResumeList();
+     this.chipsDataList();
   }
 };
 </script>

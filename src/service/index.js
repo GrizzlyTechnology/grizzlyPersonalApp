@@ -542,6 +542,15 @@ export default {
       params,
       method: 'get'
     });
+  },
+  // 猜你要搜
+  chipsData(params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Job/guesssearch',
+      params,
+      method: 'get'
+    });
   }
 
 };

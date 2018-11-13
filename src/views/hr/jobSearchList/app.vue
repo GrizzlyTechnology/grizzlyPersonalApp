@@ -47,48 +47,9 @@ export default {
     return {
       refreshing: false,
       loading: false,
-      lists: [
-        // {
-        //   id:'1',
-        //   position: "1111",
-        //   claim: "222",
-        //   companyName: "sdsdfsd",
-        //   salaryRange: "xddg",
-        //   date: "2010-11-11",
-        // },
-        //  {
-        //   id:'1',
-        //   position: "1111",
-        //   claim: "222",
-        //   companyName: "sdsdfsd",
-        //   salaryRange: "xddg",
-        //   date: "2010-11-11"
-        // },
-        //  {
-        //   id:'1',
-        //   position: "1111",
-        //   claim: "222",
-        //   companyName: "sdsdfsd",
-        //   salaryRange: "xddg",
-        //   date: "2010-11-11"
-        // },
-        //  {
-        //   id:'1',
-        //   position: "1111",
-        //   claim: "222",
-        //   companyName: "sdsdfsd",
-        //   salaryRange: "xddg",
-        //   date: "2010-11-11"
-        // },
-        //  {
-        //   id:'1',
-        //   position: "1111",
-        //   claim: "222",
-        //   companyName: "sdsdfsd",
-        //   salaryRange: "xddg",
-        //   date: "2010-11-11"
-        // }
-      ],
+      lists: [],
+      page:1,
+      pagesize:10,
       keyWord: window.api.pageParam.keyWord,
       // area: window.api.pageParam.area,
       istj: window.api.pageParam.istj || ''
@@ -167,7 +128,11 @@ export default {
       setTimeout(() => {
         this.loading = false;
         for (let i = 0; i < 5; i++) {
+          // const response = await service.searchBoxValue({
+          //   keyWord: this.keyWord,
+          // });
           this.lists.push({
+            // response.result.list
             position: '35345',
             claim: 'dfgdfg',
             companyName: '111',
