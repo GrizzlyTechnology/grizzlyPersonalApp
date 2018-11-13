@@ -1,6 +1,5 @@
 <template>
   <div class="content">
-    <div></div>
     <div class="ucHeader">
       <div class="ucAvatar" :style="{backgroundImage:'url(' + headphoto + ')'}"></div>
       <span class="ucNickname">{{nickname}}
