@@ -22,7 +22,7 @@
       </List>
     </LoadMore>
     <div v-show='lists.length <= 0' class='bodyer noList'>
-      暂无记录
+      暂无职位信息
     </div>
   </Container>
 </template>
@@ -47,50 +47,11 @@ export default {
     return {
       refreshing: false,
       loading: false,
-      lists: [
-        // {
-        //   id:'1',
-        //   position: "1111",
-        //   claim: "222",
-        //   companyName: "sdsdfsd",
-        //   salaryRange: "xddg",
-        //   date: "2010-11-11",
-        // },
-        //  {
-        //   id:'1',
-        //   position: "1111",
-        //   claim: "222",
-        //   companyName: "sdsdfsd",
-        //   salaryRange: "xddg",
-        //   date: "2010-11-11"
-        // },
-        //  {
-        //   id:'1',
-        //   position: "1111",
-        //   claim: "222",
-        //   companyName: "sdsdfsd",
-        //   salaryRange: "xddg",
-        //   date: "2010-11-11"
-        // },
-        //  {
-        //   id:'1',
-        //   position: "1111",
-        //   claim: "222",
-        //   companyName: "sdsdfsd",
-        //   salaryRange: "xddg",
-        //   date: "2010-11-11"
-        // },
-        //  {
-        //   id:'1',
-        //   position: "1111",
-        //   claim: "222",
-        //   companyName: "sdsdfsd",
-        //   salaryRange: "xddg",
-        //   date: "2010-11-11"
-        // }
-      ],
+      lists: [],
+      page:1,
+      pagesize:10,
       keyWord: window.api.pageParam.keyWord,
-      area: window.api.pageParam.area,
+      // area: window.api.pageParam.area,
       istj: window.api.pageParam.istj || ''
     };
   },
@@ -116,14 +77,13 @@ export default {
       tool.showProgress();
       const response = await service.searchBoxValue({
         keyWord: this.keyWord,
-        area: this.area,
+        // area: this.area,
         istj: this.istj
       });
       tool.hideProgress();
       switch (response.code) {
         case 0:
           this.lists = response.result.list;
-          console.log(this.lists.length);
           break;
         default:
           Toast({
@@ -168,7 +128,11 @@ export default {
       setTimeout(() => {
         this.loading = false;
         for (let i = 0; i < 5; i++) {
+          // const response = await service.searchBoxValue({
+          //   keyWord: this.keyWord,
+          // });
           this.lists.push({
+            // response.result.list
             position: '35345',
             claim: 'dfgdfg',
             companyName: '111',

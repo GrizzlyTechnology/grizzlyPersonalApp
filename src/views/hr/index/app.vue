@@ -1,11 +1,9 @@
-{<template>
+<template>
   <Container ref="container">
     <div class='topSearch'>
-      <div class='flexCon'>
-        <span @click="areaHandle" class='araeBox'>
-          <i class='iconfont icon-weizhi-blue'></i>{{areaText}}</span>
-        <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue" label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
-          <i class='iconfont icon-suosou' @click='submit'></i>
+      <div class='flexCon'  @click='jobSearch'>
+         <AutoComplete disabled label=""  placeholder="搜索公司/职位" class='searchBox' :solo='true'>
+          <i class='iconfont icon-suosou'></i>
         </AutoComplete>
       </div>
     </div>
@@ -134,15 +132,10 @@ export default {
       refreshing: false,
       companys: [],
       carouselImgs: [],
-      form: {
-        keyWord: '',
-        area: ''
-      },
       suitablesLists: [],
       count: 0,
       resumeList: [],
       hotJobs: [],
-      area: [],
       defaultResult: [],
       labelPosition: 'right',
       cid: 1, // 文章分类id,写死
@@ -172,11 +165,6 @@ export default {
     LoadMore
   },
   computed: {
-    areaText () {
-      return this.area.length > 0
-        ? this.area[this.area.length - 1].label
-        : '全国';
-    },
     filterResult () {
       return this.defaultResult.filter(value =>
         new RegExp(this.value, 'i').test(value)
@@ -199,62 +187,16 @@ export default {
         this.resumeImgAdv();
       }, 2000);
     },
-    areaHandle () {
+    // 搜索
+    jobSearch() {
       tool.openWin({
-        name: 'areaSelector',
+        name: 'jobSearch',
         url: '../win.html',
-        title: '选择地区',
-        fname: 'areaSelector_f',
-        furl: './common/areaSelector.html',
-        hasLeft: 1,
-        data: {
-          nameSpace: 'areaSelector',
-          area: this.area,
-          level: 2,
-          callback: (ret, err) => {
-            this.area = ret.value;
-          }
-        }
-      });
-    },
-    // 点击搜索
-    search () {
-      this.form.area =
-        this.area.length > 0 ? this.area[this.area.length - 1].value : '';
-      tool.openWin({
-        name: 'jobSearchList',
-        url: '../win.html',
-        title: '所有职位',
-        fname: 'jobSearchList_f',
-        furl: './hr/jobSearchList.html',
-        hasLeft: 1,
-        data: {
-          nameSpace: 'jobSearchList',
-          area: this.form.area,
-          keyWord: this.form.keyWord
-        }
-      });
-    },
-
-    // 获取职位
-    async getAllSearchValue () {
-      tool.showProgress();
-      const response = await service.getAllPosition(this.form.keyWord);
-      tool.hideProgress();
-      switch (response.code) {
-        case 0:
-          this.defaultResult = response.result.info;
-          break;
-        default:
-          tool.toast({
-            position: 'top',
-            message: '搜索失败，请重试'
-          });
-          break;
-      }
-    },
-    submit () {
-      this.search();
+        title: '职位搜索',
+        fname: 'jobSearch_f',
+        furl: './hr/jobSearch.html',
+        hasLeft: 1
+        });
     },
     // 滚动图
     async carouselImg () {
@@ -553,7 +495,8 @@ export default {
   white-space: nowrap;
 }
 .mu-input.searchBox {
-  width: 80%;
+  // width: 80%;
+  width:98%;
   min-height: auto;
   padding-top: 0px;
   padding-bottom: 0px;
