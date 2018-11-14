@@ -3,8 +3,8 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form">
-          <FormItem label="昵称" prop="nickname" :rules="nicknameRules">
-            <TextField v-model="form.nickname"></TextField>
+          <FormItem label="昵称" prop="nickName" :rules="nicknameRules">
+            <TextField v-model="form.nickName"></TextField>
           </FormItem>
         </Form>
       </div>
@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       form: {
-        nickname: window.api ? window.api.pageParam.nickname : '' // true string 真实姓名
+        nickName: window.api ? window.api.pageParam.nickname : '' // true string 真实姓名
       },
       nicknameRules: [{ validate: val => !!val, message: '必须填写昵称' }]
     };
@@ -40,10 +40,12 @@ export default {
   methods: {
     async edit () {
       tools.showProgress();
-      const response = await service.updateUserBaesInfo({
+      const response = await service.userSetting({
         ...this.form
       });
+      // console.log(JSON.stringify(this.form));
       tools.hideProgress();
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           tools.closeWin();

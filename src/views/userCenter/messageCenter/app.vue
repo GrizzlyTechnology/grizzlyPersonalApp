@@ -1,29 +1,36 @@
 <template>
   <div class="content">
-    <Tabs :value="active" inverse indicator-color="#009688" color="#009688" text-color="rgba(0, 0, 0, .54)" full-width>
+    <!-- <Tabs :value="active" inverse indicator-color="#009688" color="#009688" text-color="rgba(0, 0, 0, .54)" full-width>
       <Tab v-for="(messageList,index) in messageLists" :key="index" @click="changeTab(index)">
         {{messageList.name}}
         <i class='message-tips'>{{messageList.list.length}}</i>
       </Tab>
-    </Tabs>
-    <TabContainer v-model="active" swipeable class="list-con">
-      <TabContainerItem v-for="(messageList,index) in messageLists" :ref="'container' + index" :key="index" :id="index" class="message-list">
-        <LoadMore @refresh="refresh(index)" @load="load(index)" :refreshing="messageList.refreshing" :loading="messageList.loading">
-          <div class="message" v-for="message in messageList.list" :key="message.id">
-            <div class="message-head">{{message.date}} {{message.class}}</div>
-            <div class="message-body">{{message.con}}</div>
-            <div class="message-foot"><span>查看详情</span></div>
-          </div>
-        </LoadMore>
-      </TabContainerItem>
-    </TabContainer>
+    </Tabs> -->
+    <!-- <TabContainer v-model="active" swipeable class="list-con">
+      <TabContainerItem v-for="(messageList,index) in messageLists" :key="index" :id="index" class="message-list"> -->
+    <!-- <LoadMore :ref="'container' + index" @refresh="refresh(index)" @load="load(index)" :refreshing="messageList.refreshing" :loading="messageList.loading">
+      <div class="message" v-for="message in messageList.list" :key="message.id"> -->
+    <div ref="container0" class="message-list">
+      <LoadMore @refresh="refresh(0)" @load="load(0)" :refreshing="messageLists[0].refreshing" :loading="messageLists[0].loading">
+        <div class="message" v-for="message in messageLists[0].list" :key="message.id">
+          <div class="message-head">{{message.sendTimeText}} <span class="unread" v-if="message.is_ready===0" @click="(doHasRead(message))">标为已读</span><span v-if="message.is_ready===1" class="readed">已读</span></div>
+          <div class="message-body">{{message.content}}</div>
+        </div>
+      </LoadMore>
+    </div>
+    <!-- </TabContainerItem>
+    </TabContainer> -->
   </div>
 </template>
 
 <script>
-import { Tabs, LoadMore } from 'muse-ui';
-import { Tab } from 'muse-ui/lib/Tabs';
-import { TabContainer, TabContainerItem } from 'mint-ui';
+import service from 'service';
+import moment from 'moment';
+import tools from 'util/tools';
+import { LoadMore } from 'muse-ui';
+// import { Tabs, LoadMore } from 'muse-ui';
+// import { Tab } from 'muse-ui/lib/Tabs';
+// import { TabContainer, TabContainerItem } from 'mint-ui';
 
 export default {
   data () {
@@ -37,154 +44,17 @@ export default {
           refreshing: false,
           loading: false,
           page: 1,
-          list: [
-            {
-              id: 0,
-              date: '2018年5月10日',
-              class: '系统消息',
-              imgSrc: '../../../assets/img/gz.jpg',
-              con:
-                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-            },
-            {
-              id: 1,
-              date: '2018年11月10日',
-              class: '系统消息',
-              con: 'gjghjghj33453453453453453454！'
-            },
-            {
-              id: 2,
-              date: '2018年3月10日',
-              class: '系统消息',
-              con: 'sdfgsdfsdfsdfsdf！'
-            },
-            {
-              id: 3,
-              date: '2018年5月10日',
-              class: '系统消息',
-              imgSrc: '../../../assets/img/gz.jpg',
-              con:
-                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-            },
-            {
-              id: 4,
-              date: '2018年11月10日',
-              class: '系统消息',
-              con: 'gjghjghj33453453453453453454！'
-            },
-            {
-              id: 5,
-              date: '2018年3月10日',
-              class: '系统消息',
-              con: 'sdfgsdfsdfsdfsdf！'
-            }
-          ]
-        },
-        {
-          name: '系统通知',
-          refreshing: false,
-          loading: false,
-          page: 1,
-          list: [
-            {
-              id: 0,
-              date: '2018年5月10日',
-              class: '系统消息',
-              imgSrc: '../../../assets/img/gz.jpg',
-              con:
-                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-            },
-            {
-              id: 1,
-              date: '2018年11月10日',
-              class: '系统消息',
-              con: 'gjghjghj33453453453453453454！'
-            },
-            {
-              id: 2,
-              date: '2018年3月10日',
-              class: '系统消息',
-              con: 'sdfgsdfsdfsdfsdf！'
-            },
-            {
-              id: 3,
-              date: '2018年5月10日',
-              class: '系统消息',
-              imgSrc: '../../../assets/img/gz.jpg',
-              con:
-                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-            },
-            {
-              id: 4,
-              date: '2018年11月10日',
-              class: '系统消息',
-              con: 'gjghjghj33453453453453453454！'
-            },
-            {
-              id: 5,
-              date: '2018年3月10日',
-              class: '系统消息',
-              con: 'sdfgsdfsdfsdfsdf！'
-            }
-          ]
-        },
-        {
-          name: '互动',
-          refreshing: false,
-          loading: false,
-          page: 1,
-          list: [
-            {
-              id: 0,
-              date: '2018年5月10日',
-              class: '系统消息',
-              imgSrc: '../../../assets/img/gz.jpg',
-              con:
-                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-            },
-            {
-              id: 1,
-              date: '2018年11月10日',
-              class: '系统消息',
-              con: 'gjghjghj33453453453453453454！'
-            },
-            {
-              id: 2,
-              date: '2018年3月10日',
-              class: '系统消息',
-              con: 'sdfgsdfsdfsdfsdf！'
-            },
-            {
-              id: 3,
-              date: '2018年5月10日',
-              class: '系统消息',
-              imgSrc: '../../../assets/img/gz.jpg',
-              con:
-                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-            },
-            {
-              id: 4,
-              date: '2018年11月10日',
-              class: '系统消息',
-              con: 'gjghjghj33453453453453453454！'
-            },
-            {
-              id: 5,
-              date: '2018年3月10日',
-              class: '系统消息',
-              con: 'sdfgsdfsdfsdfsdf！'
-            }
-          ]
+          list: []
         }
       ]
     };
   },
   components: {
-    Tabs,
-    Tab,
-    LoadMore,
-    TabContainer,
-    TabContainerItem
+    // Tabs,
+    // Tab,
+    LoadMore
+    // TabContainer,
+    // TabContainerItem
   },
   computed: {
     isLoading () {
@@ -192,56 +62,103 @@ export default {
     }
   },
   methods: {
+    async doHasRead (message) {
+      tools.showProgress();
+      const response = await service.messageDoRead(message.id);
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          message.is_ready = 1;
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '标记失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    async getList (active) {
+      const response = await service.getMessageList({
+        page: this.messageLists[active].page
+      });
+      // console.log(JSON.stringify(response));
+      switch (response.code) {
+        case 0:
+          if (this.messageLists[active].page === 1) {
+            this.messageLists[active].refreshing = false;
+            this.messageLists[active].list = response.result.lists.map(
+              message => {
+                return {
+                  ...message,
+                  sendTimeText: moment(message.send_time * 1000).format(
+                    'YYYY年MM月DD日'
+                  )
+                };
+              }
+            );
+          }
+          if (this.messageLists[active].page > 1) {
+            this.messageLists[active].loading = false;
+            response.result.lists.forEach(message => {
+              this.messageLists[active].list.push({
+                ...message,
+                sendTimeText: moment(message.send_time * 1000).format(
+                  'YYYY年MM月DD日'
+                )
+              });
+            });
+          }
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '列表加载失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
     changeTab (index) {
       // if (!this.isLoading) {
       this.active = index;
       // }
     },
     refresh (active) {
-      if (!this.messageLists[active].refreshing && !this.messageLists[active].loading) {
+      if (
+        !this.messageLists[active].refreshing &&
+        !this.messageLists[active].loading
+      ) {
+        this.messageLists[active].page = 1;
         this.messageLists[active].refreshing = true;
         this.$refs[`container${active}`].scrollTop = 0;
-        setTimeout(() => {
-          this.messageLists[active].list = [];
-          this.messageLists[active].refreshing = false;
-          for (let i = 0; i < 10; i++) {
-            this.messageLists[active].list.push({
-              id: this.messageLists[active].list.length,
-              date:
-              'NO:' +
-              this.messageLists[active].list.length +
-              ' 2018年11月10日',
-              class: '系统消息',
-              con: 'gjghjghj33453453453453453454！'
-            });
-          }
-        }, 1000);
+        this.getList(active);
       }
     },
     load (active) {
-      if (!this.messageLists[active].refreshing && !this.messageLists[active].loading) {
+      if (
+        !this.messageLists[active].refreshing &&
+        !this.messageLists[active].loading
+      ) {
+        this.messageLists[active].page = this.messageLists[active].page + 1;
         this.messageLists[active].loading = true;
-        setTimeout(() => {
-          this.messageLists[active].loading = false;
-          for (let i = 0; i < 5; i++) {
-            this.messageLists[active].list.push({
-              id: this.messageLists[active].list.length,
-              date:
-              'NO:' +
-              this.messageLists[active].list.length +
-              ' 2018年11月10日',
-              class: '系统消息',
-              con: 'gjghjghj33453453453453453454！'
-            });
-          }
-        }, 1000);
+        this.getList(active);
       }
     }
+  },
+  mounted () {
+    this.refresh(this.active);
   }
 };
 </script>
 <style lang="less">
 @import url("../../../assets/css/base.less");
+.unread {
+  float: right;
+  color: @danger;
+}
+.readed {
+  float: right;
+}
 .content {
   height: 100%;
   display: flex;
@@ -266,13 +183,15 @@ export default {
   .message-head {
     color: #a9a9a9;
     font-size: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 15px;
   }
   .message-foot {
-    color: #666;
     padding-top: 15px;
+    color: #666;
     margin-top: 15px;
-    border-top: 1px solid #dddddd;
+    overflow: auto;
     &:active > * {
       background-color: #eee;
     }

@@ -551,8 +551,57 @@ export default {
       method: 'get'
     });
   },
+  userSetting (params) {
+    console.log(JSON.stringify(params));
+    return request({
+      host: BASEURL,
+      url: '/api/User/update',
+      params
+    });
+  },
+  getEmailVerificationCode (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Email/send_code',
+      params
+    });
+  },
+  getMessageList (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Message/lists',
+      params: {
+        pageSize: 10,
+        page: 1,
+        ...params
+      },
+      method: 'get'
+    });
+  },
+  messageDoRead (id) {
+    return request({
+      host: BASEURL,
+      url: '/api/message/orderBy',
+      params: {
+        id
+      },
+      method: 'get'
+    });
+  },
+  getDeliveryList (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Job/deliveredresume',
+      params: {
+        pageSize: 10,
+        page: 1,
+        ...params
+      },
+      method: 'get'
+    });
+  },
   // 猜你要搜
-  chipsData(params) {
+  chipsData (params) {
     return request({
       host: BASEURL,
       url: '/api/Job/guesssearch',
@@ -560,5 +609,4 @@ export default {
       method: 'get'
     });
   }
-
 };

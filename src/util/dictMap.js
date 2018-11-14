@@ -8,6 +8,7 @@ dict.sex = {
   [dict.female]: '女'
 };
 
+dict.deliveryStatus = ['待邀约', '待面试', '面试不通过', '面试通过待离校', '已离校待入职', '已入职'];
 dict.skillLevel = ['了解', '熟悉', '掌握', '精通', '专家'];
 dict.workType = ['全职', '兼职', '实习招聘(学生)', '实习招聘(社会)'];
 dict.currentState = ['积极找工作', '随便看看', '暂不换工作'];

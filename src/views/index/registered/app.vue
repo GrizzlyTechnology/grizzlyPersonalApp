@@ -146,25 +146,32 @@ export default {
       }
     },
     async getVerificationCode () {
-      const response = await service.getVerificationCode({
-        phone: this.form.phone
-      });
-      switch (response.code) {
-        case 0:
-          this.verificationCodeBtnText = 60 + ' (s)';
-          for (let i = 1; i <= this.maxTime; i++) {
-            await tools.sleep(1000);
-            this.verificationCodeBtnText = (this.maxTime - i) + '(s)';
-          }
-          this.verificationCodeBtnText = '获取验证码';
-          break;
+      if (regexps.mobPhone.test(this.form.phone)) {
+        const response = await service.getVerificationCode({
+          phone: this.form.phone
+        });
+        switch (response.code) {
+          case 0:
+            this.verificationCodeBtnText = 60 + ' (s)';
+            for (let i = 1; i <= this.maxTime; i++) {
+              await tools.sleep(1000);
+              this.verificationCodeBtnText = (this.maxTime - i) + '(s)';
+            }
+            this.verificationCodeBtnText = '获取验证码';
+            break;
 
-        default:
-          tools.toast({
-            position: 'top',
-            message: '验证码获取失败'
-          });
-          break;
+          default:
+            tools.toast({
+              position: 'top',
+              message: '验证码获取失败'
+            });
+            break;
+        }
+      } else {
+        tools.toast({
+          position: 'top',
+          message: '请填写手机'
+        });
       }
     },
     submit () {

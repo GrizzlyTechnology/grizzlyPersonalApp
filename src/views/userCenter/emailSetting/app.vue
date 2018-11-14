@@ -3,19 +3,22 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form">
-          <FormItem v-if="haveEmail" label="原邮箱" prop="email" :rules="emailRules">
-            <TextField v-model="form.oldEmail"></TextField>
-          </FormItem>
-          <FormItem label="新邮箱" prop="email" :rules="emailRules">
+          <FormItem v-if="!haveEmail" label="邮箱" prop="email" :rules="emailRules">
             <TextField v-model="form.email"></TextField>
+          </FormItem>
+          <FormItem v-if="haveEmail" label="原邮箱" prop="email" :rules="emailRules">
+            <TextField v-model="form.email"></TextField>
+          </FormItem>
+          <FormItem v-if="haveEmail" label="新邮箱" prop="newEmail" :rules="emailRules">
+            <TextField v-model="form.newEmail"></TextField>
           </FormItem>
           <FormItem label="邮箱验证码" prop="emailCode" :rules="verificationCodeRules">
             <TextField v-model="form.emailCode" class="verificationCode"></TextField>
-            <Button color="#009688" textColor="#ffffff" class="getVerificationCode" :disabled="verificationCodeBtnText !=='获取验证码'" @click="getVerificationCode">
+            <Button color="#009688" textColor="#ffffff" class="getVerificationCode" :disabled="verificationCodeBtnText !=='获取验证码'" @click="handleGetVerificationCode">
               {{verificationCodeBtnText}}
             </Button>
           </FormItem>
-          请登录{{haveEmail?'原':'新'}}邮箱查看邮件，获取邮箱验证码
+          请登录{{haveEmail?'新':''}}邮箱查看邮件，获取邮箱验证码
         </Form>
       </div>
     </div>
@@ -41,11 +44,16 @@ export default {
       verificationCodeBtnText: '获取验证码',
       haveEmail: window.api ? window.api.pageParam.haveEmail : false,
       form: {
-        oldEmail: '',
+        newEmail: '',
         email: '', // true string 真实姓名
         emailCode: ''
       },
-      emailRules: [{ validate: val => regexps.email.test(val), message: '请填写正确的Email地址' }],
+      emailRules: [
+        {
+          validate: val => regexps.email.test(val),
+          message: '请填写正确的Email地址'
+        }
+      ],
       verificationCodeRules: [
         { validate: val => !!val, message: '请填写验证码' }
       ]
@@ -59,15 +67,15 @@ export default {
   },
   methods: {
     async getVerificationCode () {
-      const response = await service.getVerificationCode({
-        phone: this.form.oldEmail
+      const response = await service.getEmailVerificationCode({
+        email: this.haveEmail ? this.form.newEmail : this.form.email
       });
       switch (response.code) {
         case 0:
           this.verificationCodeBtnText = 60 + ' (s)';
           for (let i = 1; i <= this.maxTime; i++) {
             await tools.sleep(1000);
-            this.verificationCodeBtnText = (this.maxTime - i) + '(s)';
+            this.verificationCodeBtnText = this.maxTime - i + '(s)';
           }
           this.verificationCodeBtnText = '获取验证码';
           break;
@@ -82,10 +90,13 @@ export default {
     },
     async create () {
       tools.showProgress();
-      const response = await service.updateUserBaesInfo({
-        ...this.form
+      const response = await service.userSetting({
+        email: this.form.email,
+        emailCode: this.form.emailCode
       });
       tools.hideProgress();
+      console.log(JSON.stringify(response));
+
       switch (response.code) {
         case 0:
           tools.closeWin();
@@ -100,10 +111,14 @@ export default {
     },
     async edit () {
       tools.showProgress();
-      const response = await service.updateUserBaesInfo({
-        ...this.form
+      const response = await service.userSetting({
+        email: this.form.email,
+        newEmail: this.form.newEmail,
+        emailCode: this.form.emailCode
       });
       tools.hideProgress();
+      console.log(JSON.stringify(response));
+
       switch (response.code) {
         case 0:
           tools.closeWin();
@@ -116,10 +131,25 @@ export default {
           break;
       }
     },
+    handleGetVerificationCode () {
+      console.log(JSON.stringify(this.form));
+      if (
+        regexps.email.test(
+          this.haveEmail ? this.form.newEmail : this.form.email
+        )
+      ) {
+        this.getVerificationCode();
+      } else {
+        tools.toast({
+          position: 'top',
+          message: this.haveEmail ? '请填写新邮箱' : '请填写邮箱'
+        });
+      }
+    },
     submit () {
       this.$refs.form.validate().then(result => {
         if (result === true) {
-          if (window.api.pageParam.haveEmail) {
+          if (this.haveEmail) {
             this.edit();
           } else {
             this.create();
@@ -142,10 +172,10 @@ export default {
   flex: 1;
   overflow: auto;
 }
-.verificationCode{
-  width: 66.666%
+.verificationCode {
+  width: 66.666%;
 }
-.getVerificationCode{
+.getVerificationCode {
   width: 33.3333%;
   margin: 0 !important;
   box-shadow: 0 0 0;
