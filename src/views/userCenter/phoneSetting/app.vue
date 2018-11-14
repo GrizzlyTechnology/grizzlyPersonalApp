@@ -15,6 +15,7 @@
               {{verificationCodeBtnText}}
             </Button>
           </FormItem>
+          请在新手机上查看验证码
         </Form>
       </div>
     </div>
@@ -90,8 +91,8 @@ export default {
       const response = await service.userSetting({
         ...this.form
       });
-      console.log(JSON.stringify(this.form));
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(this.form));
+      // console.log(JSON.stringify(response));
 
       tools.hideProgress();
       switch (response.code) {
