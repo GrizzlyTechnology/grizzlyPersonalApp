@@ -127,54 +127,6 @@ export default {
               con: 'sdfgsdfsdfsdfsdf！'
             }
           ]
-        },
-        {
-          name: '互动',
-          refreshing: false,
-          loading: false,
-          page: 1,
-          list: [
-            {
-              id: 0,
-              date: '2018年5月10日',
-              class: '系统消息',
-              imgSrc: '../../../assets/img/gz.jpg',
-              con:
-                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-            },
-            {
-              id: 1,
-              date: '2018年11月10日',
-              class: '系统消息',
-              con: 'gjghjghj33453453453453453454！'
-            },
-            {
-              id: 2,
-              date: '2018年3月10日',
-              class: '系统消息',
-              con: 'sdfgsdfsdfsdfsdf！'
-            },
-            {
-              id: 3,
-              date: '2018年5月10日',
-              class: '系统消息',
-              imgSrc: '../../../assets/img/gz.jpg',
-              con:
-                '恭喜小哥哥/小姐姐，您今天又被10个人关注啦！需要再接 再厉哦，继续分享更多的小消息给大家吧！'
-            },
-            {
-              id: 4,
-              date: '2018年11月10日',
-              class: '系统消息',
-              con: 'gjghjghj33453453453453453454！'
-            },
-            {
-              id: 5,
-              date: '2018年3月10日',
-              class: '系统消息',
-              con: 'sdfgsdfsdfsdfsdf！'
-            }
-          ]
         }
       ]
     };
