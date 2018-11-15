@@ -14,6 +14,7 @@
         </Step>
       </template>
     </Stepper> -->
+
      <div>你还未加入企业实习，立即去  <Button color="#009688" @click="hotJobListAll">投递职位</Button></div>
   </Container>
 </template>
