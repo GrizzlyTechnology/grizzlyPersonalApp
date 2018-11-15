@@ -85,6 +85,7 @@ export default {
         fname: 'jobSearchList_f',
         furl: './hr/jobSearchList.html',
         hasLeft: 1,
+        hasRight: 0,
         data: {
           nameSpace: 'jobSearchList',
           // area: this.form.area,
@@ -141,6 +142,7 @@ export default {
         fname: 'jobSearchList_f',
         furl: './hr/jobSearchList.html',
         hasLeft: 1,
+        hasRight: 0,
         data: {
           nameSpace: 'jobSearchList',
           keyWord: position

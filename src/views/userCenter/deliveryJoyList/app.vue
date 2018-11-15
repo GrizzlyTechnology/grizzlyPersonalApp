@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <Tabs :value="active" inverse indicator-color="#009688" color="#009688" text-color="rgba(0, 0, 0, .54)" full-width>
-      <Tab v-for="(deliveryList,index) in deliveryLists" :key="index" @click="changeTab(index)">
+      <Tab v-for="(deliveryList,index) in deliveryLists" :key="index" @click="active=index">
         {{deliveryList.name}}
         <!-- <i class='delivery-tips'>{{deliveryList.list.length}}</i> -->
       </Tab>
@@ -26,6 +26,9 @@ import { Tabs, LoadMore } from 'muse-ui';
 import { Tab } from 'muse-ui/lib/Tabs';
 import { TabContainer, TabContainerItem } from 'mint-ui';
 import tools from 'util/tools';
+import dict from 'util/dictMap';
+import service from 'service';
+// import adapter from 'util/adapter';
 
 export default {
   data () {
@@ -36,167 +39,22 @@ export default {
           name: '全部',
           refreshing: false,
           loading: false,
-          status: null,
+          status: '',
           page: 1,
-          list: [
-            {
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              companyName: '0大灰熊科技',
-              deliveryDate: 1537857030,
-              id: 0,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            },
-            {
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              companyName: '1大灰熊科技',
-              deliveryDate: 1537857030,
-              id: 1,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            }
-          ]
-        },
-        {
-          name: '待邀约',
-          refreshing: false,
-          loading: false,
-          status: null,
-          page: 1,
-          list: [
-            {
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              companyName: '0大灰熊科技',
-              deliveryDate: 1537857030,
-              id: 0,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            },
-            {
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              companyName: '1大灰熊科技',
-              deliveryDate: 1537857030,
-              id: 1,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            }
-          ]
-        },
-        {
-          name: '待offer',
-          refreshing: false,
-          loading: false,
-          status: null,
-          page: 1,
-          list: [
-            {
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              companyName: '0大灰熊科技',
-              deliveryDate: 1537857030,
-              id: 0,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            },
-            {
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              companyName: '1大灰熊科技',
-              deliveryDate: 1537857030,
-              id: 1,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            }
-          ]
-        }, {
-          name: '待离校',
-          refreshing: false,
-          loading: false,
-          status: null,
-          page: 1,
-          list: [
-            {
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              companyName: '0大灰熊科技',
-              deliveryDate: 1537857030,
-              id: 0,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            },
-            {
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              companyName: '1大灰熊科技',
-              deliveryDate: 1537857030,
-              id: 1,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            }
-          ]
-        },
-        {
-          name: '不合适',
-          refreshing: false,
-          loading: false,
-          status: null,
-          page: 1,
-          list: [
-            {
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              companyName: '0大灰熊科技',
-              deliveryDate: 1537857030,
-              id: 0,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            },
-            {
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              companyName: '1大灰熊科技',
-              deliveryDate: 1537857030,
-              id: 1,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            }
-          ]
+          list: []
         }
-      ]
+      ].concat(
+        Object.keys(dict.deliveryStatus).map(key => {
+          return {
+            name: dict.deliveryStatus[key],
+            refreshing: false,
+            loading: false,
+            status: key,
+            page: 1,
+            list: []
+          };
+        })
+      )
     };
   },
   components: {
@@ -211,38 +69,63 @@ export default {
       return this.refreshing || this.loading;
     }
   },
+  watch: {
+    active (newValue, oldValue) {
+      this.changeTab(newValue);
+    }
+  },
   methods: {
-    changeTab (index) {
-      // if (!this.isLoading) {
-      this.active = index;
-      // }
+    async getList (active) {
+      const response = await service.getDeliveryList({
+        page: this.deliveryLists[active].page,
+        status: this.deliveryLists[active].status
+      });
+      if (this.deliveryLists[active].page === 1) {
+        this.deliveryLists[active].refreshing = false;
+      }
+      if (this.deliveryLists[active].page > 1) {
+        this.deliveryLists[active].loading = false;
+      }
+      switch (response.code) {
+        case 0:
+          if (this.deliveryLists[active].page === 1) {
+          //   this.deliveryLists[active].list = response.result.lists.map(
+          //     message => adapter.messageAdapter(message)
+          //   );
+          }
+          if (this.deliveryLists[active].page > 1) {
+          //   response.result.lists.forEach(message => {
+          //     this.deliveryLists[active].list.push(adapter.messageAdapter(message));
+          //   });
+          }
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '列表加载失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    changeTab (active) {
+      this.active = active;
+      if (
+        this.deliveryLists[this.active].list.length === 0 &&
+        !this.deliveryLists[this.active].refreshing &&
+        !this.deliveryLists[this.active].loading
+      ) {
+        this.refresh(this.active);
+      }
     },
     refresh (active) {
       if (
         !this.deliveryLists[active].refreshing &&
         !this.deliveryLists[active].loading
       ) {
+        this.deliveryLists[active].page = 1;
         this.deliveryLists[active].refreshing = true;
         this.$refs[`container${active}`].scrollTop = 0;
-        setTimeout(() => {
-          this.deliveryLists[active].list = [];
-          this.deliveryLists[active].refreshing = false;
-          for (let i = 0; i < 10; i++) {
-            this.deliveryLists[active].list.push({
-              id: this.deliveryLists[active].list.length,
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              companyName:
-                this.deliveryLists[active].list.length + '大灰熊科技',
-              deliveryDate: 1537857030,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            });
-          }
-        }, 1000);
+        this.getList(active);
       }
     },
     load (active) {
@@ -250,25 +133,9 @@ export default {
         !this.deliveryLists[active].refreshing &&
         !this.deliveryLists[active].loading
       ) {
+        this.deliveryLists[active].page = this.deliveryLists[active].page + 1;
         this.deliveryLists[active].loading = true;
-        setTimeout(() => {
-          this.deliveryLists[active].loading = false;
-          for (let i = 0; i < 5; i++) {
-            this.deliveryLists[active].list.push({
-              id: this.deliveryLists[active].list.length,
-              companyName:
-                this.deliveryLists[active].list.length + '大灰熊科技',
-              companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-              deliveryDate: 1537857030,
-              jobarea: '江苏 | 镇江',
-              education: '大专',
-              jobexpyear: '1-3年',
-              position: 'SEO/SEM',
-              salaryRange: '8000-10000',
-              status: ''
-            });
-          }
-        }, 1000);
+        this.getList(active);
       }
     },
     detail (delivery) {
@@ -285,15 +152,18 @@ export default {
         }
       });
     }
+  },
+  mounted () {
+    this.refresh(this.active);
   }
 };
 </script>
 <style lang="less">
 @import url("../../../assets/css/base.less");
-.mu-tab{
+.mu-tab {
   min-width: 50px;
 }
-.mu-tab-wrapper{
+.mu-tab-wrapper {
   padding: 12px 0;
 }
 .content {
@@ -303,10 +173,14 @@ export default {
 }
 .list-con {
   flex: 1;
+  .mu-load-more{
+    min-height: 200px;
+  }
   .mint-tab-container-wrap {
     height: 100%;
   }
   .delivery-list {
+    min-height: 200px;
     padding: 15px 0 0;
     height: 100%;
     overflow: auto;
@@ -318,7 +192,7 @@ export default {
   padding: 15px;
   margin-bottom: 15px;
   overflow: auto;
-  &:active{
+  &:active {
     background-color: #f0f0f0;
   }
   .delivery-logo {
@@ -329,7 +203,7 @@ export default {
     padding: 5px;
     background-color: #fff;
     float: left;
-    margin-right: 10px
+    margin-right: 10px;
   }
   .delivery-head {
     color: #000;
@@ -342,7 +216,7 @@ export default {
     color: #999;
     float: right;
   }
-  .delivery-job-area{
+  .delivery-job-area {
     font-size: 12px;
     color: #666;
     float: right;
@@ -358,7 +232,7 @@ export default {
     font-size: 12px;
     line-height: 16px;
   }
-  .delivery-status{
+  .delivery-status {
     font-size: 14px;
     color: #666;
     float: right;

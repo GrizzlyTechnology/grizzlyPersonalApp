@@ -183,7 +183,7 @@ export default {
         fname: 'jobDetails_f_' + id,
         furl: './hr/jobDetails.html',
         hasLeft: 1,
-        hasRight: 1,
+        hasRight: 0,
         data: {
           id: id
         }
@@ -197,7 +197,7 @@ export default {
         fname: 'companyInfo_f',
         furl: './hr/companyInfo.html',
         hasLeft: 1,
-        hasRight: 1,
+        hasRight: 0,
         data: {
           enterpriseId: enterpriseId
         }
