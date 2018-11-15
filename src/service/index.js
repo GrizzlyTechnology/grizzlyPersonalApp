@@ -592,6 +592,7 @@ export default {
     });
   },
   getDeliveryList (params) {
+    // console.log(JSON.stringify(params));
     return request({
       host: BASEURL,
       url: '/api/Job/deliveredresume',

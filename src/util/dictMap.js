@@ -7,11 +7,34 @@ dict.sex = {
   [dict.female]: '女'
 };
 
-dict.deliveryInvitation = 0;
-dict.deliveryInterview = 1;
-dict.deliveryLeaveSchool = 2;
-dict.deliveryNotSuitable = -1;
+dict.deliveryInvitation = 0;// 等待邀约
+dict.deliveryInterview = 1;// 等待面试
+dict.refuseInterview = -1;// 拒绝面试
+dict.agreeInterview = 2;// 同意面试
+dict.failInterview = -2;// 面试不通过
+dict.deliveryLeaveSchool = 3;// 面试通过待离校
+dict.personalRejection = -3;// 面试通过后个人拒绝
+dict.deliveryEntry = 4;// 已离校待入职
+dict.schoolRejection = -4;// 学校拒绝离校
+dict.entry = 5;// 已入职
+dict.resumeNotSuitable = -9; // 简历不符合要求
+
+dict.deliveryNotSuitable = [dict.refuseInterview, dict.failInterview, dict.personalRejection, dict.schoolRejection, dict.resumeNotSuitable]; // 不合适
+
 dict.deliveryStatus = {
+  [dict.deliveryInvitation]: '等待邀约',
+  [dict.deliveryInterview]: '已邀约待面试',
+  [dict.refuseInterview]: '拒绝面试',
+  [dict.agreeInterview]: '同意面试待面试',
+  [dict.failInterview]: '面试不通过',
+  [dict.deliveryLeaveSchool]: '面试通过待离校',
+  [dict.personalRejection]: '面试通过后个人拒绝',
+  [dict.deliveryEntry]: '已离校待入职',
+  [dict.schoolRejection]: '学校拒绝离校',
+  [dict.entry]: '已入职',
+  [dict.resumeNotSuitable]: '简历不符合要求'
+};
+dict.deliveryTab = {
   [dict.deliveryInvitation]: '待邀约',
   [dict.deliveryInterview]: '待面试',
   [dict.deliveryLeaveSchool]: '待离校',
