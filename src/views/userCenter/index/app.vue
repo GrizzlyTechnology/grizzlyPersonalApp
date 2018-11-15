@@ -34,13 +34,13 @@
         <i class="mu-icon icon-right isLink" />
         <Icon slot="icon" value=":icon-xiaoxi1" :size="28" color="#999" />
       </Cell>
-      <Cell class="ucCell">
+      <!-- <Cell class="ucCell">
         <div class="ucCellCon" @click="deliveryJoy">
           <span class="ucCellTitle">投递的职位</span>
         </div>
         <i class="mu-icon icon-right isLink" />
         <Icon slot="icon" value=":icon-toudijianli" :size="28" color="#999" />
-      </Cell>
+      </Cell> -->
       <Cell class="ucCell">
         <div class="ucCellCon" @click="bindingStudentStatus">
           <span class="ucCellTitle">学籍管理</span>
