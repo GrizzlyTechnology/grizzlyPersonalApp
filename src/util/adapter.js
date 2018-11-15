@@ -108,4 +108,13 @@ adapter.honorAdapter = function (data) {
     // desc: data.desc ? data.desc.replace(/\n|\r\n/g, '<br/>') : ''
   };
 };
+
+adapter.messageAdapter = function (data) {
+  return {
+    ...data,
+    sendTimeText: moment(data.send_time * 1000).format(
+      'YYYY年MM月DD日'
+    )
+  };
+};
 export default adapter;

@@ -10,7 +10,7 @@
       <TabContainerItem v-for="(messageList,index) in messageLists" :key="index" :id="index" class="message-list"> -->
     <!-- <LoadMore :ref="'container' + index" @refresh="refresh(index)" @load="load(index)" :refreshing="messageList.refreshing" :loading="messageList.loading">
       <div class="message" v-for="message in messageList.list" :key="message.id"> -->
-    <div ref="container0" class="message-list">
+    <div ref="container0" class="list-con">
       <LoadMore @refresh="refresh(0)" @load="load(0)" :refreshing="messageLists[0].refreshing" :loading="messageLists[0].loading">
         <div class="message" v-for="message in messageLists[0].list" :key="message.id">
           <div class="message-head">{{message.sendTimeText}} <span class="unread" v-if="message.is_ready===0" @click="(doHasRead(message))">标为已读</span><span v-if="message.is_ready===1" class="readed">已读</span></div>
@@ -25,8 +25,9 @@
 
 <script>
 import service from 'service';
-import moment from 'moment';
+// import moment from 'moment';
 import tools from 'util/tools';
+import adapter from 'util/adapter';
 import { LoadMore } from 'muse-ui';
 // import { Tabs, LoadMore } from 'muse-ui';
 // import { Tab } from 'muse-ui/lib/Tabs';
@@ -83,30 +84,24 @@ export default {
         page: this.messageLists[active].page
       });
       // console.log(JSON.stringify(response));
+      if (this.messageLists[active].page === 1) {
+        this.messageLists[active].refreshing = false;
+      }
+      if (this.messageLists[active].page > 1) {
+        this.messageLists[active].loading = false;
+      }
       switch (response.code) {
         case 0:
           if (this.messageLists[active].page === 1) {
-            this.messageLists[active].refreshing = false;
             this.messageLists[active].list = response.result.lists.map(
-              message => {
-                return {
-                  ...message,
-                  sendTimeText: moment(message.send_time * 1000).format(
-                    'YYYY年MM月DD日'
-                  )
-                };
-              }
+              message => adapter.messageAdapter(message)
             );
           }
           if (this.messageLists[active].page > 1) {
-            this.messageLists[active].loading = false;
             response.result.lists.forEach(message => {
-              this.messageLists[active].list.push({
-                ...message,
-                sendTimeText: moment(message.send_time * 1000).format(
-                  'YYYY年MM月DD日'
-                )
-              });
+              this.messageLists[active].list.push(
+                adapter.messageAdapter(message)
+              );
             });
           }
           break;
@@ -166,6 +161,9 @@ export default {
 }
 .list-con {
   flex: 1;
+  .mu-load-more{
+    min-height: 200px;
+  }
   .mint-tab-container-wrap {
     height: 100%;
   }
