@@ -12,7 +12,7 @@ const body = {
 export const hostList = {
   default: '',
   test: 'test.mangotmall.com',
-  pro: 'test.mangotmall.com'
+  pro: 'www.mangotmall.com'
 };
 // /api/Internshipexp/internshipexpBy
 // const serviceProvider = {
