@@ -17,7 +17,7 @@ switch (ENV) {
     BASEURL = hostList.test;
     break;
 }
-
+console.log(hostList.test);
 axios.defaults.baseURL = BASEURL;
 axios.defaults.timeout = 30000;
 // axios.defaults.withCredentials = true;
