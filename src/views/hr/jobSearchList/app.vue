@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import { Divider, Button, LoadMore } from 'muse-ui';
-import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { Toast } from "mint-ui";
+import { Divider, Button, LoadMore } from "muse-ui";
+import { Container, Row, Col } from "muse-ui/lib/Grid";
 import {
   List,
   ListItem,
@@ -39,20 +39,20 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from 'muse-ui/lib/List';
-import tool from 'util/tools';
-import service from 'service';
+} from "muse-ui/lib/List";
+import tool from "util/tools";
+import service from "service";
 export default {
-  data () {
+  data() {
     return {
       refreshing: false,
       loading: false,
       lists: [],
-      page:1,
-      pagesize:10,
+      page: 1,
+      pagesize: 10,
       keyWord: window.api.pageParam.keyWord,
       // area: window.api.pageParam.area,
-      istj: window.api.pageParam.istj || ''
+      istj: window.api.pageParam.istj || ""
     };
   },
   components: {
@@ -71,35 +71,57 @@ export default {
     LoadMore,
     Toast
   },
+  computed: {
+    isLoading() {
+      return this.refreshing || this.loading;
+    }
+  },
   methods: {
     // 列表数据
-    async listsData () {
+    async listsData() {
       tool.showProgress();
       const response = await service.searchBoxValue({
         keyWord: this.keyWord,
         // area: this.area,
-        istj: this.istj
+        istj: this.istj,
+        page: this.page
       });
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          this.lists = response.result.list;
+          if (this.page === 1) {
+            this.refreshing = false;
+            this.lists = response.result.list.map(message => {
+              return {
+                ...message
+              };
+            });
+          }
+          if (this.page > 1) {
+            this.loading = false;
+            response.result.list.forEach(message => {
+              this.lists.push({
+                ...message
+              });
+            });
+          }
+          // this.lists = response.result.list;
           break;
         default:
           Toast({
-            position: 'top',
-            message: '加载失败，请稍后重试！！'
+            position: "top",
+            message: "加载失败，请稍后重试！！"
           });
           break;
       }
     },
-    jobDetails (id) {
+    jobDetails(id) {
       tool.openWin({
-        name: 'jobDetails_' + id,
-        url: '../win.html',
-        title: '职位详情',
-        fname: 'jobDetails_f_' + id,
-        furl: './hr/jobDetails.html',
+        name: "jobDetails_" + id,
+        url: "../win.html",
+        title: "职位详情",
+        fname: "jobDetails_f_" + id,
+        furl: "./hr/jobDetails.html",
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -107,45 +129,57 @@ export default {
         }
       });
     },
-    refresh () {
-      this.refreshing = true;
-      this.$refs.container.scrollTop = 0;
-      setTimeout(() => {
-        this.refreshing = false;
-        for (let i = 0; i < 10; i++) {
-          this.lists.push({
-            position: '1111',
-            claim: '222',
-            companyName: 'sdsdfsd',
-            salaryRange: 'xddg',
-            date: '2010-11-11'
-          });
-        }
-      }, 2000);
+    refresh(active) {
+      // this.refreshing = true;
+      // this.$refs.container.scrollTop = 0;
+      // setTimeout(() => {
+      //   this.refreshing = false;
+      //   for (let i = 0; i < 10; i++) {
+      //     this.lists.push({
+      //       position: '1111',
+      //       claim: '222',
+      //       companyName: 'sdsdfsd',
+      //       salaryRange: 'xddg',
+      //       date: '2010-11-11'
+      //     });
+      //   }
+      // }, 2000);
+      if (!this.refreshing && !this.loading) {
+        this.page = 1;
+        this.refreshing = true;
+        this.$refs[`container`].scrollTop = 0;
+        this.listsData();
+      }
     },
-    load () {
-      this.loading = true;
-      setTimeout(() => {
-        this.loading = false;
-        for (let i = 0; i < 5; i++) {
-          // const response = await service.searchBoxValue({
-          //   keyWord: this.keyWord,
-          // });
-          this.lists.push({
-            // response.result.list
-            position: '35345',
-            claim: 'dfgdfg',
-            companyName: '111',
-            salaryRange: 'dfgdfg',
-            date: '2010-11-12'
-          });
-        }
-      }, 2000);
+    load() {
+      // this.loading = true;
+      // setTimeout(() => {
+      //   this.loading = false;
+      //   for (let i = 0; i < 5; i++) {
+      //     // const response = await service.searchBoxValue({
+      //     //   keyWord: this.keyWord,
+      //     // });
+      //     this.lists.push({
+      //       // response.result.list
+      //       position: '35345',
+      //       claim: 'dfgdfg',
+      //       companyName: '111',
+      //       salaryRange: 'dfgdfg',
+      //       date: '2010-11-12'
+      //     });
+      //   }
+      // }, 2000);
+      if (!this.refreshing && !this.loading) {
+        this.page = this.page + 1;
+        this.loading = true;
+        this.listsData();
+      }
     }
   },
   watch: {},
-  mounted () {
-    this.listsData();
+  mounted() {
+    // this.listsData();
+    this.refresh();
   }
 };
 </script>
