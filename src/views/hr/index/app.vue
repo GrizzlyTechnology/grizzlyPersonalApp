@@ -616,7 +616,6 @@ body .mu-secondary-text-color {
   margin: 15px 0;
 }
 .adv.createResume{
-  margin-bottom: 0;
+  margin-top: 0;
 }
 </style>
-}
