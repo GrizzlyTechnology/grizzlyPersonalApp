@@ -143,7 +143,7 @@ export default {
         fname: 'raidersArticle_f',
         furl: './hr/raidersArticle.html',
         hasLeft: 1,
-        hasRight: 1,
+        hasRight:0,
         data: {
           id: id
         }
