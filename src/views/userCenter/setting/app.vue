@@ -62,15 +62,35 @@ export default {
         hasLeft: 1
       });
     },
+    async query () {
+      tools.showProgress();
+      const response = await service.logout();
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          tools.clearStorage('token');
+          tools.openWin({
+            name: 'login',
+            url: '../win.html',
+            title: '登录',
+            fname: 'login_f',
+            furl: './index/login.html',
+            data: {
+              comefrom: 'systemSet'
+            }
+          });
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: response.message
+          });
+          break;
+      }
+    },
     logout () {
-      tools.clearStorage('token');
-      window.api.sendEvent({
-        name: 'event'
-      });
-      window.api.closeToWin({
-        name: 'root'
-      });
-    }
+      this.query();
+    },
   },
   mounted () {}
 };
