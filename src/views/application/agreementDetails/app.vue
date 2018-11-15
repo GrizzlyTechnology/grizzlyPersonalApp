@@ -76,7 +76,7 @@ export default {
       urlListIndex: 0,
       uploaderHide: false,
       progressPercent: 0,
-      // actionUrl: 'http://' + (process.env === 'development' ? hostList.test : hostList.test) + '/api/Userresources/create',
+      // actionUrl: 'http://' + (process.env === 'production' ? hostList.pro : hostList.test) + '/api/Userresources/create',
       actionUrl: 'https://jsonplaceholder.typicode.com/posts/',
       headers: {
         MG_code:
