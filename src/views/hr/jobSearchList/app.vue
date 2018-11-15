@@ -50,6 +50,7 @@ export default {
       lists: [],
       page:1,
       pagesize:10,
+      active: 0,
       keyWord: window.api.pageParam.keyWord,
       // area: window.api.pageParam.area,
       istj: window.api.pageParam.istj || ''
@@ -71,19 +72,43 @@ export default {
     LoadMore,
     Toast
   },
+  computed: {
+  isLoading () {
+    return this.refreshing || this.loading;
+  }
+},
   methods: {
     // 列表数据
-    async listsData () {
+    async listsData (active) {
       tool.showProgress();
       const response = await service.searchBoxValue({
         keyWord: this.keyWord,
         // area: this.area,
-        istj: this.istj
+        istj: this.istj,
+         page: this.lists[active].page
       });
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          this.lists = response.result.list;
+        if (this.lists[active].page === 1) {
+            this.lists[active].refreshing = false;
+            this.lists[active].list = response.result.lists.map(
+              message => {
+                return {
+                  ...message
+                };
+              }
+            );
+          }
+          if (this.lists[active].page > 1) {
+            this.lists[active].loading = false;
+            response.result.lists.forEach(message => {
+              this.lists[active].list.push({
+                ...message
+              });
+            });
+          }
+          // this.lists = response.result.list;
           break;
         default:
           Toast({
@@ -107,45 +132,63 @@ export default {
         }
       });
     },
-    refresh () {
-      this.refreshing = true;
-      this.$refs.container.scrollTop = 0;
-      setTimeout(() => {
-        this.refreshing = false;
-        for (let i = 0; i < 10; i++) {
-          this.lists.push({
-            position: '1111',
-            claim: '222',
-            companyName: 'sdsdfsd',
-            salaryRange: 'xddg',
-            date: '2010-11-11'
-          });
-        }
-      }, 2000);
+    refresh (active) {
+      // this.refreshing = true;
+      // this.$refs.container.scrollTop = 0;
+      // setTimeout(() => {
+      //   this.refreshing = false;
+      //   for (let i = 0; i < 10; i++) {
+      //     this.lists.push({
+      //       position: '1111',
+      //       claim: '222',
+      //       companyName: 'sdsdfsd',
+      //       salaryRange: 'xddg',
+      //       date: '2010-11-11'
+      //     });
+      //   }
+      // }, 2000);
+       if (
+        !this.lists[active].refreshing &&
+        !this.lists[active].loading
+      ) {
+        this.lists[active].page = 1;
+        this.lists[active].refreshing = true;
+        this.$refs[`container${active}`].scrollTop = 0;
+        this.listsData(active);
+      }
     },
     load () {
-      this.loading = true;
-      setTimeout(() => {
-        this.loading = false;
-        for (let i = 0; i < 5; i++) {
-          // const response = await service.searchBoxValue({
-          //   keyWord: this.keyWord,
-          // });
-          this.lists.push({
-            // response.result.list
-            position: '35345',
-            claim: 'dfgdfg',
-            companyName: '111',
-            salaryRange: 'dfgdfg',
-            date: '2010-11-12'
-          });
-        }
-      }, 2000);
+      // this.loading = true;
+      // setTimeout(() => {
+      //   this.loading = false;
+      //   for (let i = 0; i < 5; i++) {
+      //     // const response = await service.searchBoxValue({
+      //     //   keyWord: this.keyWord,
+      //     // });
+      //     this.lists.push({
+      //       // response.result.list
+      //       position: '35345',
+      //       claim: 'dfgdfg',
+      //       companyName: '111',
+      //       salaryRange: 'dfgdfg',
+      //       date: '2010-11-12'
+      //     });
+      //   }
+      // }, 2000);
+       if (
+        !this.lists[active].refreshing &&
+        !this.lists[active].loading
+      ) {
+        this.lists[active].page = this.lists[active].page + 1;
+        this.lists[active].loading = true;
+        this.listsData(active);
+      }
     }
   },
   watch: {},
   mounted () {
-    this.listsData();
+    // this.listsData();
+    this.refresh(this.active);
   }
 };
 </script>
