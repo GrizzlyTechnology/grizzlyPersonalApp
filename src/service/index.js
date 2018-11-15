@@ -10,6 +10,9 @@ switch (ENV) {
   case 'development':
     BASEURL = hostList.test;
     break;
+  case 'production':
+    BASEURL = hostList.pro;
+    break;
   default:
     BASEURL = hostList.test;
     break;
@@ -589,7 +592,6 @@ export default {
     });
   },
   getDeliveryList (params) {
-    console.log(JSON.stringify(params));
     return request({
       host: BASEURL,
       url: '/api/Job/deliveredresume',
