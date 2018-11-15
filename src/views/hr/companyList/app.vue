@@ -23,24 +23,26 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import { Container } from 'muse-ui/lib/Grid';
+import { Toast } from "mint-ui";
+import { Container } from "muse-ui/lib/Grid";
 import {
   List,
   ListItem,
   ListAction,
   ListItemContent,
   ListItemTitle
-} from 'muse-ui/lib/List';
-import { Avatar, Divider, LoadMore } from 'muse-ui';
-import tool from 'util/tools';
-import service from 'service';
+} from "muse-ui/lib/List";
+import { Avatar, Divider, LoadMore } from "muse-ui";
+import tool from "util/tools";
+import service from "service";
 export default {
-  data () {
+  data() {
     return {
       refreshing: false,
       loading: false,
-      companys: []
+      companys: [],
+      page: 1,
+      pagesize: 10
     };
   },
   components: {
@@ -54,58 +56,92 @@ export default {
     Divider,
     LoadMore
   },
+  computed: {
+    isLoading() {
+      return this.refreshing || this.loading;
+    }
+  },
   methods: {
     // 页面数据
-    async companyRecommend () {
+    async companyRecommend() {
       tool.showProgress();
-      const response = await service.companyRecommendList({});
+      const response = await service.companyRecommendList({
+        page: this.page
+      });
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          this.companys = response.result.companys;
+          if (this.page === 1) {
+            this.refreshing = false;
+            this.companys = response.result.companys.map(message => {
+              return {
+                ...message
+              };
+            });
+          }
+          if (this.page > 1) {
+            this.loading = false;
+            response.result.companys.forEach(message => {
+              this.companys.push({
+                ...message
+              });
+            });
+          }
+          // this.companys = response.result.companys;
           break;
         default:
           Toast({
-            position: 'top',
-            message: '加载失败，请稍后重试！！'
+            position: "top",
+            message: "加载失败，请稍后重试！！"
           });
           break;
       }
     },
-    refresh () {
-      this.refreshing = true;
-      this.$refs.container.scrollTop = 0;
-      setTimeout(() => {
-        this.refreshing = false;
-        for (let i = 0; i < 10; i++) {
-          this.companys.push({
-            id: 1,
-            imgSrc: 'sdfgdfgdfg',
-            name: 'xvxcvxcvxcvxcv'
-          });
-        }
-      }, 2000);
+    refresh() {
+      // this.refreshing = true;
+      // this.$refs.container.scrollTop = 0;
+      // setTimeout(() => {
+      //   this.refreshing = false;
+      //   for (let i = 0; i < 10; i++) {
+      //     this.companys.push({
+      //       id: 1,
+      //       imgSrc: 'sdfgdfgdfg',
+      //       name: 'xvxcvxcvxcvxcv'
+      //     });
+      //   }
+      // }, 2000);
+      if (!this.refreshing && !this.loading) {
+        this.page = 1;
+        this.refreshing = true;
+        this.$refs[`container`].scrollTop = 0;
+        this.companyRecommend();
+      }
     },
-    load () {
-      this.loading = true;
-      setTimeout(() => {
-        this.loading = false;
-        for (let i = 0; i < 5; i++) {
-          this.companys.push({
-            id: 1,
-            imgSrc: 'dfgdfgdfg',
-            name: 'sdfsdf'
-          });
-        }
-      }, 2000);
+    load() {
+      // this.loading = true;
+      // setTimeout(() => {
+      //   this.loading = false;
+      //   for (let i = 0; i < 5; i++) {
+      //     this.companys.push({
+      //       id: 1,
+      //       imgSrc: 'dfgdfgdfg',
+      //       name: 'sdfsdf'
+      //     });
+      //   }
+      // }, 2000);
+      if (!this.refreshing && !this.loading) {
+        this.page = this.page + 1;
+        this.loading = true;
+        this.companyRecommend();
+      }
     },
-    companyInfo (enterpriseId) {
+    companyInfo(enterpriseId) {
       tool.openWin({
-        name: 'companyInfo',
-        url: '../win.html',
-        title: '企业介绍',
-        fname: 'companyInfo_f',
-        furl: './hr/companyInfo.html',
+        name: "companyInfo",
+        url: "../win.html",
+        title: "企业介绍",
+        fname: "companyInfo_f",
+        furl: "./hr/companyInfo.html",
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -114,8 +150,8 @@ export default {
       });
     }
   },
-  mounted () {
-    this.companyRecommend();
+  mounted() {
+    this.refresh();
   }
 };
 </script>

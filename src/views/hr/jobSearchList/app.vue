@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import { Divider, Button, LoadMore } from 'muse-ui';
-import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { Toast } from "mint-ui";
+import { Divider, Button, LoadMore } from "muse-ui";
+import { Container, Row, Col } from "muse-ui/lib/Grid";
 import {
   List,
   ListItem,
@@ -39,21 +39,20 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from 'muse-ui/lib/List';
-import tool from 'util/tools';
-import service from 'service';
+} from "muse-ui/lib/List";
+import tool from "util/tools";
+import service from "service";
 export default {
-  data () {
+  data() {
     return {
       refreshing: false,
       loading: false,
       lists: [],
-      page:1,
-      pagesize:10,
-      active: 0,
+      page: 1,
+      pagesize: 10,
       keyWord: window.api.pageParam.keyWord,
       // area: window.api.pageParam.area,
-      istj: window.api.pageParam.istj || ''
+      istj: window.api.pageParam.istj || ""
     };
   },
   components: {
@@ -73,37 +72,35 @@ export default {
     Toast
   },
   computed: {
-  isLoading () {
-    return this.refreshing || this.loading;
-  }
-},
+    isLoading() {
+      return this.refreshing || this.loading;
+    }
+  },
   methods: {
     // 列表数据
-    async listsData (active) {
+    async listsData() {
       tool.showProgress();
       const response = await service.searchBoxValue({
         keyWord: this.keyWord,
         // area: this.area,
         istj: this.istj,
-         page: this.lists[active].page
+        page: this.page
       });
       tool.hideProgress();
       switch (response.code) {
         case 0:
-        if (this.lists[active].page === 1) {
-            this.lists[active].refreshing = false;
-            this.lists[active].list = response.result.lists.map(
-              message => {
-                return {
-                  ...message
-                };
-              }
-            );
+          if (this.page === 1) {
+            this.refreshing = false;
+            this.lists = response.result.list.map(message => {
+              return {
+                ...message
+              };
+            });
           }
-          if (this.lists[active].page > 1) {
-            this.lists[active].loading = false;
-            response.result.lists.forEach(message => {
-              this.lists[active].list.push({
+          if (this.page > 1) {
+            this.loading = false;
+            response.result.list.forEach(message => {
+              this.lists.push({
                 ...message
               });
             });
@@ -112,19 +109,19 @@ export default {
           break;
         default:
           Toast({
-            position: 'top',
-            message: '加载失败，请稍后重试！！'
+            position: "top",
+            message: "加载失败，请稍后重试！！"
           });
           break;
       }
     },
-    jobDetails (id) {
+    jobDetails(id) {
       tool.openWin({
-        name: 'jobDetails_' + id,
-        url: '../win.html',
-        title: '职位详情',
-        fname: 'jobDetails_f_' + id,
-        furl: './hr/jobDetails.html',
+        name: "jobDetails_" + id,
+        url: "../win.html",
+        title: "职位详情",
+        fname: "jobDetails_f_" + id,
+        furl: "./hr/jobDetails.html",
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -132,7 +129,7 @@ export default {
         }
       });
     },
-    refresh (active) {
+    refresh(active) {
       // this.refreshing = true;
       // this.$refs.container.scrollTop = 0;
       // setTimeout(() => {
@@ -147,17 +144,14 @@ export default {
       //     });
       //   }
       // }, 2000);
-       if (
-        !this.lists[active].refreshing &&
-        !this.lists[active].loading
-      ) {
-        this.lists[active].page = 1;
-        this.lists[active].refreshing = true;
-        this.$refs[`container${active}`].scrollTop = 0;
-        this.listsData(active);
+      if (!this.refreshing && !this.loading) {
+        this.page = 1;
+        this.refreshing = true;
+        this.$refs[`container`].scrollTop = 0;
+        this.listsData();
       }
     },
-    load () {
+    load() {
       // this.loading = true;
       // setTimeout(() => {
       //   this.loading = false;
@@ -175,20 +169,17 @@ export default {
       //     });
       //   }
       // }, 2000);
-       if (
-        !this.lists[active].refreshing &&
-        !this.lists[active].loading
-      ) {
-        this.lists[active].page = this.lists[active].page + 1;
-        this.lists[active].loading = true;
-        this.listsData(active);
+      if (!this.refreshing && !this.loading) {
+        this.page = this.page + 1;
+        this.loading = true;
+        this.listsData();
       }
     }
   },
   watch: {},
-  mounted () {
+  mounted() {
     // this.listsData();
-    this.refresh(this.active);
+    this.refresh();
   }
 };
 </script>
