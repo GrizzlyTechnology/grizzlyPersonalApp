@@ -75,7 +75,7 @@ export default {
     async getStudentStatus () {
       tools.showProgress();
       const response = await service.getStudentInfo();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       tools.hideProgress();
       switch (response.code) {
         case 0:

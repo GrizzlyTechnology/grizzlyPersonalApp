@@ -2,13 +2,22 @@ const dict = {};
 
 dict.female = 0;
 dict.male = 1;
-
 dict.sex = {
   [dict.male]: '男',
   [dict.female]: '女'
 };
 
-dict.deliveryStatus = ['待邀约', '待面试', '面试不通过', '面试通过待离校', '已离校待入职', '已入职'];
+dict.deliveryInvitation = 0;
+dict.deliveryInterview = 1;
+dict.deliveryLeaveSchool = 2;
+dict.deliveryNotSuitable = -1;
+dict.deliveryStatus = {
+  [dict.deliveryInvitation]: '待邀约',
+  [dict.deliveryInterview]: '待面试',
+  [dict.deliveryLeaveSchool]: '待离校',
+  [dict.deliveryNotSuitable]: '不合适'
+};
+
 dict.skillLevel = ['了解', '熟悉', '掌握', '精通', '专家'];
 dict.workType = ['全职', '兼职', '实习招聘(学生)', '实习招聘(社会)'];
 dict.currentState = ['积极找工作', '随便看看', '暂不换工作'];
