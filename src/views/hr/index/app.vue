@@ -52,7 +52,7 @@
           </div>
         </div>
         <template v-for='resumeImg in resumeImgs'>
-          <img :src="resumeImg.imgSrc" alt="" class='adv' @click="createResume" v-show='resumeList.length===0' :key='resumeImg.index'>
+          <img :src="resumeImg.imgSrc" alt="" class='adv createResume' @click="createResume" v-show='resumeList.length===0' :key='resumeImg.index'>
         </template>
         <div class='bgWhite hotJobs'>
           <h2 class='titleB' @click="hotJobListAll()">热门职位 <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
@@ -195,7 +195,8 @@ export default {
         title: '职位搜索',
         fname: 'jobSearch_f',
         furl: './hr/jobSearch.html',
-        hasLeft: 1
+        hasLeft: 1,
+        hasRight: 0
         });
     },
     // 滚动图
@@ -240,7 +241,8 @@ export default {
         title: '名企推荐',
         fname: 'companyList_f',
         furl: './hr/companyList.html',
-        hasLeft: 1
+        hasLeft: 1,
+        hasRight: 0
       });
     },
     // 名企推荐详情
@@ -252,7 +254,7 @@ export default {
         fname: 'companyInfo_f',
         furl: './hr/companyInfo.html',
         hasLeft: 1,
-        hasRight: 1,
+        hasRight: 0,
         data: {
           enterpriseId: enterpriseId
         }
@@ -364,6 +366,7 @@ export default {
         fname: 'jobSearchList_f',
         furl: './hr/jobSearchList.html',
         hasLeft: 1,
+        hasRight: 0,
         data: {
           istj: 1 // 1是推荐 0是不推荐
         }
@@ -378,7 +381,7 @@ export default {
         fname: 'jobDetails_f_' + id,
         furl: './hr/jobDetails.html',
         hasLeft: 1,
-        hasRight: 1,
+        hasRight:0,
         data: {
           id: id
         }
@@ -392,7 +395,8 @@ export default {
         title: '职场攻略',
         fname: 'raidersList_f',
         furl: './hr/raidersList.html',
-        hasLeft: 1
+        hasLeft: 1,
+        hasRight: 0
       });
     },
     // 获取职场攻略列表
@@ -421,7 +425,7 @@ export default {
         fname: 'raidersArticle_f',
         furl: './hr/raidersArticle.html',
         hasLeft: 1,
-        hasRight: 1,
+        hasRight: 0,
         data: {
           id: id
         }
@@ -436,7 +440,7 @@ export default {
         fname: 'resumeList_f',
         furl: './userCenter/resumeList.html',
         hasLeft: 1,
-        hasRight: 1
+        hasRight: 0
       });
     }
   },
@@ -523,7 +527,7 @@ body .mu-secondary-text-color {
 }
 
 .suitables{
-  margin:15px 0;
+  margin-bottom:15px;
 }
 
 .bgWhite {
@@ -533,6 +537,7 @@ body .mu-secondary-text-color {
 .space15 {
   padding: 15px;
   margin-top: 15px;
+  margin-bottom: 15px;
 }
 .titleB {
   border-left: 3px solid #009688;
@@ -610,5 +615,7 @@ body .mu-secondary-text-color {
   width: 100%;
   margin: 15px 0;
 }
-</style>
+.adv.createResume{
+  margin-top: 0;
 }
+</style>

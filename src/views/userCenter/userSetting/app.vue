@@ -142,9 +142,8 @@ export default {
           this.userInfo = response.result.userInfo;
           const phone = response.result.userInfo.phone;
           const emailArray = response.result.userInfo.email !== null ? response.result.userInfo.email.split('@') : [];
-          const domainName = emailArray[1].split('.')[0];
           this.phone = phone !== null ? phone[0] + phone[1] + phone[2] + phone[3] + '****' + phone[8] + phone[9] + phone[10] : '暂无';
-          this.email = emailArray.length > 0 ? emailArray[0][0] + '****' + emailArray[0][emailArray[0].length - 1] + '@' + '****.' + domainName : '暂无';
+          this.email = emailArray.length > 0 ? emailArray[0][0] + '****' + emailArray[0][emailArray[0].length - 1] + '@' + '****.' + emailArray[1].split('.')[1] : '暂无';
           this.nickname = response.result.userInfo.nickname !== null ? response.result.userInfo.nickname : '暂无';
           this.name = response.result.userInfo.name !== null ? response.result.userInfo.name : '暂无';
           this.identity = response.result.userInfo.identity !== null ? response.result.userInfo.identity : '暂无';
