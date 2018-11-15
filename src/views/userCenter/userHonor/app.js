@@ -8,7 +8,7 @@ import 'assets/fonts/iconfont.css';
 
 // Vue.use(Lazyload);
 
-if (process.env === 'production') {
+if (process.env !== 'development') {
   window.apiready = function () {
     new Vue({
       el: '#app',
