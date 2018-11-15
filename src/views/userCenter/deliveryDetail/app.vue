@@ -2,7 +2,9 @@
   <div class="content">
     <div class="delivery" @click="showPostion(id)">
       <img :src="delivery.companyLogo" class="delivery-logo" />
-      <div class="delivery-head">{{delivery.position}} <span class="delivery-date">2018年5月10日投递</span></div>
+      <div class="delivery-head">
+        <div class="delivery-title">查看职位查看职位查看职位查看职位查看职位查看职位查看职位查看职位</div> <span class="delivery-date">8888年88月88日投递</span>
+      </div>
       <div class="delivery-salary-range">{{delivery.salaryRange}} <span class="delivery-job-area">{{delivery.jobarea}}</span></div>
       <div class="delivery-foot">{{delivery.companyName}}<span class="delivery-link">查看职位</span></div>
     </div>
@@ -13,8 +15,8 @@
       <StepVertical :data="delivery.list" />
     </div>
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large >同 意</Button>
-      <Button color="#f75c5d" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large >拒 绝</Button>
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large>同 意</Button>
+      <Button color="#f75c5d" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large>拒 绝</Button>
     </div>
   </div>
 </template>
@@ -138,15 +140,24 @@ export default {
     margin-right: 10px;
   }
   .delivery-head {
-    color: #000;
-    font-size: 16px;
     margin-bottom: 10px;
-    line-height: 16px;
-  }
-  .delivery-date {
-    font-size: 12px;
-    color: #999;
-    float: right;
+    position: relative;
+    text-align: right;
+    .delivery-title {
+      .ell();
+      position: absolute;
+      left: 75px;
+      right: 120px;
+      top: 0;
+      color: #000;
+      font-size: 16px;
+      line-height: 16px;
+      text-align: left;
+    }
+    .delivery-date {
+      font-size: 12px;
+      color: #999;
+    }
   }
   .delivery-job-area {
     font-size: 12px;
@@ -164,9 +175,9 @@ export default {
     font-size: 12px;
     line-height: 16px;
   }
-  .delivery-link {
+  .delivery-status {
     font-size: 14px;
-    color: @primary;
+    color: #666;
     float: right;
   }
 }
@@ -174,7 +185,7 @@ export default {
   flex: 1;
   overflow: auto;
   margin-bottom: 15px;
-  .mu-stepper-vertical{
+  .mu-stepper-vertical {
     background-color: #fff;
     padding-top: 5px;
   }
@@ -182,7 +193,7 @@ export default {
     color: #333 !important;
     font-size: 14px !important;
   }
-  .stepConInfo{
+  .stepConInfo {
     font-size: 12px !important;
   }
   .mu-step:last-child {
@@ -191,9 +202,9 @@ export default {
     }
   }
 }
-.footer{
+.footer {
   font-size: 0;
-  .mu-raised-button{
+  .mu-raised-button {
     border-radius: 0;
     width: 50%;
   }
