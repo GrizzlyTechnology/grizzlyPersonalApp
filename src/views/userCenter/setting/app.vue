@@ -31,6 +31,7 @@
 import { Button, Icon } from 'muse-ui';
 import { Cell } from 'mint-ui';
 import tools from 'util/tools';
+import service from 'service';
 
 export default {
   data () {
