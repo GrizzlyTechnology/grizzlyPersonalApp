@@ -5,7 +5,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import 'assets/css/global.less';
 import 'assets/fonts/iconfont.css';
 
-if (process.env === 'production') {
+if (process.env !== 'development') {
   window.apiready = function () {
     new Vue({
       el: '#app',
