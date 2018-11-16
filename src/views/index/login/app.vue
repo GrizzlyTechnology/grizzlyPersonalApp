@@ -21,7 +21,7 @@
             <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
             </Col>
         </Row>
-            <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">登陆</Button>
+            <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">登录{{type==='qq'?'并绑定QQ账户':type==='wx'?'并绑定微信账户':''}}</Button>
         <Row class="row-reg" gutter>
             <Col span="6">
             <div class="grid-cell" @click="msgCode">短信验证码登录</div>
@@ -30,7 +30,10 @@
             <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
             </Col>
         </Row>
-        <Other></Other>
+        <Other v-if="type===''"></Other>
+        <Row v-if="type!==''">
+            <div style="color:#CCC; margin-top:40px;text-align:center">不想绑定，<a style="color:blue" @click="backlogin">直接登录</a></div>
+        </Row>
         </Container>
 </template>
 
@@ -62,7 +65,8 @@ export default {
         password: '',
         isAgree: true
       },
-      visibility: false
+      visibility: false,
+      type:window.api.pageParam.type!==undefined?window.api.pageParam.type:'',
     };
   },
   components: {
@@ -91,13 +95,29 @@ export default {
           tools.setStorage('token', response.result.token);
           tools.setStorage('phone', response.result.userinfo.phone);
           tools.setStorage('userInfo', response.result.userinfo);
-          // 绑定极光推送的别名为id
+          
+        //绑定第三方登录
+        if(this.type==='qq' || this.type==='wx'){
+              tools.showProgress();
+            const bundresponse = await service.bund({
+                type:this.type,
+                openId:window.api.pageParam.info.openid,
+                uid:response.result.userinfo.id
+            });
+            tools.hideProgress();
+            if (bundresponse.code!==0) {
+                alert('登录成功但'+(window.api.pageParam.type==='qq'?'QQ':'微信')+'账户绑定失败');
+            }
+          }
+         
+          //绑定极光推送的别名为id
           let ajpush = window.api.require('ajpush');
           let param = {alias: response.result.userinfo.id};
           ajpush.bindAliasAndTags(param, function (ret) {
             let statusCode = ret.statusCode;
           });
-          // 登录完跳转
+        alert('登录成功'+(window.api.pageParam.type==='qq'?'且已绑定QQ账户':window.api.pageParam.type==='wx'?'且已绑定微信账户':''));
+          //登录完跳转
           window.api.openWin({
             name: 'main',
             url: './main.html',
@@ -129,6 +149,21 @@ export default {
       alert('msgcode login');
     },
     regNewUser () {
+        if(this.type==='qq' || this.type=='wx'){
+            tools.openWin({
+        name: 'registered',
+        url: '../win.html',
+        title: '用户注册',
+        fname: 'registered_f',
+        furl: './index/registered.html',
+        hasLeft: true,
+        data: {
+                comefrom:'login',
+                type:this.type,
+                info:window.api.pageParam.info
+            }
+      });
+        }else{
       tools.openWin({
         name: 'registered',
         url: '../win.html',
@@ -137,6 +172,10 @@ export default {
         furl: './index/registered.html',
         hasLeft: true
       });
+        }
+    },
+    backlogin(){
+        this.type='';
     }
   },
   mounted () {

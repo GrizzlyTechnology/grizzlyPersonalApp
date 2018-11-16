@@ -36,6 +36,7 @@
         <FormItem
         label="性别"
         prop="sex"
+        v-if="type!=='qq' && type!=='wx'"
       >
         <Radio v-model="form.sex" :value="1" label="男"></Radio>
         <Radio v-model="form.sex" :value="0" label="女"></Radio>
@@ -57,7 +58,7 @@
         <TextField v-model="form.rePassword" type="password"></TextField>
       </FormItem>
     </Form>
-    <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">注册</Button>
+    <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">注册{{type==='qq'?'并绑定QQ账户':type==='wx'?'并绑定微信账户':''}}</Button>
     <div class="registeredDescription">
       注册即代表您同意并遵守《大灰熊用户协议》
     </div>
@@ -70,6 +71,7 @@ import { Form, FormItem } from 'muse-ui/lib/Form';
 import regexps from 'util/regexps';
 import tools from 'util/tools';
 import service from 'service';
+import { setTimeout } from 'timers';
 
 export default {
   data () {
@@ -100,7 +102,8 @@ export default {
       rePasswordRules: [
         { validate: val => regexps.password.test(val), message: '密码规则:由6-32位0-9的数字或者大小写字母组成' },
         { validate: val => this.form.passWord === this.form.rePassword, message: '两次密码输入不一致' }
-      ]
+      ],
+      type:window.api.pageParam.type!==undefined?window.api.pageParam.type:'',
     };
   },
   components: {
@@ -112,6 +115,13 @@ export default {
   },
   methods: {
     async registered () {
+        if(this.type==='qq' || this.type==='wx'){
+            this.form.nickName=window.api.pageParam.info.nickname;
+            this.form.sex=window.api.pageParam.info.sex;
+            this.form.headPhoto=window.api.pageParam.info.headphoto;
+            this.form.openId=window.api.pageParam.info.openid;
+            this.form.type=this.type;
+        }
       tools.showProgress();
       const response = await service.registered(this.form);
       tools.hideProgress();
@@ -120,9 +130,22 @@ export default {
           // window.api.sendEvent({
           //   name: 'event'
           // });
-          window.api.closeToWin({
-            name: 'root'
+          window.api.closeWin({
+            name: 'login'
           });
+          alert("注册成功"+(this.type==='qq'?'且已绑定QQ账户':this.type==='wx'?'且已绑定微信账户':''));
+          setTimeout(function(){
+              tools.openWin({
+                name: 'login',
+                url: '../win.html',
+                title: '用户登录',
+                fname: 'login_f',
+                furl: './index/login.html',
+                data:{
+                    comefrom:'registered'
+                }
+                });
+          },500);
           // const login = await service.login({
           //   phone: this.form.phone,
           //   passWord: this.form.passWord,

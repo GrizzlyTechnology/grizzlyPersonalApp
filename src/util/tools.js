@@ -779,9 +779,12 @@ u.openWebPage = function (url) {
   }
 }
 
-u.getPicUrl = function (string, size) {
-  let sizeStr = size ? size + '_' : '';
+u.getPicUrl = function(string, size){
   const urlAry = string.split('/');
+  if(urlAry[2]!=='test.mangotmall.com'){
+      return string;
+  }
+  let sizeStr = size ? size + '_' :'';
   urlAry[urlAry.length - 1] = sizeStr + urlAry[urlAry.length - 1];
   return urlAry.join('/');
 }
