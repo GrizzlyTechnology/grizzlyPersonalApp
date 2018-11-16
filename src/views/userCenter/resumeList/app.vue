@@ -114,18 +114,20 @@ export default {
             ...baseInfo
           },
           callback: (ret, err) => {
+            // console.log(JSON.stringify(ret));
             this.getList();
             tools.openWin({
               name: 'resumeDetail',
               url: '../win.html',
-              title: '我的简历',
+              title: ret.value.title,
               fname: 'resumeDetail_f',
               furl: './userCenter/resumeDetail.html',
               hasLeft: 1,
+              jumpTime: 500,
               data: {
                 nameSpace: 'resumeDetail',
                 from: 'userBaseInfo',
-                id: ret.value,
+                id: ret.value.id,
                 type: 'edit'
               }
             });

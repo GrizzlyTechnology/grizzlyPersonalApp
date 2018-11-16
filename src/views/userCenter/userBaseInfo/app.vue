@@ -125,7 +125,7 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          tools.closeWin(response.result.resumeInfo.id);
+          tools.closeWin(response.result.resumeInfo);
           break;
         default:
           tools.toast({
