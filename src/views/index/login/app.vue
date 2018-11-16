@@ -1,37 +1,37 @@
 <template>
-    <Container>
-        <Row class="hpic" justify-content="center">
-            <Avatar size="80" color="teal">M</Avatar>
-        </Row>
-        <Form ref="form" :model="validateForm" class="mu-demo-form">
-            <FormItem prop="phone" :rules="phoneRules" label="用户名(手机号码)">
-                <TextField v-model="validateForm.phone"  prop="phone">
-                </TextField>
-            </FormItem>
-            <FormItem prop="password" :rules="passwordRules" label="密 码">
-                <TextField v-model="validateForm.password" prop="password" :action-icon="visibility ? ':icon-bukejian2' : ':icon-kejian'" :action-click="() => (visibility = !visibility)" :type="visibility ? 'text' : 'password'">
-                </TextField>
-            </FormItem>
-        </Form>
-        <Row gutter>
-            <Col span="6">
-            <Checkbox label="记住用户名" v-model="validateForm.isAgree"></Checkbox>
-            </Col>
-            <Col span="6">
-            <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
-            </Col>
-        </Row>
-            <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">登陆</Button>
-        <Row class="row-reg" gutter>
-            <Col span="6">
-            <div class="grid-cell" @click="msgCode">短信验证码登录</div>
-            </Col>
-            <Col span="6">
-            <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
-            </Col>
-        </Row>
-        <Other></Other>
-        </Container>
+  <Container>
+    <Row class="hpic" justify-content="center">
+      <Avatar size="80" color="teal">M</Avatar>
+    </Row>
+    <Form ref="form" :model="validateForm" class="mu-demo-form">
+      <FormItem prop="phone" :rules="phoneRules" label="用户名(手机号码)">
+        <TextField v-model="validateForm.phone" prop="phone">
+        </TextField>
+      </FormItem>
+      <FormItem prop="password" :rules="passwordRules" label="密 码">
+        <TextField v-model="validateForm.password" prop="password" :action-icon="visibility ? ':icon-bukejian2' : ':icon-kejian'" :action-click="() => (visibility = !visibility)" :type="visibility ? 'text' : 'password'">
+        </TextField>
+      </FormItem>
+    </Form>
+    <Row gutter>
+      <Col span="6">
+      <Checkbox label="记住用户名" v-model="validateForm.isAgree"></Checkbox>
+      </Col>
+      <Col span="6">
+      <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
+      </Col>
+    </Row>
+    <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">登陆</Button>
+    <Row class="row-reg" gutter>
+      <Col span="6">
+      <div class="grid-cell" @click="msgCode">短信验证码登录</div>
+      </Col>
+      <Col span="6">
+      <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
+      </Col>
+    </Row>
+    <Other></Other>
+  </Container>
 </template>
 
 <script>
@@ -47,7 +47,10 @@ export default {
     return {
       phoneRules: [
         { validate: val => !!val, message: '必须填写用户名' },
-        { validate: val => val.length === 11, message: '用户名长度为11位手机号码' }
+        {
+          validate: val => val.length === 11,
+          message: '用户名长度为11位手机号码'
+        }
       ],
       passwordRules: [
         { validate: val => !!val, message: '必须填写密码' },
@@ -91,26 +94,26 @@ export default {
           tools.setStorage('token', response.result.token);
           tools.setStorage('phone', response.result.userinfo.phone);
           tools.setStorage('userInfo', response.result.userinfo);
-          //绑定极光推送的别名为id
+          // 绑定极光推送的别名为id
           let ajpush = window.api.require('ajpush');
-          let param = {alias:response.result.userinfo.id};
-          ajpush.bindAliasAndTags(param,function(ret) {
-                let statusCode = ret.statusCode;
+          let param = { alias: response.result.userinfo.id };
+          ajpush.bindAliasAndTags(param, function (ret) {
+            let statusCode = ret.statusCode;
           });
-          //登录完跳转
+          // 登录完跳转
           window.api.openWin({
-              name: 'main',
-              url: './main.html',
-              slidBackEnabled:false,
-              pageParam: {
-                  comefrom:'login',
-                }
+            name: 'main',
+            url: './main.html',
+            slidBackEnabled: false,
+            pageParam: {
+              comefrom: 'login'
+            }
           });
           break;
         default:
           tools.toast({
             position: 'top',
-            message: response.message,
+            message: response.message
           });
           break;
       }
@@ -140,16 +143,16 @@ export default {
     }
   },
   mounted () {
-      if(window.api.pageParam.comefrom!==undefined){
-        setTimeout(function(){
-            window.api.closeWin({
-                name: window.api.pageParam.comefrom
-            });
-            window.api.closeWin({
-                name: 'main'
-            });
-        },500);
-      }
+    if (window.api.pageParam.comefrom !== undefined) {
+      setTimeout(function () {
+        window.api.closeWin({
+          name: window.api.pageParam.comefrom
+        });
+        window.api.closeWin({
+          name: 'main'
+        });
+      }, 500);
+    }
   }
 };
 </script>
