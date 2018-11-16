@@ -116,8 +116,7 @@ export default {
           ajpush.bindAliasAndTags(param,function(ret) {
                 let statusCode = ret.statusCode;
           });
-
-        alert('登录成功且'+(window.api.pageParam.type==='qq'?'QQ':'微信')+'账户已绑定成功');
+        alert('登录成功'+(window.api.pageParam.type==='qq'?'且已绑定QQ账户':window.api.pageParam.type==='wx'?'且已绑定微信账户':''));
           //登录完跳转
           window.api.openWin({
               name: 'main',

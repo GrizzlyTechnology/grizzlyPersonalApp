@@ -27,7 +27,7 @@ axios.interceptors.request.use((config) => {
   config.headers['X-Requested-With'] = 'XMLHttpRequest';
   config.headers['MG_code'] = '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O';
   config.headers['MG_key'] = '5b10fed636fcf';
-  config.headers['MG_token'] = ENV === 'development' ? '6f8bade35ef87e5a6aa623519ef973582dc25205' : tools.getStorage('token') || '';
+  config.headers['MG_token'] = ENV === 'development' ? tools.getStorage('token') : tools.getStorage('token') || '';
   return config;
 }, (error) => {
   return Promise.reject(error);
