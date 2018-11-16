@@ -37,11 +37,15 @@ export default {
     async qqQuery() {
       const openId = await this.qqGoto();
       if(!openId){
-          alert("QQ登录失败");
-          return;
+          tools.toast({
+                position: 'top',
+                message: '微信登录失败',
+                });
+                return false;
       }
         this.ologin({
             openid:openId,
+            token:'',
             type:'qq'
         });
     },
@@ -63,7 +67,11 @@ export default {
             obj.qq.getUserInfo(function(ret, err) {
                 if (ret.status) {
                     //api.alert({ msg: JSON.stringify(ret) });
-                    resolve(eval('(' + ret.info + ')'));
+                    resolve({
+                        nickname:ret.info.nickname,
+                        sex:ret.info.gender=='男'?1:ret.info.gender=='女'?0:9,
+                        headphoto:ret.info.figureurl_qq_2,
+                    });
                 } else {
                     resolve(false);
                 }
@@ -84,16 +92,23 @@ export default {
     async wxQuery(){
         const code=await this.wxGoto();
         if(!code){
-            alert('微信登录失败');
-            return;
+            tools.toast({
+                position: 'top',
+                message: '微信登录失败',
+                });
+                return false;
         }
         const token=await this.wxToken(code);
         if(!token){
-            alert('微信登录失败');
-            return;
+            tools.toast({
+                position: 'top',
+                message: '微信登录失败',
+                });
+                return false;
         }
         this.ologin({
             openid:token.openId,
+            token:token.accessToken,
             type:'wx'
         });
     },
@@ -179,7 +194,33 @@ export default {
             });
           break;
           case 1:
-            alert(JSON.stringify(parm));
+            let info;
+            if(parm.type==='qq'){
+                const result = await this.qqInfo();
+                info=result;
+            }else if(parm.type==='wx'){
+                const result=await this.wxInfo(parm.token,parm.openid);
+                info=result;
+            }else{
+                tools.toast({
+                position: 'top',
+                message: '登录方式错误',
+                });
+                return false;
+            }
+            tools.openWin({
+                name: 'bund',
+                url: '../win.html',
+                title: '账户绑定',
+                fname: 'bund_f',
+                furl: './index/bund.html',
+                hasLeft: 1,
+                data: {
+                    comefrom:'login',
+                    type:parm.type,
+                    info:info
+                    }
+            });
           break;
           default:
             tools.toast({
