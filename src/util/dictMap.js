@@ -20,7 +20,7 @@ dict.deliveryEntry = 5;// 已离校待入职
 dict.entry = 6;// 已入职
 dict.resumeNotSuitable = -9; // 简历不符合要求
 
-dict.deliveryNotSuitable = [dict.refuseInterview, dict.failInterview, dict.personalRejection, dict.rejectionLeaveSchool, dict.schoolRejection, dict.resumeNotSuitable]; // 不合适
+dict.deliveryNotSuitable = [dict.refuseInterview, dict.failInterview, dict.personalRejection, dict.rejectionLeaveSchool, dict.resumeNotSuitable]; // 不合适
 
 dict.deliveryStatus = {
   [dict.deliveryInvitation]: ['等待邀约', '待邀约'],
