@@ -33,14 +33,15 @@ dict.deliveryStatus = {
   [dict.deliveryLeaveSchool]: ['面试通过待离校', '申请离校'],
   [dict.rejectionLeaveSchool]: ['学校拒绝离校', '拒绝离校'],
   [dict.deliveryEntry]: ['已离校待入职', '待入职'],
-  [dict.entry]: ['已入职', '不符合'],
+  [dict.entry]: ['已入职', '已入职'],
   [dict.resumeNotSuitable]: ['简历不符合要求', '不符合']
 };
+
 dict.deliveryTab = {
-  [dict.deliveryInvitation]: dict.deliveryInvitation[1],
-  [dict.deliveryInterview]: dict.deliveryInterview[1],
-  [dict.deliveryLeaveSchool]: dict.deliveryLeaveSchool[1],
-  [dict.deliveryNotSuitable]: dict.deliveryNotSuitable[1]
+  [dict.deliveryInvitation]: dict.deliveryStatus[dict.deliveryInvitation][1],
+  [dict.deliveryInterview]: dict.deliveryStatus[dict.deliveryInterview][1],
+  [dict.deliveryLeaveSchool]: dict.deliveryStatus[dict.deliveryLeaveSchool][1],
+  [dict.deliveryNotSuitable]: '不合适'
 };
 
 dict.skillLevel = ['了解', '熟悉', '掌握', '精通', '专家'];
