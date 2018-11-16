@@ -119,10 +119,10 @@ adapter.messageAdapter = function (data) {
   };
 };
 
-adapter.deliveryAdapter = function (data) {
+adapter.deliveryAdapter = function (data, nameType = 1) {
   return {
     ...data,
-    statusText: dict.deliveryStatus[data.status],
+    statusText: dict.deliveryStatus[data.status][nameType],
     deliveryDateText: moment(data.deliveryDate * 1000).format(
       'YYYY年MM月DD日'
     )
@@ -132,22 +132,22 @@ adapter.deliveryAdapter = function (data) {
 adapter.deliveryStatusColor = function (status) {
   let color;
   switch (status) {
-    case 0 :
+    case 0:
       color = '#999';
       break;
-    case 1 :
+    case 1:
       color = '#3db0eb';
       break;
-    case 2 :
+    case 2:
       color = '#0D9CE6';
       break;
-    case 3 :
+    case 3:
       color = '#f7ba2a';
       break;
-    case 4 :
+    case 4:
       color = '#f7842a';
       break;
-    case 5 :
+    case 5:
       color = '#27cd59';
       break;
     default:
