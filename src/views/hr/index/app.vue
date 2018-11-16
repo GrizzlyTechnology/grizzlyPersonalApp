@@ -421,7 +421,7 @@ export default {
       tool.openWin({
         name: 'raidersArticle',
         url: '../win.html',
-        title: '',
+        title: '职场攻略',
         fname: 'raidersArticle_f',
         furl: './hr/raidersArticle.html',
         hasLeft: 1,
@@ -436,7 +436,7 @@ export default {
       tool.openWin({
         name: 'resumeList',
         url: '../win.html',
-        title: '',
+        title: '创建简历',
         fname: 'resumeList_f',
         furl: './userCenter/resumeList.html',
         hasLeft: 1,

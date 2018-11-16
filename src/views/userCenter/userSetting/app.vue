@@ -241,7 +241,7 @@ export default {
       tools.openWin({
         name: 'passwordSetting',
         url: '../win.html',
-        title: '密码设置',
+        title: '修改密码',
         fname: 'passwordSetting_f',
         furl: './userCenter/passwordSetting.html',
         hasLeft: 1,
@@ -257,7 +257,7 @@ export default {
       tools.openWin({
         name: 'phoneSetting',
         url: '../win.html',
-        title: '密码设置',
+        title: '修改手机号码',
         fname: 'phoneSetting_f',
         furl: './userCenter/phoneSetting.html',
         hasLeft: 1,
