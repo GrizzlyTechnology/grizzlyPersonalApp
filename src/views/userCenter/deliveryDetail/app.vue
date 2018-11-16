@@ -97,7 +97,7 @@ export default {
         url: '../win.html',
         title: '职位详情',
         fname: 'jobDetails_f_' + id,
-        furl: '../hr/jobDetails.html',
+        furl: './hr/jobDetails.html',
         hasLeft: 1,
         LCB: () => {
           this.getDetail();
