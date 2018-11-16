@@ -100,7 +100,7 @@ export default {
     return {
       uploaderHide: false,
       progressPercent: 0,
-      actionUrl: 'http://' + (process.env === 'development' ? hostList.test : hostList.test) + '/api/Userresources/create',
+      actionUrl: 'http://' + (process.env === 'production' ? hostList.pro : hostList.test) + '/api/Userresources/create',
       headers: {
         MG_code:
           '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O',
@@ -142,9 +142,8 @@ export default {
           this.userInfo = response.result.userInfo;
           const phone = response.result.userInfo.phone;
           const emailArray = response.result.userInfo.email !== null ? response.result.userInfo.email.split('@') : [];
-
           this.phone = phone !== null ? phone[0] + phone[1] + phone[2] + phone[3] + '****' + phone[8] + phone[9] + phone[10] : '暂无';
-          this.email = emailArray.length > 0 ? emailArray[0][0] + '****' + emailArray[0][emailArray[0].length - 1] + '@' + emailArray[1] : '暂无';
+          this.email = emailArray.length > 0 ? emailArray[0][0] + '****' + emailArray[0][emailArray[0].length - 1] + '@' + '****.' + emailArray[1].split('.')[1] : '暂无';
           this.nickname = response.result.userInfo.nickname !== null ? response.result.userInfo.nickname : '暂无';
           this.name = response.result.userInfo.name !== null ? response.result.userInfo.name : '暂无';
           this.identity = response.result.userInfo.identity !== null ? response.result.userInfo.identity : '暂无';
@@ -242,7 +241,7 @@ export default {
       tools.openWin({
         name: 'passwordSetting',
         url: '../win.html',
-        title: '密码设置',
+        title: '修改密码',
         fname: 'passwordSetting_f',
         furl: './userCenter/passwordSetting.html',
         hasLeft: 1,
@@ -258,7 +257,7 @@ export default {
       tools.openWin({
         name: 'phoneSetting',
         url: '../win.html',
-        title: '密码设置',
+        title: '修改手机号码',
         fname: 'phoneSetting_f',
         furl: './userCenter/phoneSetting.html',
         hasLeft: 1,

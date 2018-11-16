@@ -22,7 +22,7 @@
       <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
     </Cell> -->
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="logout">退出登录</Button>
+      <Button color="#f75c5d" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="logout">退出登录</Button>
     </div>
   </div>
 </template>
@@ -31,6 +31,7 @@
 import { Button, Icon } from 'muse-ui';
 import { Cell } from 'mint-ui';
 import tools from 'util/tools';
+import service from 'service';
 
 export default {
   data () {
@@ -62,15 +63,35 @@ export default {
         hasLeft: 1
       });
     },
+    async query () {
+      tools.showProgress();
+      const response = await service.logout();
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          tools.clearStorage('token');
+          tools.openWin({
+            name: 'login',
+            url: '../win.html',
+            title: '登录',
+            fname: 'login_f',
+            furl: './index/login.html',
+            data: {
+              comefrom: 'setting'
+            }
+          });
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: response.message
+          });
+          break;
+      }
+    },
     logout () {
-      tools.clearStorage('token');
-      window.api.sendEvent({
-        name: 'event'
-      });
-      window.api.closeToWin({
-        name: 'root'
-      });
-    }
+      this.query();
+    },
   },
   mounted () {}
 };

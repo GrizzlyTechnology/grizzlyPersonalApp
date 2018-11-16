@@ -3,12 +3,13 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form">
-          <FormItem label="原密码" prop="oldPassWord" :rules="passWordRules">
-            <TextField v-model="form.oldPassWord" type="password"></TextField>
+          <FormItem label="原密码" prop="password" :rules="passWordRules">
+            <TextField v-model="form.password" type="password"></TextField>
           </FormItem>
-          <FormItem label="新密码" prop="passWord" :rules="passWordRules">
-            <TextField v-model="form.passWord" type="password"></TextField>
+          <FormItem label="新密码" prop="newPassword" :rules="passWordRules">
+            <TextField v-model="form.newPassword" type="password"></TextField>
           </FormItem>
+
           <FormItem label="确认密码" prop="rePassword" :rules="rePasswordRules">
             <TextField v-model="form.rePassword" type="password"></TextField>
           </FormItem>
@@ -33,17 +34,18 @@ export default {
   data () {
     return {
       form: {
-        oldPassWord: '',
-        passWord: '',
+        newPassword: '',
+        password: '',
         rePassword: ''
       },
       passWordRules: [
-        { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' }
+        { validate: val => regexps.password.test(val), message: '密码规则:由6-32位0-9的数字或者大小写字母组成' },
+        { validate: val => this.form.password !== this.form.newPassword, message: '新密码不能与旧密码一样' }
       ],
       rePasswordRules: [
-        { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' },
-        { validate: val => this.form.passWord === this.form.rePassword, message: '两次密码输入不一致' }
-      ]
+        { validate: val => regexps.password.test(val), message: '密码规则:由6-32位0-9的数字或者大小写字母组成' },
+        { validate: val => this.form.newPassword === this.form.rePassword, message: '两次密码输入不一致' }
+      ],
     };
   },
   components: {
@@ -55,10 +57,13 @@ export default {
   methods: {
     async edit () {
       tools.showProgress();
-      const response = await service.updateUserBaesInfo({
+      const response = await service.userSetting({
         ...this.form
       });
+      // console.log(JSON.stringify(this.form));
       tools.hideProgress();
+      // console.log(JSON.stringify(response));
+
       switch (response.code) {
         case 0:
           tools.closeWin();

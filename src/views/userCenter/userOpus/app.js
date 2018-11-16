@@ -7,7 +7,7 @@ import 'assets/fonts/iconfont.css';
 import { Lazyload } from 'mint-ui';
 Vue.use(Lazyload);
 
-if (process.env === 'production') {
+if (process.env !== 'development') {
   window.apiready = function () {
     new Vue({
       el: '#app',

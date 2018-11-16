@@ -13,6 +13,7 @@
 import tool from 'util/tools';
 import { BottomNav } from 'muse-ui';
 import { BottomNavItem } from 'muse-ui/lib/BottomNav';
+
 export default {
   props: {
     footerHeight: {
@@ -45,9 +46,9 @@ export default {
         scrollEnabled: false,
         rect: {
           x: 0,
-          y: 0,
+          y: window.api.safeArea.top,
           w: 'auto',
-          h: window.api.frameHeight - footerH
+          h: window.api.frameHeight - footerH - window.api.safeArea.top
         },
         index: 0,
         frames: [
@@ -87,13 +88,13 @@ export default {
 <style lang="less">
 @import url("../../../assets/css/base.less");
 body {
-    .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  left: 0;
-}
-  .footer .bottomNav{
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+  }
+  .footer .bottomNav {
     background-color: @baseColor;
     height: 60px;
   }

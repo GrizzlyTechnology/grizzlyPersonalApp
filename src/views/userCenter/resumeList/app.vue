@@ -33,10 +33,10 @@
 
 <script>
 // import service from 'service';
-import { CellSwipe } from "mint-ui";
-import { Button } from "muse-ui";
-import tools from "util/tools";
-import service from "service";
+import { CellSwipe } from 'mint-ui';
+import { Button } from 'muse-ui';
+import tools from 'util/tools';
+import service from 'service';
 
 // import AreaSelected from 'components/AreaSelected';
 export default {
@@ -51,7 +51,7 @@ export default {
     CellSwipe
   },
   methods: {
-    async getList() {
+    async getList () {
       tools.showProgress();
       const response = await service.getUserBaseInfo();
       tools.hideProgress();
@@ -62,8 +62,8 @@ export default {
           break;
         default:
           tools.toast({
-            position: "top",
-            message: "简历列表获取失败"
+            position: 'top',
+            message: '简历列表获取失败'
           });
           break;
       }
@@ -75,14 +75,14 @@ export default {
       const response = await service.getUserInfo();
       tools.hideProgress();
       let baseInfo = {
-        name: "",
-        sex: "",
-        phone: ""
+        name: '',
+        sex: '',
+        phone: ''
       };
       switch (response.code) {
         case 0:
           baseInfo = {
-            name: response.result.userInfo.name || "",
+            name: response.result.userInfo.name || '',
             sex: response.result.userInfo.sex,
             phone: response.result.userInfo.phone
           };
@@ -93,24 +93,24 @@ export default {
 
       // 创建我的基本信息
       tools.openWin({
-        name: "userBaseInfo",
-        url: "../win.html",
-        title: "基本信息",
-        fname: "userBaseInfo_f",
-        furl: "./userCenter/userBaseInfo.html",
+        name: 'userBaseInfo',
+        url: '../win.html',
+        title: '基本信息',
+        fname: 'userBaseInfo_f',
+        furl: './userCenter/userBaseInfo.html',
         hasLeft: 1,
         data: {
-          nameSpace: "userBaseInfo",
-          type: "create",
+          nameSpace: 'userBaseInfo',
+          type: 'create',
           baseInfo: {
-            name: "", // true string 真实姓名
+            name: '', // true string 真实姓名
             sex: 1, // true string 性别
             birthday: null, // true string生日
             houseHold: [], // true string 籍贯
             address: [],
-            street: "",
-            phone: "", // true string手机
-            email: "", // true string 邮箱
+            street: '',
+            phone: '', // true string手机
+            email: '', // true string 邮箱
             ...baseInfo
           },
           callback: (ret, err) => {
@@ -136,16 +136,16 @@ export default {
 
     resumeDetail (data) {
       tools.openWin({
-        name: "resumeDetail",
-        url: "../win.html",
+        name: 'resumeDetail',
+        url: '../win.html',
         title: data.title,
-        fname: "resumeDetail_f",
-        furl: "./userCenter/resumeDetail.html",
+        fname: 'resumeDetail_f',
+        furl: './userCenter/resumeDetail.html',
         hasLeft: 1,
         data: {
-          nameSpace: "resumeDetail",
-          from: "resumeList",
-          type: "edit",
+          nameSpace: 'resumeDetail',
+          from: 'resumeList',
+          type: 'edit',
           id: data.id
         }
       });

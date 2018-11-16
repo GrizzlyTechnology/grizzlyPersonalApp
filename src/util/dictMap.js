@@ -2,10 +2,20 @@ const dict = {};
 
 dict.female = 0;
 dict.male = 1;
-
 dict.sex = {
   [dict.male]: '男',
   [dict.female]: '女'
+};
+
+dict.deliveryInvitation = 0;
+dict.deliveryInterview = 1;
+dict.deliveryLeaveSchool = 2;
+dict.deliveryNotSuitable = -1;
+dict.deliveryStatus = {
+  [dict.deliveryInvitation]: '待邀约',
+  [dict.deliveryInterview]: '待面试',
+  [dict.deliveryLeaveSchool]: '待离校',
+  [dict.deliveryNotSuitable]: '不合适'
 };
 
 dict.skillLevel = ['了解', '熟悉', '掌握', '精通', '专家'];

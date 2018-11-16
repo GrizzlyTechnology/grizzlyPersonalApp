@@ -10,11 +10,14 @@ switch (ENV) {
   case 'development':
     BASEURL = hostList.test;
     break;
+  case 'production':
+    BASEURL = hostList.pro;
+    break;
   default:
     BASEURL = hostList.test;
     break;
 }
-
+// console.log(hostList.test);
 axios.defaults.baseURL = BASEURL;
 axios.defaults.timeout = 30000;
 // axios.defaults.withCredentials = true;
@@ -24,7 +27,7 @@ axios.interceptors.request.use((config) => {
   config.headers['X-Requested-With'] = 'XMLHttpRequest';
   config.headers['MG_code'] = '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O';
   config.headers['MG_key'] = '5b10fed636fcf';
-  config.headers['MG_token'] = ENV !== 'production' ? '6f8bade35ef87e5a6aa623519ef973582dc25205' : tools.getStorage('token') || '';
+  config.headers['MG_token'] = ENV === 'development' ? '6f8bade35ef87e5a6aa623519ef973582dc25205' : tools.getStorage('token') || '';
   return config;
 }, (error) => {
   return Promise.reject(error);
@@ -65,7 +68,7 @@ function delEmptyAttr (arg) {
 
 function request ({ host = '', version = '', url, params, method = 'post' }) {
   const mock = isMock({ host, version, url, params, method });
-  if (ENV !== 'production' && mock.isMock === true) {
+  if (ENV === 'development' && mock.isMock === true) {
     return new Promise((resolve) => {
       resolve(mock.mock);
     });
@@ -106,12 +109,19 @@ export default {
       params
     });
   },
-  otherlogin(params){
+  otherlogin (params) {
     return request({
-        host: BASEURL,
-        url: '/api/User/otherLogin',
-        params
-      });
+      host: BASEURL,
+      url: '/api/User/otherLogin',
+      params
+    });
+  },
+  bund (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/User/bund',
+      params
+    });
   },
   logout () {
     return request({
@@ -153,6 +163,14 @@ export default {
       host: BASEURL,
       url: '/api/Student/create',
       params
+    });
+  },
+  getStudentInfo (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Student/info',
+      params,
+      method: 'get'
     });
   },
   getAreaByAreaId (areaId = '') {
@@ -507,32 +525,99 @@ export default {
       method: 'get'
     });
   },
-    // 首页滚动图
-    carouselImgs (params) {
-      return request({
-        host: BASEURL,
-        url: '/api/Content/slides',
-        params,
-        method: 'get'
-      });
-    },
-    // 首页热门职位
-    hotJobsData (params) {
-      return request({
-        host: BASEURL,
-        url: '/api/Job/recommendjobs',
-        params,
-        method: 'get'
-      });
-    },
-    //首页获取适合你的职位
-    suitablePosition (params) {
-      return request({
-        host: BASEURL,
-        url: '/api/Resume/create',
-        params,
-        method: 'get'
-      });
-    },
-
+  // 首页滚动图
+  carouselImgs (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Content/slides',
+      params,
+      method: 'get'
+    });
+  },
+  // 首页热门职位
+  hotJobsData (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Job/recommendjobs',
+      params,
+      method: 'get'
+    });
+  },
+  // 首页获取适合你的职位
+  suitablePosition (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Resume/create',
+      params,
+      method: 'get'
+    });
+  },
+  // 获取广告地址
+  getAdv (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Content/seladvs',
+      params,
+      method: 'get'
+    });
+  },
+  userSetting (params) {
+    console.log(JSON.stringify(params));
+    return request({
+      host: BASEURL,
+      url: '/api/User/update',
+      params
+    });
+  },
+  getEmailVerificationCode (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Email/send_code',
+      params
+    });
+  },
+  getMessageList (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Message/lists',
+      params: {
+        pageSize: 10,
+        page: 1,
+        ...params
+      },
+      method: 'get'
+    });
+  },
+  messageDoRead (id) {
+    return request({
+      host: BASEURL,
+      url: '/api/message/orderBy',
+      params: {
+        id
+      },
+      method: 'get'
+    });
+  },
+  getDeliveryList (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Job/deliveredresume',
+      params: {
+        status: '',
+        pageSize: 10,
+        page: 1,
+        ...params
+      },
+      method: 'get'
+    });
+  },
+  // 猜你要搜
+  chipsData (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Job/guesssearch',
+      params,
+      method: 'get'
+    });
+  }
 };

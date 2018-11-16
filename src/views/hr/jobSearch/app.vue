@@ -2,16 +2,16 @@
   <div class="content">
     <div class='p15'>
       <div class='flexCon'>
-        <span @click="areaHandle" class='araeBox'>
-          <i class='iconfont icon-weizhi-blue'></i>{{areaText}}</span>
-        <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue" label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
+      <!-- <span @click="areaHandle" class='araeBox'>
+          <i class='iconfont icon-weizhi-blue'></i>{{areaText}}</span> -->
+       <AutoComplete :data="filterResult" @select="submit" @keyup.enter='submit' @keyup="getAllSearchValue" label="" v-model="form.keyWord" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
           <i class='iconfont icon-suosou' @click='submit'></i>
         </AutoComplete>
       </div>
     </div>
     <div class="p15 mt25 bgWhite">
       <SubHeader>猜你要搜</SubHeader>
-      <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.value' @click="chipHandle">{{chip}}</Chip>
+      <Chip color="#f5f5f5" v-for='chip in chips' :key='chip.index' @click="jobSearchList(chip)">{{chip}}</Chip>
     </div>
   </div>
 </template>
@@ -20,25 +20,20 @@
 import service from 'service';
 import { Toast } from 'mint-ui';
 import { SubHeader, Chip, AutoComplete } from 'muse-ui';
-import tools from 'util/tools';
+import tool from 'util/tools';
 export default {
   data () {
     return {
-      form: {
-        keyWord: '',
-        area: null
+       form: {
+        keyWord: ''
+        // area: ''
       },
       area: [],
       defaultResult: [],
       labelPosition: 'right',
-      chips: [
-        '产品经理',
-        '网络科技',
-        '信息科技',
-        '前端工程师',
-        '生物科技',
-        '医药科技'
-      ]
+       count: 0,
+       resumeList: [],
+      chips: []
     };
   },
   components: {
@@ -48,11 +43,11 @@ export default {
     AutoComplete
   },
   computed: {
-    areaText () {
-      return this.area.length > 0
-        ? this.area[this.area.length - 1].label
-        : '全国';
-    },
+    // areaText () {
+    //   return this.area.length > 0
+    //     ? this.area[this.area.length - 1].label
+    //     : '全国';
+    // },
     filterResult () {
       return this.defaultResult.filter(value =>
         new RegExp(this.value, 'i').test(value)
@@ -60,85 +55,103 @@ export default {
     }
   },
   methods: {
+    // 点击选择地区
+     // areaHandle () {
+    //   tool.openWin({
+    //     name: 'areaSelector',
+    //     url: '../win.html',
+    //     title: '选择地区',
+    //     fname: 'areaSelector_f',
+    //     furl: './common/areaSelector.html',
+    //     hasLeft: 1,
+    //     data: {
+    //       nameSpace: 'areaSelector',
+    //       area: this.area,
+    //       level: 2,
+    //       callback: (ret, err) => {
+    //         this.area = ret.value;
+    //       }
+    //     }
+    //   });
+    // },
     // 点击搜索
     search () {
-      tools.openWin({
+        // this.form.area =
+      //   this.area.length > 0 ? this.area[this.area.length - 1].value : '';
+      tool.openWin({
         name: 'jobSearchList',
         url: '../win.html',
         title: '所有职位',
         fname: 'jobSearchList_f',
         furl: './hr/jobSearchList.html',
         hasLeft: 1,
+        hasRight: 0,
         data: {
           nameSpace: 'jobSearchList',
-          area: this.form.area,
+          // area: this.form.area,
           keyWord: this.form.keyWord
         }
       });
     },
-
     // 获取职位
     async getAllSearchValue () {
+      tool.showProgress();
       const response = await service.getAllPosition(this.form.keyWord);
+      tool.hideProgress();
       switch (response.code) {
         case 0:
           this.defaultResult = response.result.info;
           break;
         default:
-          tools.toast({
+          tool.toast({
             position: 'top',
             message: '搜索失败，请重试'
           });
           break;
       }
     },
-    async searchChipValue () {
-      const response = await service.searchChipValue(this.value);
+     submit () {
+      this.search();
+    },
+
+    // 猜你要搜数据获取
+    async chipsDataList () {
+      tool.showProgress();
+      const response = await service.chipsData({
+       num:6
+      });
+      tool.hideProgress();
       switch (response.code) {
         case 0:
-          tools.openWin({
-            name: 'jobSearchList',
-            url: '../win.html',
-            title: '所有职位',
-            fname: 'jobSearchList_f',
-            furl: './hr/jobSearchList.html',
-            hasLeft: 1
-          });
+          this.chips = response.result;
           break;
         default:
-          tools.toast({
+          Toast({
             position: 'top',
-            message: '搜索失败，请稍后重试！！'
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
-    areaHandle () {
-      tools.openWin({
-        name: 'areaSelector',
+    // 职位详情
+     jobSearchList (position) {
+      tool.openWin({
+        name: 'jobSearchList',
         url: '../win.html',
-        title: '选择地区',
-        fname: 'areaSelector_f',
-        furl: './common/areaSelector.html',
+        title: '所有职位',
+        fname: 'jobSearchList_f',
+        furl: './hr/jobSearchList.html',
         hasLeft: 1,
+        hasRight: 0,
         data: {
-          nameSpace: 'areaSelector',
-          area: this.area,
-          level: 2,
-          callback: (ret, err) => {
-            this.area = ret.value;
-          }
+          nameSpace: 'jobSearchList',
+          keyWord: position
         }
       });
-    },
-    chipHandle () {
-      this.searchChipValue();
-    },
-    submit () {
-      this.search();
     }
   },
   mounted () {
+     this.chipsDataList();
   }
 };
 </script>
@@ -169,7 +182,8 @@ export default {
 }
 
 .mu-input.searchBox {
-  width: 80%;
+  // width: 80%;
+  width:98%;
   min-height: auto;
   padding-top: 0px;
   padding-bottom: 0px;
