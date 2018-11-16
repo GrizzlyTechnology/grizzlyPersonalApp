@@ -1,7 +1,7 @@
 <template>
     <Container>
         <Row class="hpic" justify-content="center">
-            <Avatar size="80" color="teal">M</Avatar>
+            <Avatar size="80" color="teal"></Avatar>
         </Row>
         <Form ref="form" :model="validateForm" class="mu-demo-form">
             <FormItem prop="phone" :rules="phoneRules" label="用户名(手机号码)">
@@ -112,25 +112,25 @@ export default {
          
           //绑定极光推送的别名为id
           let ajpush = window.api.require('ajpush');
-          let param = {alias:response.result.userinfo.id};
-          ajpush.bindAliasAndTags(param,function(ret) {
-                let statusCode = ret.statusCode;
+          let param = {alias: response.result.userinfo.id};
+          ajpush.bindAliasAndTags(param, function (ret) {
+            let statusCode = ret.statusCode;
           });
         alert('登录成功'+(window.api.pageParam.type==='qq'?'且已绑定QQ账户':window.api.pageParam.type==='wx'?'且已绑定微信账户':''));
           //登录完跳转
           window.api.openWin({
-              name: 'main',
-              url: './main.html',
-              slidBackEnabled:false,
-              pageParam: {
-                  comefrom:'login',
-                }
+            name: 'main',
+            url: './main.html',
+            slidBackEnabled: false,
+            pageParam: {
+              comefrom: 'login'
+            }
           });
           break;
         default:
           tools.toast({
             position: 'top',
-            message: response.message,
+            message: response.message
           });
           break;
       }
@@ -179,24 +179,28 @@ export default {
     }
   },
   mounted () {
-      if(window.api.pageParam.comefrom!==undefined){
-        setTimeout(function(){
-            window.api.closeWin({
-                name: window.api.pageParam.comefrom
-            });
-            window.api.closeWin({
-                name: 'main'
-            });
-        },500);
-      }
+    if (window.api.pageParam.comefrom !== undefined) {
+      setTimeout(function () {
+        window.api.closeWin({
+          name: window.api.pageParam.comefrom
+        });
+        window.api.closeWin({
+          name: 'main'
+        });
+      }, 500);
+    }
   }
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import url("../../../assets/css/base.less");
 .container {
   padding: @gap;
+  .mu-avatar{
+    background: url('../../../assets/img/dhxlogo.png') center  no-repeat;
+    background-size: contain;
+  }
   .hpic {
     padding: 30px 0;
   }
