@@ -129,6 +129,16 @@ adapter.deliveryAdapter = function (data) {
     )
   };
 };
+adapter.deliveryAdapterListRow = function (data) {
+  return {
+    ...data,
+    statusLongText: dict.deliveryStatus[data.status][0],
+    addtimeValue: data.addtime * 1000,
+    info: moment(data.addtime * 1000).format(
+      'YYYY年MM月DD日'
+    )
+  };
+};
 
 adapter.deliveryStatusColor = function (status) {
   let color;
