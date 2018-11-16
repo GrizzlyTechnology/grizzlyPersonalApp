@@ -116,6 +116,13 @@ export default {
       params
     });
   },
+  bund (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/User/bund',
+      params
+    });
+  },
   logout () {
     return request({
       host: BASEURL,

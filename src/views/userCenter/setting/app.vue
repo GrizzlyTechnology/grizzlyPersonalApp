@@ -77,7 +77,7 @@ export default {
             fname: 'login_f',
             furl: './index/login.html',
             data: {
-              comefrom: 'systemSet'
+              comefrom: 'setting'
             }
           });
           break;

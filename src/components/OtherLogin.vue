@@ -1,5 +1,9 @@
 <template>
     <Row>
+        
+        <Col span="12">
+        <div style="padding:20px; color:#CCC; text-align:center; font-size:12px; display:block;">其它第三方账户登录/绑定</div>
+        </col>
         <Col span="3" offset="3" v-if="wxhas">
         <Icon size="35" value=":icon-weixin" @click="wxlogin" />
         </col>
@@ -167,11 +171,13 @@ export default {
         });
     },
     async ologin(parm){
+      tools.showProgress();
       const response=await service.otherlogin({
           openId:parm.openid,
           type:parm.type,
           deviceId:window.api.deviceId
       });
+      tools.hideProgress();
       switch(response.code){
           case 0:
             tools.setStorage('token', response.result.token);
@@ -208,13 +214,14 @@ export default {
                 });
                 return false;
             }
+            info.openid=parm.openid;
             tools.openWin({
                 name: 'bund',
                 url: '../win.html',
                 title: '账户绑定',
                 fname: 'bund_f',
                 furl: './index/bund.html',
-                hasLeft: 1,
+                hasLeft: 0,
                 data: {
                     comefrom:'login',
                     type:parm.type,

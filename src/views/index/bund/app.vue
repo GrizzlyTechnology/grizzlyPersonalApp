@@ -4,8 +4,7 @@
         <div class="ucNickname status">Hi,{{uinfo.nickname}} {{uinfo.sex?'帅哥':'美女'}}</div>
         <div class="ucbs status">您的{{type}}账户未曾绑定</div>
         <div class="uczs">建议立即绑定{{type}}账户实现快捷登录</div>
-        <div class="status"><Button color="#009688" @click="bundlogin">新用户：注册并绑定{{type}}账户</Button></div>
-        <div class="status"><Button color="#009688" @click="bundreg">老用户：登录并绑定{{type}}账户</Button></div>
+        <div class="status"><Button color="#009688" @click="bundlogin">登录/注册并绑定{{type}}账户</Button></div>
         <div style="margin-top:50px; color:#CCC">不想绑定{{type}}账户，<a style="color:blue" @click="backlogin">返回登录</a></div>
     </Container>
 </template>
@@ -29,48 +28,40 @@ export default {
   methods: {
     bundlogin(){
         tools.openWin({
-                name: 'bundlogin',
+                name: 'login',
                 url: '../win.html',
-                title: '登录并绑定'+this.type,
-                fname: 'bundlogin_f',
+                title: '用户登录',
+                fname: 'login_f',
                 furl: './index/login.html',
-                hasLeft: 1,
+                hasLeft: 0,
                 data: {
-                    type:this.type,
+                    comefrom:'bund',
+                    type:window.api.pageParam.type,
                     info:this.uinfo
                     }
             });
-    },
-    bundreg(){
-        tools.openWin({
-        name: 'registered',
-        url: '../win.html',
-        title: '用户注册',
-        fname: 'registered_f',
-        furl: './index/registered.html',
-        hasLeft: 1,
-        data: {
-                    type:this.type,
-                    info:this.uinfo
-                    }
-        });
     },
     backlogin(){
         tools.openWin({
           name: 'login',
           url: '../win.html',
-          title: '登录',
+          title: '用户登录',
           fname: 'login_f',
-          furl: './index/login.html'
+          furl: './index/login.html',
+          data:{
+              comefrom:'bund'
+          }
         });
     }
   },
   mounted () {
-      setTimeout(function(){
-        window.api.closeWin({
-            name: window.api.pageParam.comefrom
-        });
-      },500);
+      if(window.api.pageParam.comefrom!==undefined){
+        setTimeout(function(){
+            window.api.closeWin({
+                name: window.api.pageParam.comefrom
+            });
+        },500);
+      }
   }
 };
 </script>
