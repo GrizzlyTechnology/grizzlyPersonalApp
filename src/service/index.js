@@ -605,6 +605,24 @@ export default {
       method: 'get'
     });
   },
+  getDeliveryDetail (id) {
+    return request({
+      host: BASEURL,
+      url: '/api/Job/deliveredresumeinfo',
+      params: {
+        delivertId: id
+      },
+      method: 'get'
+    });
+  },
+  getDeliveryChoice (params) {
+    console.log(JSON.stringify(params));
+    return request({
+      host: BASEURL,
+      url: '/api/Job/setresumedelivertstatus',
+      params
+    });
+  },
   // 猜你要搜
   chipsData (params) {
     return request({

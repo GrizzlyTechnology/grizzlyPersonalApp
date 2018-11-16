@@ -119,11 +119,22 @@ adapter.messageAdapter = function (data) {
   };
 };
 
-adapter.deliveryAdapter = function (data, nameType = 1) {
+adapter.deliveryAdapter = function (data) {
   return {
     ...data,
-    statusText: dict.deliveryStatus[data.status][nameType],
+    statusText: dict.deliveryStatus[data.status][1],
+    statusLongText: dict.deliveryStatus[data.status][0],
     deliveryDateText: moment(data.deliveryDate * 1000).format(
+      'YYYY年MM月DD日'
+    )
+  };
+};
+adapter.deliveryAdapterListRow = function (data) {
+  return {
+    ...data,
+    statusLongText: dict.deliveryStatus[data.status][0],
+    addtimeValue: data.addtime * 1000,
+    info: moment(data.addtime * 1000).format(
       'YYYY年MM月DD日'
     )
   };

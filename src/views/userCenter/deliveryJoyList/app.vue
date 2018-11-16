@@ -156,7 +156,8 @@ export default {
         hasLeft: 1,
         data: {
           nameSpace: 'deliveryDetail',
-          id: delivery.id
+          id: delivery.id,
+          delivery
         }
       });
     }

@@ -3,20 +3,24 @@
     <div class="delivery" @click="showPostion(id)">
       <img :src="delivery.companyLogo" class="delivery-logo" />
       <div class="delivery-head">
-        <div class="delivery-title">查看职位查看职位查看职位查看职位查看职位查看职位查看职位查看职位</div> <span class="delivery-date">8888年88月88日投递</span>
+        <div class="delivery-title">{{delivery.position}}</div> <span class="delivery-date">{{delivery.deliveryDateText}}投递</span>
       </div>
       <div class="delivery-salary-range">{{delivery.salaryRange}} <span class="delivery-job-area">{{delivery.jobarea}}</span></div>
       <div class="delivery-foot">{{delivery.companyName}}<span class="delivery-link">查看职位</span></div>
     </div>
     <div class="delivery">
-      当前状态：待邀约
+      当前状态：<span :style="deliveryStatusColor(delivery.status)">{{delivery.statusLongText}}</span>
     </div>
     <div class="history">
       <StepVertical :data="delivery.list" />
     </div>
-    <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large>同 意</Button>
-      <Button color="#f75c5d" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large>拒 绝</Button>
+    <div v-if="delivery.status===1" class="footer">
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large @click="doChoice(statusMap.agreeInterview)">同意面试</Button>
+      <Button color="#f75c5d" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large @click="doChoice(statusMap.refuseInterview)">拒绝面试</Button>
+    </div>
+    <div v-if="delivery.status===3" class="footer">
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large @click="doChoice(statusMap.deliveryLeaveSchool)">申请离校</Button>
+      <Button color="#f75c5d" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large @click="doChoice(statusMap.personalRejection)">拒绝入职</Button>
     </div>
   </div>
 </template>
@@ -25,64 +29,18 @@
 import StepVertical from 'components/StepVertical';
 import { Button } from 'muse-ui';
 import tools from 'util/tools';
+import dicts from 'util/dictMap';
+import adapter from 'util/adapter';
+import service from 'service';
 
 export default {
   data () {
     return {
+      statusMap: dicts,
       id: window.api ? window.api.pageParam.id : null,
       delivery: {
-        companyLogo: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-        companyName: '0大灰熊科技',
-        deliveryDate: 1537857030,
-        id: 0,
-        jobarea: '江苏 | 镇江',
-        education: '大专',
-        jobexpyear: '1-3年',
-        position: 'SEO/SEM',
-        salaryRange: '8000-10000',
-        status: '',
-        list: [
-          {
-            head: '邀请您面试',
-            info: '2014-5-6 11:12'
-          },
-          {
-            head: '邀请您面试',
-            info: '2014-5-6 11:12'
-          },
-          {
-            head: '邀请您面试',
-            info: '2014-5-6 11:12'
-          },
-          {
-            head: '邀请您面试',
-            info: '2014-5-6 11:12'
-          },
-          {
-            head: '邀请您面试',
-            info: '2014-5-6 11:12'
-          },
-          {
-            head: '邀请您面试',
-            info: '2014-5-6 11:12'
-          },
-          {
-            head: '邀请您面试',
-            info: '2014-5-6 11:12'
-          },
-          {
-            head: '邀请您面试',
-            info: '2014-5-6 11:12'
-          },
-          {
-            head: '邀请您面试',
-            info: '2014-5-6 11:12'
-          },
-          {
-            head: '邀请您面试',
-            info: '2014-5-6 11:12'
-          }
-        ]
+        ...(window.api ? window.api.pageParam.delivery : {}),
+        list: []
       }
     };
   },
@@ -91,14 +49,53 @@ export default {
     StepVertical
   },
   methods: {
-    async getDetail () {},
+    async doChoice (status) {
+      tools.showProgress();
+      const response = await service.getDeliveryDetail({
+        delivertId: this.id,
+        status
+      });
+      tools.hideProgress();
+      console.log(JSON.stringify(response));
+      switch (response.code) {
+        case 0:
+          this.getDetail();
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '操作失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    async getDetail () {
+      tools.showProgress();
+      const response = await service.getDeliveryDetail(this.id);
+      tools.hideProgress();
+      // console.log(JSON.stringify(response));
+      switch (response.code) {
+        case 0:
+          this.delivery.list = response.result.list.map(row => adapter.deliveryAdapterListRow(row));
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: '投递详情获取失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    deliveryStatusColor (status) {
+      return `color: ${adapter.deliveryStatusColor(status)}`;
+    },
     showPostion (id) {
       tools.openWin({
         name: 'jobDetails_' + id,
         url: '../win.html',
         title: '职位详情',
         fname: 'jobDetails_f_' + id,
-        furl: '../../hr/jobDetails.html',
+        furl: './hr/jobDetails.html',
         hasLeft: 1,
         LCB: () => {
           this.getDetail();
@@ -120,6 +117,9 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  &>*:last-child{
+    margin-bottom: 0
+  }
 }
 .delivery {
   background-color: #fff;
@@ -179,6 +179,10 @@ export default {
     font-size: 14px;
     color: #666;
     float: right;
+  }
+  .delivery-link{
+    float: right;
+    color: @primary;
   }
 }
 .history {
