@@ -48,8 +48,8 @@ export default {
       refreshing: false,
       loading: false,
       lists: [],
-      page:1,
-      pagesize:10,
+      page: 1,
+      pagesize: 10,
       keyWord: window.api.pageParam.keyWord,
       // area: window.api.pageParam.area,
       istj: window.api.pageParam.istj || ''
@@ -182,6 +182,10 @@ export default {
 
 .listItem {
   background: #fff;
+}
+
+.listItem:active {
+  background: #f0f0f0;
 }
 
 .noList {
