@@ -68,7 +68,7 @@ export default {
         MG_key: '5b10fed636fcf',
         MG_token:
           process.env !== 'production'
-            ? tool.getStorage('token')
+            ? tools.getStorage('token')
             : tools.getStorage('token') || ''
       },
       maxSize: 10,
