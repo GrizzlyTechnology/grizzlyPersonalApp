@@ -106,7 +106,9 @@ export default {
           '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O',
         MG_key: '5b10fed636fcf',
         MG_token:
-          process.env !== 'production'? tools.getStorage('token'): tools.getStorage('token') || ''
+        process.env === 'development'
+          ? '6f8bade35ef87e5a6aa623519ef973582dc25205'
+          : tools.getStorage('token') || ''
       },
       maxSize: 10,
       max: 1,
