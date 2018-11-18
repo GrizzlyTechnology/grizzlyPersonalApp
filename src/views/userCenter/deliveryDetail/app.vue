@@ -51,12 +51,12 @@ export default {
   methods: {
     async doChoice (status) {
       tools.showProgress();
-      const response = await service.getDeliveryDetail({
+      const response = await service.getDeliveryChoice({
         delivertId: this.id,
         status
       });
       tools.hideProgress();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.getDetail();
@@ -76,7 +76,12 @@ export default {
       // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
+          this.delivery.status = response.result.status;
           this.delivery.list = response.result.list.map(row => adapter.deliveryAdapterListRow(row));
+          this.delivery.list.push({
+            head: dicts.deliveryStatus[dicts.deliveryInvitation][0],
+            info: this.delivery.deliveryDateText
+          });
           break;
         default:
           tools.toast({
@@ -117,8 +122,8 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  &>*:last-child{
-    margin-bottom: 0
+  & > *:last-child {
+    margin-bottom: 0;
   }
 }
 .delivery {
@@ -180,7 +185,7 @@ export default {
     color: #666;
     float: right;
   }
-  .delivery-link{
+  .delivery-link {
     float: right;
     color: @primary;
   }

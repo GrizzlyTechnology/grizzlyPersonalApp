@@ -616,7 +616,7 @@ export default {
     });
   },
   getDeliveryChoice (params) {
-    console.log(JSON.stringify(params));
+    // console.log(JSON.stringify(params));
     return request({
       host: BASEURL,
       url: '/api/Job/setresumedelivertstatus',
