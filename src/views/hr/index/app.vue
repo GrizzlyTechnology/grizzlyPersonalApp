@@ -275,8 +275,10 @@ export default {
             response.result.resumeInfo.length > 0
               ? [response.result.resumeInfo[0]]
               : [];
+          if (this.resumeList[0].desiredposition) {
+            this.listsData();
+          }
 
-          this.listsData();
           break;
         default:
           tool.toast({
