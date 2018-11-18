@@ -19,14 +19,14 @@
   </Container>
 </template>
 <script>
-import {Button} from 'muse-ui';
+import { Button } from 'muse-ui';
 // import { Card, Icon ,Button} from 'muse-ui';
 // import { CardHeader } from 'muse-ui/lib/Card';
 // import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
 import { Container } from 'muse-ui/lib/Grid';
 import tool from 'util/tools';
 // import service from 'service';
-import { Toast } from 'mint-ui';
+// import { Toast } from 'mint-ui';
 export default {
   data () {
     return {
@@ -72,7 +72,7 @@ export default {
     //     }
     //   });
     // }
-     hotJobListAll () {
+    hotJobListAll () {
       tool.openWin({
         name: 'jobSearchList',
         url: '../win.html',
