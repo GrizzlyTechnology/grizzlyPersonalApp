@@ -147,4 +147,8 @@ export default {
 .companyNameBox .mu-avatar img {
   border-radius: 0px;
 }
+
+.listItem:active{
+   background: #f0f0f0;
+}
 </style>
