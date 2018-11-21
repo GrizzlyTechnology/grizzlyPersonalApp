@@ -155,8 +155,8 @@ export default {
   },
   methods: {
     async create () {
-      // console.log(JSON.stringify(this.form));
       const response = await service.createStudent(this.form);
+      console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           tools.toast({
@@ -173,7 +173,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '学籍信息创建失败，请稍后重试！！'
+            message: response.message
           });
           break;
       }
@@ -181,6 +181,7 @@ export default {
     async getUserInfo () {
       tools.showProgress();
       const response = await service.getUserInfo();
+      console.log(JSON.stringify(response));
       tools.hideProgress();
       switch (response.code) {
         case 0:
