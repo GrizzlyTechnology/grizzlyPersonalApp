@@ -248,7 +248,10 @@ export default {
         fname: 'companyList_f',
         furl: './hr/companyList.html',
         hasLeft: 1,
-        hasRight: 0
+        hasRight: 0,
+         data: {
+           recommend:1
+        }
       });
     },
     // 名企推荐详情
