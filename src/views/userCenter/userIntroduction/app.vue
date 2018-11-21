@@ -34,8 +34,14 @@ export default {
     return {
       id: window.api.pageParam.id || null,
       form: {
-        introduction: window.api.pageParam.introduction
-      }
+        introduction: window.api.pageParam.introduction || ''
+      },
+      introductionRules: [
+        {
+          validate: val => this.form.introduction.length > 0,
+          message: '请填写自我描述'
+        }
+      ]
     };
   },
   components: {
@@ -68,7 +74,6 @@ export default {
           break;
       }
     },
-
     submit () {
       this.$refs.form.validate().then((result) => {
         if (result === true) {
