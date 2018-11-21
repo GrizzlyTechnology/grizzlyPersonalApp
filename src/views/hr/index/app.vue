@@ -223,7 +223,9 @@ export default {
     // 名企推荐数据
     async companyRecommend () {
       tool.showProgress();
-      const response = await service.companyRecommendList({});
+      const response = await service.companyRecommendList({
+        recommend:1
+      });
       tool.hideProgress();
       switch (response.code) {
         case 0:
@@ -543,7 +545,6 @@ body .mu-secondary-text-color {
 
 .space15 {
   padding: 15px;
-  margin-top: 15px;
   margin-bottom: 15px;
 }
 .titleB {
