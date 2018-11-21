@@ -128,7 +128,7 @@
             {{row.honorDateText}}
           </div>
           <div class="picList">
-            <div class="picCon" v-for="(file,index) in row.reslist" :key="file.url">
+            <div v-bind:class="{picCon:true,oddLastOne:(index === (row.reslist.length - 1)) && ((row.reslist.length)%2!==0)}" v-for="(file,index) in row.reslist" :key="file.url">
               <div class="con" @click="imagesPopupOpen(row.reslist,index, row.desc)" :style="{backgroundImage:'url('+file.coverUrl+')'}" />
             </div>
           </div>
@@ -144,46 +144,46 @@
 </template>
 
 <script>
-import moment from "moment";
+import moment from 'moment';
 // import isJson from 'is-json';
 
-import service from "service";
-import tools from "util/tools";
-import dictMap from "util/dictMap";
-import adapter from "util/adapter";
+import service from 'service';
+import tools from 'util/tools';
+import dictMap from 'util/dictMap';
+import adapter from 'util/adapter';
 
-import { Button, Icon } from "muse-ui";
-import { Cell, TabContainer, TabContainerItem, Navbar, TabItem } from "mint-ui";
-import Panel from "components/Panel";
-import StepVertical from "components/StepVertical";
-import SkillLine from "components/SkillLine";
-import ImagesPopup from "components/ImagesPopup";
+import { Button, Icon } from 'muse-ui';
+import { Cell, TabContainer, TabContainerItem, Navbar, TabItem } from 'mint-ui';
+import Panel from 'components/Panel';
+import StepVertical from 'components/StepVertical';
+import SkillLine from 'components/SkillLine';
+import ImagesPopup from 'components/ImagesPopup';
 
 export default {
-  data() {
+  data () {
     return {
       urlList: [],
       imagesDesc: {},
       urlListIndex: 0,
-      tabActive: "tabContainer0",
-      type: window.api ? window.api.pageParam.type : "detail",
+      tabActive: 'tabContainer0',
+      type: window.api ? window.api.pageParam.type : 'detail',
       id: window.api ? window.api.pageParam.id : null,
-      introduction: "",
+      introduction: '',
       baseInfo: {
-        title: "", // 简历名称
-        name: "", // true string 真实姓名
+        title: '', // 简历名称
+        name: '', // true string 真实姓名
         sex: null, // true string 性别
         birthday: null, // true string生日
         houseHold: [], // true string 籍贯
         address: [],
-        street: "",
-        phone: "", // true string手机
-        email: "" // true string 邮箱，
+        street: '',
+        phone: '', // true string手机
+        email: '' // true string 邮箱，
       },
       expectedWork: {
-        desiredPosition: "",
-        expectedSalary: "",
-        expectedCity: "",
+        desiredPosition: '',
+        expectedSalary: '',
+        expectedCity: '',
         workType: null,
         currentState: null,
         timeToPost: null
@@ -211,41 +211,41 @@ export default {
     ImagesPopup
   },
   computed: {
-    opusPic() {
+    opusPic () {
       return this.opus.filter(r => {
         if (r.type === 0) {
           return r;
         }
       });
     },
-    opusOnline() {
+    opusOnline () {
       return this.opus.filter(r => {
         if (r.type === 1) {
           return r;
         }
       });
     },
-    isNotDetail() {
-      return this.type === "creat" || this.type === "edit";
+    isNotDetail () {
+      return this.type === 'creat' || this.type === 'edit';
     },
-    isRequired() {
-      return this.type === "edit" ? "必填" : "";
+    isRequired () {
+      return this.type === 'edit' ? '必填' : '';
     },
-    birthdayText() {
+    birthdayText () {
       return this.baseInfo.birthday
-        ? moment(this.baseInfo.birthday).format("YYYY年MM月DD日")
-        : "";
+        ? moment(this.baseInfo.birthday).format('YYYY年MM月DD日')
+        : '';
     },
-    sexText() {
-      return this.baseInfo.sex !== null ? dictMap.sex[this.baseInfo.sex] : "";
+    sexText () {
+      return this.baseInfo.sex !== null ? dictMap.sex[this.baseInfo.sex] : '';
     },
-    houseHoldText() {
-      return this.baseInfo.houseHold.map(row => row.label).join(" ");
+    houseHoldText () {
+      return this.baseInfo.houseHold.map(row => row.label).join(' ');
     },
-    addressText() {
+    addressText () {
       return (
-        this.baseInfo.address.map(row => row.label).join(" ") +
-        (this.baseInfo.street || "")
+        this.baseInfo.address.map(row => row.label).join(' ') +
+        (this.baseInfo.street || '')
       );
     },
     // expectedCityText () {
@@ -256,21 +256,21 @@ export default {
     //     ? dictMap.expectedSalary[Number(this.expectedWork.expectedSalary)]
     //     : '';
     // },
-    workTypeText() {
+    workTypeText () {
       return this.expectedWork.workType || this.expectedWork.workType === 0
         ? dictMap.workType[Number(this.expectedWork.workType)]
-        : "";
+        : '';
     },
-    currentStateText() {
+    currentStateText () {
       return this.expectedWork.currentState ||
         this.expectedWork.currentState === 0
         ? dictMap.currentState[Number(this.expectedWork.currentState)]
-        : "";
+        : '';
     },
-    timeToPostText() {
+    timeToPostText () {
       return this.expectedWork.timeToPost || this.expectedWork.timeToPost === 0
         ? dictMap.timeToPost[Number(this.expectedWork.timeToPost)]
-        : "";
+        : '';
     }
   },
   methods: {
@@ -314,7 +314,7 @@ export default {
     //   }
     // },
     // 获取用户基础信息
-    async getUserBaseInfo() {
+    async getUserBaseInfo () {
       tools.showProgress();
       const response = await service.getUserBaseInfo({
         resumeId: this.id
@@ -329,7 +329,7 @@ export default {
           this.expectedWork = adapter.expectedWorkAdapter(
             response.result.resumeInfo[0]
           );
-          this.introduction = response.result.resumeInfo[0].introduction || "";
+          this.introduction = response.result.resumeInfo[0].introduction || '';
           // if (response.result.resumeInfo[0].skills) {
           //   this.skills = JSON.parse(response.result.resumeInfo[0].skills);
           // }
@@ -337,14 +337,14 @@ export default {
           break;
         default:
           tools.toast({
-            position: "top",
-            message: "简历信息获取失败"
+            position: 'top',
+            message: '简历信息获取失败'
           });
           break;
       }
     },
 
-    async getEducation() {
+    async getEducation () {
       // console.log('resumeId:' + this.id);
       // tools.showProgress();
       const response = await service.getUserEducation({
@@ -356,20 +356,20 @@ export default {
         case 0:
           this.education = response.result.educationExpInfo
             ? response.result.educationExpInfo.map(row =>
-                adapter.educationAdapter(row)
-              )
+              adapter.educationAdapter(row)
+            )
             : [];
           break;
         default:
           tools.toast({
-            position: "top",
-            message: "教育经历获取失败"
+            position: 'top',
+            message: '教育经历获取失败'
           });
           break;
       }
     },
 
-    async getInternship() {
+    async getInternship () {
       // tools.showProgress();
       const response = await service.getUserInternship({
         resumeId: this.id
@@ -379,20 +379,20 @@ export default {
         case 0:
           this.internship = response.result.internshipExpInfo
             ? response.result.internshipExpInfo.map(row =>
-                adapter.internshipAdapter(row)
-              )
+              adapter.internshipAdapter(row)
+            )
             : [];
           break;
         default:
           tools.toast({
-            position: "top",
-            message: "实习经历获取失败"
+            position: 'top',
+            message: '实习经历获取失败'
           });
           break;
       }
     },
 
-    async getProject() {
+    async getProject () {
       // tools.showProgress();
       const response = await service.getUserProject({
         resumeId: this.id
@@ -403,20 +403,20 @@ export default {
         case 0:
           this.project = response.result.projectExpInfo
             ? response.result.projectExpInfo.map(row =>
-                adapter.projectAdapter(row)
-              )
+              adapter.projectAdapter(row)
+            )
             : [];
           break;
         default:
           tools.toast({
-            position: "top",
-            message: "项目经验获取失败"
+            position: 'top',
+            message: '项目经验获取失败'
           });
           break;
       }
     },
 
-    async getJob() {
+    async getJob () {
       // tools.showProgress();
       const response = await service.getUserJob({
         resumeId: this.id
@@ -430,14 +430,14 @@ export default {
           break;
         default:
           tools.toast({
-            position: "top",
-            message: "工作经验获取失败"
+            position: 'top',
+            message: '工作经验获取失败'
           });
           break;
       }
     },
 
-    async getSkill() {
+    async getSkill () {
       // tools.showProgress();
       const response = await service.getUserSkill({
         resumeId: this.id
@@ -451,13 +451,13 @@ export default {
           break;
         default:
           tools.toast({
-            position: "top",
-            message: "技能评价获取失败"
+            position: 'top',
+            message: '技能评价获取失败'
           });
           break;
       }
     },
-    async getOpus() {
+    async getOpus () {
       // tools.showProgress();
       const response = await service.getUserOpus({
         resumeId: this.id
@@ -469,13 +469,13 @@ export default {
           break;
         default:
           tools.toast({
-            position: "top",
-            message: "作品列表获取失败"
+            position: 'top',
+            message: '作品列表获取失败'
           });
           break;
       }
     },
-    async getHonor() {
+    async getHonor () {
       // tools.showProgress();
       const response = await service.getUserHonor({
         resumeId: this.id
@@ -490,26 +490,26 @@ export default {
           break;
         default:
           tools.toast({
-            position: "top",
-            message: "荣誉列表获取失败"
+            position: 'top',
+            message: '荣誉列表获取失败'
           });
           break;
       }
     },
-    openWebPage(data) {
+    openWebPage (data) {
       tools.openWebPage(data.url);
     },
 
-    baseInfoEdit() {
+    baseInfoEdit () {
       tools.openWin({
-        name: "userBaseinfo",
-        url: "../win.html",
-        title: "编辑基本信息",
-        fname: "userBaseinfo_f",
-        furl: "./userCenter/userBaseInfo.html",
+        name: 'userBaseinfo',
+        url: '../win.html',
+        title: '编辑基本信息',
+        fname: 'userBaseinfo_f',
+        furl: './userCenter/userBaseInfo.html',
         hasLeft: 1,
         data: {
-          nameSpace: "userBaseinfo",
+          nameSpace: 'userBaseinfo',
           baseInfo: this.baseInfo,
           id: this.id,
           callback: (ret, err) => {
@@ -519,16 +519,16 @@ export default {
       });
     },
 
-    introductionEdit() {
+    introductionEdit () {
       tools.openWin({
-        name: "userIntroduction",
-        url: "../win.html",
-        title: "编辑自我描述",
-        fname: "userIntroduction_f",
-        furl: "./userCenter/userIntroduction.html",
+        name: 'userIntroduction',
+        url: '../win.html',
+        title: '编辑自我描述',
+        fname: 'userIntroduction_f',
+        furl: './userCenter/userIntroduction.html',
         hasLeft: 1,
         data: {
-          nameSpace: "userIntroduction",
+          nameSpace: 'userIntroduction',
           introduction: this.introduction,
           id: this.id,
           callback: (ret, err) => {
@@ -538,20 +538,20 @@ export default {
       });
     },
 
-    expectedWorkEdit() {
+    expectedWorkEdit () {
       // const expectedCity = {};
       // this.expectedWork.expectedCity.forEach(element => {
       //   expectedCity[element.value] = element;
       // });
       tools.openWin({
-        name: "userExpectedWork",
-        url: "../win.html",
-        title: "编辑期望工作",
-        fname: "userExpectedWork_f",
-        furl: "./userCenter/userExpectedWork.html",
+        name: 'userExpectedWork',
+        url: '../win.html',
+        title: '编辑期望工作',
+        fname: 'userExpectedWork_f',
+        furl: './userCenter/userExpectedWork.html',
         hasLeft: 1,
         data: {
-          nameSpace: "userExpectedWork",
+          nameSpace: 'userExpectedWork',
           expectedWork: {
             ...this.expectedWork,
             workType: dictMap.workType[this.expectedWork.workType],
@@ -567,134 +567,134 @@ export default {
       });
     },
 
-    educationEdit() {
+    educationEdit () {
       tools.openWin({
-        name: "userEducationHistroy",
-        url: "../win.html",
-        title: "教育经历管理",
-        fname: "userEducationHistroy_f",
-        furl: "./userCenter/userEducationHistroy.html",
+        name: 'userEducationHistroy',
+        url: '../win.html',
+        title: '教育经历管理',
+        fname: 'userEducationHistroy_f',
+        furl: './userCenter/userEducationHistroy.html',
         hasLeft: 1,
         LCB: () => {
           this.getEducation();
         },
         data: {
-          nameSpace: "userEducationHistroy",
+          nameSpace: 'userEducationHistroy',
           id: this.id
         }
       });
     },
 
-    internshipEdit() {
+    internshipEdit () {
       tools.openWin({
-        name: "userInternshipHistroy",
-        url: "../win.html",
-        title: "实习经历管理",
-        fname: "userInternshipHistroy_f",
-        furl: "./userCenter/userInternshipHistroy.html",
+        name: 'userInternshipHistroy',
+        url: '../win.html',
+        title: '实习经历管理',
+        fname: 'userInternshipHistroy_f',
+        furl: './userCenter/userInternshipHistroy.html',
         hasLeft: 1,
         LCB: () => {
           this.getInternship();
         },
         data: {
-          nameSpace: "userInternshipHistroy",
+          nameSpace: 'userInternshipHistroy',
           id: this.id
         }
       });
     },
-    projectEdit() {
+    projectEdit () {
       tools.openWin({
-        name: "userProjectHistroy",
-        url: "../win.html",
-        title: "项目经验管理",
-        fname: "userProjectHistroy_f",
-        furl: "./userCenter/userProjectHistroy.html",
+        name: 'userProjectHistroy',
+        url: '../win.html',
+        title: '项目经验管理',
+        fname: 'userProjectHistroy_f',
+        furl: './userCenter/userProjectHistroy.html',
         hasLeft: 1,
         LCB: () => {
           this.getProject();
         },
         data: {
-          nameSpace: "userProjectHistroy",
+          nameSpace: 'userProjectHistroy',
           id: this.id
         }
       });
     },
 
-    jobEdit() {
+    jobEdit () {
       tools.openWin({
-        name: "userJobHistroy",
-        url: "../win.html",
-        title: "工作经历管理",
-        fname: "userJobHistroy_f",
-        furl: "./userCenter/userJobHistroy.html",
+        name: 'userJobHistroy',
+        url: '../win.html',
+        title: '工作经历管理',
+        fname: 'userJobHistroy_f',
+        furl: './userCenter/userJobHistroy.html',
         hasLeft: 1,
         LCB: () => {
           this.getJob();
         },
         data: {
-          nameSpace: "userJobHistroy",
+          nameSpace: 'userJobHistroy',
           id: this.id
         }
       });
     },
 
-    skillsEdit() {
+    skillsEdit () {
       tools.openWin({
-        name: "userSkills",
-        url: "../win.html",
-        title: "技能评价管理",
-        fname: "userSkills_f",
-        furl: "./userCenter/userSkills.html",
+        name: 'userSkills',
+        url: '../win.html',
+        title: '技能评价管理',
+        fname: 'userSkills_f',
+        furl: './userCenter/userSkills.html',
         hasLeft: 1,
         LCB: () => {
           this.getSkill();
         },
         data: {
-          nameSpace: "userSkills",
+          nameSpace: 'userSkills',
           id: this.id
         }
       });
     },
 
-    opusEdit() {
+    opusEdit () {
       tools.openWin({
-        name: "userOpus",
-        url: "../win.html",
-        title: "作品展示管理",
-        fname: "userOpus_f",
-        furl: "./userCenter/userOpus.html",
+        name: 'userOpus',
+        url: '../win.html',
+        title: '作品展示管理',
+        fname: 'userOpus_f',
+        furl: './userCenter/userOpus.html',
         hasLeft: 1,
         LCB: () => {
           this.getOpus();
         },
         data: {
-          nameSpace: "userSkills",
+          nameSpace: 'userSkills',
           id: this.id
         }
       });
     },
 
-    honorEdit() {
+    honorEdit () {
       tools.openWin({
-        name: "userHonor",
-        url: "../win.html",
-        title: "荣誉展示管理",
-        fname: "userHonor_f",
-        furl: "./userCenter/userHonor.html",
+        name: 'userHonor',
+        url: '../win.html',
+        title: '荣誉展示管理',
+        fname: 'userHonor_f',
+        furl: './userCenter/userHonor.html',
         hasLeft: 1,
         LCB: () => {
           this.getHonor();
         },
         data: {
-          nameSpace: "userHonor",
+          nameSpace: 'userHonor',
           id: this.id
         }
       });
     },
 
-    imagesPopupOpen(list, index, description) {
+    imagesPopupOpen (list, index, description) {
       this.urlList = list.map((r, i) => {
-        this.imagesDesc[i] = description.replace(/\n|\r\n/g, "<br/>");
+        this.imagesDesc[i] = description.replace(/\n|\r\n/g, '<br/>');
         return r.url;
       });
       this.urlListIndex = index;
@@ -702,11 +702,11 @@ export default {
     }
   },
 
-  mounted() {
+  mounted () {
     if (window.api) {
-      if (window.api.pageParam.nameSpace === "resumeDetail") {
+      if (window.api.pageParam.nameSpace === 'resumeDetail') {
         switch (window.api.pageParam.from) {
-          case "userBaseInfo": // 创建基本信息后的回调
+          case 'userBaseInfo': // 创建基本信息后的回调
             this.getUserBaseInfo();
             // window.api.closeWin({
             //   name: 'userBaseInfo'
@@ -834,6 +834,9 @@ export default {
   padding-top: 50%;
   display: inline-block;
   position: relative;
+  &.oddLastOne{
+    width: 100%;
+  }
   .con {
     position: absolute;
     left: 5px;
@@ -870,10 +873,8 @@ export default {
 }
 
 .honorBox {
-  margin:10px;
-  border: 1px dashed #009688;
+  margin: 10px;
+  // border: 1px dashed #009688;
   padding-bottom: 5px;
 }
-
-
 </style>
