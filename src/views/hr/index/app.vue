@@ -588,7 +588,13 @@ body .mu-secondary-text-color {
 
 .mqtj img {
   width: 100%;
+  height:100%;
   display: block;
+}
+
+.mqtj .grid-cell{
+  border:1px solid #ccc;
+  height: 100px;
 }
 
 .claim {
