@@ -15,13 +15,7 @@
             <DateInput class="dateInput" type="month" :value="endTimeText" :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
           <FormItem label="项目描述" prop="projectDesc">
-            <TextField
-              v-model="form.projectDesc"
-              multi-line
-              :max-length="100"
-              :rows="5"
-              :rows-max="5"
-            />
+            <TextField v-model="form.projectDesc" multi-line :max-length="100" :rows="5" :rows-max="5" />
           </FormItem>
         </Form>
       </div>
@@ -34,7 +28,7 @@
 
 <script>
 import service from 'service';
-// import moment from 'moment';
+import moment from 'moment';
 import { Button, TextField, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 // import regexps from 'util/regexps';
@@ -46,16 +40,38 @@ export default {
     return {
       id: window.api ? window.api.pageParam.id : null,
       form: {
-        projectName: window.api && window.api.pageParam.project ? window.api.pageParam.project.projectName : '',
-        duty: window.api && window.api.pageParam.project ? window.api.pageParam.project.duty : '',
-        endTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.endTime : Date.now().valueOf(),
-        startTime: window.api && window.api.pageParam.project ? window.api.pageParam.project.startTime : Date.now().valueOf(),
-        projectDesc: window.api && window.api.pageParam.project ? window.api.pageParam.project.projectDesc : ''
+        projectName:
+          window.api && window.api.pageParam.project
+            ? window.api.pageParam.project.projectName
+            : '',
+        duty:
+          window.api && window.api.pageParam.project
+            ? window.api.pageParam.project.duty
+            : '',
+        endTime:
+          window.api && window.api.pageParam.project
+            ? window.api.pageParam.project.endTime
+            : Date.now().valueOf(),
+        startTime:
+          window.api && window.api.pageParam.project
+            ? window.api.pageParam.project.startTime
+            : moment()
+              .subtract('month', 1)
+              .valueOf(),
+        projectDesc:
+          window.api && window.api.pageParam.project
+            ? window.api.pageParam.project.projectDesc
+            : ''
       },
-      projectNameRules: [{ validate: val => !!val, message: '必须填写项目名称' }],
+      projectNameRules: [
+        { validate: val => !!val, message: '必须填写项目名称' }
+      ],
       dutyRules: [{ validate: val => val, message: '必须填写项目职责' }],
       workingTimeRules: [
-        { validate: val => this.form.startTime <= this.form.endTime, message: '开始时间不能在结束时间之后' }
+        {
+          validate: val => this.form.startTime <= this.form.endTime,
+          message: '开始时间不能在结束时间之后'
+        }
       ]
     };
   },
@@ -157,10 +173,10 @@ export default {
   flex: 1;
   overflow: auto;
 }
-.dateInput{
+.dateInput {
   width: 40%;
 }
-.joiner{
+.joiner {
   width: 20%;
   text-align: center;
 }

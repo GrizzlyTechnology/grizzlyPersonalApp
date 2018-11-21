@@ -30,7 +30,7 @@
 
 <script>
 import service from 'service';
-// import moment from 'moment';
+import moment from 'moment';
 import { Button, TextField, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import PickerPopup from 'components/PickerPopup';
@@ -43,16 +43,38 @@ export default {
     return {
       id: window.api ? window.api.pageParam.id : null,
       form: {
-        schoolName: window.api && window.api.pageParam.education ? window.api.pageParam.education.schoolName : '',
-        major: window.api && window.api.pageParam.education ? window.api.pageParam.education.major : '',
-        education: window.api && window.api.pageParam.education ? window.api.pageParam.education.education : dictMap.education[0],
-        inSchoolTime: window.api && window.api.pageParam.education ? window.api.pageParam.education.inSchoolTime : Date.now().valueOf(),
-        graduationTime: window.api && window.api.pageParam.education ? window.api.pageParam.education.graduationTime : Date.now().valueOf()
+        schoolName:
+          window.api && window.api.pageParam.education
+            ? window.api.pageParam.education.schoolName
+            : '',
+        major:
+          window.api && window.api.pageParam.education
+            ? window.api.pageParam.education.major
+            : '',
+        education:
+          window.api && window.api.pageParam.education
+            ? window.api.pageParam.education.education
+            : dictMap.education[0],
+        inSchoolTime:
+          window.api && window.api.pageParam.education
+            ? window.api.pageParam.education.inSchoolTime
+            : moment()
+              .subtract('month', 1)
+              .valueOf(),
+        graduationTime:
+          window.api && window.api.pageParam.education
+            ? window.api.pageParam.education.graduationTime
+            : Date.now().valueOf()
       },
-      schoolNameRules: [{ validate: val => !!val, message: '必须填写学校名称' }],
+      schoolNameRules: [
+        { validate: val => !!val, message: '必须填写学校名称' }
+      ],
       majorRules: [{ validate: val => val, message: '必须填写专业' }],
       schoolTimeRules: [
-        { validate: val => this.form.inSchoolTime <= this.form.graduationTime, message: '入校时间不能在毕业时间之后' }
+        {
+          validate: val => this.form.inSchoolTime <= this.form.graduationTime,
+          message: '入校时间不能在毕业时间之后'
+        }
       ]
     };
   },
