@@ -13,8 +13,13 @@ npm i
 ```bash
 npm start
 ```
+### 测试环境产出
 
-### 编译产出
+```bash
+npm run test
+```
+
+### 生产环境产出
 
 ```bash
 npm run pro
