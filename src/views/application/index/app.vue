@@ -1,6 +1,6 @@
 <template>
   <Container>
-    <!-- <Stepper :active-step="0" orientation="vertical" :linear="false">
+    <Stepper :active-step="0" orientation="vertical" :linear="false">
       <template v-for='company in companys'>
         <Step :key='company.id' @click='Internship(company.id)'>
           <StepLabel  class='comStepper'>
@@ -13,9 +13,9 @@
           </StepLabel>
         </Step>
       </template>
-    </Stepper> -->
+    </Stepper>
 
-     <div>你还未加入企业实习，立即去  <Button color="#009688" @click="hotJobListAll">投递职位</Button></div>
+     <!-- <div>你还未加入企业实习，立即去  <Button color="#009688" @click="hotJobListAll">投递职位</Button></div> -->
   </Container>
 </template>
 <script>
