@@ -143,7 +143,7 @@ export default {
         fname: 'raidersArticle_f',
         furl: './hr/raidersArticle.html',
         hasLeft: 1,
-        hasRight:0,
+        hasRight: 0,
         data: {
           id: id
         }
@@ -168,6 +168,10 @@ export default {
 }
 .listBg {
   background: #fff;
+}
+
+.listBg:active {
+  background: #f0f0f0;
 }
 .listAction {
   min-width: 70px;

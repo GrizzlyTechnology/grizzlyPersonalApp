@@ -112,8 +112,4 @@ export default {
   width: 100%;
   text-align: center;
 }
-.Button {
-  font-size: 18px;
-  width: 200px;
-}
 </style>

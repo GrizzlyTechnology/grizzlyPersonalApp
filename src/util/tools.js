@@ -595,13 +595,13 @@ u.sleep = function (times) {
 };
 
 u.openWin = function (params) {
-  const { LCB, name, url, title = '', fname, furl, hasLeft = false, hasRight = false, data = {}, ...winData } = params
+  const { LCB, name, url, title = '', fname, furl, hasLeft = false, hasRight = false, jumpTime = 100, data = {}, ...winData } = params
   if (window.api) {
     let op = {
       name,
       url,
       bounces: false,
-      slidBackEnabled:false,
+      slidBackEnabled: false,
       pageParam: {
         ...winData,
       }
@@ -649,8 +649,9 @@ u.openWin = function (params) {
     }
 
     setTimeout(function () {
+      // console.log('open win timeout', JSON.stringify(op));
       window.api.openWin(op);
-    }, 100);
+    }, jumpTime);
   } else if (furl) {
     window.location.href = furl.replace('./', '/');
   }
@@ -779,8 +780,11 @@ u.openWebPage = function (url) {
 }
 
 u.getPicUrl = function(string, size){
-  let sizeStr = size ? size + '_' :'';
   const urlAry = string.split('/');
+  if(urlAry[2]!=='test.mangotmall.com'){
+      return string;
+  }
+  let sizeStr = size ? size + '_' :'';
   urlAry[urlAry.length - 1] = sizeStr + urlAry[urlAry.length - 1];
   return urlAry.join('/');
 }

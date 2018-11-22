@@ -40,7 +40,8 @@ export default {
     return {
       refreshing: false,
       loading: false,
-      companys: []
+      companys: [],
+      recommend:window.api.pageParam.recommend || ''
     };
   },
   components: {
@@ -58,7 +59,9 @@ export default {
     // 页面数据
     async companyRecommend () {
       tool.showProgress();
-      const response = await service.companyRecommendList({});
+      const response = await service.companyRecommendList({
+        recommend:this.recommend
+      });
       tool.hideProgress();
       switch (response.code) {
         case 0:
@@ -146,5 +149,9 @@ export default {
 
 .companyNameBox .mu-avatar img {
   border-radius: 0px;
+}
+
+.listItem:active{
+   background: #f0f0f0;
 }
 </style>

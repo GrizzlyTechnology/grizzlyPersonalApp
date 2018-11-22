@@ -7,7 +7,7 @@ import 'assets/fonts/iconfont.css';
 // import vueTap from 'v-tap';
 
 if (process.env !== 'development') {
-  window.apiready = function () {
+  window.apiready = function () { document.body.addEventListener('touchstart',function(){});
     new Vue({
       el: '#app',
       render: h => h(App)
