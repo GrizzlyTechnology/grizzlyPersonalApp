@@ -25,7 +25,7 @@
     <Row class="row-reg" gutter>
       <Col span="6">
       <!-- <div class="grid-cell" @click="msgCode">短信验证码登录</div> -->
-      <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
+      <div class="grid-cell" @click="remanberPWD">忘记密码？</div>
       </Col>
       <Col span="6">
       <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
@@ -99,7 +99,7 @@ export default {
           let ajpush = window.api.require('ajpush');
           let param = { alias: response.result.userinfo.id };
           ajpush.bindAliasAndTags(param, function (ret) {
-            let statusCode = ret.statusCode;
+            // let statusCode = ret.statusCode;
           });
           // 登录完跳转
           window.api.openWin({

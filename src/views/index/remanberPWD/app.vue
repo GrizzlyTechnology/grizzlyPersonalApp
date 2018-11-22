@@ -6,16 +6,15 @@
           <FormItem label="手机号码" prop="phone" :rules="phoneRules">
             <TextField v-model="form.phone"></TextField>
           </FormItem>
-          <FormItem label="验证码" prop="messageCode" :rules="verificationCodeRules">
-            <TextField v-model="form.messageCode" class="verificationCode"></TextField>
+          <FormItem label="验证码" prop="code" :rules="verificationCodeRules">
+            <TextField v-model="form.code" class="verificationCode"></TextField>
             <Button color="#009688" textColor="#ffffff" class="getVerificationCode" :disabled="verificationCodeBtnText !=='获取验证码'" @click="getVerificationCode">
               {{verificationCodeBtnText}}
             </Button>
           </FormItem>
-          <FormItem label="新密码" prop="newPassword" :rules="passWordRules">
-            <TextField v-model="form.newPassword" type="password"></TextField>
+          <FormItem label="新密码" prop="password" :rules="passWordRules">
+            <TextField v-model="form.password" type="password"></TextField>
           </FormItem>
-
           <FormItem label="确认密码" prop="rePassword" :rules="rePasswordRules">
             <TextField v-model="form.rePassword" type="password"></TextField>
           </FormItem>
@@ -44,8 +43,8 @@ export default {
       verificationCodeBtnText: '获取验证码',
       form: {
         phone: '',
-        messageCode: '',
-        newPassword: '',
+        code: '',
+        password: '',
         rePassword: ''
       },
       phoneRules: [
@@ -62,7 +61,7 @@ export default {
       ],
       rePasswordRules: [
         { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' },
-        { validate: val => this.form.newPassword === this.form.rePassword, message: '两次密码输入不一致' }
+        { validate: val => this.form.password === this.form.rePassword, message: '两次密码输入不一致' }
       ]
     };
   },
@@ -104,7 +103,7 @@ export default {
     },
     async changePassword () {
       tools.showProgress();
-      const response = await service.userSetting({
+      const response = await service.forgetPassword({
         ...this.form
       });
       // console.log(JSON.stringify(this.form));
@@ -113,12 +112,16 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
+          tools.toast({
+            position: 'top',
+            message: '密码修改成功'
+          });
           tools.closeWin();
           break;
         default:
           tools.toast({
             position: 'top',
-            message: '密码修改失败，请稍后重试！！'
+            message: response.message
           });
           break;
       }
