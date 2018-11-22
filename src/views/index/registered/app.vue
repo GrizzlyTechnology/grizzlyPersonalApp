@@ -44,7 +44,7 @@
       <FormItem
         label="密码"
         prop="passWord"
-        help-text="密码规则:由6-32位0-9的数字或者大小写字母组成"
+        help-text="请填写6-32位数字或大小写字母"
         :rules="passWordRules"
       >
         <TextField v-model="form.passWord" type="password"></TextField>
@@ -52,7 +52,7 @@
       <FormItem
         label="确认密码"
         prop="rePassword"
-        help-text="密码规则:由6-32位0-9的数字或者大小写字母组成"
+        help-text="请填写6-32位数字或大小写字母"
         :rules="rePasswordRules"
       >
         <TextField v-model="form.rePassword" type="password"></TextField>
@@ -97,10 +97,10 @@ export default {
         { validate: val => !!val, message: '请填写验证码' }
       ],
       passWordRules: [
-        { validate: val => regexps.password.test(val), message: '密码规则:由6-32位0-9的数字或者大小写字母组成' }
+        { validate: val => regexps.password.test(val), message: '请填写6-32位数字或大小写字母' }
       ],
       rePasswordRules: [
-        { validate: val => regexps.password.test(val), message: '密码规则:由6-32位0-9的数字或者大小写字母组成' },
+        { validate: val => regexps.password.test(val), message: '请填写6-32位数字或大小写字母' },
         { validate: val => this.form.passWord === this.form.rePassword, message: '两次密码输入不一致' }
       ],
       type:window.api.pageParam.type!==undefined?window.api.pageParam.type:'',
