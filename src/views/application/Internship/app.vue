@@ -34,7 +34,7 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
-      // companyId: window.api.pageParam.companyId
+      companyId: window.api.pageParam.companyId
     };
   },
   components: {
@@ -42,14 +42,13 @@ export default {
     Col,
     Container
   },
-  methods: {
-    // async
-    internshipAgreement () {
-      // const response = await service.internshipAgreement({
-      //   companyId: this.companyId
-      // });
-      // switch (response.code) {
-      //   case 0:
+  methods:{
+    async internshipAgreement () {
+      const response = await service.internshipAgreement({
+        companyId: this.companyId
+      });
+      switch (response.code) {
+        case 0:
       tool.openWin({
         name: 'agreementDetails',
         url: '../win.html',
@@ -58,14 +57,14 @@ export default {
         furl: './application/agreementDetails.html',
         hasLeft: 1
       });
-      //     break;
-      //   default:
-      //     Toast({
-      //       position: 'top',
-      //       message: '加载失败，请稍后重试！！'
-      //     });
-      //     break;
-      // }
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
+          });
+          break;
+      }
     },
     internshipAssessment () {
       tool.openWin({
@@ -84,7 +83,10 @@ export default {
         title: '实习计划',
         fname: 'internshipPlan_f',
         furl: './application/internshipPlan.html',
-        hasLeft: 1
+        hasLeft: 1,
+         data: {
+          companyId: this.companyId
+        }
       });
     },
     internshipReport () {
@@ -118,7 +120,9 @@ export default {
       });
     }
   },
-  mounted () {}
+  mounted () {
+    // this.internshipAgreement();
+  }
 };
 </script>
 <style lang="less" scoped>

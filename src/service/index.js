@@ -45,7 +45,7 @@ axios.interceptors.response.use(function (response) {
   return Promise.reject(error);
 });
 
-function delEmptyAttr (arg) {
+function delEmptyAttr(arg) {
   let rObj = {};
   if (arg && typeof arg === 'object' && !Array.isArray(arg)) {
     const params = Object.assign({}, arg);
@@ -66,7 +66,7 @@ function delEmptyAttr (arg) {
   return rObj;
 }
 
-function request ({ host = '', version = '', url, params, method = 'post' }) {
+function request({ host = '', version = '', url, params, method = 'post' }) {
   const mock = isMock({ host, version, url, params, method });
   if (ENV !== 'production' && mock.isMock === true) {
     return new Promise((resolve) => {
@@ -87,14 +87,14 @@ function request ({ host = '', version = '', url, params, method = 'post' }) {
           // TODO 这里做数据的验证
           resolve(response.data);
         }).catch(
-        (error) => {
-          return Promise.reject(error);
-        });
+          (error) => {
+            return Promise.reject(error);
+          });
     });
   }
 }
 export default {
-  demo (params) {
+  demo(params) {
     return request({
       host: BASEURL,
       url: '/api/index/ceshi',
@@ -102,48 +102,48 @@ export default {
       method: 'post'
     });
   },
-  login (params) {
+  login(params) {
     return request({
       host: BASEURL,
       url: '/api/User/login',
       params
     });
   },
-  otherlogin (params) {
+  otherlogin(params) {
     return request({
       host: BASEURL,
       url: '/api/User/otherLogin',
       params
     });
   },
-  logout () {
+  logout() {
     return request({
       host: BASEURL,
       url: '/api/User/logout'
     });
   },
-  getUserInfo () {
+  getUserInfo() {
     return request({
       host: BASEURL,
       url: '/api/User/getUserByToken',
       method: 'get'
     });
   },
-  registered (params) {
+  registered(params) {
     return request({
       host: BASEURL,
       url: '/api/User/create',
       params
     });
   },
-  getVerificationCode (params) {
+  getVerificationCode(params) {
     return request({
       host: BASEURL,
       url: '/api/sms/send_code',
       params
     });
   },
-  checkStudent (params) {
+  checkStudent(params) {
     return request({
       host: BASEURL,
       url: '/api/student',
@@ -151,14 +151,14 @@ export default {
       method: 'get'
     });
   },
-  createStudent (params) {
+  createStudent(params) {
     return request({
       host: BASEURL,
       url: '/api/Student/create',
       params
     });
   },
-  getStudentInfo (params) {
+  getStudentInfo(params) {
     return request({
       host: BASEURL,
       url: '/api/Student/info',
@@ -166,7 +166,7 @@ export default {
       method: 'get'
     });
   },
-  getAreaByAreaId (areaId = '') {
+  getAreaByAreaId(areaId = '') {
     return request({
       host: BASEURL,
       url: '/api/Area',
@@ -176,7 +176,7 @@ export default {
       method: 'get'
     });
   },
-  getSchoolList (params) {
+  getSchoolList(params) {
     return request({
       host: BASEURL,
       url: '/api/School/getSchoolBy',
@@ -184,7 +184,7 @@ export default {
       method: 'get'
     });
   },
-  getSessionList (params) {
+  getSessionList(params) {
     return request({
       host: BASEURL,
       url: '/api/School/getYear',
@@ -192,7 +192,7 @@ export default {
       method: 'get'
     });
   },
-  getDepartmentList (params) {
+  getDepartmentList(params) {
     return request({
       host: BASEURL,
       url: '/api/College/collegeBySchoolAndYear',
@@ -200,7 +200,7 @@ export default {
       method: 'get'
     });
   },
-  getDisciplineList (params) {
+  getDisciplineList(params) {
     return request({
       host: BASEURL,
       url: '/api/Major/majorBy',
@@ -208,7 +208,7 @@ export default {
       method: 'get'
     });
   },
-  getClassListBy (params) {
+  getClassListBy(params) {
     return request({
       host: BASEURL,
       url: '/api/Classes/classBy',
@@ -216,7 +216,7 @@ export default {
       method: 'get'
     });
   },
-  addToCollection (params) {
+  addToCollection(params) {
     return request({
       host: BASEURL,
       url: '/api/Collection',
@@ -224,7 +224,7 @@ export default {
       method: 'get'
     });
   },
-  postJob (params) {
+  postJob(params) {
     return request({
       host: BASEURL,
       url: '/api/postJob',
@@ -232,28 +232,28 @@ export default {
       method: 'get'
     });
   },
-  createUserBaesInfo (params) {
+  createUserBaesInfo(params) {
     return request({
       host: BASEURL,
       url: '/api/Resume/create',
       params
     });
   },
-  deleteUserBaesInfo (params) {
+  deleteUserBaesInfo(params) {
     return request({
       host: BASEURL,
       url: '/api/Resume/update',
       params
     });
   },
-  updateUserBaesInfo (params) {
+  updateUserBaesInfo(params) {
     return request({
       host: BASEURL,
       url: '/api/Resume/update',
       params
     });
   },
-  getUserBaseInfo (params) {
+  getUserBaseInfo(params) {
     return request({
       host: BASEURL,
       url: '/api/Resume/resumeBy',
@@ -262,7 +262,7 @@ export default {
     });
   },
   // 职位搜索
-  searchBoxValue (params) {
+  searchBoxValue(params) {
     return request({
       host: BASEURL,
       url: '/api/job/search',
@@ -272,7 +272,7 @@ export default {
   },
 
   // 职位搜索页面--猜你要搜
-  searchChipValue (params) {
+  searchChipValue(params) {
     return request({
       host: BASEURL,
       url: '/api/Hr/searchChipValue',
@@ -280,21 +280,21 @@ export default {
       method: 'get'
     });
   },
-  createUserEducation (params) {
+  createUserEducation(params) {
     return request({
       host: BASEURL,
       url: '/api/Educationexp/create',
       params
     });
   },
-  updateUserEducation (params) {
+  updateUserEducation(params) {
     return request({
       host: BASEURL,
       url: '/api/Educationexp/update',
       params
     });
   },
-  getUserEducation (params) {
+  getUserEducation(params) {
     return request({
       host: BASEURL,
       url: '/api/Educationexp/educationexpBy',
@@ -302,21 +302,21 @@ export default {
       method: 'get'
     });
   },
-  createUserInternship (params) {
+  createUserInternship(params) {
     return request({
       host: BASEURL,
       url: '/api/Internshipexp/create',
       params
     });
   },
-  updateUserInternship (params) {
+  updateUserInternship(params) {
     return request({
       host: BASEURL,
       url: '/api/Internshipexp/update',
       params
     });
   },
-  getUserInternship (params) {
+  getUserInternship(params) {
     return request({
       host: BASEURL,
       url: '/api/Internshipexp/internshipexpBy',
@@ -324,21 +324,21 @@ export default {
       method: 'get'
     });
   },
-  createUserProject (params) {
+  createUserProject(params) {
     return request({
       host: BASEURL,
       url: '/api/Projectexp/create',
       params
     });
   },
-  updateUserProject (params) {
+  updateUserProject(params) {
     return request({
       host: BASEURL,
       url: '/api/Projectexp/update',
       params
     });
   },
-  getUserProject (params) {
+  getUserProject(params) {
     return request({
       host: BASEURL,
       url: '/api/Projectexp/projectexpBy',
@@ -346,21 +346,21 @@ export default {
       method: 'get'
     });
   },
-  createUserJob (params) {
+  createUserJob(params) {
     return request({
       host: BASEURL,
       url: '/api/Jobexp/create',
       params
     });
   },
-  updateUserJob (params) {
+  updateUserJob(params) {
     return request({
       host: BASEURL,
       url: '/api/Jobexp/update',
       params
     });
   },
-  getUserJob (params) {
+  getUserJob(params) {
     return request({
       host: BASEURL,
       url: '/api/Jobexp/jobexpBy',
@@ -368,21 +368,21 @@ export default {
       method: 'get'
     });
   },
-  createUserSkill (params) {
+  createUserSkill(params) {
     return request({
       host: BASEURL,
       url: '/api/Skills/create',
       params
     });
   },
-  updateUserSkill (params) {
+  updateUserSkill(params) {
     return request({
       host: BASEURL,
       url: '/api/Skills/update',
       params
     });
   },
-  getUserSkill (params) {
+  getUserSkill(params) {
     return request({
       host: BASEURL,
       url: '/api/Skills/skillsBy',
@@ -390,21 +390,21 @@ export default {
       method: 'get'
     });
   },
-  createUserOpus (params) {
+  createUserOpus(params) {
     return request({
       host: BASEURL,
       url: '/api/Opus/create',
       params
     });
   },
-  updateUserOpus (params) {
+  updateUserOpus(params) {
     return request({
       host: BASEURL,
       url: '/api/Opus/update',
       params
     });
   },
-  getUserOpus (params) {
+  getUserOpus(params) {
     return request({
       host: BASEURL,
       url: '/api/Opus/opusBy',
@@ -413,7 +413,7 @@ export default {
     });
   },
 
-  createUserHonor (params) {
+  createUserHonor(params) {
     return request({
       host: BASEURL,
       url: '/api/Honor/create',
@@ -421,7 +421,7 @@ export default {
     });
   },
 
-  updateUserHonor (params) {
+  updateUserHonor(params) {
     return request({
       host: BASEURL,
       url: '/api/Honor/update',
@@ -429,7 +429,7 @@ export default {
     });
   },
 
-  getUserHonor (params) {
+  getUserHonor(params) {
     return request({
       host: BASEURL,
       url: '/api/Honor/honorBy',
@@ -439,7 +439,7 @@ export default {
   },
 
   // 搜索职位或者公司
-  getAllPosition (params) {
+  getAllPosition(params) {
     return request({
       host: BASEURL,
       url: '/api/job/fuzzysearchtitle',
@@ -448,7 +448,7 @@ export default {
     });
   },
   // 职位详情
-  getDetailsData (params) {
+  getDetailsData(params) {
     return request({
       host: BASEURL,
       url: '/api/job/info',
@@ -457,7 +457,7 @@ export default {
     });
   },
   // 投递简历
-  pushDelivery (params) {
+  pushDelivery(params) {
     return request({
       host: BASEURL,
       url: '/api/Job/deliveryreresume',
@@ -465,7 +465,7 @@ export default {
     });
   },
   // 获取公司信息
-  getCompanyInfo (params) {
+  getCompanyInfo(params) {
     return request({
       host: BASEURL,
       url: '/api/Enterprise/info',
@@ -474,7 +474,7 @@ export default {
     });
   },
   // 获取企业所有招聘
-  getCompanyJob (params) {
+  getCompanyJob(params) {
     return request({
       host: BASEURL,
       url: '/api/Job/seljobsbyenterpriseid',
@@ -483,7 +483,7 @@ export default {
     });
   },
   // 获取职场攻略
-  getrRaidersList (params) {
+  getrRaidersList(params) {
     return request({
       host: BASEURL,
       url: '/api/Content/lists',
@@ -492,7 +492,7 @@ export default {
     });
   },
   // 获取职场攻略内容
-  getRaidersArticleData (params) {
+  getRaidersArticleData(params) {
     return request({
       host: BASEURL,
       url: '/api/Content/info',
@@ -501,7 +501,7 @@ export default {
     });
   },
   // 名企推荐列表
-  companyRecommendList (params) {
+  companyRecommendList(params) {
     return request({
       host: BASEURL,
       url: '/api/Enterprise/searchenteprie',
@@ -510,7 +510,7 @@ export default {
     });
   },
   // 实习企业列表
-  internshipCompany (params) {
+  internshipCompany(params) {
     return request({
       host: BASEURL,
       url: '/api/Internship/interviewoks',
@@ -519,7 +519,7 @@ export default {
     });
   },
   // 首页滚动图
-  carouselImgs (params) {
+  carouselImgs(params) {
     return request({
       host: BASEURL,
       url: '/api/Content/slides',
@@ -528,7 +528,7 @@ export default {
     });
   },
   // 首页热门职位
-  hotJobsData (params) {
+  hotJobsData(params) {
     return request({
       host: BASEURL,
       url: '/api/Job/recommendjobs',
@@ -537,7 +537,7 @@ export default {
     });
   },
   // 首页获取适合你的职位
-  suitablePosition (params) {
+  suitablePosition(params) {
     return request({
       host: BASEURL,
       url: '/api/Resume/create',
@@ -546,7 +546,7 @@ export default {
     });
   },
   // 获取广告地址
-  getAdv (params) {
+  getAdv(params) {
     return request({
       host: BASEURL,
       url: '/api/Content/seladvs',
@@ -562,14 +562,14 @@ export default {
       params
     });
   },
-  getEmailVerificationCode (params) {
+  getEmailVerificationCode(params) {
     return request({
       host: BASEURL,
       url: '/api/Email/send_code',
       params
     });
   },
-  getMessageList (params) {
+  getMessageList(params) {
     return request({
       host: BASEURL,
       url: '/api/Message/lists',
@@ -581,7 +581,7 @@ export default {
       method: 'get'
     });
   },
-  messageDoRead (id) {
+  messageDoRead(id) {
     return request({
       host: BASEURL,
       url: '/api/message/orderBy',
@@ -591,7 +591,7 @@ export default {
       method: 'get'
     });
   },
-  getDeliveryList (params) {
+  getDeliveryList(params) {
     // console.log(JSON.stringify(params));
     return request({
       host: BASEURL,
@@ -605,7 +605,7 @@ export default {
       method: 'get'
     });
   },
-  getDeliveryDetail (id) {
+  getDeliveryDetail(id) {
     return request({
       host: BASEURL,
       url: '/api/Job/deliveredresumeinfo',
@@ -615,7 +615,7 @@ export default {
       method: 'get'
     });
   },
-  getDeliveryChoice (params) {
+  getDeliveryChoice(params) {
     // console.log(JSON.stringify(params));
     return request({
       host: BASEURL,
@@ -624,10 +624,19 @@ export default {
     });
   },
   // 猜你要搜
-  chipsData (params) {
+  chipsData(params) {
     return request({
       host: BASEURL,
       url: '/api/Job/guesssearch',
+      params,
+      method: 'get'
+    });
+  },
+  // 实习计划内容获取
+  planData(params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/plans',
       params,
       method: 'get'
     });

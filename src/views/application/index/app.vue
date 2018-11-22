@@ -1,6 +1,6 @@
 <template>
   <Container>
-    <!-- <Stepper :active-step="0" orientation="vertical" :linear="false">
+    <Stepper :active-step="0" orientation="vertical" :linear="false">
       <template v-for='company in companys'>
         <Step :key='company.id' @click='Internship(company.id)'>
           <StepLabel  class='comStepper'>
@@ -13,20 +13,20 @@
           </StepLabel>
         </Step>
       </template>
-    </Stepper> -->
+    </Stepper>
 
-     <div>你还未加入企业实习，立即去  <Button color="#009688" @click="hotJobListAll">投递职位</Button></div>
+     <!-- <div>你还未加入企业实习，立即去  <Button color="#009688" @click="hotJobListAll">投递职位</Button></div> -->
   </Container>
 </template>
 <script>
-import { Button } from 'muse-ui';
-// import { Card, Icon ,Button} from 'muse-ui';
-// import { CardHeader } from 'muse-ui/lib/Card';
-// import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
+// import { Button } from 'muse-ui';
+import { Card, Icon} from 'muse-ui';
+import { CardHeader } from 'muse-ui/lib/Card';
+import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
 import { Container } from 'muse-ui/lib/Grid';
 import tool from 'util/tools';
-// import service from 'service';
-// import { Toast } from 'mint-ui';
+import service from 'service';
+import { Toast } from 'mint-ui';
 export default {
   data () {
     return {
@@ -35,60 +35,60 @@ export default {
   },
   components: {
     Container,
-    // Card,
-    // CardHeader,
-    // Stepper,
-    // Step,
-    // StepLabel,
-    // Icon,
-    Button
+    Card,
+    CardHeader,
+    Stepper,
+    Step,
+    StepLabel,
+    Icon
+    // Button
   },
   methods: {
     // 列表数据
-    // async listsData () {
-    //   const response = await service.internshipCompany({});
-    //   switch (response.code) {
-    //     case 0:
-    //       this.companys = response.result.lists;
-    //       break;
-    //     default:
-    //       Toast({
-    //         position: 'top',
-    //         message: '加载失败，请稍后重试！！'
-    //       });
-    //       break;
-    //   }
-    // },
-    // Internship (id) {
-    //   tool.openWin({
-    //     name: 'Internship',
-    //     url: '../win.html',
-    //     title: '校外实习',
-    //     fname: 'Internship_f',
-    //     furl: './application/Internship.html',
-    //     hasLeft: 1,
-    //     data: {
-    //       companyId: id
-    //     }
-    //   });
-    // }
-    hotJobListAll () {
+    async listsData () {
+      const response = await service.internshipCompany({});
+      switch (response.code) {
+        case 0:
+          this.companys = response.result.lists;
+          break;
+        default:
+          Toast({
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    Internship (id) {
       tool.openWin({
-        name: 'jobSearchList',
+        name: 'Internship',
         url: '../win.html',
-        title: '热门职位',
-        fname: 'jobSearchList_f',
-        furl: './hr/jobSearchList.html',
+        title: '校外实习',
+        fname: 'Internship_f',
+        furl: './application/Internship.html',
         hasLeft: 1,
-        hasRight: 0,
         data: {
-          istj: 1 // 1是推荐 0是不推荐
+          companyId: id
         }
       });
     }
+    // hotJobListAll () {
+    //   tool.openWin({
+    //     name: 'jobSearchList',
+    //     url: '../win.html',
+    //     title: '热门职位',
+    //     fname: 'jobSearchList_f',
+    //     furl: './hr/jobSearchList.html',
+    //     hasLeft: 1,
+    //     hasRight: 0,
+    //     data: {
+    //       istj: 1 // 1是推荐 0是不推荐
+    //     }
+    //   });
+    // }
   },
   mounted () {
-    // this.listsData();
+    this.listsData();
   }
 };
 </script>
@@ -119,7 +119,7 @@ export default {
 }
 
 .container {
-  // background: #fff;
+  background: #fff;
   padding: 50px 0 30px;
   text-align: center;
 }
