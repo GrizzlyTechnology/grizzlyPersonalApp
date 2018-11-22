@@ -52,10 +52,10 @@ function delEmptyAttr (arg) {
     Object.keys(arg).forEach((key) => {
       if (
         arg[key] === '' ||
-              arg[key] === null ||
-              arg[key] === undefined ||
-              (Array.isArray(arg[key]) && arg[key].length === 0) ||
-              (typeof arg[key] === 'object' && arg[key].length === undefined)
+        arg[key] === null ||
+        arg[key] === undefined ||
+        (Array.isArray(arg[key]) && arg[key].length === 0) ||
+        (typeof arg[key] === 'object' && arg[key].length === undefined)
       ) {
         delete params[key];
       }
@@ -555,7 +555,7 @@ export default {
     });
   },
   userSetting (params) {
-    console.log(JSON.stringify(params));
+    // console.log(JSON.stringify(params));
     return request({
       host: BASEURL,
       url: '/api/User/update',
@@ -628,6 +628,14 @@ export default {
     return request({
       host: BASEURL,
       url: '/api/Job/guesssearch',
+      params,
+      method: 'get'
+    });
+  },
+  forgetPassword (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/User/forgetpassword',
       params,
       method: 'get'
     });

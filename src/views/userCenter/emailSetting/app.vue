@@ -95,7 +95,7 @@ export default {
         emailCode: this.form.emailCode
       });
       tools.hideProgress();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
 
       switch (response.code) {
         case 0:
@@ -117,7 +117,7 @@ export default {
         emailCode: this.form.emailCode
       });
       tools.hideProgress();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
 
       switch (response.code) {
         case 0:
@@ -132,7 +132,7 @@ export default {
       }
     },
     handleGetVerificationCode () {
-      console.log(JSON.stringify(this.form));
+      // console.log(JSON.stringify(this.form));
       if (
         regexps.email.test(
           this.haveEmail ? this.form.newEmail : this.form.email
