@@ -18,13 +18,14 @@
       <Checkbox label="记住用户名" v-model="validateForm.isAgree"></Checkbox>
       </Col>
       <Col span="6">
-      <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
+      <!-- <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div> -->
       </Col>
     </Row>
     <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">登陆</Button>
     <Row class="row-reg" gutter>
       <Col span="6">
-      <div class="grid-cell" @click="msgCode">短信验证码登录</div>
+      <!-- <div class="grid-cell" @click="msgCode">短信验证码登录</div> -->
+      <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
       </Col>
       <Col span="6">
       <div class="grid-cell-reg" @click="regNewUser">注册新用户</div>
@@ -126,7 +127,14 @@ export default {
       });
     },
     remanberPWD () {
-      alert('sss');
+      tools.openWin({
+        name: 'remanberPWD',
+        url: '../win.html',
+        title: '忘记密码',
+        fname: 'remanberPWD_f',
+        furl: './index/remanberPWD.html',
+        hasLeft: true
+      });
     },
     msgCode () {
       alert('msgcode login');
