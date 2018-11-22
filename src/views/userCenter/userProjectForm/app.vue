@@ -69,7 +69,7 @@ export default {
       dutyRules: [{ validate: val => val, message: '必须填写项目职责' }],
       workingTimeRules: [
         {
-          validate: val => this.form.startTime <= this.form.endTime,
+          validate: val => this.form.startTime < this.form.endTime,
           message: '开始时间不能在结束时间之后'
         }
       ]

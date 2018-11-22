@@ -72,7 +72,7 @@ export default {
       majorRules: [{ validate: val => val, message: '必须填写专业' }],
       schoolTimeRules: [
         {
-          validate: val => this.form.inSchoolTime <= this.form.graduationTime,
+          validate: val => this.form.inSchoolTime < this.form.graduationTime,
           message: '入校时间不能在毕业时间之后'
         }
       ]

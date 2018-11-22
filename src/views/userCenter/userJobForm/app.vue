@@ -69,7 +69,7 @@ export default {
       postRules: [{ validate: val => val, message: '必须填写岗位' }],
       workingTimeRules: [
         {
-          validate: val => this.form.startTime <= this.form.endTime,
+          validate: val => this.form.startTime < this.form.endTime,
           message: '开始时间不能在结束时间之后'
         }
       ]
