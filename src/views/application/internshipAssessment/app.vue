@@ -2,54 +2,50 @@
   <div class="content">
     <div class="bodyer">
       <div style="padding:15px">
-        <Form ref="form" :model="form"  :label-position="labelPosition" label-width="120">
+        <Form ref="form" :model="form" :label-position="labelPosition" label-width="120">
           <div class='mbox'>
             <label for="">实习单位：</label>
-           <span>江苏大灰熊科技有限公司</span>
+            <span>江苏大灰熊科技有限公司</span>
           </div>
-          <FormItem label="实习时间：" prop="startTime"  :rules="workingTimeRules">
+          <FormItem label="实习时间：" prop="startTime" :rules="workingTimeRules">
             <DateInput :value="internshipStart" style='width:45%' :max-date="new Date()" @change="changeStartTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
             至
             <DateInput :value="internshipEnd" style='width:45%' :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
-           <div class='mbox'>
+          <div class='mbox'>
             <label for="">实习部门：</label>
-           <span>技术部</span>
+            <span>技术部</span>
           </div>
           <div class='mbox'>
             <label for="">实习岗位：</label>
-           <span>研发组</span>
+            <span>研发组</span>
           </div>
-           <div class='mbox'>
+          <div class='mbox'>
             <label for="">指导师傅：</label>
-           <span>XXX</span>
+            <span>XXX</span>
           </div>
           <div class='mbox'>
             <label for="">师傅电话：</label>
-           <span>15106111415</span>
+            <span>15106111415</span>
           </div>
-           <div class='mbox'>
+          <div class='mbox'>
             <label for="">姓名：</label>
-           <span>XXX</span>
+            <span>XXX</span>
           </div>
           <div class='mbox'>
             <label for="">班级：</label>
-           <span>信息系/3(2)班</span>
+            <span>信息系/3(2)班</span>
           </div>
           <div class='mbox'>
             <label for="">性别：</label>
-           <span>男</span>
+            <span>男</span>
           </div>
           <div class='mbox'>
             <label for="">学号：</label>
-           <span>23025</span>
+            <span>23025</span>
           </div>
-           <FormItem label="自我鉴定：" prop="title">
-              <TextField multi-line
-              v-model="form.workContent"
-              :max-length="100"
-              :rows="5"
-              :rows-max="5"></TextField>
+          <FormItem label="自我鉴定：" prop="title">
+            <TextField multi-line v-model="form.workContent" :max-length="100" :rows="5" :rows-max="5"></TextField>
           </FormItem>
         </Form>
       </div>
@@ -63,24 +59,27 @@
 <script>
 // import service from 'service';
 // import moment from 'moment';
-import { Button, TextField, DateInput } from 'muse-ui';
-import Upload from 'element-ui/lib/upload';
-import Progress from 'element-ui/lib/progress';
-import { Form, FormItem } from 'muse-ui/lib/Form';
+import { Button, TextField, DateInput } from "muse-ui";
+import Upload from "element-ui/lib/upload";
+import Progress from "element-ui/lib/progress";
+import { Form, FormItem } from "muse-ui/lib/Form";
 // import regexps from 'util/regexps';
 // import tools from 'util/tools';
 // import { hostList } from 'service/mock';
 export default {
-  data () {
+  data() {
     return {
-      labelPosition: 'top',
+      labelPosition: "top",
       form: {
-        internshipStart: '',
-        internshipEnd: '',
-        workContent: 'sdfsdfsdfsdf'
+        internshipStart: "",
+        internshipEnd: "",
+        workContent: "sdfsdfsdfsdf"
       },
       workingTimeRules: [
-        { validate: val => this.form.internshipStart <= this.form.internshipEnd, message: '开始时间不能在结束时间之后' }
+        {
+          validate: val => this.form.internshipStart <= this.form.internshipEnd,
+          message: "开始时间不能在结束时间之后"
+        }
       ]
     };
   },
@@ -102,38 +101,46 @@ export default {
     // }
   },
   methods: {
-    changeStartTime (date) {
+    changeStartTime(date) {
       this.form.internshipStart = date.valueOf();
     },
-    changeEndTime (date) {
+    changeEndTime(date) {
       this.form.internshipEnd = date.valueOf();
     }
   },
-  mounted () {
-
-  }
+  mounted() {}
 };
 </script>
 <style lang="less">
 @import url("../../../assets/css/base.less");
-.content{
-  background:#fff;
+.content {
+  background: #fff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-label,.mu-form-item-label{
+.bodyer {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+label,
+.mu-form-item-label {
   color: #000;
 }
 
-body .mu-text-field-input{
-  color:rgba(0, 0, 0, 0.54);
+body .mu-text-field-input {
+  color: rgba(0, 0, 0, 0.54);
 }
 
-.mbox{
-color:rgba(0, 0, 0, 0.54);
-margin-bottom: 10px;
+.mbox {
+  color: rgba(0, 0, 0, 0.54);
+  margin-bottom: 10px;
 }
 
-.tips{
+.tips {
   margin-bottom: 5px;
   color: red;
 }
