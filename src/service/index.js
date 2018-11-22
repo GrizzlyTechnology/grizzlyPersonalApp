@@ -641,6 +641,7 @@ export default {
       method: 'get'
     });
   },
+
   forgetPassword (params) {
     return request({
       host: BASEURL,
