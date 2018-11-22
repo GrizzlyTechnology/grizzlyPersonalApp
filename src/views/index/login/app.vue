@@ -58,8 +58,8 @@ export default {
       passwordRules: [
         { validate: val => !!val, message: '必须填写密码' },
         {
-          validate: val => val.length >= 6 && val.length <= 18,
-          message: '密码长度大于6小于18'
+          validate: val => val.length >= 6 && val.length <= 32,
+          message: '请填写6-32位数字或大小写字母'
         }
       ],
       argeeRules: [{ validate: val => !!val, message: '必须同意用户协议' }],
