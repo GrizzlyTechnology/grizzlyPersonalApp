@@ -659,17 +659,17 @@ u.openWin = function (params) {
 
 u.addEventListener = function (ope = {}, callback = () => { }) {
   if (window.api) {
-    console.log('add evnet: ' + ope.name);
+    // console.log('add evnet: ' + ope.name);
     window.api.addEventListener(
       ope,
       (ret, err) => {
-        console.log('evnet callback: ' + ope.name);
+        // console.log('evnet callback: ' + ope.name);
         callback(
           { ...ret, value: typeof (ret.value) === 'string' ? JSON.parse(ret.value) : ret.value },
           err
         );
         if (ope.delEvent !== false) {
-          console.log('del event: ' + ope.name);
+          // console.log('del event: ' + ope.name);
           window.api.removeEventListener({
             name: ope.name
           });
@@ -680,7 +680,7 @@ u.addEventListener = function (ope = {}, callback = () => { }) {
 };
 
 u.sendEvent = function (name = '', data = {}) {
-  console.log('send event: ' + name)
+  // console.log('send event: ' + name)
   if (window.api) {
     window.api.sendEvent({
       name: name,
