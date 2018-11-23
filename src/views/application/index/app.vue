@@ -2,7 +2,7 @@
   <Container>
     <Stepper :active-step="0" orientation="vertical" :linear="false">
       <template v-for='company in companys'>
-        <Step :key='company.id' @click='Internship(company.id)'>
+        <Step :key='company.id' @click='Internship(company.id,company.companyName,company.department,company.group)'>
           <StepLabel  class='comStepper'>
             <Card>
               <p>{{company.practiceTime}}</p>
@@ -59,7 +59,7 @@ export default {
           break;
       }
     },
-    Internship (id) {
+    Internship (id,companyName,department,group) {
       tool.openWin({
         name: 'Internship',
         url: '../win.html',
@@ -68,7 +68,10 @@ export default {
         furl: './application/Internship.html',
         hasLeft: 1,
         data: {
-          companyId: id
+          companyId: id,
+          companyName:companyName,
+          department :department,
+          group:group
         }
       });
     }

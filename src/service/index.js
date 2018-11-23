@@ -641,11 +641,37 @@ export default {
       method: 'get'
     });
   },
-
   forgetPassword (params) {
     return request({
       host: BASEURL,
       url: '/api/User/forgetpassword',
+      params,
+      method: 'get'
+    });
+  },
+  //获取实习考核状态码
+  internshipAssessmentStatus (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/getinternshipstatus',
+      params,
+      method: 'get'
+    });
+  },
+  //实习考核申请数据提交
+  submitApplyForm(params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/selfevaluationcomment',
+      params,
+      method: 'get'
+    });
+  },
+  // 获取实习考核数据
+  getInternshipAssessmentDetail(params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/getinternshipcomment',
       params,
       method: 'get'
     });
