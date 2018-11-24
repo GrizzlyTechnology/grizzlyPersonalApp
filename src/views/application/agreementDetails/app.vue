@@ -11,13 +11,13 @@
     <div class="picList">
       <div class="picCon" v-for="(file,index) in picList" :key="file.url">
         <div class="con" @click="imagesPopupOpen(picList,index,'')" :style="{backgroundImage:'url('+file.coverUrl+')'}" />
-        <Icon class="close" :size="18" value=":el-icon-error" color="#000" @click="remove(file,index)"/>
+        <Icon class="close" :size="18" value=":el-icon-error" color="#000" @click="remove(file,index)" />
       </div>
       <div class="infoNotice" v-if="picList.length===0">
         暂无协议上传
       </div>
     </div>
-    <Upload class="footer" ref="uploader" accept="image/*" name="file" :show-file-list="false" :with-credentials="true" :multiple="false" :data="{type:2}" :headers="headers" :action="actionUrl" :file-list="uploaderLiist" :on-change="change" :on-progress="progress" :on-success="success" :before-upload="beforeUpload" :on-error="error">
+    <Upload class="footer" ref="uploader" accept="image/*" name="file" :show-file-list="false" :with-credentials="true" :multiple="false" :data="{type:2}" :headers="headers" :action="actionUrl" :file-list="uploaderLiist" :on-progress="progress" :on-success="success" :before-upload="beforeUpload" :on-error="error">
       <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large>立即上传</Button>
     </Upload>
     <ImagesPopup ref="imagesPopup" :urlList="urlList" :index="urlListIndex" :description="description"></ImagesPopup>
@@ -229,12 +229,13 @@ export default {
     padding-top: 50%;
     display: inline-block;
     position: relative;
-    .close{
+    .close {
       position: absolute;
       right: 10px;
       top: 10px;
       background-color: #fff;
-      border-radius: 9px;
+      border-radius: 50%;
+      border: 1px #fff solid;
     }
     .con {
       position: absolute;
