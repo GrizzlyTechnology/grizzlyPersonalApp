@@ -1,7 +1,7 @@
 <template>
     <Container>
         <div class="ucAvatar" :style="{backgroundImage:'url(' + uinfo.headphoto + ')'}"></div>
-        <div class="ucNickname status">Hi,{{uinfo.nickname}} {{uinfo.sex?'帅哥':'美女'}}</div>
+        <div class="ucNickname status">Hi,{{uinfo.nickname}}</div>
         <div class="ucbs status">您的{{type}}账户未曾绑定</div>
         <div class="uczs">建议立即绑定{{type}}账户实现快捷登录</div>
         <div class="status"><Button color="#009688" @click="bundlogin">登录/注册并绑定{{type}}账户</Button></div>
