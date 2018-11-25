@@ -20,7 +20,7 @@
 </template>
 <script>
 // import { Button } from 'muse-ui';
-import { Card, Icon} from 'muse-ui';
+import { Card, Icon } from 'muse-ui';
 import { CardHeader } from 'muse-ui/lib/Card';
 import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
 import { Container } from 'muse-ui/lib/Grid';
