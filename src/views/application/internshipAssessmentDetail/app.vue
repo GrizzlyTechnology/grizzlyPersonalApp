@@ -60,7 +60,7 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
-      companyId: window.api.pageParam.companyId,
+      companyId: window.api ? window.api.pageParam.companyId : 'wwww',
       internshipStart: '',
       internshipEnd: '',
       workContent: '',
@@ -111,6 +111,7 @@ export default {
           this.internshipStart = response.result.internshipStart;
           this.internshipEnd = response.result.internshipEnd;
           this.workContent = response.result.workContent;
+          console.log(response.result.workContent);
           break;
         default:
           Toast({
@@ -185,9 +186,13 @@ export default {
 
 .jd.ucCell {
   .ucCellLabel {
-    line-height: 32px;
+    line-height: 28px;
     padding-left: 15px;
     float: none;
+    margin:0px;
+  }
+   .mint-cell-wrapper {
+     height:auto;
   }
 }
 </style>

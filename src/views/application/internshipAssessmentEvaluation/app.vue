@@ -74,16 +74,16 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
-      companyId: window.api.pageParam.companyId,
+      companyId: window.api ? window.api.pageParam.companyId : 'wwww',
       internshipStart: '',
       internshipEnd: '',
       workContent: '',
       companyIdentification: '',
       testScores: '',
       internshipCompanyInfo: {
-        companyName: window.api.pageParam.companyName,
-        department: window.api.pageParam.department,
-        group: window.api.pageParam.group,
+        companyName: window.api ? window.api.pageParam.companyName : '',
+        department: window.api ? window.api.pageParam.department : '',
+        group: window.api ? window.api.pageParam.group : '',
         name: '',
         class: '',
         sex: ''
@@ -202,10 +202,14 @@ export default {
 }
 
 .jd.ucCell {
-  .ucCellLabel {
-    line-height: 32px;
+   .ucCellLabel {
+    line-height: 28px;
     padding-left: 15px;
     float: none;
+    margin:0px;
+  }
+   .mint-cell-wrapper {
+     height:auto;
   }
 }
 
