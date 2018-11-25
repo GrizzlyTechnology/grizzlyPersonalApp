@@ -54,23 +54,23 @@
 </template>
 
 <script>
-import service from "service";
-import { Toast, Cell } from "mint-ui";
-import tool from "util/tools";
+import service from 'service';
+import { Toast, Cell } from 'mint-ui';
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
       companyId: window.api.pageParam.companyId,
-      internshipStart: "",
-      internshipEnd: "",
-      workContent: "",
+      internshipStart: '',
+      internshipEnd: '',
+      workContent: '',
       internshipCompanyInfo: {
         companyName: window.api.pageParam.companyName,
         department: window.api.pageParam.department,
         group: window.api.pageParam.group,
-        name: "",
-        class: "",
-        sex: ""
+        name: '',
+        class: '',
+        sex: ''
       }
     };
   },
@@ -79,7 +79,7 @@ export default {
   },
   computed: {},
   methods: {
-    async getStudentInfoData() {
+    async getStudentInfoData () {
       tool.showProgress();
       const response = await service.getStudentInfo({});
       tool.hideProgress();
@@ -89,18 +89,18 @@ export default {
           this.internshipCompanyInfo.sex = response.result.studentInfo.sex;
           this.internshipCompanyInfo.class =
             response.result.studentInfo.majorname +
-            "系" +
+            '系' +
             response.result.studentInfo.classname;
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
-    async internshipAssessmentDetail() {
+    async internshipAssessmentDetail () {
       tool.showProgress();
       const response = await service.getInternshipAssessmentDetail({
         enterpriseid: this.companyId
@@ -114,14 +114,14 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     }
   },
-  mounted() {
+  mounted () {
     this.getStudentInfoData();
     this.internshipAssessmentDetail();
   }

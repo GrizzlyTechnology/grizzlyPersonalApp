@@ -64,14 +64,14 @@
 
 </template>
 <script>
-import { ExpansionPanel } from "muse-ui";
+import { ExpansionPanel } from 'muse-ui';
 // import { Container } from "muse-ui/lib/Grid";
-import { Toast } from "mint-ui";
-import service from "service";
+import { Toast } from 'mint-ui';
+import service from 'service';
 export default {
-  data() {
+  data () {
     return {
-      panel: "",
+      panel: '',
       companyId: window.api.pageParam.companyId,
       earlyPlan: [
         // cycle: ' 2018年6月10日——2018年7月10日',
@@ -88,10 +88,10 @@ export default {
     ExpansionPanel
   },
   methods: {
-    toggle(panel) {
-      this.panel = panel === this.panel ? "" : panel;
+    toggle (panel) {
+      this.panel = panel === this.panel ? '' : panel;
     },
-    async planDataList() {
+    async planDataList () {
       const response = await service.planData({
         enterpriseid: this.companyId
       });
@@ -103,14 +103,14 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     }
   },
-  mounted() {
+  mounted () {
     this.planDataList();
   }
 };

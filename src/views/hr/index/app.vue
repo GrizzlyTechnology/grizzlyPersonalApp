@@ -188,7 +188,7 @@ export default {
       }, 2000);
     },
     // 搜索
-    jobSearch() {
+    jobSearch () {
       tool.openWin({
         name: 'jobSearch',
         url: '../win.html',
@@ -197,7 +197,7 @@ export default {
         furl: './hr/jobSearch.html',
         hasLeft: 1,
         hasRight: 0
-        });
+      });
     },
     // 滚动图
     async carouselImg () {
@@ -381,7 +381,7 @@ export default {
         fname: 'jobDetails_f_' + id,
         furl: './hr/jobDetails.html',
         hasLeft: 1,
-        hasRight:0,
+        hasRight: 0,
         data: {
           id: id
         }

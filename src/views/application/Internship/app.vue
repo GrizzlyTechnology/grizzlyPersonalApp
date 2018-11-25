@@ -39,20 +39,20 @@
 </template>
 
 <script>
-import { Row, Col, Container } from "muse-ui/lib/Grid";
-import tool from "util/tools";
-import service from "service";
-import { Toast } from "mint-ui";
-import { LoadMore } from "muse-ui";
+import { Row, Col, Container } from 'muse-ui/lib/Grid';
+import tool from 'util/tools';
+import service from 'service';
+import { Toast } from 'mint-ui';
+import { LoadMore } from 'muse-ui';
 export default {
-  data() {
+  data () {
     return {
       companyId: window.api.pageParam.companyId,
       companyName: window.api.pageParam.companyName,
       department: window.api.pageParam.department,
       group: window.api.pageParam.group,
-      internshipAssessmentStatus: "",
-      assessmentStatus: "",
+      internshipAssessmentStatus: '',
+      assessmentStatus: '',
       refreshing: false
     };
   },
@@ -63,7 +63,7 @@ export default {
     LoadMore
   },
   methods: {
-    refresh() {
+    refresh () {
       this.refreshing = true;
       this.$refs.container.scrollTop = 0;
       setTimeout(() => {
@@ -71,31 +71,31 @@ export default {
         this.getInternshipAssessmentStatus();
       }, 200);
     },
-    async internshipAgreement() {
+    async internshipAgreement () {
       const response = await service.internshipAgreement({
         companyId: this.companyId
       });
       switch (response.code) {
         case 0:
           tool.openWin({
-            name: "agreementDetails",
-            url: "../win.html",
-            title: "实习协议",
-            fname: "agreementDetails_f",
-            furl: "./application/agreementDetails.html",
+            name: 'agreementDetails',
+            url: '../win.html',
+            title: '实习协议',
+            fname: 'agreementDetails_f',
+            furl: './application/agreementDetails.html',
             hasLeft: 1
           });
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
-    //获取实习考核状态码
-    async getInternshipAssessmentStatus() {
+    // 获取实习考核状态码
+    async getInternshipAssessmentStatus () {
       const response = await service.internshipAssessmentStatus({
         enterpriseid: this.companyId
       });
@@ -104,18 +104,18 @@ export default {
           this.internshipAssessmentStatus = response.result;
           switch (this.internshipAssessmentStatus) {
             case -1:
-              this.assessmentStatus = "待申请";
+              this.assessmentStatus = '待申请';
               break;
             case 0:
-              this.assessmentStatus = "待考评";
+              this.assessmentStatus = '待考评';
               break;
             case 1:
-              this.assessmentStatus = "已考评";
+              this.assessmentStatus = '已考评';
               break;
             default:
               Toast({
-                position: "top",
-                message: "加载失败，请稍后重试！！"
+                position: 'top',
+                message: '加载失败，请稍后重试！！'
               });
               break;
           }
@@ -123,22 +123,22 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
     // 判断状态码进行跳转相应实习考核页面
-    internshipAssessment() {
+    internshipAssessment () {
       switch (this.internshipAssessmentStatus) {
         case -1:
           tool.openWin({
-            name: "internshipAssessment",
-            url: "../win.html",
-            title: "实习考核",
-            fname: "internshipAssessment_f",
-            furl: "./application/internshipAssessment.html",
+            name: 'internshipAssessment',
+            url: '../win.html',
+            title: '实习考核',
+            fname: 'internshipAssessment_f',
+            furl: './application/internshipAssessment.html',
             hasLeft: 1,
             data: {
               companyId: this.companyId,
@@ -153,11 +153,11 @@ export default {
           break;
         case 0:
           tool.openWin({
-            name: "internshipAssessmentDetail",
-            url: "../win.html",
-            title: "实习考核",
-            fname: "internshipAssessmentDetail_f",
-            furl: "./application/internshipAssessmentDetail.html",
+            name: 'internshipAssessmentDetail',
+            url: '../win.html',
+            title: '实习考核',
+            fname: 'internshipAssessmentDetail_f',
+            furl: './application/internshipAssessmentDetail.html',
             hasLeft: 1,
             data: {
               companyId: this.companyId,
@@ -172,11 +172,11 @@ export default {
           break;
         case 1:
           tool.openWin({
-            name: "internshipAssessmentEvaluation",
-            url: "../win.html",
-            title: "实习考核",
-            fname: "internshipAssessmentEvaluation_f",
-            furl: "./application/internshipAssessmentEvaluation.html",
+            name: 'internshipAssessmentEvaluation',
+            url: '../win.html',
+            title: '实习考核',
+            fname: 'internshipAssessmentEvaluation_f',
+            furl: './application/internshipAssessmentEvaluation.html',
             hasLeft: 1,
             data: {
               companyId: this.companyId,
@@ -191,58 +191,58 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
     // 跳转进实习计划页面
-    internshipPlan() {
+    internshipPlan () {
       tool.openWin({
-        name: "internshipPlan",
-        url: "../win.html",
-        title: "实习计划",
-        fname: "internshipPlan_f",
-        furl: "./application/internshipPlan.html",
+        name: 'internshipPlan',
+        url: '../win.html',
+        title: '实习计划',
+        fname: 'internshipPlan_f',
+        furl: './application/internshipPlan.html',
         hasLeft: 1,
         data: {
           companyId: this.companyId
         }
       });
     },
-    internshipReport() {
+    internshipReport () {
       tool.openWin({
-        name: "internshipReport",
-        url: "../win.html",
-        title: "实习报告",
-        fname: "internshipReport_f",
-        furl: "./application/internshipReport.html",
+        name: 'internshipReport',
+        url: '../win.html',
+        title: '实习报告',
+        fname: 'internshipReport_f',
+        furl: './application/internshipReport.html',
         hasLeft: 1
       });
     },
-    internshipLog() {
+    internshipLog () {
       tool.openWin({
-        name: "internshipLog",
-        url: "../win.html",
-        title: "实习日志",
-        fname: "internshipLog_f",
-        furl: "./application/internshipLog.html",
+        name: 'internshipLog',
+        url: '../win.html',
+        title: '实习日志',
+        fname: 'internshipLog_f',
+        furl: './application/internshipLog.html',
         hasLeft: 1
       });
     },
-    internshipSummary() {
+    internshipSummary () {
       tool.openWin({
-        name: "internshipSummary",
-        url: "../win.html",
-        title: "实习总结",
-        fname: "internshipSummary_f",
-        furl: "./application/internshipSummary.html",
+        name: 'internshipSummary',
+        url: '../win.html',
+        title: '实习总结',
+        fname: 'internshipSummary_f',
+        furl: './application/internshipSummary.html',
         hasLeft: 1
       });
     }
   },
-  mounted() {
+  mounted () {
     // this.internshipAgreement();
     this.getInternshipAssessmentStatus();
     this.refresh();
