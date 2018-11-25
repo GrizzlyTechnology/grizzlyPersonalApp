@@ -223,7 +223,9 @@ export default {
     // 名企推荐数据
     async companyRecommend () {
       tool.showProgress();
-      const response = await service.companyRecommendList({});
+      const response = await service.companyRecommendList({
+        recommend: 1
+      });
       tool.hideProgress();
       switch (response.code) {
         case 0:
@@ -246,7 +248,10 @@ export default {
         fname: 'companyList_f',
         furl: './hr/companyList.html',
         hasLeft: 1,
-        hasRight: 0
+        hasRight: 0,
+        data: {
+          recommend: 1
+        }
       });
     },
     // 名企推荐详情
@@ -275,7 +280,7 @@ export default {
             response.result.resumeInfo.length > 0
               ? [response.result.resumeInfo[0]]
               : [];
-          if (this.resumeList[0].desiredposition) {
+          if (this.resumeList.length !== 0) {
             this.listsData();
           }
 
@@ -543,7 +548,6 @@ body .mu-secondary-text-color {
 
 .space15 {
   padding: 15px;
-  margin-top: 15px;
   margin-bottom: 15px;
 }
 .titleB {
@@ -588,7 +592,13 @@ body .mu-secondary-text-color {
 
 .mqtj img {
   width: 100%;
+  height:100%;
   display: block;
+}
+
+.mqtj .grid-cell{
+  border:1px solid #ccc;
+  height: 100px;
 }
 
 .claim {

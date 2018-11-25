@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     async create () {
-      console.log(JSON.stringify(this.form));
+      // console.log(JSON.stringify(this.form));
       const response = await service.createStudent(this.form);
       switch (response.code) {
         case 0:

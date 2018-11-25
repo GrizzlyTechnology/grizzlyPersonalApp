@@ -562,7 +562,7 @@ export default {
     });
   },
   userSetting (params) {
-    console.log(JSON.stringify(params));
+    // console.log(JSON.stringify(params));
     return request({
       host: BASEURL,
       url: '/api/User/update',
