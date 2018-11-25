@@ -120,17 +120,20 @@
         <Icon left value=":icon-75bianji" />编辑
       </Button>
       <div :key="row.id" v-for="row in honor">
-        <div class="listTitle">
-          {{row.title}}
-        </div>
-        <div class="listDate">
-          {{row.honorDateText}}
-        </div>
-        <div class="picList">
-          <div class="picCon" v-for="(file,index) in row.reslist" :key="file.url">
-            <div class="con" @click="imagesPopupOpen(row.reslist,index, row.desc)" :style="{backgroundImage:'url('+file.coverUrl+')'}" />
+        <div class='honorBox'>
+          <div class="listTitle">
+            {{row.title}}
+          </div>
+          <div class="listDate">
+            {{row.honorDateText}}
+          </div>
+          <div class="picList">
+            <div v-bind:class="{picCon:true,oddLastOne:(index === (row.reslist.length - 1)) && ((row.reslist.length)%2!==0)}" v-for="(file,index) in row.reslist" :key="file.url">
+              <div class="con" @click="imagesPopupOpen(row.reslist,index, row.desc)" :style="{backgroundImage:'url('+file.coverUrl+')'}" />
+            </div>
           </div>
         </div>
+
       </div>
       <div slot="info">
         暂无荣誉展示
@@ -481,7 +484,9 @@ export default {
       // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.honor = response.result.honorInfo ? response.result.honorInfo.map(r => adapter.honorAdapter(r)) : [];
+          this.honor = response.result.honorInfo
+            ? response.result.honorInfo.map(r => adapter.honorAdapter(r))
+            : [];
           break;
         default:
           tools.toast({
@@ -780,6 +785,9 @@ export default {
 }
 </style>
 <style lang="less" scoped>
+.content {
+  padding-bottom: 10px;
+}
 .introduction {
   padding: 15px;
   line-height: 1.8;
@@ -826,6 +834,9 @@ export default {
   padding-top: 50%;
   display: inline-block;
   position: relative;
+  &.oddLastOne{
+    width: 100%;
+  }
   .con {
     position: absolute;
     left: 5px;
@@ -859,5 +870,11 @@ export default {
   font-size: 14px;
   padding: 0 10px 10px;
   color: #999;
+}
+
+.honorBox {
+  margin: 10px;
+  // border: 1px dashed #009688;
+  padding-bottom: 5px;
 }
 </style>

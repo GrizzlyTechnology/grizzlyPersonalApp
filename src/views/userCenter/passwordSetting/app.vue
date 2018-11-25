@@ -39,12 +39,13 @@ export default {
         rePassword: ''
       },
       passWordRules: [
-        { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' }
+        { validate: val => regexps.password.test(val), message: '请填写6-32位数字或大小写字母' },
+        { validate: val => this.form.password !== this.form.newPassword, message: '新密码不能与旧密码一样' }
       ],
       rePasswordRules: [
-        { validate: val => regexps.password.test(val), message: '密码规则6-32位0-9大小写字母' },
+        { validate: val => regexps.password.test(val), message: '请填写6-32位数字或大小写字母' },
         { validate: val => this.form.newPassword === this.form.rePassword, message: '两次密码输入不一致' }
-      ]
+      ],
     };
   },
   components: {

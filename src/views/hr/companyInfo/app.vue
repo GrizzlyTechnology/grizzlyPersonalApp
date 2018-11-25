@@ -225,4 +225,8 @@ export default {
 .allPostion .mu-card-text {
   padding-bottom: 0;
 }
+
+.listItem:active{
+  background: #f0f0f0;
+}
 </style>

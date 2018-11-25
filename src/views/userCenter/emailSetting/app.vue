@@ -104,7 +104,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '邮箱创建失败，请稍后重试！！'
+            message: response.message
           });
           break;
       }
