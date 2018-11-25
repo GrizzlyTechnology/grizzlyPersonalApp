@@ -257,6 +257,7 @@ export default {
 
 .container {
   background: #fff;
+  padding: 0;
 }
 
 .grid-cell {
@@ -275,6 +276,10 @@ export default {
 
 .col {
   border-bottom: 1px solid #f5f5f5;
+  padding: 0 8px;
+   &:active {
+    background: #f0f0f0;
+  }
 }
 
 .grid-cell span {

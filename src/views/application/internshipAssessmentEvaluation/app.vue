@@ -2,18 +2,18 @@
   <div class="content">
     <div class="bodyer">
       <div class='companyIdentification'>
-        <div class="ucCell jd">
-          <div class="ucCellCon">
-            <span class="ucCellTitle">单位鉴定：</span>
-            <p class="ucCellLabel">{{companyIdentification}}</p>
-          </div>
-        </div>
         <Cell class="ucCell">
           <div class="ucCellCon">
             <span class="ucCellTitle">考核成绩</span>
             <span class="ucCellLabel">{{testScores}}</span>
           </div>
         </Cell>
+        <div class="ucCell jd">
+          <div class="ucCellCon">
+            <span class="ucCellTitle">单位鉴定：</span>
+            <p class="ucCellLabel">{{companyIdentification}}</p>
+          </div>
+        </div>
       </div>
       <Cell class="ucCell">
         <div class="ucCellCon">
@@ -74,7 +74,7 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
-      companyId: window.api ? window.api.pageParam.companyId : 'wwww',
+      companyId: window.api ? window.api.pageParam.companyId : '',
       internshipStart: '',
       internshipEnd: '',
       workContent: '',
@@ -128,7 +128,27 @@ export default {
           this.internshipEnd = response.result.internshipEnd;
           this.workContent = response.result.workContent;
           this.companyIdentification = response.result.companyIdentification;
-          this.testScores = response.result.testScores;
+          switch (response.result.testScores) {
+            case 1:
+              this.testScores = '不及格';
+              break;
+            case 2:
+              this.testScores = '及格';
+              break;
+            case 3:
+              this.testScores = '良';
+              break;
+            case 4:
+              this.testScores = '优';
+              break;
+            default:
+              Toast({
+                position: 'top',
+                message: '加载失败，请稍后重试！！'
+              });
+              break;
+          }
+
           break;
         default:
           Toast({
@@ -202,18 +222,19 @@ export default {
 }
 
 .jd.ucCell {
-   .ucCellLabel {
+  .ucCellCon {
+    position: relative;
+  }
+  .ucCellLabel {
     line-height: 28px;
     padding-left: 15px;
     float: none;
-    margin:0px;
-  }
-   .mint-cell-wrapper {
-     height:auto;
+    margin: 0px;
   }
 }
 
-.companyIdentification{
-  margin-bottom: 10px;
+.companyIdentification {
+ border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
 </style>
