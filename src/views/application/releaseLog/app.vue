@@ -50,8 +50,8 @@ export default {
     return {
       labelPosition: 'top',
       form: {
-        internshipStart: Date.now().valueOf() - 24 * 60 * 60 * 1000,
-        internshipEnd: Date.now().valueOf(),
+        internshipStart: Date.parse(new Date()) - 24 * 60 * 60 * 1000,
+        internshipEnd: Date.parse(new Date()),
         workContent: '',
         reward: ''
       },
