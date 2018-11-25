@@ -3,48 +3,30 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form" :label-position="labelPosition" label-width="120">
-          <div class='mbox'>
-            <label for="">实习单位：</label>
-            <span>{{internshipCompanyInfo.companyName}}</span>
-          </div>
-          <FormItem label="实习时间：" prop="startTime" :rules="internshipTimeRules">
+          <FormItem label="实习单位" class='readonlyInput'>
+            <TextField underline-color="transparent" readonly v-model="internshipCompanyInfo.companyName"></TextField>
+          </FormItem>
+          <FormItem label="实习时间" prop="startTime" :rules="internshipTimeRules">
             <DateInput style='width:40%;margin-right:15px;' :value="startTimeText" :max-date="new Date()" @change="changeStartTime" no-display view-type="list" container="bottomSheet"></DateInput>
             至
             <DateInput style='width:40%;margin-left:15px' :value="endTimeText" :max-date="new Date()" @change="changeEndTime" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
-          <div class='mbox'>
-            <label for="">实习部门：</label>
-            <span>{{internshipCompanyInfo.department}}</span>
-          </div>
-          <div class='mbox'>
-            <label for="">实习岗位：</label>
-            <span>{{internshipCompanyInfo.group}}</span>
-          </div>
-          <!-- <div class='mbox'>
-            <label for="">指导师傅：</label>
-            <span>XXX</span>
-          </div> -->
-          <!-- <div class='mbox'>
-            <label for="">师傅电话：</label>
-            <span>15106111415</span>
-          </div> -->
-          <div class='mbox'>
-            <label for="">姓名：</label>
-            <span>{{internshipCompanyInfo.name}}</span>
-          </div>
-          <div class='mbox'>
-            <label for="">班级：</label>
-            <span>{{internshipCompanyInfo.class}}</span>
-          </div>
-          <div class='mbox'>
-            <label for="">性别：</label>
-            <span>{{internshipCompanyInfo.sex===0?'女':'男'}}</span>
-          </div>
-          <!-- <div class='mbox'>
-            <label for="">学号：</label>
-            <span>23025</span>
-          </div> -->
-          <FormItem label="自我鉴定：" prop="title" :rules="internshipIdentificationRules">
+          <FormItem label="实习部门" class='readonlyInput'>
+            <TextField  readonly v-model="internshipCompanyInfo.department"></TextField>
+          </FormItem>
+           <FormItem label="实习岗位" class='readonlyInput'>
+            <TextField  readonly v-model="internshipCompanyInfo.group"></TextField>
+          </FormItem>
+          <FormItem label="姓名" class='readonlyInput'>
+            <TextField  readonly v-model="internshipCompanyInfo.name"></TextField>
+          </FormItem>
+            <FormItem label="班级" class='readonlyInput'>
+            <TextField  readonly v-model="internshipCompanyInfo.class"></TextField>
+          </FormItem>
+            <FormItem label="性别" class='readonlyInput'>
+            <TextField  readonly :value="internshipCompanyInfo.sex===0?'女':'男'"></TextField>
+          </FormItem>
+          <FormItem label="自我鉴定" prop="title" :rules="internshipIdentificationRules">
             <TextField multi-line v-model="form.workContent" :max-length="100" :rows="5" :rows-max="5"></TextField>
           </FormItem>
         </Form>
@@ -68,14 +50,14 @@ export default {
       companyId: window.api.pageParam.companyId,
       labelPosition: 'top',
       form: {
-        internshipStart: Date.now().valueOf(),
+        internshipStart: Date.now().valueOf() - 24 * 60 * 60 * 1000,
         internshipEnd: Date.now().valueOf(),
-        workContent: 'sdfsdfsdfsdf'
+        workContent: ''
       },
       internshipCompanyInfo: {
-        companyName: window.api.pageParam.companyName,
-        department: window.api.pageParam.department,
-        group: window.api.pageParam.group,
+        companyName: window.api ? window.api.pageParam.companyName : '',
+        department: window.api ? window.api.pageParam.department : '',
+        group: window.api ? window.api.pageParam.group : '',
         name: '',
         class: '',
         sex: ''
@@ -87,7 +69,7 @@ export default {
         }
       ],
       internshipIdentificationRules: [
-        { validate: val => !!val, message: '必须填写自我鉴定' }
+        { validate: val => this.form.workContent.length > 0, message: '必须填写自我鉴定' }
       ]
     };
   },
@@ -185,19 +167,22 @@ export default {
   -webkit-overflow-scrolling: touch;
 }
 
-label,
-.mu-form-item-label {
-  color: #000;
+body .readonlyInput .mu-input-line{
+  height: 0;
 }
 
-body .mu-text-field-input {
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 14px;
-}
+// label,
+// .mu-form-item-label {
+//   color: #000;
+// }
 
-.mbox {
-  color: rgba(0, 0, 0, 0.54);
-  margin-bottom: 10px;
-}
+// body .mu-text-field-input {
+//   color: rgba(0, 0, 0, 0.54);
+//   font-size: 14px;
+// }
 
+// .mbox {
+//   color: rgba(0, 0, 0, 0.54);
+//   margin-bottom: 10px;
+// }
 </style>
