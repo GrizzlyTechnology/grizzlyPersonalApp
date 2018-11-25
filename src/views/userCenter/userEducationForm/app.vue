@@ -58,13 +58,19 @@ export default {
         inSchoolTime:
           window.api && window.api.pageParam.education
             ? window.api.pageParam.education.inSchoolTime
-            : moment()
-              .subtract('month', 1)
-              .valueOf(),
+            : Date.parse(
+              moment()
+                .subtract('month', 1)
+                .format('YYYY-MM-') + '01'
+            ),
         graduationTime:
           window.api && window.api.pageParam.education
             ? window.api.pageParam.education.graduationTime
-            : Date.now().valueOf()
+            : Date.parse(
+              moment()
+                .add('month', 0)
+                .format('YYYY-MM-' + '01')
+            )
       },
       schoolNameRules: [
         { validate: val => !!val, message: '必须填写学校名称' }
@@ -151,10 +157,10 @@ export default {
       }
     },
     changeInSchoolTime (date) {
-      this.form.inSchoolTime = date.valueOf();
+      this.form.inSchoolTime = Date.parse(date);
     },
     changeGraduationTime (date) {
-      this.form.graduationTime = date.valueOf();
+      this.form.graduationTime = Date.parse(date);
     },
     setEducation (data) {
       this.form.education = data;

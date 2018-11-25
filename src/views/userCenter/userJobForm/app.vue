@@ -47,13 +47,11 @@ export default {
         endTime:
           window.api && window.api.pageParam.job
             ? window.api.pageParam.job.endTime
-            : Date.now().valueOf(),
+            : Date.parse(moment().add('month', 0).format('YYYY-MM-' + '01')),
         startTime:
           window.api && window.api.pageParam.job
             ? window.api.pageParam.job.startTime
-            : moment()
-              .subtract('month', 1)
-              .valueOf(),
+            : Date.parse(moment().subtract('month', 1).format('YYYY-MM-') + '01'),
         jobContent:
           window.api && window.api.pageParam.job
             ? window.api.pageParam.job.jobContent

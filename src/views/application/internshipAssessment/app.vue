@@ -57,37 +57,37 @@
 </template>
 
 <script>
-import service from "service";
-import { Toast } from "mint-ui";
-import { Button, TextField, DateInput } from "muse-ui";
-import { Form, FormItem } from "muse-ui/lib/Form";
-import tool from "util/tools";
+import service from 'service';
+import { Toast } from 'mint-ui';
+import { Button, TextField, DateInput } from 'muse-ui';
+import { Form, FormItem } from 'muse-ui/lib/Form';
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
       companyId: window.api.pageParam.companyId,
-      labelPosition: "top",
+      labelPosition: 'top',
       form: {
-        internshipStart: Date.now().valueOf(),
-        internshipEnd: Date.now().valueOf(),
-        workContent: "sdfsdfsdfsdf"
+        internshipStart: Date.parse(new Date()),
+        internshipEnd: Date.parse(new Date()),
+        workContent: 'sdfsdfsdfsdf'
       },
       internshipCompanyInfo: {
         companyName: window.api.pageParam.companyName,
         department: window.api.pageParam.department,
         group: window.api.pageParam.group,
-        name: "",
-        class: "",
-        sex: ""
+        name: '',
+        class: '',
+        sex: ''
       },
       internshipTimeRules: [
         {
           validate: val => this.form.internshipStart <= this.form.internshipEnd,
-          message: "开始时间不能在结束时间之后"
+          message: '开始时间不能在结束时间之后'
         }
       ],
-      internshipIdentificationRules:[
-        { validate: val => !!val, message: "必须填写自我鉴定" }
+      internshipIdentificationRules: [
+        { validate: val => !!val, message: '必须填写自我鉴定' }
       ]
     };
   },
@@ -99,21 +99,21 @@ export default {
     DateInput
   },
   computed: {
-    startTimeText() {
+    startTimeText () {
       return new Date(this.form.internshipStart);
     },
-    endTimeText() {
+    endTimeText () {
       return new Date(this.form.internshipEnd);
     }
   },
   methods: {
-    changeStartTime(date) {
+    changeStartTime (date) {
       this.form.internshipStart = date.valueOf();
     },
-    changeEndTime(date) {
+    changeEndTime (date) {
       this.form.internshipEnd = date.valueOf();
     },
-    async getStudentInfoData() {
+    async getStudentInfoData () {
       tool.showProgress();
       const response = await service.getStudentInfo({});
       tool.hideProgress();
@@ -123,18 +123,18 @@ export default {
           this.internshipCompanyInfo.sex = response.result.studentInfo.sex;
           this.internshipCompanyInfo.class =
             response.result.studentInfo.majorname +
-            "系" +
+            '系' +
             response.result.studentInfo.classname;
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
-    async submitApply() {
+    async submitApply () {
       tool.showProgress();
       const response = await service.submitApplyForm({
         ...this.form,
@@ -144,20 +144,20 @@ export default {
       switch (response.code) {
         case 0:
           Toast({
-            position: "top",
-            message: "提交成功"
+            position: 'top',
+            message: '提交成功'
           });
           tool.closeWin();
           break;
         default:
           Toast({
-            position: "top",
-            message: "提交成功失败，请稍后重试！！"
+            position: 'top',
+            message: '提交成功失败，请稍后重试！！'
           });
           break;
       }
     },
-    submit() {
+    submit () {
       this.$refs.form.validate().then(result => {
         if (result === true) {
           this.submitApply();
@@ -165,7 +165,7 @@ export default {
       });
     }
   },
-  mounted() {
+  mounted () {
     this.getStudentInfoData();
   }
 };

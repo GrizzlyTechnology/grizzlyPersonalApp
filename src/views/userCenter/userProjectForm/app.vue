@@ -51,13 +51,11 @@ export default {
         endTime:
           window.api && window.api.pageParam.project
             ? window.api.pageParam.project.endTime
-            : Date.now().valueOf(),
+            : Date.parse(moment().add('month', 0).format('YYYY-MM-' + '01')),
         startTime:
           window.api && window.api.pageParam.project
             ? window.api.pageParam.project.startTime
-            : moment()
-              .subtract('month', 1)
-              .valueOf(),
+            : Date.parse(moment().subtract('month', 1).format('YYYY-MM-') + '01'),
         projectDesc:
           window.api && window.api.pageParam.project
             ? window.api.pageParam.project.projectDesc

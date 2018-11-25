@@ -47,13 +47,11 @@ export default {
         endTime:
           window.api && window.api.pageParam.internship
             ? window.api.pageParam.internship.endTime
-            : Date.now().valueOf(),
+            : Date.parse(moment().add('month', 0).format('YYYY-MM-' + '01')),
         startTime:
           window.api && window.api.pageParam.internship
             ? window.api.pageParam.internship.startTime
-            : moment()
-              .subtract('month', 1)
-              .valueOf(),
+            : Date.parse(moment().subtract('month', 1).format('YYYY-MM-') + '01'),
         jobContent:
           window.api && window.api.pageParam.internship
             ? window.api.pageParam.internship.jobContent

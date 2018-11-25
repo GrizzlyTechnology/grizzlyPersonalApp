@@ -56,7 +56,7 @@ export default {
           ? window.api.pageParam.baseInfo.sex
           : 1, // true string 性别
         birthday:
-          window.api.pageParam.baseInfo.birthday || Date.now().valueOf(), // true string生日
+          window.api.pageParam.baseInfo.birthday || Date.parse(new Date()), // true string生日
         houseHold: window.api.pageParam.baseInfo.houseHold || [], // true string 籍贯
         address: window.api.pageParam.baseInfo.address || [],
         street: window.api.pageParam.baseInfo.street || '',
