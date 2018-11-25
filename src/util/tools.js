@@ -788,6 +788,26 @@ u.getPicUrl = function(string, size){
   urlAry[urlAry.length - 1] = sizeStr + urlAry[urlAry.length - 1];
   return urlAry.join('/');
 }
+
+u.backCloseW=function(){
+    var exitStatu=0;
+      window.api.addEventListener({
+        name: 'keyback'
+        }, function(ret, err) {
+            if (!exitStatu) {
+                exitStatu = 1;
+                u.toast({
+                    position: 'top',
+                    message: '再点一次退出应用'
+                });
+                setTimeout(function() {
+                    exitStatu=0;
+                }, 2000)
+            } else if (exitStatu == 1) {
+                window.api.closeWidget();
+            }
+        });
+}
 /* end */
 
 
