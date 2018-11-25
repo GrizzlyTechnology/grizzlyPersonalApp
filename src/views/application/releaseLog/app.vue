@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="tip">
-      <Icon value=":el-icon-info"></Icon> 本月已写周志3次
+      <Icon value=":el-icon-warning"></Icon> 本月已写周志3次
     </div>
     <div class="bodyer">
       <div style="padding:15px">
