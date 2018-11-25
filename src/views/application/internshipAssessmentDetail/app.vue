@@ -60,14 +60,14 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
-      companyId: window.api ? window.api.pageParam.companyId : 'wwww',
+      companyId: window.api ? window.api.pageParam.companyId : '1',
       internshipStart: '',
       internshipEnd: '',
       workContent: '',
       internshipCompanyInfo: {
-        companyName: window.api.pageParam.companyName,
-        department: window.api.pageParam.department,
-        group: window.api.pageParam.group,
+        companyName: window.api ? window.api.pageParam.companyName : '',
+        department: window.api ? window.api.pageParam.department : '',
+        group: window.api ? window.api.pageParam.group : '',
         name: '',
         class: '',
         sex: ''

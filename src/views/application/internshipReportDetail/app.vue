@@ -18,7 +18,7 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
-      companyId: window.api.pageParam.companyId,
+      companyId: window.api ? window.api.pageParam.companyId : '',
       internshipReport: ''
     };
   },

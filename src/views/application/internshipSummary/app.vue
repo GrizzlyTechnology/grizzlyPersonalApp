@@ -3,7 +3,7 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form" :label-position="labelPosition" label-width="120">
-          <FormItem label="实习总结：" prop="title" :rules="internshipSummarytRules">
+          <FormItem label="实习总结：" prop="internshipSummary" :rules="internshipSummarytRules">
             <TextField multi-line v-model="form.internshipSummary" :max-length="300" :rows="15" :rows-max="15"></TextField>
           </FormItem>
         </Form>
@@ -24,7 +24,7 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
-      companyId: window.api.pageParam.companyId,
+      companyId: window.api ? window.api.pageParam.companyId : '',
       labelPosition: 'top',
       form: {
         internshipSummary: ''

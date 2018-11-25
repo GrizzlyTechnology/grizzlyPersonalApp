@@ -47,7 +47,7 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
-      companyId: window.api.pageParam.companyId,
+      companyId: window.api ? window.api.pageParam.companyId : '',
       labelPosition: 'top',
       form: {
         internshipStart: Date.now().valueOf() - 24 * 60 * 60 * 1000,
