@@ -179,6 +179,15 @@ export default {
     }
   },
   mounted () {
+      var backnum=0;
+      api.addEventListener({
+        name: 'keyback'
+        }, function(ret, err) {
+            backnum++;
+            if(backnum===2){
+                api.api.closeWidget({});
+            }
+        });
     if (window.api.pageParam.comefrom !== undefined) {
       setTimeout(function () {
         window.api.closeWin({
