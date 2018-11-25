@@ -8,7 +8,7 @@
       <!-- <span class="ucSchoole" v-if="studentStatus===null" @click="bindingStudentStatus"> -->
       <span class="ucSchoole" v-if="studentStatus===null">
         学籍未填写
-        <Icon :size="16" value=":icon-right" color="#fff" /></span>
+        <!-- <Icon :size="16" value=":icon-right" color="#fff" /></span> -->
       <span class="ucSetting" @click="setting">
         <Icon :size="14" value=":el-icon-setting" color="#FFF" />
         设置

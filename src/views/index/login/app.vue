@@ -124,14 +124,16 @@ export default {
           ajpush.bindAliasAndTags(param, function (ret) {
             // let statusCode = ret.statusCode;
           });
-          alert(
-            '登录成功' +
-              (window.api.pageParam.type === 'qq'
-                ? '且已绑定QQ账户'
-                : window.api.pageParam.type === 'wx'
-                  ? '且已绑定微信账户'
-                  : '')
-          );
+          switch (window.api.pageParam.type) {
+            case 'qq':
+              alert('登录成功且已绑定QQ账户');
+              break;
+            case 'wx':
+              alert('登录成功且已绑定微信账户');
+              break;
+            default:
+              break;
+          }
           // 登录完跳转
           window.api.openWin({
             name: 'main',
