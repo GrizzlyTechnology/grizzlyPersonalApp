@@ -136,10 +136,10 @@ export default {
       }
     },
     changeStartTime (date) {
-      this.form.startTime = date.valueOf();
+      this.form.startTime = Date.parse(date);
     },
     changeEndTime (date) {
-      this.form.endTime = date.valueOf();
+      this.form.endTime = Date.parse(date);
     },
     submit () {
       this.$refs.form.validate().then(result => {
