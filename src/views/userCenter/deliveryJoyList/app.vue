@@ -11,9 +11,11 @@
         <LoadMore @refresh="refresh(index)" @load="load(index)" :refreshing="deliveryList.refreshing" :loading="deliveryList.loading">
           <div class="delivery" v-for="delivery in deliveryList.list" :key="delivery.id" @click="detail(delivery)">
             <img :src="delivery.companyLogo" class="delivery-logo" />
-            <div class="delivery-head">{{delivery.position}} <span class="delivery-date">2018年5月10日投递</span></div>
+            <div class="delivery-head">
+              <div class="delivery-title">{{delivery.position}}</div> <span class="delivery-date">{{delivery.deliveryDateText}}投递</span>
+            </div>
             <div class="delivery-salary-range">{{delivery.salaryRange}} <span class="delivery-job-area">{{delivery.jobarea}}</span></div>
-            <div class="delivery-foot">{{delivery.companyName}}<span class="delivery-status">状态</span></div>
+            <div class="delivery-foot">{{delivery.companyName}}<span class="delivery-status" :style="deliveryStatusColor(delivery.status)">{{delivery.statusText}}</span></div>
           </div>
         </LoadMore>
       </TabContainerItem>
@@ -28,7 +30,7 @@ import { TabContainer, TabContainerItem } from 'mint-ui';
 import tools from 'util/tools';
 import dict from 'util/dictMap';
 import service from 'service';
-// import adapter from 'util/adapter';
+import adapter from 'util/adapter';
 
 export default {
   data () {
@@ -44,12 +46,12 @@ export default {
           list: []
         }
       ].concat(
-        Object.keys(dict.deliveryStatus).map(key => {
+        Object.keys(dict.deliveryTab).map(key => {
           return {
-            name: dict.deliveryStatus[key],
+            name: dict.deliveryTab[key],
             refreshing: false,
             loading: false,
-            status: key,
+            status: Array.isArray(key) ? key.join(',') : key,
             page: 1,
             list: []
           };
@@ -80,6 +82,7 @@ export default {
         page: this.deliveryLists[active].page,
         status: this.deliveryLists[active].status
       });
+      // console.log(JSON.stringify(response));
       if (this.deliveryLists[active].page === 1) {
         this.deliveryLists[active].refreshing = false;
       }
@@ -89,14 +92,16 @@ export default {
       switch (response.code) {
         case 0:
           if (this.deliveryLists[active].page === 1) {
-          //   this.deliveryLists[active].list = response.result.lists.map(
-          //     message => adapter.messageAdapter(message)
-          //   );
+            this.deliveryLists[active].list = response.result.list.map(
+              delivery => adapter.deliveryAdapter(delivery)
+            );
           }
           if (this.deliveryLists[active].page > 1) {
-          //   response.result.lists.forEach(message => {
-          //     this.deliveryLists[active].list.push(adapter.messageAdapter(message));
-          //   });
+            response.result.list.forEach(delivery => {
+              this.deliveryLists[active].list.push(
+                adapter.deliveryAdapter(delivery)
+              );
+            });
           }
           break;
         default:
@@ -106,6 +111,9 @@ export default {
           });
           break;
       }
+    },
+    deliveryStatusColor (status) {
+      return `color: ${adapter.deliveryStatusColor(status)}`;
     },
     changeTab (active) {
       this.active = active;
@@ -148,7 +156,8 @@ export default {
         hasLeft: 1,
         data: {
           nameSpace: 'deliveryDetail',
-          id: delivery.id
+          id: delivery.id,
+          delivery
         }
       });
     }
@@ -173,7 +182,7 @@ export default {
 }
 .list-con {
   flex: 1;
-  .mu-load-more{
+  .mu-load-more {
     min-height: 200px;
   }
   .mint-tab-container-wrap {
@@ -206,15 +215,24 @@ export default {
     margin-right: 10px;
   }
   .delivery-head {
-    color: #000;
-    font-size: 16px;
     margin-bottom: 10px;
-    line-height: 16px;
-  }
-  .delivery-date {
-    font-size: 12px;
-    color: #999;
-    float: right;
+    position: relative;
+    text-align: right;
+    .delivery-title {
+      .ell();
+      position: absolute;
+      left: 75px;
+      right: 120px;
+      top: 0;
+      color: #000;
+      font-size: 16px;
+      line-height: 16px;
+      text-align: left;
+    }
+    .delivery-date {
+      font-size: 12px;
+      color: #999;
+    }
   }
   .delivery-job-area {
     font-size: 12px;

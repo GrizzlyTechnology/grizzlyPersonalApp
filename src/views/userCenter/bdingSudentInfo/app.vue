@@ -156,7 +156,7 @@ export default {
   methods: {
     async create () {
       const response = await service.createStudent(this.form);
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           tools.toast({
@@ -181,7 +181,7 @@ export default {
     async getUserInfo () {
       tools.showProgress();
       const response = await service.getUserInfo();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       tools.hideProgress();
       switch (response.code) {
         case 0:

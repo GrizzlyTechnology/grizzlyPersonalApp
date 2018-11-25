@@ -95,7 +95,7 @@ export default {
         emailCode: this.form.emailCode
       });
       tools.hideProgress();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
 
       switch (response.code) {
         case 0:
@@ -104,7 +104,7 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '邮箱创建失败，请稍后重试！！'
+            message: response.message
           });
           break;
       }
@@ -117,7 +117,7 @@ export default {
         emailCode: this.form.emailCode
       });
       tools.hideProgress();
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
 
       switch (response.code) {
         case 0:
@@ -126,13 +126,13 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '邮箱修改失败，请稍后重试！！'
+            message: response.message
           });
           break;
       }
     },
     handleGetVerificationCode () {
-      console.log(JSON.stringify(this.form));
+      // console.log(JSON.stringify(this.form));
       if (
         regexps.email.test(
           this.haveEmail ? this.form.newEmail : this.form.email

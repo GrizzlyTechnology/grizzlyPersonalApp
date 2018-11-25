@@ -5,8 +5,11 @@
       <span class="ucNickname">{{nickname}}
         <Icon :size="16" :value="sex===1?':icon-nan2':':icon-nv1'" :color="sex===1?'#61bce8':'#fd7777'" /></span>
       <span class="ucSchoole" v-if="studentStatus!=null">{{studentStatus.schoolname}} <span class="ucClass">{{studentStatus.college}} / {{studentStatus.majorname}}</span></span>
-      <span class="ucSchoole" v-if="studentStatus===null" @click="bindingStudentStatus">学籍管理
-        <Icon :size="16" value=":icon-right" color="#fff" /></span>
+      <!-- <span class="ucSchoole" v-if="studentStatus===null" @click="bindingStudentStatus"> -->
+      <span class="ucSchoole" v-if="studentStatus===null">
+        学籍未填写
+        <!-- <Icon :size="16" value=":icon-right" color="#fff" /> -->
+        </span>
       <span class="ucSetting" @click="setting">
         <Icon :size="14" value=":el-icon-setting" color="#FFF" />
         设置
@@ -34,13 +37,13 @@
         <i class="mu-icon icon-right isLink" />
         <Icon slot="icon" value=":icon-xiaoxi1" :size="28" color="#999" />
       </Cell>
-      <!-- <Cell class="ucCell">
+      <Cell class="ucCell">
         <div class="ucCellCon" @click="deliveryJoy">
           <span class="ucCellTitle">投递的职位</span>
         </div>
         <i class="mu-icon icon-right isLink" />
         <Icon slot="icon" value=":icon-toudijianli" :size="28" color="#999" />
-      </Cell> -->
+      </Cell>
       <Cell class="ucCell">
         <div class="ucCellCon" @click="bindingStudentStatus">
           <span class="ucCellTitle">学籍管理</span>

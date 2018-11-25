@@ -41,7 +41,9 @@ export default {
       refreshing: false,
       loading: false,
       companys: [],
-      recommend:window.api.pageParam.recommend || ''
+      page: 1,
+      pagesize: 10,
+      recommend: window.api.pageParam.recommend || ''
     };
   },
   components: {
@@ -55,17 +57,39 @@ export default {
     Divider,
     LoadMore
   },
+  computed: {
+    isLoading () {
+      return this.refreshing || this.loading;
+    }
+  },
   methods: {
     // 页面数据
     async companyRecommend () {
       tool.showProgress();
       const response = await service.companyRecommendList({
-        recommend:this.recommend
+        page: this.page,
+        recommend: this.recommend
       });
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          this.companys = response.result.companys;
+          if (this.page === 1) {
+            this.refreshing = false;
+            this.companys = response.result.companys.map(message => {
+              return {
+                ...message
+              };
+            });
+          }
+          if (this.page > 1) {
+            this.loading = false;
+            response.result.companys.forEach(message => {
+              this.companys.push({
+                ...message
+              });
+            });
+          }
+          // this.companys = response.result.companys;
           break;
         default:
           Toast({
@@ -76,31 +100,42 @@ export default {
       }
     },
     refresh () {
-      this.refreshing = true;
-      this.$refs.container.scrollTop = 0;
-      setTimeout(() => {
-        this.refreshing = false;
-        for (let i = 0; i < 10; i++) {
-          this.companys.push({
-            id: 1,
-            imgSrc: 'sdfgdfgdfg',
-            name: 'xvxcvxcvxcvxcv'
-          });
-        }
-      }, 2000);
+      // this.refreshing = true;
+      // this.$refs.container.scrollTop = 0;
+      // setTimeout(() => {
+      //   this.refreshing = false;
+      //   for (let i = 0; i < 10; i++) {
+      //     this.companys.push({
+      //       id: 1,
+      //       imgSrc: 'sdfgdfgdfg',
+      //       name: 'xvxcvxcvxcvxcv'
+      //     });
+      //   }
+      // }, 2000);
+      if (!this.refreshing && !this.loading) {
+        this.page = 1;
+        this.refreshing = true;
+        this.$refs[`container`].scrollTop = 0;
+        this.companyRecommend();
+      }
     },
     load () {
-      this.loading = true;
-      setTimeout(() => {
-        this.loading = false;
-        for (let i = 0; i < 5; i++) {
-          this.companys.push({
-            id: 1,
-            imgSrc: 'dfgdfgdfg',
-            name: 'sdfsdf'
-          });
-        }
-      }, 2000);
+      // this.loading = true;
+      // setTimeout(() => {
+      //   this.loading = false;
+      //   for (let i = 0; i < 5; i++) {
+      //     this.companys.push({
+      //       id: 1,
+      //       imgSrc: 'dfgdfgdfg',
+      //       name: 'sdfsdf'
+      //     });
+      //   }
+      // }, 2000);
+      if (!this.refreshing && !this.loading) {
+        this.page = this.page + 1;
+        this.loading = true;
+        this.companyRecommend();
+      }
     },
     companyInfo (enterpriseId) {
       tool.openWin({
@@ -118,7 +153,7 @@ export default {
     }
   },
   mounted () {
-    this.companyRecommend();
+    this.refresh();
   }
 };
 </script>

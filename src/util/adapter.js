@@ -1,5 +1,6 @@
 import isJson from 'is-json';
 import moment from 'moment';
+import dict from 'util/dictMap';
 
 // import dictMap from 'util/dictMap';
 
@@ -116,5 +117,53 @@ adapter.messageAdapter = function (data) {
       'YYYY年MM月DD日'
     )
   };
+};
+
+adapter.deliveryAdapter = function (data) {
+  return {
+    ...data,
+    statusText: dict.deliveryStatus[data.status][1],
+    statusLongText: dict.deliveryStatus[data.status][0],
+    deliveryDateText: moment(data.deliveryDate * 1000).format(
+      'YYYY年MM月DD日'
+    )
+  };
+};
+adapter.deliveryAdapterListRow = function (data) {
+  return {
+    ...data,
+    statusLongText: dict.deliveryStatus[data.status][0],
+    addtimeValue: data.addtime * 1000,
+    info: moment(data.addtime * 1000).format(
+      'YYYY年MM月DD日'
+    )
+  };
+};
+
+adapter.deliveryStatusColor = function (status) {
+  let color;
+  switch (status) {
+    case 0:
+      color = '#999';
+      break;
+    case 1:
+      color = '#3db0eb';
+      break;
+    case 2:
+      color = '#0D9CE6';
+      break;
+    case 3:
+      color = '#f7ba2a';
+      break;
+    case 4:
+      color = '#f7842a';
+      break;
+    case 5:
+      color = '#27cd59';
+      break;
+    default:
+      color = '#f75c5d';
+  }
+  return color;
 };
 export default adapter;

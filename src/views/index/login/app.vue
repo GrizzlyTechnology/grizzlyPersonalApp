@@ -15,7 +15,7 @@
     </Form>
     <Row gutter>
       <Col span="6">
-      <Checkbox label="记住用户名" v-model="validateForm.isAgree"></Checkbox>
+      <!-- <Checkbox label="记住用户名" v-model="validateForm.isAgree"></Checkbox> -->
       </Col>
       <Col span="6">
       <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
@@ -58,8 +58,8 @@ export default {
       passwordRules: [
         { validate: val => !!val, message: '必须填写密码' },
         {
-          validate: val => val.length >= 6 && val.length <= 18,
-          message: '密码长度大于6小于18'
+          validate: val => val.length >= 6 && val.length <= 32,
+          message: '请填写6-32位数字或大小写字母'
         }
       ],
       argeeRules: [{ validate: val => !!val, message: '必须同意用户协议' }],
@@ -124,14 +124,16 @@ export default {
           ajpush.bindAliasAndTags(param, function (ret) {
             // let statusCode = ret.statusCode;
           });
-          alert(
-            '登录成功' +
-              (window.api.pageParam.type === 'qq'
-                ? '且已绑定QQ账户'
-                : window.api.pageParam.type === 'wx'
-                  ? '且已绑定微信账户'
-                  : '')
-          );
+          switch (window.api.pageParam.type) {
+            case 'qq':
+              alert('登录成功且已绑定QQ账户');
+              break;
+            case 'wx':
+              alert('登录成功且已绑定微信账户');
+              break;
+            default:
+              break;
+          }
           // 登录完跳转
           window.api.openWin({
             name: 'main',
@@ -158,7 +160,14 @@ export default {
       });
     },
     remanberPWD () {
-      alert('sss');
+      tools.openWin({
+        name: 'remanberPWD',
+        url: '../win.html',
+        title: '忘记密码',
+        fname: 'remanberPWD_f',
+        furl: './index/remanberPWD.html',
+        hasLeft: true
+      });
     },
     msgCode () {
       alert('msgcode login');
