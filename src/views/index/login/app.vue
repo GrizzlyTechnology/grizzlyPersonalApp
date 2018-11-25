@@ -15,7 +15,7 @@
     </Form>
     <Row gutter>
       <Col span="6">
-      <Checkbox label="记住用户名" v-model="validateForm.isAgree"></Checkbox>
+      <!-- <Checkbox label="记住用户名" v-model="validateForm.isAgree"></Checkbox> -->
       </Col>
       <Col span="6">
       <div class="grid-cell-reg" @click="remanberPWD">忘记密码？</div>
