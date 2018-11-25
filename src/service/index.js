@@ -68,7 +68,7 @@ function delEmptyAttr (arg) {
 
 function request ({ host = '', version = '', url, params, method = 'post' }) {
   const mock = isMock({ host, version, url, params, method });
-  if (ENV !== 'production' && mock.isMock === true) {
+  if (ENV === 'development' && mock.isMock === true) {
     return new Promise((resolve) => {
       resolve(mock.mock);
     });
@@ -113,6 +113,13 @@ export default {
     return request({
       host: BASEURL,
       url: '/api/User/otherLogin',
+      params
+    });
+  },
+  bund (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/User/bund',
       params
     });
   },

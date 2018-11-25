@@ -42,7 +42,8 @@ export default {
       loading: false,
       companys: [],
       page: 1,
-      pagesize: 10
+      pagesize: 10,
+      recommend: window.api.pageParam.recommend || ''
     };
   },
   components: {
@@ -66,7 +67,8 @@ export default {
     async companyRecommend () {
       tool.showProgress();
       const response = await service.companyRecommendList({
-        page: this.page
+        page: this.page,
+        recommend: this.recommend
       });
       tool.hideProgress();
       switch (response.code) {
@@ -182,5 +184,9 @@ export default {
 
 .companyNameBox .mu-avatar img {
   border-radius: 0px;
+}
+
+.listItem:active{
+   background: #f0f0f0;
 }
 </style>

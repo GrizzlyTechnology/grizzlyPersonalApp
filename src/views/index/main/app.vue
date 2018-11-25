@@ -73,6 +73,7 @@ export default {
     }
   },
   mounted () {
+    tool.backCloseW();
     if (window.api.pageParam.comefrom !== undefined) {
       setTimeout(function () {
         window.api.closeWin({

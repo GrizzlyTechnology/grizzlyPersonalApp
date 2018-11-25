@@ -218,6 +218,10 @@ export default {
   background: #fff;
 }
 
+.listItem:active {
+  background: #f0f0f0;
+}
+
 .noList {
   display: flex;
   align-items: center;

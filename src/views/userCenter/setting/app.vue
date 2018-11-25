@@ -7,13 +7,13 @@
       <i class="mu-icon icon-right isLink" />
       <Icon slot="icon" value=":icon-icon-" :size="28" color="#999" />
     </Cell>
-    <Cell class="ucCell">
+    <!-- <Cell class="ucCell">
       <div class="ucCellCon" @click="systemSetting">
         <span class="ucCellTitle">系统设置</span>
       </div>
       <i class="mu-icon icon-right isLink" />
       <Icon slot="icon" value=":icon-shezhi1" :size="28" color="#999" />
-    </Cell>
+    </Cell> -->
     <!-- <Cell class="ucCell">
       <div class="ucCellCon" @click="systemSetting">
         <span class="ucCellTitle">切换身份</span>
@@ -77,7 +77,7 @@ export default {
             fname: 'login_f',
             furl: './index/login.html',
             data: {
-              comefrom: 'systemSet'
+              comefrom: 'setting'
             }
           });
           break;
@@ -91,7 +91,7 @@ export default {
     },
     logout () {
       this.query();
-    },
+    }
   },
   mounted () {}
 };
