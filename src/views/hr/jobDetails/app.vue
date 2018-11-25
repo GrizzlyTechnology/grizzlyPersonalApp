@@ -360,4 +360,8 @@ export default {
   display: flex;
   justify-content: space-around;
 }
+
+.listItem:active{
+  background: #f0f0f0;
+}
 </style>

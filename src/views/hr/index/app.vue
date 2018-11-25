@@ -1,8 +1,8 @@
 <template>
   <Container ref="container">
     <div class='topSearch'>
-      <div class='flexCon'  @click='jobSearch'>
-         <AutoComplete disabled label=""  placeholder="搜索公司/职位" class='searchBox' :solo='true'>
+      <div class='flexCon' @click='jobSearch'>
+        <AutoComplete disabled label="" placeholder="搜索公司/职位" class='searchBox' :solo='true'>
           <i class='iconfont icon-suosou'></i>
         </AutoComplete>
       </div>
@@ -16,10 +16,12 @@
             </CarouselItem>
           </template>
         </Carousel>
-        <div class='bgWhite space15'>
-          <h2 class='titleB' @click="companyListAll()">名企推荐<Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
-          </h2>
-          <Row class='mqtj' gutter>
+        <div class='bgWhite'>
+          <div class='activeBox'>
+            <h2 class='titleB' @click="companyListAll()">名企推荐<Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
+            </h2>
+          </div>
+          <Row class='mqtj space15' gutter>
             <Col span="4" v-for='company in companys.slice(0,6)' :key='company.id' @click="companyInfo(company.id)">
             <div class="grid-cell">
               <img :src="company.imgSrc" alt="">
@@ -55,8 +57,10 @@
           <img :src="resumeImg.imgSrc" alt="" class='adv createResume' @click="createResume" v-show='resumeList.length===0' :key='resumeImg.index'>
         </template>
         <div class='bgWhite hotJobs'>
-          <h2 class='titleB' @click="hotJobListAll()">热门职位 <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
-          </h2>
+          <div class='activeBox'>
+            <h2 class='titleB' @click="hotJobListAll()">热门职位 <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
+            </h2>
+          </div>
         </div>
         <div class='bgWhite'>
           <List textline="two-line" v-if="hotJobs.length > 0">
@@ -82,14 +86,14 @@
         <template v-for='advImg in advImgs'>
           <img :src="advImg.imgSrc" alt="" class='adv' :key='advImg.index'>
         </template>
-        <div class='bgWhite hotJobs'>
+        <div class='bgWhite hotJobs activeBox'>
           <h2 class='titleB' @click="raidersListAll()">职场攻略 <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail" color="#000"></Icon>
           </h2>
         </div>
         <div class='bgWhite'>
           <List textline="three-line">
             <div v-for='raiders in raidersList.slice(0,6)' :key="raiders.id">
-              <ListItem :ripple="false" button class='listBg' @click="raidersArticle(raiders.id)">
+              <ListItem :ripple="false" button class='listBg listItem' @click="raidersArticle(raiders.id)">
                 <ListAction class='listAction' v-show='raiders.thumb !==""'>
                   <Paper class="imgSpace" :z-depth="5">
                     <img :src="raiders.thumb" class='raidersImg'>
@@ -188,7 +192,7 @@ export default {
       }, 2000);
     },
     // 搜索
-    jobSearch() {
+    jobSearch () {
       tool.openWin({
         name: 'jobSearch',
         url: '../win.html',
@@ -197,7 +201,7 @@ export default {
         furl: './hr/jobSearch.html',
         hasLeft: 1,
         hasRight: 0
-        });
+      });
     },
     // 滚动图
     async carouselImg () {
@@ -219,7 +223,9 @@ export default {
     // 名企推荐数据
     async companyRecommend () {
       tool.showProgress();
-      const response = await service.companyRecommendList({});
+      const response = await service.companyRecommendList({
+        recommend: 1
+      });
       tool.hideProgress();
       switch (response.code) {
         case 0:
@@ -242,7 +248,10 @@ export default {
         fname: 'companyList_f',
         furl: './hr/companyList.html',
         hasLeft: 1,
-        hasRight: 0
+        hasRight: 0,
+        data: {
+          recommend: 1
+        }
       });
     },
     // 名企推荐详情
@@ -271,8 +280,10 @@ export default {
             response.result.resumeInfo.length > 0
               ? [response.result.resumeInfo[0]]
               : [];
+          if (this.resumeList.length !== 0) {
+            this.listsData();
+          }
 
-          this.listsData();
           break;
         default:
           tool.toast({
@@ -381,7 +392,7 @@ export default {
         fname: 'jobDetails_f_' + id,
         furl: './hr/jobDetails.html',
         hasLeft: 1,
-        hasRight:0,
+        hasRight: 0,
         data: {
           id: id
         }
@@ -421,7 +432,7 @@ export default {
       tool.openWin({
         name: 'raidersArticle',
         url: '../win.html',
-        title: '',
+        title: '职场攻略',
         fname: 'raidersArticle_f',
         furl: './hr/raidersArticle.html',
         hasLeft: 1,
@@ -436,7 +447,7 @@ export default {
       tool.openWin({
         name: 'resumeList',
         url: '../win.html',
-        title: '',
+        title: '创建简历',
         fname: 'resumeList_f',
         furl: './userCenter/resumeList.html',
         hasLeft: 1,
@@ -472,6 +483,7 @@ export default {
 }
 .mu-carousel {
   height: 200px;
+  margin-bottom: 15px;
 }
 .mu-carousel-item > img {
   width: 100%;
@@ -500,7 +512,7 @@ export default {
 }
 .mu-input.searchBox {
   // width: 80%;
-  width:98%;
+  width: 98%;
   min-height: auto;
   padding-top: 0px;
   padding-bottom: 0px;
@@ -526,8 +538,8 @@ body .mu-secondary-text-color {
   padding-left: 1rem;
 }
 
-.suitables{
-  margin-bottom:15px;
+.suitables {
+  margin-bottom: 15px;
 }
 
 .bgWhite {
@@ -536,7 +548,6 @@ body .mu-secondary-text-color {
 
 .space15 {
   padding: 15px;
-  margin-top: 15px;
   margin-bottom: 15px;
 }
 .titleB {
@@ -546,7 +557,15 @@ body .mu-secondary-text-color {
   padding-left: 5px;
   margin-top: 0;
   display: flex;
+  margin-bottom: 0;
   justify-content: space-between;
+}
+
+.activeBox {
+  padding: 15px;
+  &:active {
+    background: #f0f0f0;
+  }
 }
 
 .titleA {
@@ -573,7 +592,13 @@ body .mu-secondary-text-color {
 
 .mqtj img {
   width: 100%;
+  height:100%;
   display: block;
+}
+
+.mqtj .grid-cell{
+  border:1px solid #ccc;
+  height: 100px;
 }
 
 .claim {
@@ -594,12 +619,12 @@ body .mu-secondary-text-color {
   padding-bottom: 0;
 }
 
-.hotJobs {
-  padding: 15px 15px 0;
-  // margin-top: 15px;
-}
 .hotJobs h2 {
   margin-bottom: 0;
+}
+
+.listItem:active {
+  background: #f0f0f0;
 }
 .listAction {
   min-width: 70px;
@@ -615,7 +640,7 @@ body .mu-secondary-text-color {
   width: 100%;
   margin: 15px 0;
 }
-.adv.createResume{
+.adv.createResume {
   margin-top: 0;
 }
 </style>

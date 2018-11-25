@@ -9,7 +9,7 @@ import 'assets/fonts/iconfont.css';
 // Vue.use(Lazyload);
 
 if (process.env !== 'development') {
-  window.apiready = function () {
+  window.apiready = function () { document.body.addEventListener('touchstart',function(){});
     new Vue({
       el: '#app',
       render: h => h(App)

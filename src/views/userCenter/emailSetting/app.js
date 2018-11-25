@@ -5,7 +5,7 @@ import 'assets/fonts/iconfont.css';
 import 'assets/css/global.less';
 
 if (process.env !== 'development') {
-  window.apiready = function () {
+  window.apiready = function () { document.body.addEventListener('touchstart',function(){});
     new Vue({
       el: '#app',
       render: h => h(App)

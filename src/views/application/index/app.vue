@@ -59,7 +59,7 @@ export default {
           break;
       }
     },
-    Internship (id,companyName,department,group) {
+    Internship (id, companyName, department, group) {
       tool.openWin({
         name: 'Internship',
         url: '../win.html',
@@ -69,9 +69,9 @@ export default {
         hasLeft: 1,
         data: {
           companyId: id,
-          companyName:companyName,
-          department :department,
-          group:group
+          companyName: companyName,
+          department: department,
+          group: group
         }
       });
     }

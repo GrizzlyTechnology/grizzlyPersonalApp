@@ -106,9 +106,9 @@ export default {
           '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O',
         MG_key: '5b10fed636fcf',
         MG_token:
-          process.env !== 'production'
-            ? '6f8bade35ef87e5a6aa623519ef973582dc25205'
-            : tools.getStorage('token') || ''
+        process.env === 'development'
+          ? '6f8bade35ef87e5a6aa623519ef973582dc25205'
+          : tools.getStorage('token') || ''
       },
       maxSize: 10,
       max: 1,
@@ -241,7 +241,7 @@ export default {
       tools.openWin({
         name: 'passwordSetting',
         url: '../win.html',
-        title: '密码设置',
+        title: '修改密码',
         fname: 'passwordSetting_f',
         furl: './userCenter/passwordSetting.html',
         hasLeft: 1,
@@ -257,7 +257,7 @@ export default {
       tools.openWin({
         name: 'phoneSetting',
         url: '../win.html',
-        title: '密码设置',
+        title: '修改手机号码',
         fname: 'phoneSetting_f',
         furl: './userCenter/phoneSetting.html',
         hasLeft: 1,
