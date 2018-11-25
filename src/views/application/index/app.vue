@@ -1,6 +1,6 @@
 <template>
   <Container>
-    <Stepper :active-step="0" orientation="vertical" :linear="false">
+    <Stepper :active-step="0" orientation="vertical" :linear="false" v-show='companys.length>0'>
       <template v-for='company in companys'>
         <Step :key='company.id' @click='Internship(company.id,company.companyName,company.department,company.group)'>
           <StepLabel  class='comStepper'>
@@ -14,13 +14,11 @@
         </Step>
       </template>
     </Stepper>
-
-     <!-- <div>你还未加入企业实习，立即去  <Button color="#009688" @click="hotJobListAll">投递职位</Button></div> -->
+     <div v-show='companys.length<=0'>你还未加入企业实习，立即去  <Button color="#009688" @click="hotJobListAll">投递职位</Button></div>
   </Container>
 </template>
 <script>
-// import { Button } from 'muse-ui';
-import { Card, Icon } from 'muse-ui';
+import { Card, Icon, Button } from 'muse-ui';
 import { CardHeader } from 'muse-ui/lib/Card';
 import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
 import { Container } from 'muse-ui/lib/Grid';
@@ -40,8 +38,8 @@ export default {
     Stepper,
     Step,
     StepLabel,
-    Icon
-    // Button
+    Icon,
+    Button
   },
   methods: {
     // 列表数据
@@ -74,21 +72,21 @@ export default {
           group: group
         }
       });
+    },
+    hotJobListAll () {
+      tool.openWin({
+        name: 'jobSearchList',
+        url: '../win.html',
+        title: '热门职位',
+        fname: 'jobSearchList_f',
+        furl: './hr/jobSearchList.html',
+        hasLeft: 1,
+        hasRight: 0,
+        data: {
+          istj: 1 // 1是推荐 0是不推荐
+        }
+      });
     }
-    // hotJobListAll () {
-    //   tool.openWin({
-    //     name: 'jobSearchList',
-    //     url: '../win.html',
-    //     title: '热门职位',
-    //     fname: 'jobSearchList_f',
-    //     furl: './hr/jobSearchList.html',
-    //     hasLeft: 1,
-    //     hasRight: 0,
-    //     data: {
-    //       istj: 1 // 1是推荐 0是不推荐
-    //     }
-    //   });
-    // }
   },
   mounted () {
     this.listsData();
