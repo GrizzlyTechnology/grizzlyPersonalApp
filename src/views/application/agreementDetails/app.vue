@@ -1,11 +1,11 @@
 <template>
   <div class="content">
-    <div class="delivery" @click="companyDetail(id)">
+    <div class="delivery" @click="companyDetail(companyInfo.companyId)">
       <div class="delivery-head">
-        江苏大灰熊科技有限公司
+        {{companyInfo.companyName}}
         <!-- <span class="delivery-date">{{delivery.deliveryDateText}}投递</span> -->
       </div>
-      <div class="delivery-salary-range">技术部 <span class="delivery-job-area">程序组</span><span class="delivery-link">查看公司信息</span></div>
+      <div class="delivery-salary-range">{{companyInfo.department}} <span class="delivery-job-area">{{companyInfo.group}}</span><span class="delivery-link">查看公司信息</span></div>
       <!-- <div class="delivery-foot"></div> -->
     </div>
     <div class="picList">
@@ -13,54 +13,68 @@
         <div class="con" @click="imagesPopupOpen(picList,index,'')" :style="{backgroundImage:'url('+file.coverUrl+')'}" />
         <Icon class="close" :size="18" value=":el-icon-error" color="#000" @click="remove(file,index)" />
       </div>
-      <div class="infoNotice" v-if="picList.length===0">
-        暂无协议上传
+      <div :class="{picCon:true,uploader:true,hide:picList.length>=max}">
+        <Upload class="con" ref="uploader" accept="image/*" list-type="picture-card" name="file" :class="{hide:uploaderHide}" :show-file-list="false" :with-credentials="true" :multiple="false" :data="{type:2}" :headers="headers" :action="actionUrl" :limit="max" :file-list="uploaderList" :on-change="change" :on-progress="progress" :on-success="success" :before-upload="beforeUpload" :on-error="error">
+          <i class="el-icon-plus"></i>
+        </Upload>
+        <div :class="{hide:!uploaderHide,con:true,progressPercent:true}">
+          <Progress type="circle" :percentage="progressPercent" />
+        </div>
       </div>
     </div>
-    <Upload class="footer" ref="uploader" accept="image/*" name="file" :show-file-list="false" :with-credentials="true" :multiple="false" :data="{type:2}" :headers="headers" :action="actionUrl" :file-list="uploaderLiist" :on-progress="progress" :on-success="success" :before-upload="beforeUpload" :on-error="error">
-      <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large>立即上传</Button>
-    </Upload>
+
+    <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large>提交协议</Button>
     <ImagesPopup ref="imagesPopup" :urlList="urlList" :index="urlListIndex" :description="description"></ImagesPopup>
   </div>
 </template>
 
 <script>
-import { Button, Icon } from 'muse-ui';
-import ImagesPopup from 'components/ImagesPopup';
-import Upload from 'element-ui/lib/upload';
-// import Progress from 'element-ui/lib/progress';
 import tools from 'util/tools';
+import service from 'service';
 import { hostList } from 'service/mock';
+
+import { Button, Icon } from 'muse-ui';
+import Upload from 'element-ui/lib/upload';
+import Progress from 'element-ui/lib/progress';
+
+import ImagesPopup from 'components/ImagesPopup';
 
 export default {
   data () {
     return {
+      companyInfo: {
+        companyId: window.api ? window.api.pageParam.companyIdthis : '-',
+        companyName: window.api ? window.api.pageParam.companyName : '-',
+        department: window.api ? window.api.pageParam.department : '-',
+        group: window.api ? window.api.pageParam.group : ''
+      },
       description: {},
       urlList: [],
       urlListIndex: 0,
       picList: [
-        {
-          url:
-            'https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1225949027,2182553787&fm=85&s=86AC65A275E484AEF015A8A40300A0D1',
-          coverUrl:
-            'https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1225949027,2182553787&fm=85&s=86AC65A275E484AEF015A8A40300A0D1'
-        },
-        {
-          url:
-            'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=12360805,2887716012&fm=26&gp=0.jpg',
-          coverUrl:
-            'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=12360805,2887716012&fm=26&gp=0.jpg'
-        },
-        {
-          url:
-            'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1634998881,2572259975&fm=26&gp=0.jpg',
-          coverUrl:
-            'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1634998881,2572259975&fm=26&gp=0.jpg'
-        }
+        // {
+        //   url:
+        //     'https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1225949027,2182553787&fm=85&s=86AC65A275E484AEF015A8A40300A0D1',
+        //   coverUrl:
+        //     'https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1225949027,2182553787&fm=85&s=86AC65A275E484AEF015A8A40300A0D1'
+        // },
+        // {
+        //   url:
+        //     'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=12360805,2887716012&fm=26&gp=0.jpg',
+        //   coverUrl:
+        //     'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=12360805,2887716012&fm=26&gp=0.jpg'
+        // },
+        // {
+        //   url:
+        //     'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1634998881,2572259975&fm=26&gp=0.jpg',
+        //   coverUrl:
+        //     'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1634998881,2572259975&fm=26&gp=0.jpg'
+        // }
       ],
 
       uploaderHide: false,
-      uploaderLiist: [],
+      progressPercent: 0,
+      uploaderList: [],
       actionUrl:
         'http://' +
         (process.env === 'production' ? hostList.pro : hostList.test) +
@@ -75,16 +89,62 @@ export default {
             ? '6f8bade35ef87e5a6aa623519ef973582dc25205'
             : tools.getStorage('token') || ''
       },
-      maxSize: 10
+      maxSize: 10,
+      max: 6
     };
   },
   components: {
     Button,
     Upload,
     ImagesPopup,
-    Icon
+    Icon,
+    Progress
   },
   methods: {
+    async getAgreementPic () {
+      tools.showProgress();
+      const response = await service.getAgreementPic({
+        companyId: this.companyInfo.companyId
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.picList = response.result.picList.map(url => {
+            const urlAry = url.split('/');
+            urlAry[urlAry.length - 1] = '450_' + urlAry[urlAry.length - 1];
+            return ({
+              url,
+              coverUrl: urlAry.join('/')
+            });
+          });
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: response.message
+          });
+          break;
+      }
+    },
+    async update () {
+      tools.showProgress();
+      const response = await service.updateAgreementPic({
+        companyId: this.companyInfo.companyId,
+        picList: this.picList.map(row => row.url)
+      });
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          tools.closeWin();
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: response.message
+          });
+          break;
+      }
+    },
     companyDetail (id) {
       tools.openWin({
         name: 'companyInfo_' + id,
@@ -107,27 +167,45 @@ export default {
       this.urlListIndex = index;
       this.$refs.imagesPopup.open();
     },
+
+    change (file) {
+      // console.log('change: ' + JSON.stringify(file));
+      switch (file.status) {
+        case 'ready':
+          this.progressPercent = 0;
+          this.uploaderHide = true;
+          break;
+        default:
+          break;
+      }
+      // this.uploaderClass = 'uploader hideUploader';
+    },
+
+    progress (file) {
+      this.progressPercent = parseInt(file.percent);
+      // this.uploaderClass = 'uploader hideUploader';
+    },
+
     beforeUpload (file) {
       if (file.size > this.maxSize * 1024 * 1024) {
         tools.toast({
           position: 'top',
           message: '图片最大' + this.maxSize + 'M'
         });
+        this.uploaderHide = false;
         return false;
       }
     },
-    progress (file) {
-      tools.showProgress();
-    },
+
     error (e, file, fileList) {
-      tools.hideProgress();
+      this.uploaderHide = false;
       tools.toast({
         position: 'top',
         message: '协议上传出错，请稍后重试'
       });
     },
     success (response, file, fileList) {
-      tools.hideProgress();
+      this.uploaderHide = false;
       switch (response.code) {
         case 0:
           const urlAry = response.result.file.url.split('/');
@@ -136,6 +214,9 @@ export default {
             url: response.result.file.url,
             coverUrl: urlAry.join('/')
           });
+          if (this.picList.length >= this.max) {
+            this.uploaderHide = true;
+          }
           break;
         default:
           tools.toast({
@@ -150,13 +231,8 @@ export default {
     },
     submit () {
       this.$refs.form.validate().then(result => {
-        // console.log(result);
         if (result === true) {
-          if (this.id) {
-            this.edit();
-          } else {
-            this.create();
-          }
+          this.update();
         }
       });
     }
@@ -262,6 +338,29 @@ export default {
       line-height: 30px;
     }
   }
+  .uploader {
+    .el-upload--picture-card {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+    .el-icon-plus {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 36px;
+      font-weight: bold;
+      margin-top: -21px;
+      margin-left: -18px;
+    }
+    .el-progress {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -63px;
+      margin-left: -63px;
+    }
+  }
 }
 .infoNotice {
   border-radius: 5px;
@@ -277,5 +376,8 @@ export default {
   .el-upload {
     width: 100%;
   }
+}
+.hide {
+  display: none;
 }
 </style>
