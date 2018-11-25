@@ -224,7 +224,7 @@ export default {
     async companyRecommend () {
       tool.showProgress();
       const response = await service.companyRecommendList({
-        recommend:1
+        recommend: 1
       });
       tool.hideProgress();
       switch (response.code) {
@@ -249,8 +249,8 @@ export default {
         furl: './hr/companyList.html',
         hasLeft: 1,
         hasRight: 0,
-         data: {
-           recommend:1
+        data: {
+          recommend: 1
         }
       });
     },
@@ -280,7 +280,7 @@ export default {
             response.result.resumeInfo.length > 0
               ? [response.result.resumeInfo[0]]
               : [];
-          if (this.resumeList.length!==0) {
+          if (this.resumeList.length !== 0) {
             this.listsData();
           }
 
