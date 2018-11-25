@@ -99,8 +99,6 @@ export default {
           tools.setStorage('token', response.result.token);
           tools.setStorage('phone', response.result.userinfo.phone);
           tools.setStorage('userInfo', response.result.userinfo);
-<<<<<<< HEAD
-=======
 
           // 绑定第三方登录
           if (this.type === 'qq' || this.type === 'wx') {
@@ -120,15 +118,12 @@ export default {
             }
           }
 
->>>>>>> release/0.2
           // 绑定极光推送的别名为id
           let ajpush = window.api.require('ajpush');
           let param = { alias: response.result.userinfo.id };
           ajpush.bindAliasAndTags(param, function (ret) {
             // let statusCode = ret.statusCode;
           });
-<<<<<<< HEAD
-=======
           alert(
             '登录成功' +
               (window.api.pageParam.type === 'qq'
@@ -137,7 +132,6 @@ export default {
                   ? '且已绑定微信账户'
                   : '')
           );
->>>>>>> release/0.2
           // 登录完跳转
           window.api.openWin({
             name: 'main',
