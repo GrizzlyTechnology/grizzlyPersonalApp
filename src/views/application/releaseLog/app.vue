@@ -1,35 +1,35 @@
 <template>
   <div class="content">
+    <div class="tip">
+      <Icon value=":el-icon-warning"></Icon> 本月已写周志3次
+    </div>
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form" :label-position="labelPosition" label-width="120">
-          <div class='mbox'>
-            <label for="">实习单位：</label>
-            <span>{{internshipCompanyInfo.companyName}}</span>
-          </div>
-          <div class='mbox'>
-            <label for="">实习地点：</label>
-            <span>{{internshipCompanyInfo.internshipAddress}}</span>
-          </div>
+          <FormItem label="实习单位">
+            <TextField underline-color="#d7d7d7" readonly v-model="internshipCompanyInfo.companyName"></TextField>
+          </FormItem>
+          <FormItem label="实习地点">
+            <TextField underline-color="#d7d7d7" readonly v-model="internshipCompanyInfo.internshipAddress"></TextField>
+          </FormItem>
           <FormItem label="实习时间：" prop="startTime" :rules="internshipTimeRules">
             <DateInput style='width:40%;margin-right:15px;' :value="startTimeText" :max-date="new Date()" @change="changeStartTime" no-display view-type="list" container="bottomSheet"></DateInput>
             至
             <DateInput style='width:40%;margin-left:15px' :value="endTimeText" :max-date="new Date()" @change="changeEndTime" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
-          <div class='mbox'>
-            <label for="">实习部门：</label>
-            <span>{{internshipCompanyInfo.department}}</span>
-          </div>
-          <div class='mbox'>
-            <label for="">实习岗位：</label>
-            <span>{{internshipCompanyInfo.group}}</span>
-          </div>
-          <div class='tips'>本月已写周志<span> 3 </span>次</div>
+          <FormItem label="实习部门">
+            <TextField underline-color="#d7d7d7" readonly v-model="internshipCompanyInfo.department"></TextField>
+          </FormItem>
+          <FormItem label="实习岗位">
+            <TextField underline-color="#d7d7d7" readonly v-model="internshipCompanyInfo.group"></TextField>
+          </FormItem>
+
+          <!-- <div class='tips'>本月已写周志<span> 3 </span>次</div> -->
           <FormItem label="本周工作内容：" prop="title" :rules='workContentRules'>
-            <TextField multi-line v-model="form.workContent" :max-length="300" :rows="15" :rows-max="15"></TextField>
+            <TextField multi-line v-model="form.workContent" :max-length="255" :rows="5" :rows-max="5"></TextField>
           </FormItem>
           <FormItem label="本周收获：" prop="title" :rules='rewardRules'>
-            <TextField multi-line v-model="form.reward" :max-length="300" :rows="15" :rows-max="15"></TextField>
+            <TextField multi-line v-model="form.reward" :max-length="255" :rows="5" :rows-max="5"></TextField>
           </FormItem>
         </Form>
       </div>
@@ -41,117 +41,108 @@
 </template>
 
 <script>
-// import service from 'service';
-import { Button, TextField, DateInput } from "muse-ui";
-import Upload from "element-ui/lib/upload";
-import Progress from "element-ui/lib/progress";
-import { Form, FormItem } from "muse-ui/lib/Form";
+import service from 'service';
+import tools from 'util/tools';
+import { Icon, Alert, Button, TextField, DateInput } from 'muse-ui';
+import { Form, FormItem } from 'muse-ui/lib/Form';
 export default {
-  data() {
+  data () {
     return {
-      labelPosition: "top",
+      labelPosition: 'top',
       form: {
-        internshipStart: "",
-        internshipEnd: "",
-        workContent: "sdfsdfsdfsdf",
-        reward: "dgdfgdfgdfgdfg"
+        internshipStart: Date.parse(new Date()) - 24 * 60 * 60 * 1000,
+        internshipEnd: Date.parse(new Date()),
+        workContent: '',
+        reward: ''
       },
       internshipCompanyInfo: {
-        companyName: window.api.pageParam.companyName,
-        department: window.api.pageParam.department,
-        group: window.api.pageParam.group,
-        internshipAddress: window.api.pageParam.internshipAddress
+        companyName: window.api ? window.api.pageParam.companyName : '',
+        department: window.api ? window.api.pageParam.department : '',
+        group: window.api ? window.api.pageParam.group : '',
+        internshipAddress: window.api
+          ? window.api.pageParam.internshipAddress
+          : ''
       },
       internshipTimeRules: [
         {
           validate: val => this.form.internshipStart <= this.form.internshipEnd,
-          message: "开始时间不能在结束时间之后"
+          message: '开始时间不能在结束时间之后'
         }
       ],
       workContentRules: [
-        { validate: val => !!val, message: "必须填写本周工作内容" }
+        { validate: val => !!val, message: '必须填写本周工作内容' }
       ],
-      rewardRules: [{ validate: val => !!val, message: "必须填写本周收获" }]
+      rewardRules: [{ validate: val => !!val, message: '必须填写本周收获' }]
     };
   },
   components: {
+    Alert,
     Button,
+    DateInput,
     Form,
     FormItem,
-    TextField,
-    DateInput
+    Icon,
+    TextField
   },
   computed: {
-    startTimeText() {
+    startTimeText () {
       return new Date(this.form.internshipStart);
     },
-    endTimeText() {
+    endTimeText () {
       return new Date(this.form.internshipEnd);
     }
   },
   methods: {
-    changeStartTime(date) {
+    changeStartTime (date) {
       this.form.internshipStart = date.valueOf();
     },
-    changeEndTime(date) {
+    changeEndTime (date) {
       this.form.internshipEnd = date.valueOf();
     },
-    async submitApply() {
-      tool.showProgress();
+    async edit () {
+      tools.showProgress();
       const response = await service.submitApplyForm({
         ...this.form,
         enterpriseid: this.companyId
       });
-      tool.hideProgress();
+      tools.hideProgress();
       switch (response.code) {
         case 0:
-          Toast({
-            position: "top",
-            message: "提交成功"
-          });
-          tool.closeWin();
+          tools.closeWin();
           break;
         default:
-          Toast({
-            position: "top",
-            message: "提交成功失败，请稍后重试！！"
+          tools.toast({
+            position: 'top',
+            message: '实习日志编辑失败，请稍后重试！！'
           });
           break;
       }
     },
-    submit() {
+    submit () {
       this.$refs.form.validate().then(result => {
         if (result === true) {
-          this.submitApply();
+          this.edit();
         }
       });
     }
   },
-  mounted() {}
+  mounted () {}
 };
 </script>
 <style lang="less">
 @import url("../../../assets/css/base.less");
 .content {
-  background: #fff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-
-label,
-.mu-form-item-label {
-  color: #000;
+.bodyer {
+  flex: 1;
+  overflow: auto;
 }
-
-body .mu-text-field-input {
-  color: rgba(0, 0, 0, 0.54);
-}
-
-.mbox {
-  color: rgba(0, 0, 0, 0.54);
-  margin-bottom: 10px;
-}
-
-.tips {
-  margin-bottom: 5px;
-  color: red;
+.tip{
+  padding: 10px;
+  background-color:#d6ebff;
+  color: #409eff;
 }
 </style>

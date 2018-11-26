@@ -20,7 +20,7 @@
 </template>
 <script>
 // import { Button } from 'muse-ui';
-import { Card, Icon} from 'muse-ui';
+import { Card, Icon } from 'muse-ui';
 import { CardHeader } from 'muse-ui/lib/Card';
 import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
 import { Container } from 'muse-ui/lib/Grid';
@@ -59,19 +59,19 @@ export default {
           break;
       }
     },
-    Internship (id,companyName,department,group) {
+    Internship (id, companyName, department, group) {
       tool.openWin({
-        name: 'Internship',
+        name: 'Internship_' + id,
         url: '../win.html',
         title: '校外实习',
-        fname: 'Internship_f',
+        fname: 'Internship_f_' + id,
         furl: './application/Internship.html',
         hasLeft: 1,
         data: {
           companyId: id,
-          companyName:companyName,
-          department :department,
-          group:group
+          companyName: companyName,
+          department: department,
+          group: group
         }
       });
     }

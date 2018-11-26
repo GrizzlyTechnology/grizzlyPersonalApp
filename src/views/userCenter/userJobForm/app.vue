@@ -15,13 +15,7 @@
             <DateInput class="dateInput" type="month" :value="endTimeText" :max-date="new Date()" @change="changeEndTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
           <FormItem label="工作内容" prop="jobContent">
-            <TextField
-              v-model="form.jobContent"
-              multi-line
-              :max-length="100"
-              :rows="5"
-              :rows-max="5"
-            />
+            <TextField v-model="form.jobContent" multi-line :max-length="100" :rows="5" :rows-max="5" />
           </FormItem>
         </Form>
       </div>
@@ -34,7 +28,7 @@
 
 <script>
 import service from 'service';
-// import moment from 'moment';
+import moment from 'moment';
 import { Button, TextField, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 // import regexps from 'util/regexps';
@@ -46,16 +40,36 @@ export default {
     return {
       id: window.api ? window.api.pageParam.id : null,
       form: {
-        companyName: window.api && window.api.pageParam.job ? window.api.pageParam.job.companyName : '',
-        endTime: window.api && window.api.pageParam.job ? window.api.pageParam.job.endTime : Date.now().valueOf(),
-        startTime: window.api && window.api.pageParam.job ? window.api.pageParam.job.startTime : Date.now().valueOf(),
-        jobContent: window.api && window.api.pageParam.job ? window.api.pageParam.job.jobContent : '',
-        post: window.api && window.api.pageParam.job ? window.api.pageParam.job.post : ''
+        companyName:
+          window.api && window.api.pageParam.job
+            ? window.api.pageParam.job.companyName
+            : '',
+        endTime:
+          window.api && window.api.pageParam.job
+            ? window.api.pageParam.job.endTime
+            : Date.parse(moment().add('month', 0).format('YYYY-MM-' + '01')),
+        startTime:
+          window.api && window.api.pageParam.job
+            ? window.api.pageParam.job.startTime
+            : Date.parse(moment().subtract('month', 1).format('YYYY-MM-') + '01'),
+        jobContent:
+          window.api && window.api.pageParam.job
+            ? window.api.pageParam.job.jobContent
+            : '',
+        post:
+          window.api && window.api.pageParam.job
+            ? window.api.pageParam.job.post
+            : ''
       },
-      companyNameRules: [{ validate: val => !!val, message: '必须填写公司名称' }],
+      companyNameRules: [
+        { validate: val => !!val, message: '必须填写公司名称' }
+      ],
       postRules: [{ validate: val => val, message: '必须填写岗位' }],
       workingTimeRules: [
-        { validate: val => this.form.startTime <= this.form.endTime, message: '开始时间不能在结束时间之后' }
+        {
+          validate: val => this.form.startTime < this.form.endTime,
+          message: '开始时间不能在结束时间之后'
+        }
       ]
     };
   },
@@ -126,10 +140,10 @@ export default {
       }
     },
     changeStartTime (date) {
-      this.form.startTime = date.valueOf();
+      this.form.startTime = Date.parse(date);
     },
     changeEndTime (date) {
-      this.form.endTime = date.valueOf();
+      this.form.endTime = Date.parse(date);
     },
     submit () {
       this.$refs.form.validate().then(result => {
@@ -157,10 +171,10 @@ export default {
   flex: 1;
   overflow: auto;
 }
-.dateInput{
+.dateInput {
   width: 40%;
 }
-.joiner{
+.joiner {
   width: 20%;
   text-align: center;
 }

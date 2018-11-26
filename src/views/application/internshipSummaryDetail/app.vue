@@ -12,21 +12,21 @@
 </template>
 
 <script>
-import service from "service";
-import { Toast, Cell } from "mint-ui";
-import tool from "util/tools";
+import service from 'service';
+import { Toast, Cell } from 'mint-ui';
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
       companyId: window.api.pageParam.companyId,
-      internshipSummary: ""
+      internshipSummary: ''
     };
   },
   components: {
     Cell
   },
   methods: {
-   async internshipSummaryDetail() {
+    async internshipSummaryDetail () {
       tool.showProgress();
       const response = await service.getInternshipSummaryDetail({
         enterpriseid: this.companyId
@@ -38,14 +38,14 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     }
   },
-  mounted() {
+  mounted () {
     this.internshipReportDetail();
   }
 };

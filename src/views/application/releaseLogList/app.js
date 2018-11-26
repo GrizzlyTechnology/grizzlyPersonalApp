@@ -4,12 +4,9 @@ import 'muse-ui/lib/styles/base.less';
 // import 'muse-ui/lib/styles/theme.less';
 import 'assets/css/global.less';
 import 'assets/fonts/iconfont.css';
-// import vueTap from 'v-tap';
-
-// Vue.use(vueTap);
 
 if (process.env !== 'development') {
-  window.apiready = function () { document.body.addEventListener('touchstart',function(){});
+  window.apiready = function () {
     new Vue({
       el: '#app',
       render: h => h(App)

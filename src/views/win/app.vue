@@ -71,6 +71,9 @@ export default {
           this.showMarker = false;
         }
       );
+      if(window.api.pageParam.fname==='login_f'){
+          tool.backCloseW();
+      }
       // console.log(JSON.stringify(window.api.pageParam));
       window.api.openFrame({
         name: window.api.pageParam.fname,

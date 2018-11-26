@@ -206,6 +206,10 @@ export default {
 .listBg {
   background: #fff;
 }
+
+.listBg:active {
+  background: #f0f0f0;
+}
 .listAction {
   min-width: 70px;
 }

@@ -30,7 +30,7 @@
 
 <script>
 import service from 'service';
-// import moment from 'moment';
+import moment from 'moment';
 import { Button, TextField, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import PickerPopup from 'components/PickerPopup';
@@ -43,16 +43,44 @@ export default {
     return {
       id: window.api ? window.api.pageParam.id : null,
       form: {
-        schoolName: window.api && window.api.pageParam.education ? window.api.pageParam.education.schoolName : '',
-        major: window.api && window.api.pageParam.education ? window.api.pageParam.education.major : '',
-        education: window.api && window.api.pageParam.education ? window.api.pageParam.education.education : dictMap.education[0],
-        inSchoolTime: window.api && window.api.pageParam.education ? window.api.pageParam.education.inSchoolTime : Date.now().valueOf(),
-        graduationTime: window.api && window.api.pageParam.education ? window.api.pageParam.education.graduationTime : Date.now().valueOf()
+        schoolName:
+          window.api && window.api.pageParam.education
+            ? window.api.pageParam.education.schoolName
+            : '',
+        major:
+          window.api && window.api.pageParam.education
+            ? window.api.pageParam.education.major
+            : '',
+        education:
+          window.api && window.api.pageParam.education
+            ? window.api.pageParam.education.education
+            : dictMap.education[0],
+        inSchoolTime:
+          window.api && window.api.pageParam.education
+            ? window.api.pageParam.education.inSchoolTime
+            : Date.parse(
+              moment()
+                .subtract('month', 1)
+                .format('YYYY-MM-') + '01'
+            ),
+        graduationTime:
+          window.api && window.api.pageParam.education
+            ? window.api.pageParam.education.graduationTime
+            : Date.parse(
+              moment()
+                .add('month', 0)
+                .format('YYYY-MM-' + '01')
+            )
       },
-      schoolNameRules: [{ validate: val => !!val, message: '必须填写学校名称' }],
+      schoolNameRules: [
+        { validate: val => !!val, message: '必须填写学校名称' }
+      ],
       majorRules: [{ validate: val => val, message: '必须填写专业' }],
       schoolTimeRules: [
-        { validate: val => this.form.inSchoolTime <= this.form.graduationTime, message: '入校时间不能在毕业时间之后' }
+        {
+          validate: val => this.form.inSchoolTime < this.form.graduationTime,
+          message: '入校时间不能在毕业时间之后'
+        }
       ]
     };
   },
@@ -129,10 +157,10 @@ export default {
       }
     },
     changeInSchoolTime (date) {
-      this.form.inSchoolTime = date.valueOf();
+      this.form.inSchoolTime = Date.parse(date);
     },
     changeGraduationTime (date) {
-      this.form.graduationTime = date.valueOf();
+      this.form.graduationTime = Date.parse(date);
     },
     setEducation (data) {
       this.form.education = data;
