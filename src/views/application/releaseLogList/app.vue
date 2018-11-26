@@ -93,22 +93,6 @@ export default {
     }
   },
   methods: {
-    async doHasRead (message) {
-      tools.showProgress();
-      const response = await service.messageDoRead(message.id);
-      tools.hideProgress();
-      switch (response.code) {
-        case 0:
-          message.is_ready = 1;
-          break;
-        default:
-          tools.toast({
-            position: 'top',
-            message: '标记失败，请稍后重试！！'
-          });
-          break;
-      }
-    },
     async getList (active) {
       const response = await service.getReleaseLofList({
         companyId: this.computed,
