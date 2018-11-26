@@ -5,12 +5,12 @@
     </div>
     <div class="bodyer">
       <div style="padding:15px">
-        <Form ref="form" :model="form" :label-position="labelPosition" label-width="120">
+        <Form ref="form" :model="form" label-position="top" label-width="120">
           <FormItem label="实习单位">
-            <TextField underline-color="#d7d7d7" readonly v-model="internshipCompanyInfo.companyName"></TextField>
+            <TextField class="read-only" readonly v-model="internshipCompanyInfo.companyName"></TextField>
           </FormItem>
           <FormItem label="实习地点">
-            <TextField underline-color="#d7d7d7" readonly v-model="internshipCompanyInfo.internshipAddress"></TextField>
+            <TextField class="read-only" readonly v-model="internshipCompanyInfo.internshipAddress"></TextField>
           </FormItem>
           <FormItem label="实习时间：" prop="startTime" :rules="internshipTimeRules">
             <DateInput style='width:40%;margin-right:15px;' :value="startTimeText" :max-date="new Date()" @change="changeStartTime" no-display view-type="list" container="bottomSheet"></DateInput>
@@ -18,10 +18,10 @@
             <DateInput style='width:40%;margin-left:15px' :value="endTimeText" :max-date="new Date()" @change="changeEndTime" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
           <FormItem label="实习部门">
-            <TextField underline-color="#d7d7d7" readonly v-model="internshipCompanyInfo.department"></TextField>
+            <TextField class="read-only" readonly v-model="internshipCompanyInfo.department"></TextField>
           </FormItem>
           <FormItem label="实习岗位">
-            <TextField underline-color="#d7d7d7" readonly v-model="internshipCompanyInfo.group"></TextField>
+            <TextField class="read-only" readonly v-model="internshipCompanyInfo.group"></TextField>
           </FormItem>
 
           <!-- <div class='tips'>本月已写周志<span> 3 </span>次</div> -->
@@ -42,26 +42,35 @@
 
 <script>
 import service from 'service';
+import moment from 'moment';
 import tools from 'util/tools';
 import { Icon, Alert, Button, TextField, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 export default {
   data () {
     return {
-      labelPosition: 'top',
+      companyId: window.api ? window.api.pageParam.companyId : '',
       form: {
-        internshipStart: Date.parse(new Date()) - 24 * 60 * 60 * 1000,
-        internshipEnd: Date.parse(new Date()),
+        internshipStart: Date.parse(
+          moment()
+            .subtract('day', 1)
+            .format('YYYY-MM-DD')
+        ),
+        internshipEnd: Date.parse(
+          moment()
+            .add('day', 0)
+            .format('YYYY-MM-DD')
+        ),
         workContent: '',
         reward: ''
       },
       internshipCompanyInfo: {
-        companyName: window.api ? window.api.pageParam.companyName : '',
-        department: window.api ? window.api.pageParam.department : '',
-        group: window.api ? window.api.pageParam.group : '',
+        companyName: window.api ? window.api.pageParam.companyName : '-',
         internshipAddress: window.api
           ? window.api.pageParam.internshipAddress
-          : ''
+          : '-',
+        department: window.api ? window.api.pageParam.department : '-',
+        group: window.api ? window.api.pageParam.group : ''
       },
       internshipTimeRules: [
         {
@@ -70,9 +79,17 @@ export default {
         }
       ],
       workContentRules: [
-        { validate: val => !!val, message: '必须填写本周工作内容' }
+        {
+          validate: val => this.form.workContent.length > 0,
+          message: '必须填写本周工作内容'
+        }
       ],
-      rewardRules: [{ validate: val => !!val, message: '必须填写本周收获' }]
+      rewardRules: [
+        {
+          validate: val => this.form.reward.length > 0,
+          message: '必须填写本周收获'
+        }
+      ]
     };
   },
   components: {
@@ -93,17 +110,11 @@ export default {
     }
   },
   methods: {
-    changeStartTime (date) {
-      this.form.internshipStart = date.valueOf();
-    },
-    changeEndTime (date) {
-      this.form.internshipEnd = date.valueOf();
-    },
-    async edit () {
+    async create () {
       tools.showProgress();
-      const response = await service.submitApplyForm({
+      const response = await service.createReleaseLog({
         ...this.form,
-        enterpriseid: this.companyId
+        companyId: this.companyId
       });
       tools.hideProgress();
       switch (response.code) {
@@ -113,15 +124,39 @@ export default {
         default:
           tools.toast({
             position: 'top',
-            message: '实习日志编辑失败，请稍后重试！！'
+            message: response.message
           });
           break;
       }
     },
+    async getInfo () {
+      tools.showProgress();
+      const response = await service.getEnterpriseInfo(this.companyId);
+      this.internshipCompanyInfo = { ...response.result.practiceInfo };
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          tools.closeWin();
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: response.message
+          });
+          break;
+      }
+    },
+    changeStartTime (date) {
+      this.form.internshipStart = date.valueOf();
+    },
+    changeEndTime (date) {
+      this.form.internshipEnd = date.valueOf();
+    },
+
     submit () {
       this.$refs.form.validate().then(result => {
         if (result === true) {
-          this.edit();
+          this.create();
         }
       });
     }
@@ -141,9 +176,9 @@ export default {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
-.tip{
+.tip {
   padding: 10px;
-  background-color:#d6ebff;
+  background-color: #d6ebff;
   color: #409eff;
 }
 </style>
