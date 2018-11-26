@@ -70,6 +70,7 @@ margin: 0 auto;
   border:solid 1px #e7e1cd;
   background-color: #fffdef;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .icon_lists{
@@ -299,6 +300,7 @@ margin: 0 auto;
   padding: 0.5em;
   color: #333333;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .hljs-comment,

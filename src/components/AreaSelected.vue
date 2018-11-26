@@ -142,6 +142,7 @@ export default {
 .con {
   height: 100%;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   background-color: #fff;
 }
 .areaRow {
@@ -167,6 +168,7 @@ export default {
 .areaHead{
   padding: 15px;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   & > .textCon {
     margin-left: 75px;
     margin-right: 20px;

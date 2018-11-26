@@ -592,6 +592,7 @@ body .mu-chip {
 .bodyer{
   flex: 1;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   height: 100%;
 }
 </style>

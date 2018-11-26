@@ -147,6 +147,7 @@ export default {
 .bodyer {
   flex: 1;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .verificationCode {
   width: 66.666%;

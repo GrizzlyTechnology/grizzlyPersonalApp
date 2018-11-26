@@ -122,6 +122,7 @@ export default {
   max-height: 150px;
   min-height: 75px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background-color: rgba(0,0,0,.25);
 }
 </style>

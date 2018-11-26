@@ -63,6 +63,7 @@ export default {
     flex: 1;
     z-index: 1;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 </style>
