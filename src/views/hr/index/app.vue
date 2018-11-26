@@ -512,7 +512,6 @@ export default {
   white-space: nowrap;
 }
 .mu-input.searchBox {
-  // width: 80%;
   width: 98%;
   min-height: auto;
   padding-top: 0px;
