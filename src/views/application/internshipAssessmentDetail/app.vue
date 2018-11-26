@@ -46,7 +46,7 @@
       <div class="ucCell jd">
         <div class="ucCellCon">
           <span class="ucCellTitle">自我鉴定：</span>
-          <p class="ucCellLabel">{{workContent}}</p>
+          <span class="ucCellLabel">{{workContent}}</span>
         </div>
       </div>
     </div>
@@ -144,14 +144,6 @@ export default {
 }
 
 .ucCell {
-  &.link {
-    .isLink {
-      display: block;
-    }
-    .ucCellCon:active {
-      background-color: #eee;
-    }
-  }
   position: relative;
   font-size: 16px;
   .ucCellCon {
@@ -183,16 +175,16 @@ export default {
     height: 56px;
   }
 }
-
 .jd.ucCell {
+  .ucCellCon {
+    position: relative;
+  }
   .ucCellLabel {
     line-height: 28px;
     padding-left: 15px;
+    margin-bottom: 30px;
     float: none;
-    margin:0px;
-  }
-   .mint-cell-wrapper {
-     height:auto;
+    display: block;
   }
 }
 </style>
