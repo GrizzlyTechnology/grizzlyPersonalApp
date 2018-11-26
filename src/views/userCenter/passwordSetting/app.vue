@@ -97,6 +97,7 @@ export default {
 .bodyer {
   flex: 1;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 // .startDateTime{
 //   bottom: 50px;

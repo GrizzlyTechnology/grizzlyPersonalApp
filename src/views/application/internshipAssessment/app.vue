@@ -64,16 +64,16 @@ export default {
         workContent: ''
       },
       internshipCompanyInfo: {
-        companyName: window.api ? window.api.pageParam.companyName : '',
-        department: window.api ? window.api.pageParam.department : '',
-        group: window.api ? window.api.pageParam.group : '',
+        companyName: window.api ? window.api.pageParam.companyName : 'sdfsdf',
+        department: window.api ? window.api.pageParam.department : 'sdfsdf',
+        group: window.api ? window.api.pageParam.group : 'sdfsdf',
         name: '',
         class: '',
         sex: ''
       },
       internshipTimeRules: [
         {
-          validate: val => this.form.internshipStart <= this.form.internshipEnd,
+          validate: val => this.form.internshipStart < this.form.internshipEnd,
           message: '开始时间不能在结束时间之后'
         }
       ],
@@ -175,4 +175,5 @@ export default {
 body .readonlyInput .mu-input-line{
   height: 0;
 }
+
 </style>

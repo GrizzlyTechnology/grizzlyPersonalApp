@@ -294,6 +294,7 @@ export default {
 .bodyer {
   flex: 1;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 // .chipCon {
 //   // background-color: red;

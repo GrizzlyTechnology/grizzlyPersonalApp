@@ -164,6 +164,7 @@ export default {
 .bodyer {
   flex: 1;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .footer {
   height: 44px;

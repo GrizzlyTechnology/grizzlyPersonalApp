@@ -190,6 +190,7 @@ export default {
     color: #666;
     margin-top: 15px;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
     &:active > * {
       background-color: #eee;
     }
