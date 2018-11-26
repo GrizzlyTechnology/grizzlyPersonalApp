@@ -61,10 +61,10 @@ export default {
     },
     Internship (id, companyName, department, group) {
       tool.openWin({
-        name: 'Internship',
+        name: 'Internship_' + id,
         url: '../win.html',
         title: '校外实习',
-        fname: 'Internship_f',
+        fname: 'Internship_f_' + id,
         furl: './application/Internship.html',
         hasLeft: 1,
         data: {
