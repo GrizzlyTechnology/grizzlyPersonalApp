@@ -682,5 +682,19 @@ export default {
       params,
       method: 'get'
     });
+  },
+  getAgreementPic () {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/selagreement',
+      method: 'get'
+    });
+  },
+  updateAgreementPic (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/createagreement',
+      params
+    });
   }
 };
