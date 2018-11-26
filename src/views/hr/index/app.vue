@@ -189,7 +189,7 @@ export default {
         this.hotJobsData();
         this.imgAdv();
         this.resumeImgAdv();
-      }, 2000);
+      }, 200);
     },
     // 搜索
     jobSearch () {
@@ -487,6 +487,7 @@ export default {
 }
 .mu-carousel-item > img {
   width: 100%;
+  height:100%;
 }
 .topSearch {
   padding-top: 30px;
