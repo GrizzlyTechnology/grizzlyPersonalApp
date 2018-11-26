@@ -718,5 +718,59 @@ export default {
       },
       method: 'get'
     });
+  },
+  // 获取实习报告状态码
+  InternshipReportStatus (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/getreportstatus',
+      params,
+      method: 'get'
+    });
+  },
+  // 提交实习报告数据
+  createReport (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/createreport',
+      params,
+      method: 'post'
+    });
+  },
+  // 获取实习报告数据
+  getInternshipReportDetail (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/reportinfo',
+      params,
+      method: 'get'
+    });
+  },
+  // 获取实习总结状态码
+  InternshipSummaryStatuss (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/getsummarystatus',
+      params,
+      method: 'get'
+    });
+  },
+  // 提交实习总结数据
+  createSummary (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/createsummary',
+      params,
+      method: 'post'
+    });
+  },
+  // 获取实习总结数据
+  getInternshipSummaryDetail (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/summaryinfo',
+      params,
+      method: 'get'
+    });
   }
 };
