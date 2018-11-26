@@ -41,17 +41,26 @@
 <script>
 import service from 'service';
 import { Toast } from 'mint-ui';
+import moment from 'moment';
 import { Button, TextField, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import tool from 'util/tools';
 export default {
   data () {
     return {
-      companyId: window.api.pageParam.companyId,
+      companyId: window.api ? window.api.pageParam.companyId : '',
       labelPosition: 'top',
       form: {
-        internshipStart: Date.now().valueOf() - 24 * 60 * 60 * 1000,
-        internshipEnd: Date.now().valueOf(),
+        internshipStart: Date.parse(
+          moment()
+            .subtract('day', 1)
+            .format('YYYY-MM-DD')
+        ),
+        internshipEnd: Date.parse(
+          moment()
+            .add('day', 0)
+            .format('YYYY-MM-DD')
+        ),
         workContent: ''
       },
       internshipCompanyInfo: {
@@ -125,10 +134,6 @@ export default {
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          Toast({
-            position: 'top',
-            message: '提交成功'
-          });
           tool.closeWin();
           break;
         default:
@@ -170,19 +175,4 @@ export default {
 body .readonlyInput .mu-input-line{
   height: 0;
 }
-
-// label,
-// .mu-form-item-label {
-//   color: #000;
-// }
-
-// body .mu-text-field-input {
-//   color: rgba(0, 0, 0, 0.54);
-//   font-size: 14px;
-// }
-
-// .mbox {
-//   color: rgba(0, 0, 0, 0.54);
-//   margin-bottom: 10px;
-// }
 </style>

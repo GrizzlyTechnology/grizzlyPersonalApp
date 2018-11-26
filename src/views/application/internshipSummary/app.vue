@@ -3,7 +3,7 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form" :label-position="labelPosition" label-width="120">
-          <FormItem label="实习总结：" prop="title" :rules="internshipSummarytRules">
+          <FormItem label="实习总结：" prop="internshipSummary" :rules="internshipSummarytRules">
             <TextField multi-line v-model="form.internshipSummary" :max-length="300" :rows="15" :rows-max="15"></TextField>
           </FormItem>
         </Form>
@@ -24,7 +24,7 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
-      companyId: window.api.pageParam.companyId,
+      companyId: window.api ? window.api.pageParam.companyId : '',
       labelPosition: 'top',
       form: {
         internshipSummary: ''
@@ -43,7 +43,7 @@ export default {
   methods: {
     async submitApply () {
       tool.showProgress();
-      const response = await service.submitApplyForm({
+      const response = await service.createSummary({
         ...this.form,
         enterpriseid: this.companyId
       });
@@ -90,21 +90,6 @@ export default {
   flex: 1;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-}
-
-label,
-.mu-form-item-label {
-  color: #000;
-}
-
-body .mu-text-field-input {
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 14px;
-}
-
-.mbox {
-  color: rgba(0, 0, 0, 0.54);
-  margin-bottom: 10px;
 }
 
 </style>

@@ -11,7 +11,7 @@
         <div class="ucCell jd">
           <div class="ucCellCon">
             <span class="ucCellTitle">单位鉴定：</span>
-            <p class="ucCellLabel">{{companyIdentification}}</p>
+            <span class="ucCellLabel">{{companyIdentification}}</span>
           </div>
         </div>
       </div>
@@ -60,7 +60,7 @@
       <div class="ucCell jd">
         <div class="ucCellCon">
           <span class="ucCellTitle">自我鉴定：</span>
-          <p class="ucCellLabel">{{workContent}}</p>
+          <span class="ucCellLabel">{{workContent}}</span>
         </div>
       </div>
     </div>
@@ -68,25 +68,27 @@
 </template>
 
 <script>
-import service from 'service';
-import { Toast, Cell } from 'mint-ui';
-import tool from 'util/tools';
+import service from "service";
+import { Toast, Cell } from "mint-ui";
+import tool from "util/tools";
 export default {
-  data () {
+  data() {
     return {
-      companyId: window.api ? window.api.pageParam.companyId : '',
-      internshipStart: '',
-      internshipEnd: '',
-      workContent: '',
-      companyIdentification: '',
-      testScores: '',
+      companyId: window.api ? window.api.pageParam.companyId : "",
+      internshipStart: "",
+      internshipEnd: "",
+      workContent:
+        "",
+      companyIdentification:
+        "",
+      testScores: "",
       internshipCompanyInfo: {
-        companyName: window.api ? window.api.pageParam.companyName : '',
-        department: window.api ? window.api.pageParam.department : '',
-        group: window.api ? window.api.pageParam.group : '',
-        name: '',
-        class: '',
-        sex: ''
+        companyName: window.api ? window.api.pageParam.companyName : "",
+        department: window.api ? window.api.pageParam.department : "",
+        group: window.api ? window.api.pageParam.group : "",
+        name: "",
+        class: "",
+        sex: ""
       }
     };
   },
@@ -95,7 +97,7 @@ export default {
   },
   computed: {},
   methods: {
-    async getStudentInfoData () {
+    async getStudentInfoData() {
       tool.showProgress();
       const response = await service.getStudentInfo({});
       tool.hideProgress();
@@ -105,18 +107,18 @@ export default {
           this.internshipCompanyInfo.sex = response.result.studentInfo.sex;
           this.internshipCompanyInfo.class =
             response.result.studentInfo.majorname +
-            '系' +
+            "系" +
             response.result.studentInfo.classname;
           break;
         default:
           Toast({
-            position: 'top',
-            message: '加载失败，请稍后重试！！'
+            position: "top",
+            message: "加载失败，请稍后重试！！"
           });
           break;
       }
     },
-    async internshipAssessmentDetail () {
+    async internshipAssessmentDetail() {
       tool.showProgress();
       const response = await service.getInternshipAssessmentDetail({
         enterpriseid: this.companyId
@@ -130,21 +132,21 @@ export default {
           this.companyIdentification = response.result.companyIdentification;
           switch (response.result.testScores) {
             case 1:
-              this.testScores = '不及格';
+              this.testScores = "不及格";
               break;
             case 2:
-              this.testScores = '及格';
+              this.testScores = "及格";
               break;
             case 3:
-              this.testScores = '良';
+              this.testScores = "良";
               break;
             case 4:
-              this.testScores = '优';
+              this.testScores = "优";
               break;
             default:
               Toast({
-                position: 'top',
-                message: '加载失败，请稍后重试！！'
+                position: "top",
+                message: "加载失败，请稍后重试！！"
               });
               break;
           }
@@ -152,14 +154,14 @@ export default {
           break;
         default:
           Toast({
-            position: 'top',
-            message: '加载失败，请稍后重试！！'
+            position: "top",
+            message: "加载失败，请稍后重试！！"
           });
           break;
       }
     }
   },
-  mounted () {
+  mounted() {
     this.getStudentInfoData();
     this.internshipAssessmentDetail();
   }
@@ -228,13 +230,13 @@ export default {
   .ucCellLabel {
     line-height: 28px;
     padding-left: 15px;
+    margin-bottom: 30px;
     float: none;
-    margin: 0px;
+    display: block;
   }
 }
 
-.companyIdentification {
- border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+.companyIdentification{
+   border-bottom: 1px solid #eee;
 }
 </style>
