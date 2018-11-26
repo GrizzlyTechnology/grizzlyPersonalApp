@@ -696,5 +696,27 @@ export default {
       url: '/api/Internship/createagreement',
       params
     });
+  },
+  getReleaseLofList (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/seljournals',
+      params: {
+        pageSize: 10,
+        page: 1,
+        ...params
+      },
+      method: 'get'
+    });
+  },
+  getEnterpriseInfo (companyId) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/getenterpriseinfo',
+      params: {
+        companyId
+      },
+      method: 'get'
+    });
   }
 };

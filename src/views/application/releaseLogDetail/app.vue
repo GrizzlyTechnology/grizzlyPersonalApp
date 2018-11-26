@@ -110,7 +110,7 @@ export default {
     }
   },
   methods: {
-    async edit () {
+    async create () {
       tools.showProgress();
       const response = await service.createReleaseLog({
         ...this.form,
@@ -134,7 +134,7 @@ export default {
       const response = await service.getPracticeInfo({
         companyId: this.companyId
       });
-      this.internshipCompanyInfo = {...response.result.practiceInfo};
+      this.internshipCompanyInfo = { ...response.result.practiceInfo };
       tools.hideProgress();
       switch (response.code) {
         case 0:
@@ -158,7 +158,7 @@ export default {
     submit () {
       this.$refs.form.validate().then(result => {
         if (result === true) {
-          this.edit();
+          this.create();
         }
       });
     }

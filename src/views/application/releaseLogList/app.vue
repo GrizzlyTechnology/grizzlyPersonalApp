@@ -32,6 +32,9 @@
     </div>
     <!-- </TabContainerItem>
     </TabContainer> -->
+    <div class="footer">
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">新建日志</Button>
+    </div>
   </div>
 </template>
 
@@ -40,7 +43,7 @@ import service from 'service';
 // import moment from 'moment';
 import tools from 'util/tools';
 import adapter from 'util/adapter';
-import { LoadMore } from 'muse-ui';
+import { LoadMore, Button } from 'muse-ui';
 // import { Tabs, LoadMore } from 'muse-ui';
 // import { Tab } from 'muse-ui/lib/Tabs';
 // import { TabContainer, TabContainerItem } from 'mint-ui';
@@ -50,6 +53,7 @@ export default {
     return {
       // refreshing: false,
       // loading: false,
+      companyId: window.api ? window.api.pageParam.companyId : '',
       active: 0,
       lists: [
         {
@@ -60,15 +64,15 @@ export default {
           list: [
             {
               id: 0,
-              head: '2017年6月8日',
+              head: '2017年6月8日-2017年6月15日',
               title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
-              info: 'info'
+              info: '创建日期：2017年6月15日'
             },
             {
               id: 1,
-              head: '2017年6月8日',
+              head: '2017年6月8日-2017年6月15日',
               title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
-              info: 'info'
+              info: '创建日期：2017年6月15日'
             }
           ]
         }
@@ -78,7 +82,8 @@ export default {
   components: {
     // Tabs,
     // Tab,
-    LoadMore
+    LoadMore,
+    Button
     // TabContainer,
     // TabContainerItem
   },
@@ -105,7 +110,8 @@ export default {
       }
     },
     async getList (active) {
-      const response = await service.getMessageList({
+      const response = await service.getReleaseLofList({
+        companyId: this.computed,
         page: this.lists[active].page
       });
       // console.log(JSON.stringify(response));
@@ -155,6 +161,23 @@ export default {
         this.lists[active].loading = true;
         this.getList(active);
       }
+    },
+    create () {
+      tools.openWin({
+        name: 'releaseLogCreate',
+        url: '../win.html',
+        title: '新建日志',
+        fname: 'releaseLogCreate_f',
+        furl: './application/releaseLogCreate.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'releaseLogCreate',
+          companyId: this.companyId,
+          callback: (ret, err) => {
+            this.refresh(this.active);
+          }
+        }
+      });
     }
   },
   mounted () {
@@ -215,9 +238,12 @@ export default {
 .stepHeader {
   font-size: 12px;
   color: #999;
+  font-weight: bold;
 }
 .stepConInfo {
   color: #999;
+  font-size: 12px;
+  margin-top: 10px;
 }
 .stepIcon {
   width: 16px;
