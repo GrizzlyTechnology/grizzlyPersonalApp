@@ -131,6 +131,7 @@ export default {
   padding: 15px;
   margin-bottom: 15px;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   &:active {
     background-color: #f0f0f0;
   }
@@ -193,6 +194,7 @@ export default {
 .history {
   flex: 1;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   margin-bottom: 15px;
   .mu-stepper-vertical {
     background-color: #fff;

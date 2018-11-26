@@ -201,6 +201,7 @@ export default {
   padding: 15px;
   margin-bottom: 15px;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   &:active {
     background-color: #f0f0f0;
   }

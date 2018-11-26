@@ -256,6 +256,7 @@ export default {
   padding: 15px;
   margin-bottom: 15px;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   &:active {
     background-color: #f0f0f0;
   }
@@ -298,6 +299,7 @@ export default {
 .picList {
   flex: 1;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   font-size: 0;
   margin: -5px -5px 15px;
   .picCon {

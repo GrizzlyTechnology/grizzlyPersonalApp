@@ -53,6 +53,7 @@ export default {
   font-size: 16px;
   padding-left: 15px;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   height: 48px;
   .label {
     font-size: 12px;

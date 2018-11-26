@@ -111,6 +111,7 @@ export default {
 .areaHead{
   padding: 15px;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   & > .textCon {
     margin-left: 75px;
     margin-right: 20px;
@@ -125,6 +126,7 @@ export default {
 .areaBody{
   flex: 1;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .cleanBtn{
   position: absolute;
