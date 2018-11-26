@@ -4,7 +4,7 @@
       <div class="ucCell jd">
         <div class="ucCellCon">
           <span class="ucCellTitle">实习报告：</span>
-          <p class="ucCellLabel">{{internshipReport}}</p>
+          <span class="ucCellLabel">{{internshipReport}}</span>
         </div>
       </div>
     </div>
@@ -12,21 +12,21 @@
 </template>
 
 <script>
-import service from 'service';
-import { Toast, Cell } from 'mint-ui';
-import tool from 'util/tools';
+import service from "service";
+import { Toast } from "mint-ui";
+import tool from "util/tools";
 export default {
-  data () {
+  data() {
     return {
-      companyId: window.api ? window.api.pageParam.companyId : '',
-      internshipReport: ''
+      companyId: window.api ? window.api.pageParam.companyId : "",
+      internshipReport: ""
     };
   },
   components: {
-    Cell
+
   },
   methods: {
-    async internshipReportDetail () {
+    async internshipReportDetail() {
       tool.showProgress();
       const response = await service.getInternshipReportDetail({
         enterpriseid: this.companyId
@@ -38,14 +38,14 @@ export default {
           break;
         default:
           Toast({
-            position: 'top',
-            message: '加载失败，请稍后重试！！'
+            position: "top",
+            message: "加载失败，请稍后重试！！"
           });
           break;
       }
     }
   },
-  mounted () {
+  mounted() {
     this.internshipReportDetail();
   }
 };
@@ -65,18 +65,49 @@ export default {
   -webkit-overflow-scrolling: touch;
 }
 
-label,
-.mu-form-item-label {
-  color: #000;
+.ucCell {
+  position: relative;
+  font-size: 16px;
+  .ucCellCon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: auto;
+    .ucCellTitle {
+      line-height: 56px;
+      color: #000;
+      margin-left: 15px;
+    }
+    .ucCellLabel {
+      float: right;
+      line-height: 56px;
+      color: #666;
+      margin-right: 15px;
+    }
+  }
+  .mu-icon {
+    z-index: 1;
+    position: relative;
+  }
+  .mint-cell-wrapper {
+    background-image: none;
+    border-bottom: 1px solid #eee;
+    height: 56px;
+  }
 }
 
-body .mu-text-field-input {
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 14px;
-}
-
-.mbox {
-  color: rgba(0, 0, 0, 0.54);
-  margin-bottom: 10px;
+.jd.ucCell {
+  .ucCellCon {
+    position: relative;
+  }
+  .ucCellLabel {
+    line-height: 28px;
+    padding-left: 15px;
+    margin-bottom: 30px;
+    float: none;
+    display: block;
+  }
 }
 </style>

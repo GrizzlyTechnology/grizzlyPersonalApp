@@ -1,6 +1,6 @@
 <template>
   <Container>
-    <Stepper :active-step="0" orientation="vertical" :linear="false" v-show='companys.length>0'>
+    <Stepper :active-step="0" orientation="vertical" :linear="false" v-if='companys.length>0'>
       <template v-for='company in companys'>
         <Step :key='company.id' @click='Internship(company.id,company.companyName,company.department,company.group)'>
           <StepLabel  class='comStepper'>
@@ -14,7 +14,7 @@
         </Step>
       </template>
     </Stepper>
-     <div v-show='companys.length<=0'>你还未加入企业实习，立即去  <Button color="#009688" @click="hotJobListAll">投递职位</Button></div>
+     <div v-else class='notJoined'>你还未加入企业实习，立即去  <Button color="#009688" @click="hotJobListAll">投递职位</Button></div>
   </Container>
 </template>
 <script>
@@ -110,6 +110,11 @@ export default {
   color: #999;
 }
 
+.mu-stepper{
+  background:#fff;
+   padding: 30px 0;
+}
+
 .mu-card-header {
   padding: 0;
 }
@@ -119,10 +124,13 @@ export default {
   font-size: 12px;
 }
 
+.notJoined{
+ padding: 50px 0 30px;
+}
+
 .container {
-  background: #fff;
-  padding: 50px 0 30px;
   text-align: center;
+  padding: 0;
 }
 
 .mu-step-label.completed .mu-step-label-circle, .mu-step-label.active .mu-step-label-circle{

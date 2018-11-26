@@ -43,7 +43,7 @@ export default {
   methods: {
     async submitApply () {
       tool.showProgress();
-      const response = await service.submitApplyForm({
+      const response = await service.createSummary({
         ...this.form,
         enterpriseid: this.companyId
       });
@@ -90,21 +90,6 @@ export default {
   flex: 1;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-}
-
-label,
-.mu-form-item-label {
-  color: #000;
-}
-
-body .mu-text-field-input {
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 14px;
-}
-
-.mbox {
-  color: rgba(0, 0, 0, 0.54);
-  margin-bottom: 10px;
 }
 
 </style>

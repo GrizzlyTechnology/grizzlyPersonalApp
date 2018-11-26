@@ -130,7 +130,6 @@ export default {
           this.internshipEnd = response.result.internshipEnd;
           this.workContent = response.result.workContent;
           this.companyIdentification = response.result.companyIdentification;
-          console.log(response.result.workContent);
           switch (response.result.testScores) {
             case 1:
               this.testScores = "不及格";

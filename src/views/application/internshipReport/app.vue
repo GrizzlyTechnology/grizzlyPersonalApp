@@ -16,21 +16,21 @@
 </template>
 
 <script>
-import service from 'service';
-import { Toast } from 'mint-ui';
-import { Button, TextField } from 'muse-ui';
-import { Form, FormItem } from 'muse-ui/lib/Form';
-import tool from 'util/tools';
+import service from "service";
+import { Toast } from "mint-ui";
+import { Button, TextField } from "muse-ui";
+import { Form, FormItem } from "muse-ui/lib/Form";
+import tool from "util/tools";
 export default {
-  data () {
+  data() {
     return {
-      companyId: window.api ? window.api.pageParam.companyId : '',
-      labelPosition: 'top',
+      companyId: window.api ? window.api.pageParam.companyId : "",
+      labelPosition: "top",
       form: {
-        internshipReport: ''
+        internshipReport: ""
       },
       internshipReportRules: [
-        { validate: val => !!val, message: '必须填写实习报告' }
+        { validate: val => !!val, message: "必须填写实习报告" }
       ]
     };
   },
@@ -41,30 +41,26 @@ export default {
     TextField
   },
   methods: {
-    async submitApply () {
+    async submitApply() {
       tool.showProgress();
-      const response = await service.submitApplyForm({
+      const response = await service.createReport({
         ...this.form,
         enterpriseid: this.companyId
       });
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          Toast({
-            position: 'top',
-            message: '提交成功'
-          });
           tool.closeWin();
           break;
         default:
           Toast({
-            position: 'top',
-            message: '提交成功失败，请稍后重试！！'
+            position: "top",
+            message: "提交成功失败，请稍后重试！！"
           });
           break;
       }
     },
-    submit () {
+    submit() {
       this.$refs.form.validate().then(result => {
         if (result === true) {
           this.submitApply();
@@ -72,7 +68,8 @@ export default {
       });
     }
   },
-  mounted () {}
+  mounted() {
+  }
 };
 </script>
 <style lang="less">
@@ -89,5 +86,4 @@ export default {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
-
 </style>

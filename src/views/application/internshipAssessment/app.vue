@@ -134,10 +134,6 @@ export default {
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          Toast({
-            position: 'top',
-            message: '提交成功'
-          });
           tool.closeWin();
           break;
         default:
@@ -179,19 +175,4 @@ export default {
 body .readonlyInput .mu-input-line{
   height: 0;
 }
-
-// label,
-// .mu-form-item-label {
-//   color: #000;
-// }
-
-// body .mu-text-field-input {
-//   color: rgba(0, 0, 0, 0.54);
-//   font-size: 14px;
-// }
-
-// .mbox {
-//   color: rgba(0, 0, 0, 0.54);
-//   margin-bottom: 10px;
-// }
 </style>
