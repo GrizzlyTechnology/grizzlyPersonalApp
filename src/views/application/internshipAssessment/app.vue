@@ -41,17 +41,26 @@
 <script>
 import service from 'service';
 import { Toast } from 'mint-ui';
+import moment from 'moment';
 import { Button, TextField, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 import tool from 'util/tools';
 export default {
   data () {
     return {
-      companyId: window.api.pageParam.companyId,
+      companyId: window.api ? window.api.pageParam.companyId : '',
       labelPosition: 'top',
       form: {
-        internshipStart: Date.now().valueOf() - 24 * 60 * 60 * 1000,
-        internshipEnd: Date.now().valueOf(),
+        internshipStart: Date.parse(
+          moment()
+            .subtract('day', 1)
+            .format('YYYY-MM-DD')
+        ),
+        internshipEnd: Date.parse(
+          moment()
+            .add('day', 0)
+            .format('YYYY-MM-DD')
+        ),
         workContent: ''
       },
       internshipCompanyInfo: {

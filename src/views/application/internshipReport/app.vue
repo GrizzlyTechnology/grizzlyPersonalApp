@@ -3,7 +3,7 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form" :label-position="labelPosition" label-width="120">
-          <FormItem label="实习报告：" prop="title" :rules="internshipReportRules">
+          <FormItem label="实习报告：" prop="internshipReport" :rules="internshipReportRules">
             <TextField multi-line v-model="form.internshipReport" :max-length="300" :rows="15" :rows-max="15"></TextField>
           </FormItem>
         </Form>
@@ -24,7 +24,7 @@ import tool from 'util/tools';
 export default {
   data () {
     return {
-      companyId: window.api.pageParam.companyId,
+      companyId: window.api ? window.api.pageParam.companyId : '',
       labelPosition: 'top',
       form: {
         internshipReport: ''
@@ -90,18 +90,4 @@ export default {
   -webkit-overflow-scrolling: touch;
 }
 
-label,
-.mu-form-item-label {
-  color: #000;
-}
-
-body .mu-text-field-input {
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 14px;
-}
-
-.mbox {
-  color: rgba(0, 0, 0, 0.54);
-  margin-bottom: 10px;
-}
 </style>
