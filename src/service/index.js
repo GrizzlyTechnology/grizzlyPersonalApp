@@ -683,10 +683,11 @@ export default {
       method: 'get'
     });
   },
-  getAgreementPic () {
+  getAgreementPic (params) {
     return request({
       host: BASEURL,
       url: '/api/Internship/selagreement',
+      params,
       method: 'get'
     });
   },
