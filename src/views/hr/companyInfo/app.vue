@@ -29,7 +29,7 @@
         {{comapnyAddress}}
       </p>
     </CardText>
-    <List class='whiteBg mt8 allPostion' textline="two-line">
+    <List class='whiteBg mt8 allPostion' textline="two-line" v-show='lists.length>0'>
       <CardText>
         <h2 class='titleBox spaceBetween'>所有职位</h2>
       </CardText>
@@ -80,7 +80,7 @@ export default {
       industry: '',
       companyIntro: '',
       comapnyAddress: '',
-      enterpriseId: window.api.pageParam.enterpriseId,
+      enterpriseId: window.api?window.api.pageParam.enterpriseId:'1',
       lists: []
     };
   },
@@ -168,7 +168,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import url("../../../assets/css/base.less");
 .container {
   padding: 0;
@@ -226,7 +226,15 @@ export default {
   padding-bottom: 0;
 }
 
+.companyNameBox  .listItem:active{
+ background: #fff;
+}
+
 .listItem:active{
   background: #f0f0f0;
+}
+
+.mu-list-two-line .mu-item{
+  height: 56px;
 }
 </style>
