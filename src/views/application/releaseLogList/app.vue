@@ -10,9 +10,22 @@
       <TabContainerItem v-for="(messageList,index) in lists" :key="index" :id="index" class="message-list"> -->
     <!-- <LoadMore :ref="'container' + index" @refresh="refresh(index)" @load="load(index)" :refreshing="messageList.refreshing" :loading="messageList.loading">
       <div class="message" v-for="message in messageList.list" :key="message.id"> -->
-    <div ref="container0" class="list-con">
-      <LoadMore class="mu-stepper mu-stepper-vertical" @refresh="refresh(0)" @load="load(0)" :refreshing="lists[0].refreshing" :loading="lists[0].loading">
-        <div v-for="row in lists[0].list" :key="row.id" class="mu-step">
+    <div
+      ref="container0"
+      class="list-con"
+    >
+      <LoadMore
+        class="mu-stepper mu-stepper-vertical"
+        @refresh="refresh(0)"
+        @load="load(0)"
+        :refreshing="lists[0].refreshing"
+        :loading="lists[0].loading"
+      >
+        <div
+          v-for="row in lists[0].list"
+          :key="row.id"
+          class="mu-step"
+        >
           <span class="mu-step-label active completed">
             <span class="mu-step-label-icon-container">
               <div class="stepIcon"></div>
@@ -21,9 +34,17 @@
           </span>
           <div class="mu-step-content">
             <div style="position: relative; overflow: hidden; height: 100%;">
-              <div class="mu-step-content-inner" data-old-padding-top="" data-old-padding-bottom="" data-old-overflow="" style="">
-                <div class="stepConTitle">{{row.title}}</div>
-                <div v-html="row.info" class="stepConInfo"></div>
+              <div
+                class="mu-step-content-inner"
+              >
+                <div
+                  class="stepConTitle"
+                  @click="detail(row)"
+                >{{row.title}}</div>
+                <div
+                  v-html="row.info"
+                  class="stepConInfo"
+                ></div>
               </div>
             </div>
           </div>
@@ -33,7 +54,14 @@
     <!-- </TabContainerItem>
     </TabContainer> -->
     <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">新建日志</Button>
+      <Button
+        color="#009688"
+        textColor="#ffffff"
+        :style="{boxShadow: '0 0 0'}"
+        :full-width="true"
+        large
+        @click="create"
+      >新建日志</Button>
     </div>
   </div>
 </template>
@@ -98,7 +126,7 @@ export default {
         companyId: this.companyId,
         page: this.lists[active].page
       });
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       if (this.lists[active].page === 1) {
         this.lists[active].refreshing = false;
       }
@@ -192,6 +220,20 @@ export default {
           }
         }
       });
+    },
+    detail (data) {
+      tools.openWin({
+        name: 'releaseLogDetail_' + this.createTime,
+        url: '../win.html',
+        title: '日志详情',
+        fname: 'releaseLogCreate_f_' + this.createTime,
+        furl: './application/releaseLogDetail.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'releaseLogDetail',
+          ...data
+        }
+      });
     }
   },
   mounted () {
@@ -266,5 +308,8 @@ export default {
   background-color: #009688;
   border: 2px solid #b3dfdb;
   margin-left: 3px;
+}
+.stepConTitle:active{
+  color: @primary
 }
 </style>

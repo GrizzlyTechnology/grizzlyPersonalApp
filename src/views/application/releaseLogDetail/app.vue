@@ -1,167 +1,73 @@
 <template>
   <div class="content">
-    <div class="tip">
-      <Icon value=":el-icon-warning"></Icon> 本月已写周志3次
-    </div>
-    <div class="bodyer">
-      <div style="padding:15px">
-        <Form ref="form" :model="form" label-position="top" label-width="120">
-          <FormItem label="实习单位">
-            <TextField class="read-only" readonly v-model="internshipCompanyInfo.companyName"></TextField>
-          </FormItem>
-          <FormItem label="实习地点">
-            <TextField class="read-only" readonly v-model="internshipCompanyInfo.internshipAddress"></TextField>
-          </FormItem>
-          <FormItem label="实习时间：" prop="startTime" :rules="internshipTimeRules">
-            <DateInput style='width:40%;margin-right:15px;' :value="startTimeText" :max-date="new Date()" @change="changeStartTime" no-display view-type="list" container="bottomSheet"></DateInput>
-            至
-            <DateInput style='width:40%;margin-left:15px' :value="endTimeText" :max-date="new Date()" @change="changeEndTime" no-display view-type="list" container="bottomSheet"></DateInput>
-          </FormItem>
-          <FormItem label="实习部门">
-            <TextField class="read-only" readonly v-model="internshipCompanyInfo.department"></TextField>
-          </FormItem>
-          <FormItem label="实习岗位">
-            <TextField class="read-only" readonly v-model="internshipCompanyInfo.group"></TextField>
-          </FormItem>
-
-          <!-- <div class='tips'>本月已写周志<span> 3 </span>次</div> -->
-          <FormItem label="本周工作内容：" prop="title" :rules='workContentRules'>
-            <TextField multi-line v-model="form.workContent" :max-length="255" :rows="5" :rows-max="5"></TextField>
-          </FormItem>
-          <FormItem label="本周收获：" prop="title" :rules='rewardRules'>
-            <TextField multi-line v-model="form.reward" :max-length="255" :rows="5" :rows-max="5"></TextField>
-          </FormItem>
-        </Form>
+    <Cell class="ucCell">
+      <div class="ucCellCon">
+        <span class="ucCellTitle">实行单位</span>
+        <span class="ucCellLabel">{{companyName}}</span>
       </div>
-    </div>
-    <div class="footer">
-      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="submit">提交</Button>
-    </div>
+    </Cell>
+    <Cell class="ucCell">
+      <div class="ucCellCon">
+        <span class="ucCellTitle">实习地点</span>
+        <span class="ucCellLabel">{{internshipAddress}}</span>
+      </div>
+    </Cell>
+    <Cell class="ucCell">
+      <div class="ucCellCon">
+        <span class="ucCellTitle">实习时间</span>
+        <span class="ucCellLabel">{{head}}</span>
+      </div>
+    </Cell>
+    <Cell class="ucCell">
+      <div class="ucCellCon">
+        <span class="ucCellTitle">实习部门</span>
+        <span class="ucCellLabel">{{department}}</span>
+      </div>
+    </Cell>
+    <Cell class="ucCell">
+      <div class="ucCellCon">
+        <span class="ucCellTitle">实习岗位</span>
+        <span class="ucCellLabel">{{group}}</span>
+      </div>
+    </Cell>
+
+    <Panel title="本周工作内容">
+      <div
+        class="introduction"
+        v-html="workContentText"
+      />
+    </Panel>
+    <Panel title="本周收获">
+      <div
+        class="introduction"
+        v-html="rewardText"
+      />
+    </Panel>
   </div>
 </template>
 
 <script>
-import service from 'service';
-import moment from 'moment';
-import tools from 'util/tools';
-import { Icon, Alert, Button, TextField, DateInput } from 'muse-ui';
-import { Form, FormItem } from 'muse-ui/lib/Form';
+import { Cell } from 'mint-ui';
+import Panel from 'components/Panel';
+
 export default {
   data () {
     return {
+      head: window.api ? window.api.pageParam.head : '',
+      title: window.api ? window.api.pageParam.title : '',
+      info: window.api ? window.api.pageParam.info : '',
+      workContentText: window.api ? window.api.pageParam.workContentText : '',
+      rewardText: window.api ? window.api.pageParam.rewardText : '',
       companyId: window.api ? window.api.pageParam.companyId : '',
-      form: {
-        internshipStart: Date.parse(
-          moment()
-            .subtract('day', 1)
-            .format('YYYY-MM-DD')
-        ),
-        internshipEnd: Date.parse(
-          moment()
-            .add('day', 0)
-            .format('YYYY-MM-DD')
-        ),
-        workContent: '',
-        reward: ''
-      },
-      internshipCompanyInfo: {
-        companyName: window.api ? window.api.pageParam.companyName : '-',
-        internshipAddress: window.api
-          ? window.api.pageParam.internshipAddress
-          : '-',
-        department: window.api ? window.api.pageParam.department : '-',
-        group: window.api ? window.api.pageParam.group : ''
-      },
-      internshipTimeRules: [
-        {
-          validate: val => this.form.internshipStart <= this.form.internshipEnd,
-          message: '开始时间不能在结束时间之后'
-        }
-      ],
-      workContentRules: [
-        {
-          validate: val => this.form.workContent.length > 0,
-          message: '必须填写本周工作内容'
-        }
-      ],
-      rewardRules: [
-        {
-          validate: val => this.form.reward.length > 0,
-          message: '必须填写本周收获'
-        }
-      ]
+      companyName: window.api ? window.api.pageParam.companyName : '',
+      internshipAddress: window.api ? window.api.pageParam.internshipAddress : '',
+      department: window.api ? window.api.pageParam.department : '',
+      group: window.api ? window.api.pageParam.group : ''
     };
   },
   components: {
-    Alert,
-    Button,
-    DateInput,
-    Form,
-    FormItem,
-    Icon,
-    TextField
-  },
-  computed: {
-    startTimeText () {
-      return new Date(this.form.internshipStart);
-    },
-    endTimeText () {
-      return new Date(this.form.internshipEnd);
-    }
-  },
-  methods: {
-    async create () {
-      tools.showProgress();
-      const response = await service.createReleaseLog({
-        ...this.form,
-        companyId: this.companyId
-      });
-      tools.hideProgress();
-      switch (response.code) {
-        case 0:
-          tools.closeWin();
-          break;
-        default:
-          tools.toast({
-            position: 'top',
-            message: response.message
-          });
-          break;
-      }
-    },
-    async getInfo () {
-      tools.showProgress();
-      const response = await service.getPracticeInfo({
-        companyId: this.companyId
-      });
-      this.internshipCompanyInfo = { ...response.result.practiceInfo };
-      tools.hideProgress();
-      switch (response.code) {
-        case 0:
-          tools.closeWin();
-          break;
-        default:
-          tools.toast({
-            position: 'top',
-            message: response.message
-          });
-          break;
-      }
-    },
-    changeStartTime (date) {
-      this.form.internshipStart = date.valueOf();
-    },
-    changeEndTime (date) {
-      this.form.internshipEnd = date.valueOf();
-    },
-
-    submit () {
-      this.$refs.form.validate().then(result => {
-        if (result === true) {
-          this.create();
-        }
-      });
-    }
+    Cell,
+    Panel
   },
   mounted () {}
 };
@@ -169,17 +75,60 @@ export default {
 <style lang="less">
 @import url("../../../assets/css/base.less");
 .content {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  padding: 15px 0 0;
 }
-.bodyer {
-  flex: 1;
-  overflow: auto;
+.ucCell {
+  &.link {
+    .isLink {
+      display: block;
+    }
+    .ucCellCon:active {
+      background-color: #eee;
+    }
+  }
+  position: relative;
+  .ucCellCon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    .ucCellTitle {
+      line-height: 56px;
+      color: #666;
+      margin-left: 15px;
+    }
+    .ucCellLabel {
+      float: right;
+      line-height: 56px;
+      color: #000;
+      margin-right: 15px;
+    }
+  }
+  .mu-icon {
+    z-index: 1;
+    position: relative;
+  }
+  .mint-cell-wrapper {
+    background-image: none;
+    border-bottom: 1px solid #eee;
+    height: 56px;
+  }
 }
-.tip {
-  padding: 10px;
-  background-color: #d6ebff;
-  color: #409eff;
+.introduction {
+  padding: 15px;
+  line-height: 1.8;
+  color: #666;
+}
+.content .moduleBodyer{
+  border-radius: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  border-left: 0 transparent none !important;
+  border-right: 0 transparent none !important;
+}
+.moduleHeader .title{
+  color: #666 !important;
 }
 </style>
