@@ -29,11 +29,11 @@
         {{comapnyAddress}}
       </p>
     </CardText>
-    <List class='whiteBg mt8 allPostion' textline="two-line" v-show='lists.length>0'>
+    <List class='whiteBg mt8 allPostion' textline="two-line" >
       <CardText>
         <h2 class='titleBox spaceBetween'>所有职位</h2>
       </CardText>
-      <div v-for='jobs in lists' :key="jobs.id">
+      <div v-for='jobs in lists' :key="jobs.id" v-if='lists.length>0'>
         <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(jobs.id)">
           <ListItemContent>
             <ListItemTitle>{{jobs.position}}
@@ -49,6 +49,9 @@
           </ListAction>
         </ListItem>
         <Divider></Divider>
+      </div>
+      <div v-else>
+        暂无其他职位
       </div>
     </List>
   </Container>
@@ -234,7 +237,7 @@ export default {
   background: #f0f0f0;
 }
 
-.mu-list-two-line .mu-item{
+.allPostion.mu-list-two-line .mu-item{
   height: 56px;
 }
 </style>

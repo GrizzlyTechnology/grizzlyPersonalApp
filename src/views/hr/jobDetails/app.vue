@@ -1,40 +1,66 @@
 <template>
   <Container>
     <Card class='positionNameBox'>
-      <CardTitle :title='position' :sub-title='firewood'>
+      <CardTitle
+        :title='position'
+        :sub-title='firewood'
+      >
       </CardTitle>
       <Row class='p16'>
         <Col span="3">
         <div class="grid-cell">
-          <Icon size="16" value=":icon-chanpin"></Icon>
+          <Icon
+            size="16"
+            value=":icon-chanpin"
+          ></Icon>
           {{experience}}经验
         </div>
         </Col>
         <Col span="3">
         <div class="grid-cell">
-          <Icon size="16" value=":icon-chanpin"></Icon>
+          <Icon
+            size="16"
+            value=":icon-chanpin"
+          ></Icon>
           {{education}}
         </div>
         </Col>
         <Col span="3">
         <div class="grid-cell">
-          <Icon size="16" value=":icon-chanpin"></Icon>
+          <Icon
+            size="16"
+            value=":icon-chanpin"
+          ></Icon>
           {{workCity}}
         </div>
         </Col>
         <Col span="3">
         <div class="grid-cell">
-          <Icon size="16" value=":icon-chanpin"></Icon>
+          <Icon
+            size="16"
+            value=":icon-chanpin"
+          ></Icon>
           人数：{{recruitsNum}}
         </div>
         </Col>
       </Row>
     </Card>
-    <List textline="two-line" class='companyNameBox'>
-      <ListItem avatar :ripple="false" button class='listItem whiteBg'>
+    <List
+      textline="two-line"
+      class='companyNameBox'
+    >
+      <ListItem
+        avatar
+        :ripple="false"
+        button
+        class='listItem whiteBg'
+      >
         <ListAction>
           <Avatar>
-            <img :src="companyImgSrc" alt="">
+            <img
+              :src="companyImgSrc"
+              alt=""
+            >
           </Avatar>
         </ListAction>
         <ListItemContent @click="companyInfo(enterpriseId)">
@@ -59,12 +85,24 @@
       </p>
     </CardText>
 
-    <List class='whiteBg mt8 allPostion' textline="two-line">
+    <List
+      class='whiteBg mt8 allPostion'
+      textline="two-line"
+    >
       <CardText>
         <h2 class='titleBox spaceBetween'>所有职位</h2>
       </CardText>
-      <div v-for='jobs in lists' :key="jobs.id">
-        <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(jobs.id)">
+      <div
+        v-for='jobs in lists'
+        :key="jobs.id"
+      >
+        <ListItem
+          avatar
+          :ripple="false"
+          button
+          class='listItem'
+          @click="jobDetails(jobs.id)"
+        >
           <ListItemContent>
             <ListItemTitle>{{jobs.position}}
               <span class='claim'>{{jobs.claim}}</span>
@@ -82,15 +120,20 @@
       </div>
     </List>
     <div class='p16 fixBox whiteBg'>
-      <Button color="primary" full-width class='deliveryButton' @click='delivery'>立即投递</Button>
+      <Button
+        color="primary"
+        full-width
+        class='deliveryButton'
+        @click='delivery'
+      >立即投递</Button>
     </div>
   </Container>
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import { Container, Row, Col } from 'muse-ui/lib/Grid';
-import { CardTitle, CardText } from 'muse-ui/lib/Card';
+import { Toast } from "mint-ui";
+import { Container, Row, Col } from "muse-ui/lib/Grid";
+import { CardTitle, CardText } from "muse-ui/lib/Card";
 import {
   List,
   ListItem,
@@ -99,27 +142,27 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from 'muse-ui/lib/List';
-import { Card, Icon, Avatar, Divider, Button } from 'muse-ui';
-import tool from 'util/tools';
-import service from 'service';
+} from "muse-ui/lib/List";
+import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
+import tool from "util/tools";
+import service from "service";
 export default {
-  data () {
+  data() {
     return {
-      id: window.api?window.api.pageParam.id:'7',
-      position: '',
-      firewood: '',
-      experience: '',
-      education: '',
-      workCity: '',
-      recruitsNum: '',
-      companyImgSrc: '',
-      companyName: '',
-      nature: '',
-      industry: '',
-      workDescription: '',
-      workPlace: '',
-      enterpriseId: '',
+      id: window.api ? window.api.pageParam.id : "7",
+      position: "",
+      firewood: "",
+      experience: "",
+      education: "",
+      workCity: "",
+      recruitsNum: "",
+      companyImgSrc: "",
+      companyName: "",
+      nature: "",
+      industry: "",
+      workDescription: "",
+      workPlace: "",
+      enterpriseId: "",
       lists: [],
       rList: []
     };
@@ -146,7 +189,7 @@ export default {
   },
   methods: {
     // 页面数据
-    async detailsData () {
+    async detailsData() {
       tool.showProgress();
       const response = await service.getDetailsData({ id: this.id });
       tool.hideProgress();
@@ -169,19 +212,19 @@ export default {
           break;
         default:
           Toast({
-            position: 'top',
-            message: '获取失败，请稍后重试！！'
+            position: "top",
+            message: "获取失败，请稍后重试！！"
           });
           break;
       }
     },
-    jobDetails (id) {
+    jobDetails(id) {
       tool.openWin({
-        name: 'jobDetails_' + id,
-        url: '../win.html',
-        title: '职位详情',
-        fname: 'jobDetails_f_' + id,
-        furl: './hr/jobDetails.html',
+        name: "jobDetails_" + id,
+        url: "../win.html",
+        title: "职位详情",
+        fname: "jobDetails_f_" + id,
+        furl: "./hr/jobDetails.html",
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -189,13 +232,13 @@ export default {
         }
       });
     },
-    companyInfo (enterpriseId) {
+    companyInfo(enterpriseId) {
       tool.openWin({
-        name: 'companyInfo',
-        url: '../win.html',
-        title: '企业介绍',
-        fname: 'companyInfo_f',
-        furl: './hr/companyInfo.html',
+        name: "companyInfo",
+        url: "../win.html",
+        title: "企业介绍",
+        fname: "companyInfo_f",
+        furl: "./hr/companyInfo.html",
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -203,52 +246,59 @@ export default {
         }
       });
     },
-    async delivery () {
+    async delivery() {
       tool.showProgress();
       const response = await service.getUserBaseInfo({});
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          let rList =
+          this.rList =
             response.result.resumeInfo.length > 0
-              ? response.result.resumeInfo[0]
+              ? [response.result.resumeInfo[0]]
               : [];
-          const responses = await service.pushDelivery({
-            id: this.id,
-            resumeId: rList.id
-          });
-
-          switch (responses.code) {
-            case 0:
-              Toast({
-                position: 'center',
-                message: '简历投递成功！'
-              });
-              break;
-            case 101:
-              Toast({
-                position: 'center',
-                message: '已经投递过该职位！！'
-              });
-              break;
-            default:
-              Toast({
-                position: 'center',
-                message: '投递失败，请稍后重试！！'
-              });
-              break;
+          if (this.rList.length === 0) {
+            Toast({
+              position: "center",
+              message: "暂无简历，请增加简历！"
+            });
+          } else {
+            const responses = await service.pushDelivery({
+              id: this.id,
+              resumeId: this.rList.id
+            });
+            switch (responses.code) {
+              case 0:
+                Toast({
+                  position: "center",
+                  message: "简历投递成功！"
+                });
+                break;
+              case 101:
+                Toast({
+                  position: "center",
+                  message: "已经投递过该职位！！"
+                });
+                break;
+              default:
+                Toast({
+                  position: "center",
+                  message: "投递失败，请稍后重试！！"
+                });
+                break;
+            }
           }
+
           break;
         default:
           Toast({
-            position: 'top',
-            message: '暂无简历，请增加简历！'
+            position: "top",
+            message: "加载失败，请稍后重试！！"
           });
           break;
       }
     }
   },
-  mounted () {
+  mounted() {
     this.detailsData();
   }
 };
@@ -361,7 +411,7 @@ export default {
   justify-content: space-around;
 }
 
-.listItem:active{
+.listItem:active {
   background: #f0f0f0;
 }
 </style>
