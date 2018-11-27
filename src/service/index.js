@@ -773,5 +773,13 @@ export default {
       params,
       method: 'get'
     });
+  },
+  createReleaseLog (params) {
+    return request({
+      host: BASEURL,
+      url: '/api/Internship/createjournal',
+      params,
+      method: 'post'
+    });
   }
 };

@@ -112,27 +112,11 @@ export default {
   methods: {
     async create () {
       tools.showProgress();
+      console.log(JSON.stringify(this.form));
       const response = await service.createReleaseLog({
         ...this.form,
         companyId: this.companyId
       });
-      tools.hideProgress();
-      switch (response.code) {
-        case 0:
-          tools.closeWin();
-          break;
-        default:
-          tools.toast({
-            position: 'top',
-            message: response.message
-          });
-          break;
-      }
-    },
-    async getInfo () {
-      tools.showProgress();
-      const response = await service.getEnterpriseInfo(this.companyId);
-      this.internshipCompanyInfo = { ...response.result.practiceInfo };
       tools.hideProgress();
       switch (response.code) {
         case 0:
