@@ -88,7 +88,10 @@ export default {
         furl: './application/agreementDetails.html',
         hasLeft: 1,
         data: {
-          companyId: this.companyId
+          companyId: this.companyId,
+          companyName: window.api ? window.api.pageParam.companyName : '-',
+          department: window.api ? window.api.pageParam.department : '-',
+          group: window.api ? window.api.pageParam.group : ''
         }
       });
     },
