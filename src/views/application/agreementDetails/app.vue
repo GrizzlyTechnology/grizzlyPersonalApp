@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <Button color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" large>提交协议</Button>
+    <Button large color="#009688" textColor="#ffffff" :full-width="true" :style="{boxShadow: '0 0 0'}" @click="update()">提交协议</Button>
     <ImagesPopup ref="imagesPopup" :urlList="urlList" :index="urlListIndex" :description="description"></ImagesPopup>
   </div>
 </template>
@@ -43,7 +43,7 @@ export default {
   data () {
     return {
       companyInfo: {
-        companyId: window.api ? window.api.pageParam.companyIdthis : '-',
+        companyId: window.api ? window.api.pageParam.companyId : '-',
         companyName: window.api ? window.api.pageParam.companyName : '-',
         department: window.api ? window.api.pageParam.department : '-',
         group: window.api ? window.api.pageParam.group : ''
@@ -51,26 +51,7 @@ export default {
       description: {},
       urlList: [],
       urlListIndex: 0,
-      picList: [
-        // {
-        //   url:
-        //     'https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1225949027,2182553787&fm=85&s=86AC65A275E484AEF015A8A40300A0D1',
-        //   coverUrl:
-        //     'https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=1225949027,2182553787&fm=85&s=86AC65A275E484AEF015A8A40300A0D1'
-        // },
-        // {
-        //   url:
-        //     'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=12360805,2887716012&fm=26&gp=0.jpg',
-        //   coverUrl:
-        //     'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=12360805,2887716012&fm=26&gp=0.jpg'
-        // },
-        // {
-        //   url:
-        //     'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1634998881,2572259975&fm=26&gp=0.jpg',
-        //   coverUrl:
-        //     'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1634998881,2572259975&fm=26&gp=0.jpg'
-        // }
-      ],
+      picList: [],
 
       uploaderHide: false,
       progressPercent: 0,
@@ -79,7 +60,6 @@ export default {
         'http://' +
         (process.env === 'production' ? hostList.pro : hostList.test) +
         '/api/Userresources/create',
-      // actionUrl: 'https://jsonplaceholder.typicode.com/posts/',
       headers: {
         MG_code:
           '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O',
@@ -107,14 +87,16 @@ export default {
         companyId: this.companyInfo.companyId
       });
       tools.hideProgress();
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.picList = response.result.picList.map(url => {
-            const urlAry = url.split('/');
+          this.picList = response.result.picList.map(row => {
+            const urlAry = row.url.split('/');
             urlAry[urlAry.length - 1] = '450_' + urlAry[urlAry.length - 1];
             return ({
-              url,
-              coverUrl: urlAry.join('/')
+              url: row.url,
+              coverUrl: urlAry.join('/'),
+              id: row.id
             });
           });
           break;
@@ -128,11 +110,17 @@ export default {
     },
     async update () {
       tools.showProgress();
+      // console.log(JSON.stringify({
+      //   companyId: this.companyInfo.companyId,
+      //   picList: this.picList.map(row => row.id)
+      // }));
       const response = await service.updateAgreementPic({
         companyId: this.companyInfo.companyId,
-        picList: this.picList.map(row => row.url)
+        picList: this.picList.map(row => row.id)
       });
       tools.hideProgress();
+      // console.log(JSON.stringify(response));
+
       switch (response.code) {
         case 0:
           tools.closeWin();
@@ -212,7 +200,8 @@ export default {
           urlAry[urlAry.length - 1] = '450_' + urlAry[urlAry.length - 1];
           this.picList.push({
             url: response.result.file.url,
-            coverUrl: urlAry.join('/')
+            coverUrl: urlAry.join('/'),
+            id: response.result.file.id
           });
           if (this.picList.length >= this.max) {
             this.uploaderHide = true;
@@ -228,16 +217,11 @@ export default {
     },
     remove (file, index) {
       this.picList.splice(index, 1);
-    },
-    submit () {
-      this.$refs.form.validate().then(result => {
-        if (result === true) {
-          this.update();
-        }
-      });
     }
   },
-  mounted () {}
+  mounted () {
+    this.getAgreementPic();
+  }
 };
 </script>
 <style lang="less">

@@ -32,6 +32,9 @@
     </div>
     <!-- </TabContainerItem>
     </TabContainer> -->
+    <div class="footer">
+      <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" :full-width="true" large @click="create">新建日志</Button>
+    </div>
   </div>
 </template>
 
@@ -40,17 +43,18 @@ import service from 'service';
 // import moment from 'moment';
 import tools from 'util/tools';
 import adapter from 'util/adapter';
-import { LoadMore } from 'muse-ui';
+import { LoadMore, Button } from 'muse-ui';
 // import { Tabs, LoadMore } from 'muse-ui';
 // import { Tab } from 'muse-ui/lib/Tabs';
 // import { TabContainer, TabContainerItem } from 'mint-ui';
-
 export default {
   data () {
     return {
       // refreshing: false,
       // loading: false,
+      companyId: window.api ? window.api.pageParam.companyId : '',
       active: 0,
+      companyInfo: {},
       lists: [
         {
           name: '全部',
@@ -58,18 +62,18 @@ export default {
           loading: false,
           page: 1,
           list: [
-            {
-              id: 0,
-              head: '2017年6月8日',
-              title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
-              info: 'info'
-            },
-            {
-              id: 1,
-              head: '2017年6月8日',
-              title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
-              info: 'info'
-            }
+            // {
+            //   id: 0,
+            //   head: '2017年6月8日-2017年6月15日',
+            //   title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
+            //   info: '创建日期：2017年6月15日'
+            // },
+            // {
+            //   id: 1,
+            //   head: '2017年6月8日-2017年6月15日',
+            //   title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
+            //   info: '创建日期：2017年6月15日'
+            // }
           ]
         }
       ]
@@ -78,7 +82,8 @@ export default {
   components: {
     // Tabs,
     // Tab,
-    LoadMore
+    LoadMore,
+    Button
     // TabContainer,
     // TabContainerItem
   },
@@ -88,43 +93,31 @@ export default {
     }
   },
   methods: {
-    async doHasRead (message) {
-      tools.showProgress();
-      const response = await service.messageDoRead(message.id);
-      tools.hideProgress();
-      switch (response.code) {
-        case 0:
-          message.is_ready = 1;
-          break;
-        default:
-          tools.toast({
-            position: 'top',
-            message: '标记失败，请稍后重试！！'
-          });
-          break;
-      }
-    },
     async getList (active) {
-      const response = await service.getMessageList({
+      const response = await service.getReleaseLofList({
+        companyId: this.companyId,
         page: this.lists[active].page
       });
-      // console.log(JSON.stringify(response));
+      console.log(JSON.stringify(response));
       if (this.lists[active].page === 1) {
         this.lists[active].refreshing = false;
       }
       if (this.lists[active].page > 1) {
         this.lists[active].loading = false;
       }
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           if (this.lists[active].page === 1) {
-            this.lists[active].list = response.result.lists.map(message =>
-              adapter.messageAdapter(message)
+            this.lists[active].list = response.result.list.map(releaseLog =>
+              adapter.releaseLogAdapter({...releaseLog, ...this.companyInfo})
             );
           }
           if (this.lists[active].page > 1) {
-            response.result.lists.forEach(message => {
-              this.lists[active].list.push(adapter.messageAdapter(message));
+            response.result.list.forEach(releaseLog => {
+              this.lists[active].list.push(
+                adapter.releaseLogAdapter({...releaseLog, ...this.companyInfo})
+              );
             });
           }
           break;
@@ -132,6 +125,33 @@ export default {
           tools.toast({
             position: 'top',
             message: '列表加载失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    async loading () {
+      // console.log(window.api.pageParam.companyId);
+      // console.log(this.companyId);
+
+      tools.showProgress();
+      const response = await service.getEnterpriseInfo(this.companyId);
+      // console.log(JSON.stringify(response));
+      this.companyInfo = {
+        companyId: this.companyId,
+        ...response.result.practiceInfo
+      };
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.lists[this.active].page = 1;
+          this.lists[this.active].refreshing = true;
+          this.$refs[`container${this.active}`].scrollTop = 0;
+          this.getList(this.active);
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: response.message
           });
           break;
       }
@@ -155,10 +175,27 @@ export default {
         this.lists[active].loading = true;
         this.getList(active);
       }
+    },
+    create () {
+      tools.openWin({
+        name: 'releaseLogCreate',
+        url: '../win.html',
+        title: '新建日志',
+        fname: 'releaseLogCreate_f',
+        furl: './application/releaseLogCreate.html',
+        hasLeft: 1,
+        data: {
+          nameSpace: 'releaseLogCreate',
+          ...this.companyInfo,
+          callback: (ret, err) => {
+            this.refresh(this.active);
+          }
+        }
+      });
     }
   },
   mounted () {
-    this.refresh(this.active);
+    this.loading();
   }
 };
 </script>
@@ -215,16 +252,19 @@ export default {
 .stepHeader {
   font-size: 12px;
   color: #999;
+  font-weight: bold;
 }
 .stepConInfo {
   color: #999;
+  font-size: 12px;
+  margin-top: 10px;
 }
 .stepIcon {
   width: 16px;
   height: 16px;
   border-radius: 8px;
   background-color: #009688;
-  border: 2px solid #B3DFDB;
+  border: 2px solid #b3dfdb;
   margin-left: 3px;
 }
 </style>

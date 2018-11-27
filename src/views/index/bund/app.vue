@@ -16,8 +16,8 @@ import { setTimeout } from 'timers';
 export default {
   data () {
     return {
-        uinfo:window.api.pageParam.info,
-        type:window.api.pageParam.type=='qq'?'QQ':'微信',
+      uinfo: window.api.pageParam.info,
+      type: window.api.pageParam.type == 'qq' ? 'QQ' : '微信'
     };
   },
   components: {
@@ -25,42 +25,42 @@ export default {
     Button
   },
   methods: {
-    bundlogin(){
-        tools.openWin({
-                name: 'login',
-                url: '../win.html',
-                title: '用户登录',
-                fname: 'login_f',
-                furl: './index/login.html',
-                hasLeft: 0,
-                data: {
-                    comefrom:'bund',
-                    type:window.api.pageParam.type,
-                    info:this.uinfo
-                    }
-            });
+    bundlogin () {
+      tools.openWin({
+        name: 'login',
+        url: '../win.html',
+        title: '用户登录',
+        fname: 'login_f',
+        furl: './index/login.html',
+        hasLeft: 0,
+        data: {
+          comefrom: 'bund',
+          type: window.api.pageParam.type,
+          info: this.uinfo
+        }
+      });
     },
-    backlogin(){
-        tools.openWin({
-          name: 'login',
-          url: '../win.html',
-          title: '用户登录',
-          fname: 'login_f',
-          furl: './index/login.html',
-          data:{
-              comefrom:'bund'
-          }
-        });
+    backlogin () {
+      tools.openWin({
+        name: 'login',
+        url: '../win.html',
+        title: '用户登录',
+        fname: 'login_f',
+        furl: './index/login.html',
+        data: {
+          comefrom: 'bund'
+        }
+      });
     }
   },
   mounted () {
-      if(window.api.pageParam.comefrom!==undefined){
-        setTimeout(function(){
-            window.api.closeWin({
-                name: window.api.pageParam.comefrom
-            });
-        },500);
-      }
+    if (window.api.pageParam.comefrom !== undefined) {
+      setTimeout(function () {
+        window.api.closeWin({
+          name: window.api.pageParam.comefrom
+        });
+      }, 500);
+    }
   }
 };
 </script>
