@@ -394,7 +394,7 @@ export default {
         hasLeft: 1,
         hasRight: 0,
         data: {
-          id: id
+          id: id,
         }
       });
     },
