@@ -47,7 +47,6 @@ import { LoadMore, Button } from 'muse-ui';
 // import { Tabs, LoadMore } from 'muse-ui';
 // import { Tab } from 'muse-ui/lib/Tabs';
 // import { TabContainer, TabContainerItem } from 'mint-ui';
-
 export default {
   data () {
     return {
@@ -55,6 +54,7 @@ export default {
       // loading: false,
       companyId: window.api ? window.api.pageParam.companyId : '',
       active: 0,
+      companyInfo: {},
       lists: [
         {
           name: '全部',
@@ -62,18 +62,18 @@ export default {
           loading: false,
           page: 1,
           list: [
-            {
-              id: 0,
-              head: '2017年6月8日-2017年6月15日',
-              title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
-              info: '创建日期：2017年6月15日'
-            },
-            {
-              id: 1,
-              head: '2017年6月8日-2017年6月15日',
-              title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
-              info: '创建日期：2017年6月15日'
-            }
+            // {
+            //   id: 0,
+            //   head: '2017年6月8日-2017年6月15日',
+            //   title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
+            //   info: '创建日期：2017年6月15日'
+            // },
+            // {
+            //   id: 1,
+            //   head: '2017年6月8日-2017年6月15日',
+            //   title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
+            //   info: '创建日期：2017年6月15日'
+            // }
           ]
         }
       ]
@@ -95,26 +95,29 @@ export default {
   methods: {
     async getList (active) {
       const response = await service.getReleaseLofList({
-        companyId: this.computed,
+        companyId: this.companyId,
         page: this.lists[active].page
       });
-      // console.log(JSON.stringify(response));
+      console.log(JSON.stringify(response));
       if (this.lists[active].page === 1) {
         this.lists[active].refreshing = false;
       }
       if (this.lists[active].page > 1) {
         this.lists[active].loading = false;
       }
+      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           if (this.lists[active].page === 1) {
-            this.lists[active].list = response.result.lists.map(message =>
-              adapter.messageAdapter(message)
+            this.lists[active].list = response.result.list.map(releaseLog =>
+              adapter.releaseLogAdapter({...releaseLog, ...this.companyInfo})
             );
           }
           if (this.lists[active].page > 1) {
-            response.result.lists.forEach(message => {
-              this.lists[active].list.push(adapter.messageAdapter(message));
+            response.result.list.forEach(releaseLog => {
+              this.lists[active].list.push(
+                adapter.releaseLogAdapter({...releaseLog, ...this.companyInfo})
+              );
             });
           }
           break;
@@ -122,6 +125,33 @@ export default {
           tools.toast({
             position: 'top',
             message: '列表加载失败，请稍后重试！！'
+          });
+          break;
+      }
+    },
+    async loading () {
+      // console.log(window.api.pageParam.companyId);
+      // console.log(this.companyId);
+
+      tools.showProgress();
+      const response = await service.getEnterpriseInfo(this.companyId);
+      // console.log(JSON.stringify(response));
+      this.companyInfo = {
+        companyId: this.companyId,
+        ...response.result.practiceInfo
+      };
+      tools.hideProgress();
+      switch (response.code) {
+        case 0:
+          this.lists[this.active].page = 1;
+          this.lists[this.active].refreshing = true;
+          this.$refs[`container${this.active}`].scrollTop = 0;
+          this.getList(this.active);
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: response.message
           });
           break;
       }
@@ -156,7 +186,7 @@ export default {
         hasLeft: 1,
         data: {
           nameSpace: 'releaseLogCreate',
-          companyId: this.companyId,
+          ...this.companyInfo,
           callback: (ret, err) => {
             this.refresh(this.active);
           }
@@ -165,7 +195,7 @@ export default {
     }
   },
   mounted () {
-    this.refresh(this.active);
+    this.loading();
   }
 };
 </script>
@@ -234,7 +264,7 @@ export default {
   height: 16px;
   border-radius: 8px;
   background-color: #009688;
-  border: 2px solid #B3DFDB;
+  border: 2px solid #b3dfdb;
   margin-left: 3px;
 }
 </style>

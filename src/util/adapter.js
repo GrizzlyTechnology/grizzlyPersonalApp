@@ -166,4 +166,18 @@ adapter.deliveryStatusColor = function (status) {
   }
   return color;
 };
+
+adapter.releaseLogAdapter = function (data) {
+  const content = data.workContent.replace(/\n|\r\n/g, '');
+
+  return {
+    head: moment(data.internshipStart).format('YYYY年MM月DD日') + ' 至 ' + moment(data.internshipEnd).format('YYYY年MM月DD日'),
+    title: content.length > 50 ? content.substring(0.47) + '...' : content,
+    info: '创建日期：' + moment(data.createTime * 1000).format('YYYY年MM月DD日'),
+    workContentText: data.workContent.replace(/\n|\r\n/g, '<br/>'),
+    rewardText: data.reward.replace(/\n|\r\n/g, '<br/>'),
+    ...data
+  };
+};
+// { "internshipStart": 1543190400000, "internshipEnd": 1543276800000, "workContent": "巴巴爸爸", "reward": "VB不不不", "createTime": 1543299620 }
 export default adapter;
