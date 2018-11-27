@@ -264,10 +264,11 @@ export default {
           } else {
             const responses = await service.pushDelivery({
               id: this.id,
-              resumeId: this.rList.id
+              resumeId: this.rList[0].id
             });
             switch (responses.code) {
               case 0:
+
                 Toast({
                   position: "center",
                   message: "简历投递成功！"
