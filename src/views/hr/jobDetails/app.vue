@@ -106,7 +106,7 @@ import service from 'service';
 export default {
   data () {
     return {
-      id: window.api.pageParam.id,
+      id: window.api?window.api.pageParam.id:'7',
       position: '',
       firewood: '',
       experience: '',
