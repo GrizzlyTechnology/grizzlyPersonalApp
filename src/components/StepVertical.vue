@@ -9,7 +9,7 @@
       </span>
       <div class="mu-step-content">
         <div style="position: relative; overflow: hidden; height: 100%;">
-          <div class="mu-step-content-inner" data-old-padding-top="" data-old-padding-bottom="" data-old-overflow="" style="">
+          <div class="mu-step-content-inner">
             <div class="stepConTitle">{{row.title}}</div>
             <div  v-html="row.info" class="stepConInfo"></div>
           </div>

@@ -1,8 +1,8 @@
 <template>
   <div class="content">
-    <div class="tip">
+    <!-- <div class="tip">
       <Icon value=":el-icon-warning"></Icon> 本月已写周志3次
-    </div>
+    </div> -->
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form" label-position="top" label-width="120">
@@ -112,7 +112,7 @@ export default {
   methods: {
     async create () {
       tools.showProgress();
-      console.log(JSON.stringify(this.form));
+      // console.log(JSON.stringify(this.form));
       const response = await service.createReleaseLog({
         ...this.form,
         companyId: this.companyId
