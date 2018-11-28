@@ -104,8 +104,8 @@
           @click="jobDetails(jobs.id)"
         >
           <ListItemContent>
-            <ListItemTitle>{{jobs.position}}
-              <span class='claim'>{{jobs.claim}}</span>
+            <ListItemTitle>{{jobs.title}}
+              <!-- <span class='claim'>{{jobs.claim}}</span> -->
             </ListItemTitle>
             <ListItemSubTitle>
               {{jobs.companyName}}
@@ -163,6 +163,7 @@ export default {
       workDescription: "",
       workPlace: "",
       enterpriseId: "",
+      // studentStatus: null,
       lists: [],
       rList: []
     };
@@ -195,7 +196,7 @@ export default {
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          this.position = response.result.position;
+          this.position = response.result.title;
           this.firewood = response.result.firewood;
           this.experience = response.result.experience;
           this.education = response.result.education;
@@ -209,6 +210,7 @@ export default {
           this.workDescription = response.result.workDescription;
           this.lists = response.result.lists;
           this.enterpriseId = response.result.enterpriseId;
+          console.log();
           break;
         default:
           Toast({
@@ -218,6 +220,22 @@ export default {
           break;
       }
     },
+    // // 获取学校id
+    // async getSchoolId() {
+    //   const response = await service.getStudentInfo();
+    //   switch (response.code) {
+    //     case 0:
+    //       this.studentStatus = response.result.studentInfo;
+    //       console.log(this.studentStatus.schoolid)
+    //       break;
+    //     default:
+    //       Toast({
+    //         position: "top",
+    //         message: "获取失败，请稍后重试！！"
+    //       });
+    //       break;
+    //   }
+    // },
     jobDetails(id) {
       tool.openWin({
         name: "jobDetails_" + id,
@@ -264,7 +282,8 @@ export default {
           } else {
             const responses = await service.pushDelivery({
               id: this.id,
-              resumeId: this.rList.id
+              resumeId: this.rList[0].id,
+              schoolId: this.schoolId
             });
             switch (responses.code) {
               case 0:
@@ -379,11 +398,11 @@ export default {
   justify-content: space-between;
 }
 
-.claim {
-  color: #666;
-  font-size: 12px;
-  margin-left: 10px;
-}
+// .claim {
+//   color: #666;
+//   font-size: 12px;
+//   margin-left: 10px;
+// }
 
 .salaryRange {
   color: #009688;
