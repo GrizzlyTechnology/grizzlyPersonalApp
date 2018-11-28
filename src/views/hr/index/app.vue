@@ -36,8 +36,8 @@
               <div v-for='suitablesList in suitablesLists.slice(0,6)' :key="suitablesList.id">
                 <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(suitablesList.id)">
                   <ListItemContent>
-                    <ListItemTitle>{{suitablesList.position}}
-                      <span class='claim'>{{suitablesList.claim}}</span>
+                    <ListItemTitle>{{suitablesList.title}}
+                      <!-- <span class='claim'>{{suitablesList.claim}}</span> -->
                     </ListItemTitle>
                     <ListItemSubTitle>
                       {{suitablesList.companyName}}
@@ -67,8 +67,8 @@
             <div v-for='hotJob in hotJobs.slice(0,6)' :key="hotJob.id">
               <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(hotJob.id)">
                 <ListItemContent>
-                  <ListItemTitle>{{hotJob.position}}
-                    <span class='claim'>{{hotJob.claim}}</span>
+                  <ListItemTitle>{{hotJob.title}}
+                    <!-- <span class='claim'>{{hotJob.claim}}</span> -->
                   </ListItemTitle>
                   <ListItemSubTitle>
                     {{hotJob.companyName}}
@@ -136,10 +136,12 @@ export default {
       refreshing: false,
       companys: [],
       carouselImgs: [],
-      suitablesLists: [],
+      suitablesLists: [
+        {"id":7,"title":"项目经理(市场分析/SEM)","position":"SEO/SEM","claim":"1-3年/大专/北京市","salaryRange":"8000-10000","companyName":"大灰熊科技","date":"1970-01-01"},{"id":10,"title":"WEB前端架构师","position":"WEB前端开发","claim":"1-3年/大专/镇江市","salaryRange":"8000-10000","companyName":"大灰熊科技","date":"2018-09-25"},{"id":16,"title":"招聘亚太区国际总裁","position":"高级软件工程师","claim":"不限/初中/北京市","salaryRange":"25000以上","companyName":"袁云测试的企业","date":"2018-11-23"},{"id":18,"title":"财务","position":"财务顾问","claim":"10年以上/博士/北京市","salaryRange":"8000-10000","companyName":"王丽丽测试测试","date":"2018-11-27"},{"id":19,"title":"财务总监","position":"首席财务官CFO","claim":"5-10年/硕士/北京市","salaryRange":"25000以上","companyName":"wllgs","date":"2018-11-28"},{"id":20,"title":"技术总监","position":"项目总监","claim":"5-10年/博士/北京市","salaryRange":"25000以上","companyName":"大灰熊科技","date":"2018-11-28"},{"id":21,"title":"11111111111","position":"项目总监","claim":"不限/初中/北京市","salaryRange":"2000-3000","companyName":"大灰熊科技","date":"2018-11-28"}
+        ],
       count: 0,
       resumeList: [],
-      hotJobs: [],
+      hotJobs: [ {"id":7,"title":"项目经理(市场分析/SEM)","position":"SEO/SEM","claim":"1-3年/大专/北京市","salaryRange":"8000-10000","companyName":"大灰熊科技","date":"1970-01-01"},{"id":10,"title":"WEB前端架构师","position":"WEB前端开发","claim":"1-3年/大专/镇江市","salaryRange":"8000-10000","companyName":"大灰熊科技","date":"2018-09-25"},{"id":16,"title":"招聘亚太区国际总裁","position":"高级软件工程师","claim":"不限/初中/北京市","salaryRange":"25000以上","companyName":"袁云测试的企业","date":"2018-11-23"},{"id":18,"title":"财务","position":"财务顾问","claim":"10年以上/博士/北京市","salaryRange":"8000-10000","companyName":"王丽丽测试测试","date":"2018-11-27"},{"id":19,"title":"财务总监","position":"首席财务官CFO","claim":"5-10年/硕士/北京市","salaryRange":"25000以上","companyName":"wllgs","date":"2018-11-28"},{"id":20,"title":"技术总监","position":"项目总监","claim":"5-10年/博士/北京市","salaryRange":"25000以上","companyName":"大灰熊科技","date":"2018-11-28"},{"id":21,"title":"11111111111","position":"项目总监","claim":"不限/初中/北京市","salaryRange":"2000-3000","companyName":"大灰熊科技","date":"2018-11-28"}],
       defaultResult: [],
       labelPosition: 'right',
       cid: 1, // 文章分类id,写死
@@ -466,7 +468,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import url("../../../assets/css/base.less");
 .container {
   padding: 0;
@@ -601,11 +603,11 @@ body .mu-secondary-text-color {
   height: 100px;
 }
 
-.claim {
-  color: #666;
-  font-size: 12px;
-  margin-left: 10px;
-}
+// .claim {
+//   color: #666;
+//   font-size: 12px;
+//   margin-left: 10px;
+// }
 
 .salaryRange {
   color: #009688;
@@ -618,6 +620,7 @@ body .mu-secondary-text-color {
 .mu-list {
   padding-bottom: 0;
 }
+
 
 .hotJobs h2 {
   margin-bottom: 0;

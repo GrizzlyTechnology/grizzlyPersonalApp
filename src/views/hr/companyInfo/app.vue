@@ -1,20 +1,34 @@
 <template>
   <Container>
-    <List textline="two-line" class='companyNameBox'>
-      <ListItem avatar :ripple="false" button class='listItem whiteBg'>
+    <List
+      textline="two-line"
+      class='companyNameBox'
+    >
+      <ListItem
+        avatar
+        :ripple="false"
+        button
+        class='listItem whiteBg'
+      >
         <ListAction>
           <Avatar>
-            <img :src="companyImgSrc" alt="">
+            <img
+              :src="companyImgSrc"
+              alt=""
+            >
           </Avatar>
         </ListAction>
         <ListItemContent>
           <ListItemTitle>
             {{companyName}}
           </ListItemTitle>
-          <ListItemSubTitle>
+          <ListItemSubTitle v-if='nature.length>0'>
             <span>{{nature}}</span>
             <span>{{scale}}</span>
             <span>{{industry}}</span>
+          </ListItemSubTitle>
+          <ListItemSubTitle v-else>
+            暂无信息
           </ListItemSubTitle>
         </ListItemContent>
       </ListItem>
@@ -22,22 +36,39 @@
     <CardText class='whiteBg detailBox'>
       <h2 class='titleBox'>公司介绍</h2>
       <div v-html="companyIntro"></div>
+      <!-- <div v-else>暂无公司介绍</div> -->
     </CardText>
     <CardText class='whiteBg detailBox mt8'>
       <h2 class='titleBox'>公司地址</h2>
-      <p class='spaceBetween'>
+      <p class='spaceBetween'  v-if='comapnyAddress.length>0'>
         {{comapnyAddress}}
       </p>
+      <p v-else>
+        暂无公司地址
+      </p>
     </CardText>
-    <List class='whiteBg mt8 allPostion' textline="two-line" >
+    <List
+      class='whiteBg mt8 allPostion'
+      textline="two-line"
+    >
       <CardText>
         <h2 class='titleBox spaceBetween'>所有职位</h2>
       </CardText>
-      <div v-for='jobs in lists' :key="jobs.id" v-if='lists.length>0'>
-        <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(jobs.id)">
+      <div
+        v-for='jobs in lists'
+        :key="jobs.id"
+        v-if='lists.length>0'
+      >
+        <ListItem
+          avatar
+          :ripple="false"
+          button
+          class='listItem'
+          @click="jobDetails(jobs.id)"
+        >
           <ListItemContent>
-            <ListItemTitle>{{jobs.position}}
-              <span class='claim'>{{jobs.claim}}</span>
+            <ListItemTitle>{{jobs.title}}
+              <!-- <span class='claim'>{{jobs.claim}}</span> -->
             </ListItemTitle>
             <ListItemSubTitle>
               {{jobs.companyName}}
@@ -58,9 +89,9 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import { Container, Row, Col } from 'muse-ui/lib/Grid';
-import { CardTitle, CardText } from 'muse-ui/lib/Card';
+import { Toast } from "mint-ui";
+import { Container, Row, Col } from "muse-ui/lib/Grid";
+import { CardTitle, CardText } from "muse-ui/lib/Card";
 import {
   List,
   ListItem,
@@ -69,21 +100,21 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from 'muse-ui/lib/List';
-import { Card, Icon, Avatar, Divider, Button } from 'muse-ui';
-import tool from 'util/tools';
-import service from 'service';
+} from "muse-ui/lib/List";
+import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
+import tool from "util/tools";
+import service from "service";
 export default {
-  data () {
+  data() {
     return {
-      companyImgSrc: '',
-      companyName: '',
-      nature: '',
-      scale: '',
-      industry: '',
-      companyIntro: '',
-      comapnyAddress: '',
-      enterpriseId: window.api?window.api.pageParam.enterpriseId:'1',
+      companyImgSrc: "",
+      companyName: "",
+      nature: "",
+      scale: "",
+      industry: "",
+      companyIntro: "",
+      comapnyAddress: "",
+      enterpriseId: window.api ? window.api.pageParam.enterpriseId : "1",
       lists: []
     };
   },
@@ -108,7 +139,7 @@ export default {
   },
   methods: {
     // 页面数据
-    async detailsData () {
+    async detailsData() {
       tool.showProgress();
       const response = await service.getCompanyInfo({
         enterpriseId: this.enterpriseId
@@ -126,13 +157,13 @@ export default {
           break;
         default:
           Toast({
-            position: 'top',
-            message: '获取失败，请稍后重试！！'
+            position: "top",
+            message: "获取失败，请稍后重试！！"
           });
           break;
       }
     },
-    async companyAllJob () {
+    async companyAllJob() {
       tool.showProgress();
       const response = await service.getCompanyJob({
         enterpriseId: this.enterpriseId
@@ -144,19 +175,19 @@ export default {
           break;
         default:
           Toast({
-            position: 'top',
-            message: '获取失败，请稍后重试！！'
+            position: "top",
+            message: "获取失败，请稍后重试！！"
           });
           break;
       }
     },
-    jobDetails (id) {
+    jobDetails(id) {
       tool.openWin({
-        name: 'jobDetails_' + id,
-        url: '../win.html',
-        title: '职位详情',
-        fname: 'jobDetails_f_' + id,
-        furl: './hr/jobDetails.html',
+        name: "jobDetails_" + id,
+        url: "../win.html",
+        title: "职位详情",
+        fname: "jobDetails_f_" + id,
+        furl: "./hr/jobDetails.html",
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -165,7 +196,7 @@ export default {
       });
     }
   },
-  mounted () {
+  mounted() {
     this.detailsData();
     this.companyAllJob();
   }
@@ -229,15 +260,16 @@ export default {
   padding-bottom: 0;
 }
 
-.companyNameBox  .listItem:active{
- background: #fff;
+
+.companyNameBox .listItem:active {
+  background: #fff;
 }
 
-.listItem:active{
+.listItem:active {
   background: #f0f0f0;
 }
 
-.allPostion.mu-list-two-line .mu-item{
+.allPostion.mu-list-two-line .mu-item {
   height: 56px;
 }
 </style>

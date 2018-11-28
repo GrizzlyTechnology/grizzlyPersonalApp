@@ -5,8 +5,8 @@
         <div v-for='list in lists' :key="list.id">
           <ListItem avatar :ripple="false" button class='listItem' @click="jobDetails(list.id)">
             <ListItemContent>
-              <ListItemTitle>{{list.position}}
-                <span class='claim'>{{list.claim}}</span>
+              <ListItemTitle>{{list.title}}
+                <!-- <span class='claim'>{{list.claim}}</span> -->
               </ListItemTitle>
               <ListItemSubTitle>
                 {{list.companyName}}
@@ -199,11 +199,11 @@ export default {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
-.claim {
-  color: #666;
-  font-size: 12px;
-  margin-left: 10px;
-}
+// .claim {
+//   color: #666;
+//   font-size: 12px;
+//   margin-left: 10px;
+// }
 
 .salaryRange {
   color: #009688;

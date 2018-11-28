@@ -12,7 +12,7 @@
           <div class="delivery" v-for="delivery in deliveryList.list" :key="delivery.id" @click="detail(delivery)">
             <img :src="delivery.companyLogo" class="delivery-logo" />
             <div class="delivery-head">
-              <div class="delivery-title">{{delivery.position}}</div> <span class="delivery-date">{{delivery.deliveryDateText}}投递</span>
+              <div class="delivery-title">{{delivery.title}}</div> <span class="delivery-date">{{delivery.deliveryDateText}}投递</span>
             </div>
             <div class="delivery-salary-range">{{delivery.salaryRange}} <span class="delivery-job-area">{{delivery.jobarea}}</span></div>
             <div class="delivery-foot">{{delivery.companyName}}<span class="delivery-status" :style="deliveryStatusColor(delivery.status)">{{delivery.statusText}}</span></div>
