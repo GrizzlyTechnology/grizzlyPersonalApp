@@ -241,7 +241,6 @@ export default {
           this.workDescription = response.result.workDescription;
           this.lists = response.result.lists;
           this.enterpriseId = response.result.enterpriseId;
-          console.log(JSON.stringify(this.lists));
           break;
         default:
           Toast({
@@ -283,7 +282,6 @@ export default {
       tool.showProgress();
       const response = await service.getUserBaseInfo({});
       tool.hideProgress();
-      console.log(response.code);
       switch (response.code) {
         case 0:
           this.rList =
