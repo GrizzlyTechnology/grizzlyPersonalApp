@@ -1,124 +1,128 @@
 <template>
   <Container>
-    <Card class='positionNameBox'>
-      <CardTitle
-        :title='position'
-        :sub-title='firewood'
-      >
-      </CardTitle>
-      <Row class='p16'>
-        <Col span="3">
-        <div class="grid-cell">
-          <Icon
-            size="16"
-            value=":icon-chanpin"
-          ></Icon>
-          {{experience}}经验
-        </div>
-        </Col>
-        <Col span="3">
-        <div class="grid-cell">
-          <Icon
-            size="16"
-            value=":icon-chanpin"
-          ></Icon>
-          {{education}}
-        </div>
-        </Col>
-        <Col span="3">
-        <div class="grid-cell">
-          <Icon
-            size="16"
-            value=":icon-chanpin"
-          ></Icon>
-          {{workCity}}
-        </div>
-        </Col>
-        <Col span="3">
-        <div class="grid-cell">
-          <Icon
-            size="16"
-            value=":icon-chanpin"
-          ></Icon>
-          人数：{{recruitsNum}}
-        </div>
-        </Col>
-      </Row>
-    </Card>
-    <List
-      textline="two-line"
-      class='companyNameBox'
-    >
-      <ListItem
-        avatar
-        :ripple="false"
-        button
-        class='listItem whiteBg'
-      >
-        <ListAction>
-          <Avatar>
-            <img
-              :src="companyImgSrc"
-              alt=""
-            >
-          </Avatar>
-        </ListAction>
-        <ListItemContent @click="companyInfo(enterpriseId)">
-          <ListItemTitle>
-            {{companyName}}
-          </ListItemTitle>
-          <ListItemSubTitle>
-            <span>{{nature}}</span>
-            <span>{{industry}}</span>
-          </ListItemSubTitle>
-        </ListItemContent>
-      </ListItem>
-    </List>
-    <CardText class='whiteBg detailBox'>
-      <h2 class='titleBox'>职位描述</h2>
-      <div v-html="workDescription"></div>
-    </CardText>
-    <CardText class='whiteBg detailBox mt8'>
-      <h2 class='titleBox'>工作地址</h2>
-      <p class='spaceBetween'>
-        {{workPlace}}
-      </p>
-    </CardText>
-
-    <List
-      class='whiteBg mt8 allPostion'
-      textline="two-line"
-    >
-      <CardText>
-        <h2 class='titleBox spaceBetween'>所有职位</h2>
-      </CardText>
-      <div
-        v-for='jobs in lists'
-        :key="jobs.id"
+    <div class="bodyer">
+      <Card class='positionNameBox'>
+        <CardTitle
+          :title='position'
+          :sub-title='firewood'
+        >
+        </CardTitle>
+        <Row class='p16'>
+          <Col span="3">
+          <div class="grid-cell">
+            <Icon
+              size="16"
+              value=":icon-chanpin"
+            ></Icon>
+            {{experience}}经验
+          </div>
+          </Col>
+          <Col span="3">
+          <div class="grid-cell">
+            <Icon
+              size="16"
+              value=":icon-chanpin"
+            ></Icon>
+            {{education}}
+          </div>
+          </Col>
+          <Col span="3">
+          <div class="grid-cell">
+            <Icon
+              size="16"
+              value=":icon-chanpin"
+            ></Icon>
+            {{workCity}}
+          </div>
+          </Col>
+          <Col span="3">
+          <div class="grid-cell">
+            <Icon
+              size="16"
+              value=":icon-chanpin"
+            ></Icon>
+            人数：{{recruitsNum}}
+          </div>
+          </Col>
+        </Row>
+      </Card>
+      <List
+        textline="two-line"
+        class='companyNameBox'
       >
         <ListItem
           avatar
           :ripple="false"
           button
-          class='listItem'
-          @click="jobDetails(jobs.id)"
+          class='listItem whiteBg'
         >
-          <ListItemContent>
-            <ListItemTitle>{{jobs.title}}
-              <!-- <span class='claim'>{{jobs.claim}}</span> -->
+          <ListAction>
+            <Avatar>
+              <img
+                :src="companyImgSrc"
+                alt=""
+              >
+            </Avatar>
+          </ListAction>
+          <ListItemContent @click="companyInfo(enterpriseId)">
+            <ListItemTitle>
+              {{companyName}}
             </ListItemTitle>
             <ListItemSubTitle>
-              {{jobs.companyName}}
+              <span>{{nature}}</span>
+              <span>{{industry}}</span>
             </ListItemSubTitle>
           </ListItemContent>
-          <ListAction>
-            <ListItemAfterText class='salaryRange'>{{jobs.salaryRange}}</ListItemAfterText>
-            <ListItemAfterText>{{jobs.date}}</ListItemAfterText>
-          </ListAction>
         </ListItem>
-        <Divider></Divider>
-      </div>
-    </List>
+      </List>
+      <CardText class='whiteBg detailBox'>
+        <h2 class='titleBox'>职位描述</h2>
+        <div v-html="workDescription"></div>
+      </CardText>
+      <CardText class='whiteBg detailBox mt8'>
+        <h2 class='titleBox'>工作地址</h2>
+        <p class='spaceBetween'>
+          {{workPlace}}
+        </p>
+      </CardText>
+
+      <List
+        class='whiteBg mt8 allPostion'
+        textline="two-line"
+        v-show='lists.length>0'
+      >
+        <CardText>
+          <h2 class='titleBox spaceBetween'>所有职位</h2>
+        </CardText>
+        <div
+          v-for='jobs in lists'
+          :key="jobs.id"
+        >
+          <ListItem
+            avatar
+            :ripple="false"
+            button
+            class='listItem'
+            @click="jobDetails(jobs.id)"
+          >
+            <ListItemContent>
+              <ListItemTitle>{{jobs.title}}
+                <!-- <span class='claim'>{{jobs.claim}}</span> -->
+              </ListItemTitle>
+              <ListItemSubTitle>
+                {{jobs.companyName}}
+              </ListItemSubTitle>
+            </ListItemContent>
+            <ListAction>
+              <ListItemAfterText class='salaryRange'>{{jobs.salaryRange}}</ListItemAfterText>
+              <ListItemAfterText>{{jobs.date}}</ListItemAfterText>
+            </ListAction>
+          </ListItem>
+          <Divider></Divider>
+        </div>
+
+      </List>
+    </div>
     <div class='p16 fixBox whiteBg'>
       <Button
         color="primary"
@@ -163,8 +167,35 @@ export default {
       workDescription: "",
       workPlace: "",
       enterpriseId: "",
-      // studentStatus: null,
-      lists: [],
+      lists: [
+        {
+          id: 7,
+          title: "项目经理(市场分析/SEM)",
+          position: "SEO/SEM",
+          claim: "1-3年/大专/北京市",
+          salaryRange: "8000-10000",
+          companyName: "大灰熊科技",
+          date: "1970-01-01"
+        },
+        {
+          id: 10,
+          title: "WEB前端架构师",
+          position: "WEB前端开发",
+          claim: "1-3年/大专/镇江市",
+          salaryRange: "8000-10000",
+          companyName: "大灰熊科技",
+          date: "2018-09-25"
+        },
+        {
+          id: 21,
+          title: "11111111111",
+          position: "项目总监",
+          claim: "不限/初中/北京市",
+          salaryRange: "2000-3000",
+          companyName: "大灰熊科技",
+          date: "2018-11-28"
+        }
+      ],
       rList: []
     };
   },
@@ -210,7 +241,7 @@ export default {
           this.workDescription = response.result.workDescription;
           this.lists = response.result.lists;
           this.enterpriseId = response.result.enterpriseId;
-          console.log();
+          console.log(JSON.stringify(this.lists));
           break;
         default:
           Toast({
@@ -220,22 +251,6 @@ export default {
           break;
       }
     },
-    // // 获取学校id
-    // async getSchoolId() {
-    //   const response = await service.getStudentInfo();
-    //   switch (response.code) {
-    //     case 0:
-    //       this.studentStatus = response.result.studentInfo;
-    //       console.log(this.studentStatus.schoolid)
-    //       break;
-    //     default:
-    //       Toast({
-    //         position: "top",
-    //         message: "获取失败，请稍后重试！！"
-    //       });
-    //       break;
-    //   }
-    // },
     jobDetails(id) {
       tool.openWin({
         name: "jobDetails_" + id,
@@ -268,6 +283,7 @@ export default {
       tool.showProgress();
       const response = await service.getUserBaseInfo({});
       tool.hideProgress();
+      console.log(response.code);
       switch (response.code) {
         case 0:
           this.rList =
@@ -298,6 +314,12 @@ export default {
                   message: "已经投递过该职位！！"
                 });
                 break;
+              case -99:
+                Toast({
+                  position: "center",
+                  message: "暂无学籍，请添加学籍！！"
+                });
+                break;
               default:
                 Toast({
                   position: "center",
@@ -306,7 +328,6 @@ export default {
                 break;
             }
           }
-
           break;
         default:
           Toast({
@@ -326,6 +347,15 @@ export default {
 @import url("../../../assets/css/base.less");
 .container {
   padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bodyer {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .p16 {
@@ -421,8 +451,8 @@ export default {
   height: auto;
 }
 .fixBox {
-  position: fixed;
-  bottom: 0px;
+  // position: fixed;
+  // bottom: 0px;
   width: 100%;
   padding: 10px;
   border-top: 1px solid #eee;

@@ -35,8 +35,8 @@
     </List>
     <CardText class='whiteBg detailBox'>
       <h2 class='titleBox'>公司介绍</h2>
-      <div v-html="companyIntro"></div>
-      <!-- <div v-else>暂无公司介绍</div> -->
+      <div v-html="companyIntro" v-if='companyIntro!==null'></div>
+      <div v-else>暂无公司介绍</div>
     </CardText>
     <CardText class='whiteBg detailBox mt8'>
       <h2 class='titleBox'>公司地址</h2>
