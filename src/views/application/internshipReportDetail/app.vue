@@ -4,7 +4,7 @@
       <div class="ucCell jd">
         <div class="ucCellCon">
           <span class="ucCellTitle">实习报告：</span>
-          <span class="ucCellLabel">{{internshipReport}}</span>
+          <span class="ucCellLabel" v-html="internshipReport"></span>
         </div>
       </div>
     </div>
@@ -12,21 +12,21 @@
 </template>
 
 <script>
-import service from "service";
-import { Toast } from "mint-ui";
-import tool from "util/tools";
+import service from 'service';
+import { Toast } from 'mint-ui';
+import tool from 'util/tools';
 export default {
-  data() {
+  data () {
     return {
-      companyId: window.api ? window.api.pageParam.companyId : "",
-      internshipReport: ""
+      companyId: window.api ? window.api.pageParam.companyId : '',
+      internshipReport: ''
     };
   },
   components: {
 
   },
   methods: {
-    async internshipReportDetail() {
+    async internshipReportDetail () {
       tool.showProgress();
       const response = await service.getInternshipReportDetail({
         enterpriseid: this.companyId
@@ -34,18 +34,18 @@ export default {
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          this.internshipReport = response.result.internshipReport;
+          this.internshipReport = response.result.internshipReport.replace(/\n|\r\n/g, '<br/>'); ;
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     }
   },
-  mounted() {
+  mounted () {
     this.internshipReportDetail();
   }
 };
