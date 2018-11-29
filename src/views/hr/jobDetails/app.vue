@@ -162,39 +162,39 @@ export default {
       recruitsNum: "",
       companyImgSrc: "",
       companyName: "",
-      nature: "",
-      industry: "",
+      nature: "项目经理(市场分析/SEM)项目经理(市场分析/SEM)项目经理(市场分析/SEM)",
+      industry: "项目经理(市场分析/SEM)项目经理(市场分析/SEM)项目经理(市场分析/SEM)项目经理(市场分析/SEM)项目经理(市场分析/SEM)",
       workDescription: "",
       workPlace: "",
       enterpriseId: "",
       lists: [
-        {
-          id: 7,
-          title: "项目经理(市场分析/SEM)",
-          position: "SEO/SEM",
-          claim: "1-3年/大专/北京市",
-          salaryRange: "8000-10000",
-          companyName: "大灰熊科技",
-          date: "1970-01-01"
-        },
-        {
-          id: 10,
-          title: "WEB前端架构师",
-          position: "WEB前端开发",
-          claim: "1-3年/大专/镇江市",
-          salaryRange: "8000-10000",
-          companyName: "大灰熊科技",
-          date: "2018-09-25"
-        },
-        {
-          id: 21,
-          title: "11111111111",
-          position: "项目总监",
-          claim: "不限/初中/北京市",
-          salaryRange: "2000-3000",
-          companyName: "大灰熊科技",
-          date: "2018-11-28"
-        }
+        // {
+        //   id: 7,
+        //   title: "项目经理(市场分析/SEM)",
+        //   position: "SEO/SEM",
+        //   claim: "1-3年/大专/北京市",
+        //   salaryRange: "8000-10000",
+        //   companyName: "大灰熊科技",
+        //   date: "1970-01-01"
+        // },
+        // {
+        //   id: 10,
+        //   title: "WEB前端架构师",
+        //   position: "WEB前端开发",
+        //   claim: "1-3年/大专/镇江市",
+        //   salaryRange: "8000-10000",
+        //   companyName: "大灰熊科技",
+        //   date: "2018-09-25"
+        // },
+        // {
+        //   id: 21,
+        //   title: "11111111111",
+        //   position: "项目总监",
+        //   claim: "不限/初中/北京市",
+        //   salaryRange: "2000-3000",
+        //   companyName: "大灰熊科技",
+        //   date: "2018-11-28"
+        // }
       ],
       rList: []
     };
@@ -341,7 +341,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import url("../../../assets/css/base.less");
 .container {
   padding: 0;
@@ -402,8 +402,20 @@ export default {
   padding-top: 1px;
 }
 
+.companyNameBox .mu-item-sub-title{
+  white-space:normal;
+  text-overflow:clip;
+  word-wrap:normal;
+}
+
 .companyNameBox .mu-item-sub-title span {
   margin-right: 10px;
+}
+
+.companyNameBox.mu-list-two-line .mu-item{
+  min-height: 72px;
+  height: auto;
+   padding:5px 16px;
 }
 
 .companyNameBox .mu-avatar img {
@@ -437,10 +449,6 @@ export default {
   font-size: 14px;
 }
 
-.allPostion {
-  padding-bottom: 56px;
-}
-
 .allPostion .mu-card-text {
   padding-bottom: 0;
 }
@@ -449,13 +457,15 @@ export default {
   height: auto;
 }
 .fixBox {
-  // position: fixed;
-  // bottom: 0px;
   width: 100%;
   padding: 10px;
   border-top: 1px solid #eee;
   display: flex;
   justify-content: space-around;
+}
+
+.allPostion.mu-list{
+  padding-bottom: 0px;
 }
 
 .listItem:active {
