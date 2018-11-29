@@ -1,5 +1,6 @@
 <template>
   <Container>
+     <div class="bodyer">
     <List
       textline="two-line"
       class='companyNameBox'
@@ -85,6 +86,7 @@
         暂无其他职位
       </div>
     </List>
+     </div>
   </Container>
 </template>
 
@@ -206,8 +208,16 @@ export default {
 @import url("../../../assets/css/base.less");
 .container {
   padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
+.bodyer {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .p16 {
   padding-left: 16px;
   padding-right: 16px;
@@ -271,6 +281,11 @@ export default {
 
 .allPostion .mu-card-text {
   padding-bottom: 0;
+}
+
+
+.allPostion.mu-list{
+  padding-bottom: 0px;
 }
 
 .companyNameBox .listItem:active {
