@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="delivery" @click="showPostion(id)">
+    <div class="delivery" @click="showPostion(delivery.jobId)">
       <img :src="delivery.companyLogo" class="delivery-logo" />
       <div class="delivery-head">
         <div class="delivery-title">{{delivery.title}}</div> <span class="delivery-date">{{delivery.deliveryDateText}}投递</span>
@@ -73,15 +73,15 @@ export default {
       tools.showProgress();
       const response = await service.getDeliveryDetail(this.id);
       tools.hideProgress();
-      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
-          this.delivery.status = response.result.status;
+          this.delivery = {...response.result, ...this.delivery};
           this.delivery.list = response.result.list.map(row => adapter.deliveryAdapterListRow(row));
           this.delivery.list.push({
             head: dicts.deliveryStatus[dicts.deliveryInvitation][0],
             info: this.delivery.deliveryDateText
           });
+          console.log(JSON.stringify(this.delivery));
           break;
         default:
           tools.toast({
@@ -102,9 +102,7 @@ export default {
         fname: 'jobDetails_f_' + id,
         furl: './hr/jobDetails.html',
         hasLeft: 1,
-        LCB: () => {
-          this.getDetail();
-        },
+        hasRight: 0,
         data: {
           id: id
         }

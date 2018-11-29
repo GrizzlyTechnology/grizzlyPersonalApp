@@ -135,9 +135,9 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import { Container, Row, Col } from "muse-ui/lib/Grid";
-import { CardTitle, CardText } from "muse-ui/lib/Card";
+import { Toast } from 'mint-ui';
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import { CardTitle, CardText } from 'muse-ui/lib/Card';
 import {
   List,
   ListItem,
@@ -146,54 +146,55 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from "muse-ui/lib/List";
-import { Card, Icon, Avatar, Divider, Button } from "muse-ui";
-import tool from "util/tools";
-import service from "service";
+} from 'muse-ui/lib/List';
+import { Card, Icon, Avatar, Divider, Button } from 'muse-ui';
+import tool from 'util/tools';
+import service from 'service';
+
 export default {
-  data() {
+  data () {
     return {
-      id: window.api ? window.api.pageParam.id : "7",
-      position: "",
-      firewood: "",
-      experience: "",
-      education: "",
-      workCity: "",
-      recruitsNum: "",
-      companyImgSrc: "",
-      companyName: "",
-      nature: "",
-      industry: "",
-      workDescription: "",
-      workPlace: "",
-      enterpriseId: "",
+      id: window.api ? window.api.pageParam.id : '7',
+      position: '',
+      firewood: '',
+      experience: '',
+      education: '',
+      workCity: '',
+      recruitsNum: '',
+      companyImgSrc: '',
+      companyName: '',
+      nature: '',
+      industry: '',
+      workDescription: '',
+      workPlace: '',
+      enterpriseId: '',
       lists: [
         {
           id: 7,
-          title: "项目经理(市场分析/SEM)",
-          position: "SEO/SEM",
-          claim: "1-3年/大专/北京市",
-          salaryRange: "8000-10000",
-          companyName: "大灰熊科技",
-          date: "1970-01-01"
+          title: '项目经理(市场分析/SEM)',
+          position: 'SEO/SEM',
+          claim: '1-3年/大专/北京市',
+          salaryRange: '8000-10000',
+          companyName: '大灰熊科技',
+          date: '1970-01-01'
         },
         {
           id: 10,
-          title: "WEB前端架构师",
-          position: "WEB前端开发",
-          claim: "1-3年/大专/镇江市",
-          salaryRange: "8000-10000",
-          companyName: "大灰熊科技",
-          date: "2018-09-25"
+          title: 'WEB前端架构师',
+          position: 'WEB前端开发',
+          claim: '1-3年/大专/镇江市',
+          salaryRange: '8000-10000',
+          companyName: '大灰熊科技',
+          date: '2018-09-25'
         },
         {
           id: 21,
-          title: "11111111111",
-          position: "项目总监",
-          claim: "不限/初中/北京市",
-          salaryRange: "2000-3000",
-          companyName: "大灰熊科技",
-          date: "2018-11-28"
+          title: '11111111111',
+          position: '项目总监',
+          claim: '不限/初中/北京市',
+          salaryRange: '2000-3000',
+          companyName: '大灰熊科技',
+          date: '2018-11-28'
         }
       ],
       rList: []
@@ -221,7 +222,7 @@ export default {
   },
   methods: {
     // 页面数据
-    async detailsData() {
+    async detailsData () {
       tool.showProgress();
       const response = await service.getDetailsData({ id: this.id });
       tool.hideProgress();
@@ -244,19 +245,19 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "获取失败，请稍后重试！！"
+            position: 'top',
+            message: '获取失败，请稍后重试！！'
           });
           break;
       }
     },
-    jobDetails(id) {
+    jobDetails (id) {
       tool.openWin({
-        name: "jobDetails_" + id,
-        url: "../win.html",
-        title: "职位详情",
-        fname: "jobDetails_f_" + id,
-        furl: "./hr/jobDetails.html",
+        name: 'jobDetails_' + id,
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobDetails_f_' + id,
+        furl: './hr/jobDetails.html',
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -264,13 +265,13 @@ export default {
         }
       });
     },
-    companyInfo(enterpriseId) {
+    companyInfo (enterpriseId) {
       tool.openWin({
-        name: "companyInfo",
-        url: "../win.html",
-        title: "企业介绍",
-        fname: "companyInfo_f",
-        furl: "./hr/companyInfo.html",
+        name: 'companyInfo',
+        url: '../win.html',
+        title: '企业介绍',
+        fname: 'companyInfo_f',
+        furl: './hr/companyInfo.html',
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -278,7 +279,7 @@ export default {
         }
       });
     },
-    async delivery() {
+    async delivery () {
       tool.showProgress();
       const response = await service.getUserBaseInfo({});
       tool.hideProgress();
@@ -290,8 +291,8 @@ export default {
               : [];
           if (this.rList.length === 0) {
             Toast({
-              position: "center",
-              message: "暂无简历，请增加简历！"
+              position: 'center',
+              message: '暂无简历，请增加简历！'
             });
           } else {
             const responses = await service.pushDelivery({
@@ -302,26 +303,26 @@ export default {
             switch (responses.code) {
               case 0:
                 Toast({
-                  position: "center",
-                  message: "简历投递成功！"
+                  position: 'center',
+                  message: '简历投递成功！'
                 });
                 break;
               case 101:
                 Toast({
-                  position: "center",
-                  message: "已经投递过该职位！！"
+                  position: 'center',
+                  message: '已经投递过该职位！！'
                 });
                 break;
               case -99:
                 Toast({
-                  position: "center",
-                  message: "暂无学籍，请添加学籍！！"
+                  position: 'center',
+                  message: '暂无学籍，请添加学籍！！'
                 });
                 break;
               default:
                 Toast({
-                  position: "center",
-                  message: "投递失败，请稍后重试！！"
+                  position: 'center',
+                  message: '投递失败，请稍后重试！！'
                 });
                 break;
             }
@@ -329,14 +330,14 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     }
   },
-  mounted() {
+  mounted () {
     this.detailsData();
   }
 };
