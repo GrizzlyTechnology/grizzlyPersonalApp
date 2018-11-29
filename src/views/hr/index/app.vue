@@ -221,12 +221,12 @@
   </Container>
 </template>
 <script>
-import service from "service";
-import { Toast } from "mint-ui";
-import { Carousel, CarouselItem } from "muse-ui/lib/Carousel";
-import { Paper, Divider, AutoComplete, Icon, LoadMore } from "muse-ui";
-import { Container, Row, Col } from "muse-ui/lib/Grid";
-import tool from "util/tools";
+import service from 'service';
+import { Toast } from 'mint-ui';
+import { Carousel, CarouselItem } from 'muse-ui/lib/Carousel';
+import { Paper, Divider, AutoComplete, Icon, LoadMore } from 'muse-ui';
+import { Container, Row, Col } from 'muse-ui/lib/Grid';
+import tool from 'util/tools';
 import {
   List,
   ListItem,
@@ -235,9 +235,9 @@ import {
   ListItemContent,
   ListItemTitle,
   ListItemAfterText
-} from "muse-ui/lib/List";
+} from 'muse-ui/lib/List';
 export default {
-  data() {
+  data () {
     return {
       refreshing: false,
       companys: [],
@@ -247,10 +247,10 @@ export default {
       resumeList: [],
       hotJobs: [],
       defaultResult: [],
-      labelPosition: "right",
+      labelPosition: 'right',
       cid: 1, // 文章分类id,写死
       raidersList: [], // 职场攻略列表
-      createResumeImgSrc: "",
+      createResumeImgSrc: '',
       resumeImgs: [],
       advImgs: []
     };
@@ -275,15 +275,15 @@ export default {
     LoadMore
   },
   computed: {
-    filterResult() {
+    filterResult () {
       return this.defaultResult.filter(value =>
-        new RegExp(this.value, "i").test(value)
+        new RegExp(this.value, 'i').test(value)
       );
     }
   },
   methods: {
     // 下拉刷新
-    refresh() {
+    refresh () {
       this.refreshing = true;
       this.$refs.container.scrollTop = 0;
       setTimeout(() => {
@@ -298,19 +298,19 @@ export default {
       }, 200);
     },
     // 搜索
-    jobSearch() {
+    jobSearch () {
       tool.openWin({
-        name: "jobSearch",
-        url: "../win.html",
-        title: "职位搜索",
-        fname: "jobSearch_f",
-        furl: "./hr/jobSearch.html",
+        name: 'jobSearch',
+        url: '../win.html',
+        title: '职位搜索',
+        fname: 'jobSearch_f',
+        furl: './hr/jobSearch.html',
         hasLeft: 1,
         hasRight: 0
       });
     },
     // 滚动图
-    async carouselImg() {
+    async carouselImg () {
       tool.showProgress();
       const response = await service.carouselImgs({});
       tool.hideProgress();
@@ -320,14 +320,14 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
     // 名企推荐数据
-    async companyRecommend() {
+    async companyRecommend () {
       tool.showProgress();
       const response = await service.companyRecommendList({
         recommend: 1
@@ -339,20 +339,20 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
     // 名企推荐所有列表
-    companyListAll() {
+    companyListAll () {
       tool.openWin({
-        name: "companyList",
-        url: "../win.html",
-        title: "名企推荐",
-        fname: "companyList_f",
-        furl: "./hr/companyList.html",
+        name: 'companyList',
+        url: '../win.html',
+        title: '名企推荐',
+        fname: 'companyList_f',
+        furl: './hr/companyList.html',
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -361,13 +361,13 @@ export default {
       });
     },
     // 名企推荐详情
-    companyInfo(enterpriseId) {
+    companyInfo (enterpriseId) {
       tool.openWin({
-        name: "companyInfo",
-        url: "../win.html",
-        title: "企业介绍",
-        fname: "companyInfo_f",
-        furl: "./hr/companyInfo.html",
+        name: 'companyInfo',
+        url: '../win.html',
+        title: '企业介绍',
+        fname: 'companyInfo_f',
+        furl: './hr/companyInfo.html',
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -376,7 +376,7 @@ export default {
       });
     },
     // 显示适合你的职位
-    async getResumeList() {
+    async getResumeList () {
       tool.showProgress();
       const response = await service.getUserBaseInfo();
       tool.hideProgress();
@@ -393,14 +393,14 @@ export default {
           break;
         default:
           tool.toast({
-            position: "top",
-            message: "简历列表获取失败"
+            position: 'top',
+            message: '简历列表获取失败'
           });
           break;
       }
     },
     // 适合你的职位列表数据
-    async listsData() {
+    async listsData () {
       tool.showProgress();
       const response = await service.searchBoxValue({
         keyWord: this.resumeList[0].desiredposition
@@ -413,14 +413,14 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
     // 创建简历广告
-    async resumeImgAdv() {
+    async resumeImgAdv () {
       tool.showProgress();
       const response = await service.getAdv({
         cid: 1
@@ -432,14 +432,14 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
     // 广告
-    async imgAdv() {
+    async imgAdv () {
       tool.showProgress();
       const response = await service.getAdv({
         cid: 3
@@ -451,14 +451,14 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
     // 热门职位列表
-    async hotJobsData() {
+    async hotJobsData () {
       tool.showProgress();
       const response = await service.hotJobsData({});
       tool.hideProgress();
@@ -468,20 +468,20 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
     // 所有热门职位
-    hotJobListAll() {
+    hotJobListAll () {
       tool.openWin({
-        name: "jobSearchList",
-        url: "../win.html",
-        title: "热门职位",
-        fname: "jobSearchList_f",
-        furl: "./hr/jobSearchList.html",
+        name: 'jobSearchList',
+        url: '../win.html',
+        title: '热门职位',
+        fname: 'jobSearchList_f',
+        furl: './hr/jobSearchList.html',
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -490,13 +490,13 @@ export default {
       });
     },
     // 职位详情
-    jobDetails(id) {
+    jobDetails (id) {
       tool.openWin({
-        name: "jobDetails_" + id,
-        url: "../win.html",
-        title: "职位详情",
-        fname: "jobDetails_f_" + id,
-        furl: "./hr/jobDetails.html",
+        name: 'jobDetails_' + id,
+        url: '../win.html',
+        title: '职位详情',
+        fname: 'jobDetails_f_' + id,
+        furl: './hr/jobDetails.html',
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -505,19 +505,19 @@ export default {
       });
     },
     // 跳转到职场攻略页面
-    raidersListAll() {
+    raidersListAll () {
       tool.openWin({
-        name: "raidersList",
-        url: "../win.html",
-        title: "职场攻略",
-        fname: "raidersList_f",
-        furl: "./hr/raidersList.html",
+        name: 'raidersList',
+        url: '../win.html',
+        title: '职场攻略',
+        fname: 'raidersList_f',
+        furl: './hr/raidersList.html',
         hasLeft: 1,
         hasRight: 0
       });
     },
     // 获取职场攻略列表
-    async raidersListData() {
+    async raidersListData () {
       tool.showProgress();
       const response = await service.getrRaidersList({ cid: this.cid });
       tool.hideProgress();
@@ -527,20 +527,20 @@ export default {
           break;
         default:
           Toast({
-            position: "top",
-            message: "获取失败，请稍后重试！！"
+            position: 'top',
+            message: '获取失败，请稍后重试！！'
           });
           break;
       }
     },
     // 职场攻略详情
-    raidersArticle(id) {
+    raidersArticle (id) {
       tool.openWin({
-        name: "raidersArticle",
-        url: "../win.html",
-        title: "职场攻略",
-        fname: "raidersArticle_f",
-        furl: "./hr/raidersArticle.html",
+        name: 'raidersArticle',
+        url: '../win.html',
+        title: '职场攻略',
+        fname: 'raidersArticle_f',
+        furl: './hr/raidersArticle.html',
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -549,19 +549,19 @@ export default {
       });
     },
     // 创建简历
-    createResume() {
+    createResume () {
       tool.openWin({
-        name: "resumeList",
-        url: "../win.html",
-        title: "创建简历",
-        fname: "resumeList_f",
-        furl: "./userCenter/resumeList.html",
+        name: 'resumeList',
+        url: '../win.html',
+        title: '创建简历',
+        fname: 'resumeList_f',
+        furl: './userCenter/resumeList.html',
         hasLeft: 1,
         hasRight: 0
       });
     }
   },
-  mounted() {
+  mounted () {
     this.carouselImg();
     this.getResumeList();
     this.raidersListData();
