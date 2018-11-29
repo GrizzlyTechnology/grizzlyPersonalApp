@@ -229,6 +229,19 @@ export default {
   margin-right: 10px;
 }
 
+.companyNameBox .mu-item-sub-title{
+  white-space:normal;
+  text-overflow:clip;
+  word-wrap:normal;
+}
+
+.companyNameBox.mu-list-two-line .mu-item{
+  min-height: 72px;
+  height: auto;
+   padding:5px 16px;
+}
+
+
 .companyNameBox .mu-avatar img {
   border-radius: 0px;
 }
