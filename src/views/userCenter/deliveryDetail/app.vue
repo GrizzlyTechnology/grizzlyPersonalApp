@@ -81,7 +81,7 @@ export default {
             head: dicts.deliveryStatus[dicts.deliveryInvitation][0],
             info: this.delivery.deliveryDateText
           });
-          console.log(JSON.stringify(this.delivery));
+          // console.log(JSON.stringify(this.delivery));
           break;
         default:
           tools.toast({
