@@ -76,6 +76,7 @@ export default {
       switch (response.code) {
         case 0:
           this.delivery = {...response.result, ...this.delivery};
+          this.delivery.status = response.result.status;
           this.delivery.list = response.result.list.map(row => adapter.deliveryAdapterListRow(row));
           this.delivery.list.push({
             head: dicts.deliveryStatus[dicts.deliveryInvitation][0],
