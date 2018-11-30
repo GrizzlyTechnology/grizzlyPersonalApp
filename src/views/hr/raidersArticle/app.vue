@@ -1,35 +1,42 @@
 <template>
-  <Card>
-    <CardTitle v-bind:title="title" class='txc'></CardTitle>
-    <Row class='p16'>
-      <Col span="6">
-      <div class="grid-cell">来源：{{source}}</div>
-      </Col>
-      <Col span="6">
-      <div class="grid-cell">{{date}}</div>
-      </Col>
-    </Row>
-    <CardText v-html='con'>
-    </CardText>
+  <Container>
+    <div class="bodyer">
+      <Card>
+        <CardTitle
+          v-bind:title="title"
+          class='txc'
+        ></CardTitle>
+        <Row class='p16'>
+          <Col span="6">
+          <div class="grid-cell">来源：{{source}}</div>
+          </Col>
+          <Col span="6">
+          <div class="grid-cell">{{date}}</div>
+          </Col>
+        </Row>
+        <CardText v-html='con'>
+        </CardText>
 
-  </Card>
+      </Card>
+    </div>
+  </Container>
 </template>
 
 <script>
-import { Toast } from 'mint-ui';
-import { Container, Row, Col } from 'muse-ui/lib/Grid';
-import { CardTitle, CardText } from 'muse-ui/lib/Card';
-import { Card } from 'muse-ui';
-import service from 'service';
-import tool from 'util/tools';
+import { Toast } from "mint-ui";
+import { Container, Row, Col } from "muse-ui/lib/Grid";
+import { CardTitle, CardText } from "muse-ui/lib/Card";
+import { Card } from "muse-ui";
+import service from "service";
+import tool from "util/tools";
 export default {
-  data () {
+  data() {
     return {
       ArticleId: window.api.pageParam.id,
-      title: '',
-      source: '',
-      date: '',
-      con: ''
+      title: "",
+      source: "",
+      date: "",
+      con: ""
     };
   },
   components: {
@@ -41,7 +48,7 @@ export default {
     CardText
   },
   methods: {
-    async raidersArticleData () {
+    async raidersArticleData() {
       tool.showProgress();
       const response = await service.getRaidersArticleData({
         ArticleId: this.ArticleId
@@ -56,20 +63,32 @@ export default {
           break;
         default:
           Toast({
-            position: 'top',
-            message: '获取失败，请稍后重试！！'
+            position: "top",
+            message: "获取失败，请稍后重试！！"
           });
           break;
       }
     }
   },
-  mounted () {
+  mounted() {
     this.raidersArticleData();
   }
 };
 </script>
 <style lang="less" scoped>
 @import url("../../../assets/css/base.less");
+.container {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bodyer {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .p16 {
   padding: 0 16px;
 }
