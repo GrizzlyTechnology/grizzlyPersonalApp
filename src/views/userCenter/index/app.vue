@@ -13,8 +13,12 @@
         /></span>
       <span
         class="ucSchoole"
-        v-if="studentStatus!=null"
-      >{{studentStatus.schoolname}} <span class="ucClass">{{studentStatus.college}} / {{studentStatus.majorname}}</span></span>
+        v-if="studentStatus!==null"
+      >{{studentStatus.schoolname}}</span>
+      <span
+        v-if="studentStatus!==null"
+        class="ucClass"
+      >{{studentStatus.college}} / {{studentStatus.majorname}}</span>
       <!-- <span class="ucSchoole" v-if="studentStatus===null" @click="bindingStudentStatus"> -->
       <span
         class="ucSchoole"
@@ -130,7 +134,6 @@ export default {
     async getStudentStatus () {
       tools.showProgress();
       const response = await service.getStudentInfo();
-      // console.log(JSON.stringify(response));
       tools.hideProgress();
       switch (response.code) {
         case 0:
@@ -278,9 +281,9 @@ export default {
   top: 75px;
 }
 .ucClass {
-  // position: absolute;
-  // left: 120px;
-  // top: 102px;
+  position: absolute;
+  left: 120px;
+  top: 102px;
   font-size: 12px;
 }
 .ucSetting {

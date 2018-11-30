@@ -165,11 +165,10 @@ export default {
       params
     });
   },
-  getStudentInfo (params) {
+  getStudentInfo () {
     return request({
       host: BASEURL,
       url: '/api/Student/info',
-      params,
       method: 'get'
     });
   },
