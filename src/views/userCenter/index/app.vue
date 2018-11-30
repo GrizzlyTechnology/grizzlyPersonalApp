@@ -1,17 +1,37 @@
 <template>
   <div class="content">
     <div class="ucHeader">
-      <div class="ucAvatar" :style="{backgroundImage:'url(' + headphoto + ')'}"></div>
+      <div
+        class="ucAvatar"
+        :style="!!headphoto!==false ? {backgroundImage:'url(' + headphoto + ')'}:{}"
+      ></div>
       <span class="ucNickname">{{nickname}}
-        <Icon :size="16" :value="sex===1?':icon-nan2':':icon-nv1'" :color="sex===1?'#61bce8':'#fd7777'" /></span>
-      <span class="ucSchoole" v-if="studentStatus!=null">{{studentStatus.schoolname}} <span class="ucClass">{{studentStatus.college}} / {{studentStatus.majorname}}</span></span>
+        <Icon
+          :size="16"
+          :value="sex===1?':icon-nan2':':icon-nv1'"
+          :color="sex===1?'#61bce8':'#fd7777'"
+        /></span>
+      <span
+        class="ucSchoole"
+        v-if="studentStatus!=null"
+      >{{studentStatus.schoolname}} <span class="ucClass">{{studentStatus.college}} / {{studentStatus.majorname}}</span></span>
       <!-- <span class="ucSchoole" v-if="studentStatus===null" @click="bindingStudentStatus"> -->
-      <span class="ucSchoole" v-if="studentStatus===null">
+      <span
+        class="ucSchoole"
+        v-if="studentStatus===null"
+      >
         学籍未填写
         <!-- <Icon :size="16" value=":icon-right" color="#fff" /> -->
-        </span>
-      <span class="ucSetting" @click="setting">
-        <Icon :size="14" value=":el-icon-setting" color="#FFF" />
+      </span>
+      <span
+        class="ucSetting"
+        @click="setting"
+      >
+        <Icon
+          :size="14"
+          value=":el-icon-setting"
+          color="#FFF"
+        />
         设置
       </span>
     </div>
@@ -24,32 +44,64 @@
         <Icon slot="icon" value=":el-icon-setting" :size="28" color="#999" />
       </Cell> -->
       <Cell class="ucCell">
-        <div class="ucCellCon" @click="resumeList">
+        <div
+          class="ucCellCon"
+          @click="resumeList"
+        >
           <span class="ucCellTitle">简历管理</span>
         </div>
         <i class="mu-icon icon-right isLink" />
-        <Icon slot="icon" value=":icon-jianli" :size="28" color="#999" />
+        <Icon
+          slot="icon"
+          value=":icon-jianli"
+          :size="28"
+          color="#999"
+        />
       </Cell>
       <Cell class="ucCell">
-        <div class="ucCellCon" @click="messageCenter">
+        <div
+          class="ucCellCon"
+          @click="messageCenter"
+        >
           <span class="ucCellTitle">消息中心</span>
         </div>
         <i class="mu-icon icon-right isLink" />
-        <Icon slot="icon" value=":icon-xiaoxi1" :size="28" color="#999" />
+        <Icon
+          slot="icon"
+          value=":icon-xiaoxi1"
+          :size="28"
+          color="#999"
+        />
       </Cell>
       <Cell class="ucCell">
-        <div class="ucCellCon" @click="deliveryJoy">
+        <div
+          class="ucCellCon"
+          @click="deliveryJoy"
+        >
           <span class="ucCellTitle">投递的职位</span>
         </div>
         <i class="mu-icon icon-right isLink" />
-        <Icon slot="icon" value=":icon-toudijianli" :size="28" color="#999" />
+        <Icon
+          slot="icon"
+          value=":icon-toudijianli"
+          :size="28"
+          color="#999"
+        />
       </Cell>
       <Cell class="ucCell">
-        <div class="ucCellCon" @click="bindingStudentStatus">
+        <div
+          class="ucCellCon"
+          @click="bindingStudentStatus"
+        >
           <span class="ucCellTitle">学籍管理</span>
         </div>
         <i class="mu-icon icon-right isLink" />
-        <Icon slot="icon" value=":icon-guanli" :size="28" color="#999" />
+        <Icon
+          slot="icon"
+          value=":icon-guanli"
+          :size="28"
+          color="#999"
+        />
       </Cell>
     </div>
   </div>
@@ -67,7 +119,7 @@ export default {
       nickname: '暂无',
       sex: 1,
       studentStatus: null,
-      headphoto: '../assets/img/headpic.png'
+      headphoto: ''
     };
   },
   components: {
@@ -96,10 +148,12 @@ export default {
         case 0:
           this.nickname = response.result.userInfo.nickname;
           this.sex = response.result.userInfo.sex;
-          this.headphoto =
-            response.result.userInfo.headphoto === null
-              ? this.headphoto
-              : tools.getPicUrl(response.result.userInfo.headphoto, 450);
+          if (!!response.result.userInfo.headphoto !== false) {
+            this.headphoto = tools.getPicUrl(
+              response.result.userInfo.headphoto,
+              450
+            );
+          }
           break;
         default:
           tools.toast({
@@ -204,7 +258,7 @@ export default {
   width: 80px;
   border-radius: 40px;
   background-color: #fff;
-  // background-image: url("../../../assets/img/headpic.png");
+  background-image: url("../../../assets/img/headpic.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
