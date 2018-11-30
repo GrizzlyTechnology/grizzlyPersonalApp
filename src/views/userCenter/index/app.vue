@@ -273,7 +273,7 @@ export default {
 }
 .ucSchoole {
   position: absolute;
-  font-size: 16px;
+  font-size: 14px;
   left: 120px;
   top: 75px;
 }
