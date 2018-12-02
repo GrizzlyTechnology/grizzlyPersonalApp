@@ -207,9 +207,7 @@
                 </ListAction>
                 <ListItemContent>
                   <ListItemTitle>{{raiders.title}}</ListItemTitle>
-                  <ListItemSubTitle>
-                    {{raiders.content}}
-                  </ListItemSubTitle>
+                  <ListItemSubTitle v-html='raiders.content'></ListItemSubTitle>
                 </ListItemContent>
               </ListItem>
               <Divider></Divider>
