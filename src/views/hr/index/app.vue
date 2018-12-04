@@ -170,7 +170,7 @@
           <h2
             class='titleB'
             @click="raidersListAll()"
-          >职场攻略 <Icon
+          >实习规范 <Icon
               class='iconfont icon-jinru'
               right
               size="12"
@@ -247,7 +247,7 @@ export default {
       defaultResult: [],
       labelPosition: 'right',
       cid: 1, // 文章分类id,写死
-      raidersList: [], // 职场攻略列表
+      raidersList: [], // 实习规范列表
       createResumeImgSrc: '',
       resumeImgs: [],
       advImgs: []
@@ -502,19 +502,19 @@ export default {
         }
       });
     },
-    // 跳转到职场攻略页面
+    // 跳转到实习规范页面
     raidersListAll () {
       tool.openWin({
         name: 'raidersList',
         url: '../win.html',
-        title: '职场攻略',
+        title: '实习规范',
         fname: 'raidersList_f',
         furl: './hr/raidersList.html',
         hasLeft: 1,
         hasRight: 0
       });
     },
-    // 获取职场攻略列表
+    // 获取实习规范列表
     async raidersListData () {
       tool.showProgress();
       const response = await service.getrRaidersList({ cid: this.cid });
@@ -531,12 +531,12 @@ export default {
           break;
       }
     },
-    // 职场攻略详情
+    // 实习规范详情
     raidersArticle (id) {
       tool.openWin({
         name: 'raidersArticle',
         url: '../win.html',
-        title: '职场攻略',
+        title: '实习规范',
         fname: 'raidersArticle_f',
         furl: './hr/raidersArticle.html',
         hasLeft: 1,
