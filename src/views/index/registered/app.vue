@@ -60,7 +60,7 @@
     </Form>
     <Button color="#009688" textColor="#ffffff" :style="{marginTop:'30px',boxShadow: '0 0 0'}" :full-width="true" large @click="submit">注册{{type==='qq'?'并绑定QQ账户':type==='wx'?'并绑定微信账户':''}}</Button>
     <div class="registeredDescription">
-      注册即代表您同意并遵守《大灰熊用户协议》
+      注册即代表您同意并遵守<div class='ys' @click="Agreement">《灰熊先生用户协议及隐私政策》</div>
     </div>
   </div>
 </template>
@@ -206,6 +206,16 @@ export default {
     },
     changeVerificationImg () {
       this.reVerificationImg = (new Date().getTime()) + '_' + Math.random();
+    },
+    Agreement(){
+      tools.openWin({
+          name: 'ys',
+          url: '../win.html',
+          title: '用户协议及隐私政策',
+          fname: 'ys_f',
+          furl: 'http://www.dhxhr.com/yinsi.html',
+          hasLeft: 1
+        });
     }
   }
 };
@@ -229,5 +239,9 @@ export default {
   text-align: center;
   font-size: 12px;
   margin-top: 30px;
+}
+
+.ys{
+  color: #009688;
 }
 </style>
