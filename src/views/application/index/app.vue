@@ -14,7 +14,13 @@
         </Step>
       </template>
     </Stepper>
-     <div v-else class='notJoined'>你还未加入企业实习，立即去  <Button color="#009688" @click="hotJobListAll">投递职位</Button></div>
+     <div v-else class='notJoined'>你还未加入企业实习，立即去 <Button color="#009688" @click="hotJobListAll">投递职位</Button>
+       <br>
+       <br>
+       <div @click="refresh" class='refreshBtn'>
+          点击刷新
+       </div>
+     </div>
   </Container>
 </template>
 <script>
@@ -86,6 +92,9 @@ export default {
           istj: 1 // 1是推荐 0是不推荐
         }
       });
+    },
+    refresh(){
+      this.listsData();
     }
   },
   mounted () {
@@ -137,7 +146,7 @@ export default {
   background: #009688;
 }
 
-.mu-step-label.completed .status , .mu-step-label.active .status{
+.mu-step-label.completed .status , .mu-step-label.active .status,.refreshBtn{
 color: #009688;
 }
 </style>
