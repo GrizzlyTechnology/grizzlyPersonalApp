@@ -71,7 +71,7 @@ export default {
           this.showMarker = false;
         }
       );
-      if(window.api.pageParam.fname==='login_f'){
+      if(window.api.pageParam.fname==='login_f'|| window.api.pageParam.fname==='bund_f'){
           tool.backCloseW();
       }
       // console.log(JSON.stringify(window.api.pageParam));
