@@ -16,7 +16,7 @@
             <DateInput type="month" :value="inSchoolTimeText" :max-date="new Date()" @change="changeInSchoolTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
           <FormItem label="毕业年月" prop="graduationTime" :rules="schoolTimeRules">
-            <DateInput type="month" :value="graduationTimeText" :max-date="new Date()" @change="changeGraduationTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
+            <DateInput type="month" :value="graduationTimeText" @change="changeGraduationTime" format="YYYY年MM月" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
         </Form>
       </div>
