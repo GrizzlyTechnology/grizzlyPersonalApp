@@ -145,11 +145,11 @@ export default {
   },
   computed: {
     startDateTimeText () {
-      return new Date(this.form.nrolmentTime) || Date.now();
+      return new Date(this.form.nrolmentTime);
     },
     nrolmentTimeText () {
-      return this.studentStatus
-        ? moment(this.studentStatus.nrolmentTime).format('YYYY年MM月DD日')
+      return this.studentStatus.nrolmenttime
+        ? moment(this.studentStatus.nrolmenttime*1000).format('YYYY年MM月DD日')
         : '';
     }
   },
