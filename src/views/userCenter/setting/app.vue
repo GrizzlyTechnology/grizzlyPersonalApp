@@ -78,7 +78,8 @@ export default {
             furl: './index/login.html',
             data: {
               comefrom: 'setting'
-            }
+            },
+            hasLeft:1
           });
           break;
         default:

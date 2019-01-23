@@ -33,11 +33,26 @@ export default {
   },
   methods: {
     changeIteam (value) {
+     var token = tool.getStorage('token');
+      if (!token&&value!==0) {
+        tool.openWin({
+          name: 'login',
+          url: '../win.html',
+          title: '登录',
+          fname: 'login_f',
+          furl: './index/login.html',
+          hasLeft:1,
+          data:{
+            comefrom: 'main'
+          }
+        });
+      }else{
       this.bottomNavValue = value;
       window.api.setFrameGroupIndex({
         name: 'main',
         index: value
       });
+      }
     },
     mainGroup () {
       var footerH = tool.fixTabBar(tool.dom('.footer'));

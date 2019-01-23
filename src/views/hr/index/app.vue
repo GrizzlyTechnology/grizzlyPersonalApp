@@ -548,7 +548,9 @@ export default {
     },
     // 创建简历
     createResume () {
-      tool.openWin({
+       var token = tool.getStorage('token');
+      if (token) {
+       tool.openWin({
         name: 'resumeList',
         url: '../win.html',
         title: '创建简历',
@@ -557,6 +559,17 @@ export default {
         hasLeft: 1,
         hasRight: 0
       });
+      } else {
+        tool.openWin({
+          name: 'login',
+          url: '../win.html',
+          title: '登录',
+          fname: 'login_f',
+          furl: './index/login.html',
+          hasLeft:1
+        });
+      }
+
     }
   },
   mounted () {

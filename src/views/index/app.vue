@@ -12,21 +12,10 @@ export default {
   components: {},
   methods: {
     init () {
-      var token = tool.getStorage('token');
-      if (token) {
-        tool.openWin({
+       tool.openWin({
           name: 'main',
           url: './index/main.html'
         });
-      } else {
-        tool.openWin({
-          name: 'login',
-          url: './win.html',
-          title: '登录',
-          fname: 'login_f',
-          furl: './index/login.html'
-        });
-      }
     }
   },
   mounted () {
