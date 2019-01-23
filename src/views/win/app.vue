@@ -33,7 +33,17 @@ export default {
   },
   methods: {
     clickLeft () {
-      tool.back();
+      if(window.api.pageParam.data.comefrom=='main'||window.api.pageParam.data.comefrom=='setting'){
+         window.api.openWin({
+          name: 'main',
+          url: './index/main.html',
+          pageParam:{
+            comefrom:'login'
+          }
+        });
+      }else{
+        tool.back();
+      }
     },
     clickRight () {
       if (window.api) {

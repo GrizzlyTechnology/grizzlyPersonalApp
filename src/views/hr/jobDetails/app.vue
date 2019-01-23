@@ -285,7 +285,9 @@ export default {
       tool.hideProgress();
       switch (response.code) {
         case 0:
-          this.rList =
+         var token = tool.getStorage('token');
+          if (token) {
+            this.rList =
             response.result.resumeInfo.length > 0
               ? [response.result.resumeInfo[0]]
               : [];
@@ -327,6 +329,17 @@ export default {
                 break;
             }
           }
+          } else {
+            tool.openWin({
+              name: 'login',
+              url: '../win.html',
+              title: '登录',
+              fname: 'login_f',
+              furl: './index/login.html',
+              hasLeft:1
+            });
+          }
+
           break;
         default:
           Toast({
