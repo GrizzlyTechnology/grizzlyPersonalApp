@@ -90,18 +90,19 @@ export default {
           loading: false,
           page: 1,
           list: [
-            // {
-            //   id: 0,
-            //   head: '2017年6月8日-2017年6月15日',
-            //   title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
-            //   info: '创建日期：2017年6月15日'
-            // },
-            // {
-            //   id: 1,
-            //   head: '2017年6月8日-2017年6月15日',
-            //   title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
-            //   info: '创建日期：2017年6月15日'
-            // }
+            {
+              id: 0,
+              head: '2017年6月8日-2017年6月15日',
+              title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
+              info: '创建日期：2017年6月15日',
+              reslist:['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550825556&di=0c3fd83729623c3b4ff80cec8b8403ae&imgtype=jpg&er=1&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F54ebececeda0217648263cc944d6cfd413a17cdf2cc6-MGHS0y_fw658','https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550230866439&di=b7302f45a776b5167413216859ac2830&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F764905ead01e7eca298fdadb745b3c4fd9031e2839a0d-Hdjzwh_fw658']
+            },
+            {
+              id: 1,
+              head: '2017年6月8日-2017年6月15日',
+              title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
+              info: '创建日期：2017年6月15日'
+            }
           ]
         }
       ]
@@ -201,10 +202,11 @@ export default {
       if (!this.lists[active].refreshing && !this.lists[active].loading) {
         this.lists[active].page = this.lists[active].page + 1;
         this.lists[active].loading = true;
-        this.getList(active);
+        // this.getList(active);
       }
     },
     create () {
+
       tools.openWin({
         name: 'releaseLogCreate',
         url: '../win.html',
@@ -222,6 +224,7 @@ export default {
       });
     },
     detail (data) {
+       console.log(JSON.stringify(data))
       tools.openWin({
         name: 'releaseLogDetail_' + this.createTime,
         url: '../win.html',
@@ -237,7 +240,7 @@ export default {
     }
   },
   mounted () {
-    this.loading();
+    // this.loading();
   }
 };
 </script>

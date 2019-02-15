@@ -31,6 +31,12 @@
           <FormItem label="本周收获：" prop="title" :rules='rewardRules'>
             <TextField multi-line v-model="form.reward" :max-length="255" :rows="5" :rows-max="5"></TextField>
           </FormItem>
+          <FormItem label="上传图片" prop="url">
+            <input type="hidden" v-model="form.url" />
+            <Upload accept="image/*" class="uploader" :action="actionUrl" :headers="headers" list-type="picture-card" :multiple="false" :limit="6" :file-list="uploaderList" :on-change="change" :on-progress="progress" :on-success="success" :before-upload="beforeUpload" :on-error="error">
+            <i class="el-icon-plus"></i>
+            </Upload>
+          </FormItem>
         </Form>
       </div>
     </div>
@@ -42,14 +48,28 @@
 
 <script>
 import service from 'service';
+import { hostList } from 'service/mock';
 import moment from 'moment';
 import tools from 'util/tools';
+import Upload from 'element-ui/lib/upload';
 import { Icon, Alert, Button, TextField, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 export default {
   data () {
     return {
       companyId: window.api ? window.api.pageParam.companyId : '',
+      uploaderList:[],
+       actionUrl: 'http://' + (process.env === 'production' ? hostList.pro : hostList.test) + '/api/Userresources/create',
+      headers: {
+        MG_code:
+          '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O',
+        MG_key: '5b10fed636fcf',
+        MG_token:
+        process.env === 'development'
+          ? '6f8bade35ef87e5a6aa623519ef973582dc25205'
+          : tools.getStorage('token') || ''
+      },
+       maxSize: 10,
       form: {
         internshipStart: Date.parse(
           moment()
@@ -62,7 +82,8 @@ export default {
             .format('YYYY-MM-DD')
         ),
         workContent: '',
-        reward: ''
+        reward: '',
+        url: '',
       },
       internshipCompanyInfo: {
         companyName: window.api ? window.api.pageParam.companyName : '-',
@@ -90,6 +111,7 @@ export default {
           message: '必须填写本周收获'
         }
       ]
+      // urlRules: [{ validate: val => !!val, message: '必须上传作品图片' }]
     };
   },
   components: {
@@ -99,7 +121,8 @@ export default {
     Form,
     FormItem,
     Icon,
-    TextField
+    TextField,
+    Upload
   },
   computed: {
     startTimeText () {
@@ -137,6 +160,51 @@ export default {
       this.form.internshipEnd = date.valueOf();
     },
 
+     change (file) {
+      // console.log('change: ' + JSON.stringify(file));
+      switch (file.status) {
+        case 'ready':
+          this.progressPercent = 0;
+          this.uploaderHide = true;
+          break;
+        default:
+          break;
+      }
+      // this.uploaderClass = 'uploader hideUploader';
+    },
+    progress (file) {
+      this.progressPercent = parseInt(file.percent);
+      // this.uploaderClass = 'uploader hideUploader';
+    },
+    beforeUpload (file) {
+      if (file.size > this.maxSize * 1024 * 1024) {
+        tools.toast({
+          position: 'top',
+          message: '图片最大' + this.maxSize + 'M'
+        });
+        this.uploaderHide = false;
+        return false;
+      }
+    },
+    error (e, file, fileList) {
+      // console.log(JSON.stringify(e));
+      this.uploaderHide = false;
+    },
+    success (response, file, fileList) {
+      this.uploaderHide = false;
+      switch (response.code) {
+        case 0:
+          //this.headphoto = tools.getPicUrl(response.result.file.url, 450);
+          this.fileList = [];
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: response.message
+          });
+          break;
+      }
+    },
     submit () {
       this.$refs.form.validate().then(result => {
         if (result === true) {

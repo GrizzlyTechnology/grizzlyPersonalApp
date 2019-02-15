@@ -43,21 +43,31 @@
         v-html="rewardText"
       />
     </Panel>
+    <Panel title="图片">
+       <div v-for="(file,index) in reslist">
+              <div class="con" @click="imagesPopupOpen(reslist,index)" :style="{backgroundImage:'url('+file+')'}" />
+            </div>
+
+    </Panel>
+    <ImagesPopup ref="imagesPopup" :urlList="urlList" :index="urlListIndex"></ImagesPopup>
   </div>
 </template>
 
 <script>
 import { Cell } from 'mint-ui';
 import Panel from 'components/Panel';
-
+import ImagesPopup from 'components/ImagesPopup';
 export default {
   data () {
     return {
+      urlList: [],
+      urlListIndex: 0,
       head: window.api ? window.api.pageParam.head : '',
       title: window.api ? window.api.pageParam.title : '',
       info: window.api ? window.api.pageParam.info : '',
       workContentText: window.api ? window.api.pageParam.workContentText : '',
       rewardText: window.api ? window.api.pageParam.rewardText : '',
+      reslist:window.api ? window.api.pageParam.reslist : [],
       companyId: window.api ? window.api.pageParam.companyId : '',
       companyName: window.api ? window.api.pageParam.companyName : '',
       internshipAddress: window.api ? window.api.pageParam.internshipAddress : '',
@@ -67,9 +77,21 @@ export default {
   },
   components: {
     Cell,
-    Panel
+    Panel,
+    ImagesPopup
   },
-  mounted () {}
+  method:{
+    imagesPopupOpen (list, index) {
+      this.urlList = list.map((r, i) => {
+        return r.url;
+      });
+      this.urlListIndex = index;
+      this.$refs.imagesPopup.open();
+    }
+  },
+  mounted () {
+
+  }
 };
 </script>
 <style lang="less">
