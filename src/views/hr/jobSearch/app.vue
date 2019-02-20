@@ -118,7 +118,8 @@ export default {
     async chipsDataList () {
       tool.showProgress();
       const response = await service.chipsData({
-       num:6
+       num:6,
+       keyWord:this.form.keyWord
       });
       tool.hideProgress();
       switch (response.code) {

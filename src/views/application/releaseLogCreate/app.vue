@@ -31,6 +31,15 @@
           <FormItem label="本周收获：" prop="title" :rules='rewardRules'>
             <TextField multi-line v-model="form.reward" :max-length="255" :rows="5" :rows-max="5"></TextField>
           </FormItem>
+          <FormItem label="上传图片" prop="resids" >
+             <div class="picList">
+              <div :class="{uploader:true,hide:resids.length>=max}">
+                <Upload  accept="image/*" class="uploader" :action="actionUrl" :headers="headers" list-type="picture-card" :multiple="false" :limit="max" :file-list="uploaderList" :on-change="change" :on-progress="progress" :on-success="success" :before-upload="beforeUpload" :on-error="error" >
+                  <i class="el-icon-plus"></i>
+                </Upload>
+              </div>
+            </div>
+          </FormItem>
         </Form>
       </div>
     </div>
@@ -42,14 +51,30 @@
 
 <script>
 import service from 'service';
+import { hostList } from 'service/mock';
 import moment from 'moment';
 import tools from 'util/tools';
+import Upload from 'element-ui/lib/upload';
 import { Icon, Alert, Button, TextField, DateInput } from 'muse-ui';
 import { Form, FormItem } from 'muse-ui/lib/Form';
 export default {
   data () {
     return {
       companyId: window.api ? window.api.pageParam.companyId : '',
+      uploaderList:[],
+       actionUrl: 'http://' + (process.env === 'production' ? hostList.pro : hostList.test) + '/api/Userresources/create',
+      headers: {
+        MG_code:
+          '5uwPulFblsIANI7BIP#a%bBo582#wOud3v%f0c1JgJRskqUTN7y4&TPUTgjkmhOjZI#oVc4Ph4Ar^ApQFy$ZlGl3T9MaIskgGWTVjqHxsP^8S^%gY#nAj9X4DV9x&b7O',
+        MG_key: '5b10fed636fcf',
+        MG_token:
+        process.env === 'development'
+          ? '6f8bade35ef87e5a6aa623519ef973582dc25205'
+          : tools.getStorage('token') || ''
+      },
+      resids:[],
+       maxSize: 10,
+        max: 6,
       form: {
         internshipStart: Date.parse(
           moment()
@@ -58,7 +83,7 @@ export default {
         ),
         internshipEnd: Date.parse(
           moment()
-            .add('day', 0)
+            .add('day', 7)
             .format('YYYY-MM-DD')
         ),
         workContent: '',
@@ -99,7 +124,8 @@ export default {
     Form,
     FormItem,
     Icon,
-    TextField
+    TextField,
+    Upload
   },
   computed: {
     startTimeText () {
@@ -112,9 +138,10 @@ export default {
   methods: {
     async create () {
       tools.showProgress();
-      // console.log(JSON.stringify(this.form));
+
       const response = await service.createReleaseLog({
         ...this.form,
+        resids: this.resids.map(r => r.id).join(','),
         companyId: this.companyId
       });
       tools.hideProgress();
@@ -137,6 +164,59 @@ export default {
       this.form.internshipEnd = date.valueOf();
     },
 
+     change (file) {
+      switch (file.status) {
+        case 'ready':
+          this.progressPercent = 0;
+          this.uploaderHide = true;
+          break;
+        default:
+          break;
+      }
+      // this.uploaderClass = 'uploader hideUploader';
+    },
+    progress (file) {
+      this.progressPercent = parseInt(file.percent);
+      // this.uploaderClass = 'uploader hideUploader';
+    },
+    beforeUpload (file) {
+      if (file.size > this.maxSize * 1024 * 1024) {
+        tools.toast({
+          position: 'top',
+          message: '图片最大' + this.maxSize + 'M'
+        });
+        this.uploaderHide = false;
+        return false;
+      }
+    },
+    error (e, file, fileList) {
+      this.uploaderHide = false;
+    },
+    success (response, file, fileList) {
+      this.uploaderHide = false;
+      switch (response.code) {
+        case 0:
+          //this.headphoto = tools.getPicUrl(response.result.file.url, 450);
+          // this.fileList = [];
+          const urlAry = response.result.file.url.split('/');
+          urlAry[urlAry.length - 1] = '450_' + urlAry[urlAry.length - 1];
+          this.resids.push({
+            id: response.result.file.id,
+            url: response.result.file.url,
+            coverUrl: urlAry.join('/')
+          });
+          if (this.resids.length >= this.max) {
+            this.uploaderHide = true;
+          }
+          break;
+        default:
+          tools.toast({
+            position: 'top',
+            message: response.message
+          });
+          break;
+      }
+    },
     submit () {
       this.$refs.form.validate().then(result => {
         if (result === true) {
@@ -164,5 +244,44 @@ export default {
   padding: 10px;
   background-color: #d6ebff;
   color: #409eff;
+}
+
+.picList {
+  font-size: 0;
+  margin: -5px;
+  width: 100%;
+}
+.picCon {
+  width: 50%;
+  padding-top: 50%;
+  display: inline-block;
+  position: relative;
+  .con {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #eee;
+  }
+
+  .del{
+    display: none;
+    background-color:rgba(0,0,0,.5);
+    .el-icon-delete{
+      color:#fff;
+      font-size:30px;
+      position: absolute;
+      left: 50%;
+      top:50%;
+      margin: -15px 0 0 -15px;
+    }
+  }
+  &:hover .del{
+    display: block;
+  }
 }
 </style>

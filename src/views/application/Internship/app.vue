@@ -26,7 +26,7 @@
         </Col>
         <Col span="12">
         <div class="grid-cell" @click='internshipLog'>
-          <section><span class='cLightGreen'><i class='iconfont icon-rizhi'></i></span>实习日志 </section>
+          <section><span class='cLightGreen'><i class='iconfont icon-rizhi'></i></span>实习周志 </section>
         </div>
         </Col>
         <Col span="12">
@@ -289,7 +289,7 @@ export default {
       tool.openWin({
         name: 'internshipLog',
         url: '../win.html',
-        title: '实习日志',
+        title: '实习周志',
         fname: 'internshipLog_f',
         furl: './application/releaseLogList.html',
         hasLeft: 1,
