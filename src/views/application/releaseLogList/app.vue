@@ -10,46 +10,48 @@
       <TabContainerItem v-for="(messageList,index) in lists" :key="index" :id="index" class="message-list"> -->
     <!-- <LoadMore :ref="'container' + index" @refresh="refresh(index)" @load="load(index)" :refreshing="messageList.refreshing" :loading="messageList.loading">
       <div class="message" v-for="message in messageList.list" :key="message.id"> -->
-    <div
-      ref="container0"
-      class="list-con"
-    >
-      <LoadMore
-        class="mu-stepper mu-stepper-vertical"
-        @refresh="refresh(0)"
-        @load="load(0)"
-        :refreshing="lists[0].refreshing"
-        :loading="lists[0].loading"
-      >
+    <div class="bodyer">
+      <div style="padding:15px">
         <div
-          v-for="row in lists[0].list"
-          :key="row.id"
-          class="mu-step"
+          ref="container0"
+          class="list-con"
         >
-          <span class="mu-step-label active completed">
-            <span class="mu-step-label-icon-container">
-              <div class="stepIcon"></div>
-            </span>
-            <div class="stepHeader">{{row.head}}</div>
-          </span>
-          <div class="mu-step-content">
-            <div style="position: relative; overflow: hidden; height: 100%;">
-              <div
-                class="mu-step-content-inner"
-              >
-                <div
-                  class="stepConTitle"
-                  @click="detail(row)"
-                >{{row.title}}</div>
-                <div
-                  v-html="row.info"
-                  class="stepConInfo"
-                ></div>
+          <LoadMore
+            class="mu-stepper mu-stepper-vertical"
+            @refresh="refresh(0)"
+            @load="load(0)"
+            :refreshing="lists[0].refreshing"
+            :loading="lists[0].loading"
+          >
+            <div
+              v-for="row in lists[0].list"
+              :key="row.id"
+              class="mu-step"
+            >
+              <span class="mu-step-label active completed">
+                <span class="mu-step-label-icon-container">
+                  <div class="stepIcon"></div>
+                </span>
+                <div class="stepHeader">{{row.head}}</div>
+              </span>
+              <div class="mu-step-content">
+                <div style="position: relative; overflow: hidden; height: 100%;">
+                  <div class="mu-step-content-inner">
+                    <div
+                      class="stepConTitle"
+                      @click="detail(row)"
+                    >{{row.title}}</div>
+                    <div
+                      v-html="row.info"
+                      class="stepConInfo"
+                    ></div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </LoadMore>
         </div>
-      </LoadMore>
+      </div>
     </div>
     <!-- </TabContainerItem>
     </TabContainer> -->
@@ -61,47 +63,55 @@
         :full-width="true"
         large
         @click="create"
-      >新建日志</Button>
+      >新建周志</Button>
     </div>
   </div>
 </template>
 
 <script>
-import service from 'service';
+import service from "service";
 // import moment from 'moment';
-import tools from 'util/tools';
-import adapter from 'util/adapter';
-import { LoadMore, Button } from 'muse-ui';
+import tools from "util/tools";
+import adapter from "util/adapter";
+import { LoadMore, Button } from "muse-ui";
 // import { Tabs, LoadMore } from 'muse-ui';
 // import { Tab } from 'muse-ui/lib/Tabs';
 // import { TabContainer, TabContainerItem } from 'mint-ui';
 export default {
-  data () {
+  data() {
     return {
       // refreshing: false,
       // loading: false,
-      companyId: window.api ? window.api.pageParam.companyId : '',
+      companyId: window.api ? window.api.pageParam.companyId : "",
       active: 0,
       companyInfo: {},
       lists: [
         {
-          name: '全部',
+          name: "全部",
           refreshing: false,
           loading: false,
           page: 1,
           list: [
             {
               id: 0,
-              head: '2017年6月8日-2017年6月15日',
-              title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
-              info: '创建日期：2017年6月15日',
-              reslist:['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550825556&di=0c3fd83729623c3b4ff80cec8b8403ae&imgtype=jpg&er=1&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F54ebececeda0217648263cc944d6cfd413a17cdf2cc6-MGHS0y_fw658','https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1550230866439&di=b7302f45a776b5167413216859ac2830&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F764905ead01e7eca298fdadb745b3c4fd9031e2839a0d-Hdjzwh_fw658']
+              head: "2017年6月8日-2017年6月15日",
+              title:
+                "本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板",
+              info: "创建日期：2017年6月15日",
+              reslist: [
+                // {"id":448,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":32,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"},
+                // {"id":449,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":33,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"},
+                // {"id":450,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":34,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"},
+                // {"id":451,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":35,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"}
+              ]
             },
             {
               id: 1,
-              head: '2017年6月8日-2017年6月15日',
-              title: '本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板',
-              info: '创建日期：2017年6月15日'
+              head: "2017年6月8日-2017年6月15日",
+              title:
+                "本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板",
+              info: "创建日期：2017年6月15日",
+              reslist: []
             }
           ]
         }
@@ -117,12 +127,12 @@ export default {
     // TabContainerItem
   },
   computed: {
-    isLoading () {
+    isLoading() {
       return this.refreshing || this.loading;
     }
   },
   methods: {
-    async getList (active) {
+    async getList(active) {
       const response = await service.getReleaseLofList({
         companyId: this.companyId,
         page: this.lists[active].page
@@ -139,29 +149,29 @@ export default {
         case 0:
           if (this.lists[active].page === 1) {
             this.lists[active].list = response.result.list.map(releaseLog =>
-              adapter.releaseLogAdapter({...releaseLog, ...this.companyInfo})
+              adapter.releaseLogAdapter({ ...releaseLog, ...this.companyInfo })
             );
           }
           if (this.lists[active].page > 1) {
             response.result.list.forEach(releaseLog => {
               this.lists[active].list.push(
-                adapter.releaseLogAdapter({...releaseLog, ...this.companyInfo})
+                adapter.releaseLogAdapter({
+                  ...releaseLog,
+                  ...this.companyInfo
+                })
               );
             });
           }
           break;
         default:
           tools.toast({
-            position: 'top',
-            message: '列表加载失败，请稍后重试！！'
+            position: "top",
+            message: "列表加载失败，请稍后重试！！"
           });
           break;
       }
     },
-    async loading () {
-      // console.log(window.api.pageParam.companyId);
-      // console.log(this.companyId);
-
+    async loading() {
       tools.showProgress();
       const response = await service.getEnterpriseInfo(this.companyId);
       // console.log(JSON.stringify(response));
@@ -179,18 +189,18 @@ export default {
           break;
         default:
           tools.toast({
-            position: 'top',
+            position: "top",
             message: response.message
           });
           break;
       }
     },
-    changeTab (index) {
+    changeTab(index) {
       // if (!this.isLoading) {
       this.active = index;
       // }
     },
-    refresh (active) {
+    refresh(active) {
       if (!this.lists[active].refreshing && !this.lists[active].loading) {
         this.lists[active].page = 1;
         this.lists[active].refreshing = true;
@@ -198,24 +208,23 @@ export default {
         this.getList(active);
       }
     },
-    load (active) {
+    load(active) {
       if (!this.lists[active].refreshing && !this.lists[active].loading) {
         this.lists[active].page = this.lists[active].page + 1;
         this.lists[active].loading = true;
-        // this.getList(active);
+        this.getList(active);
       }
     },
-    create () {
-
+    create() {
       tools.openWin({
-        name: 'releaseLogCreate',
-        url: '../win.html',
-        title: '新建日志',
-        fname: 'releaseLogCreate_f',
-        furl: './application/releaseLogCreate.html',
+        name: "releaseLogCreate",
+        url: "../win.html",
+        title: "新建周志",
+        fname: "releaseLogCreate_f",
+        furl: "./application/releaseLogCreate.html",
         hasLeft: 1,
         data: {
-          nameSpace: 'releaseLogCreate',
+          nameSpace: "releaseLogCreate",
           ...this.companyInfo,
           callback: (ret, err) => {
             this.refresh(this.active);
@@ -223,29 +232,38 @@ export default {
         }
       });
     },
-    detail (data) {
-       console.log(JSON.stringify(data))
+    detail(data) {
       tools.openWin({
-        name: 'releaseLogDetail_' + this.createTime,
-        url: '../win.html',
-        title: '日志详情',
-        fname: 'releaseLogCreate_f_' + this.createTime,
-        furl: './application/releaseLogDetail.html',
+        name: "releaseLogDetail_" + this.createTime,
+        url: "../win.html",
+        title: "周志详情",
+        fname: "releaseLogCreate_f_" + this.createTime,
+        furl: "./application/releaseLogDetail.html",
         hasLeft: 1,
         data: {
-          nameSpace: 'releaseLogDetail',
+          nameSpace: "releaseLogDetail",
           ...data
         }
       });
     }
   },
-  mounted () {
-    // this.loading();
+  mounted() {
+    this.loading();
   }
 };
 </script>
 <style lang="less">
 @import url("../../../assets/css/base.less");
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.bodyer {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .unread {
   float: right;
   color: @danger;
@@ -312,7 +330,7 @@ export default {
   border: 2px solid #b3dfdb;
   margin-left: 3px;
 }
-.stepConTitle:active{
-  color: @primary
+.stepConTitle:active {
+  color: @primary;
 }
 </style>

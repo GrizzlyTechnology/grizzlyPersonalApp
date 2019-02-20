@@ -44,12 +44,13 @@
       />
     </Panel>
     <Panel title="图片">
-       <div v-for="(file,index) in reslist">
-              <div class="con" @click="imagesPopupOpen(reslist,index)" :style="{backgroundImage:'url('+file+')'}" />
-            </div>
-
+      <div class="picList">
+      <div class="picCon" v-for="(file,index) in reslist">
+        <div class="con" @click="imagesPopupOpen(reslist,index,'')" :style="{backgroundImage:'url('+file.url+')'}" />
+      </div>
+    </div>
     </Panel>
-    <ImagesPopup ref="imagesPopup" :urlList="urlList" :index="urlListIndex"></ImagesPopup>
+    <ImagesPopup ref="imagesPopup" :urlList="urlList" :index="urlListIndex" :description="description"></ImagesPopup>
   </div>
 </template>
 
@@ -62,6 +63,7 @@ export default {
     return {
       urlList: [],
       urlListIndex: 0,
+      description: {},
       head: window.api ? window.api.pageParam.head : '',
       title: window.api ? window.api.pageParam.title : '',
       info: window.api ? window.api.pageParam.info : '',
@@ -80,9 +82,10 @@ export default {
     Panel,
     ImagesPopup
   },
-  method:{
-    imagesPopupOpen (list, index) {
+  methods:{
+     imagesPopupOpen (list, index, description) {
       this.urlList = list.map((r, i) => {
+        this.description[i] = description.replace(/\n|\r\n/g, '<br/>');
         return r.url;
       });
       this.urlListIndex = index;
@@ -152,5 +155,75 @@ export default {
 }
 .moduleHeader .title{
   color: #666 !important;
+}
+
+.picList {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  font-size: 0;
+  margin: -5px -5px 15px;
+  padding: 15px 15px;
+  .picCon {
+    width: 50%;
+    padding-top: 50%;
+    display: inline-block;
+    position: relative;
+    .close {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background-color: #fff;
+      border-radius: 50%;
+      border: 1px #fff solid;
+    }
+    .con {
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      bottom: 5px;
+      right: 5px;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #eee;
+    }
+    .picTitle {
+      position: absolute;
+      z-index: 1;
+      color: #fff;
+      bottom: 5px;
+      left: 5px;
+      right: 5px;
+      height: 30px;
+      background-color: rgba(0, 0, 0, 0.5);
+      font-size: 14px;
+      padding-left: 5px;
+      line-height: 30px;
+    }
+  }
+  .uploader {
+    .el-upload--picture-card {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+    .el-icon-plus {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 36px;
+      font-weight: bold;
+      margin-top: -21px;
+      margin-left: -18px;
+    }
+    .el-progress {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -63px;
+      margin-left: -63px;
+    }
+  }
 }
 </style>

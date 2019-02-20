@@ -87,7 +87,6 @@ export default {
         companyId: this.companyInfo.companyId
       });
       tools.hideProgress();
-      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           this.picList = response.result.picList.map(row => {
