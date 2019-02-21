@@ -78,12 +78,12 @@ export default {
       form: {
         internshipStart: Date.parse(
           moment()
-            .subtract('day', 1)
+            .add('day', 0)
             .format('YYYY-MM-DD')
         ),
         internshipEnd: Date.parse(
           moment()
-            .add('day', 7)
+            .add('day', 6)
             .format('YYYY-MM-DD')
         ),
         workContent: '',
@@ -249,6 +249,7 @@ export default {
 .picList {
   font-size: 0;
   margin: -5px;
+  padding-top: 15px;
   width: 100%;
 }
 .picCon {
