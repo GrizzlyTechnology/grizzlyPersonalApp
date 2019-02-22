@@ -12,10 +12,10 @@
           <FormItem label="实习地点">
             <TextField class="read-only" readonly v-model="internshipCompanyInfo.internshipAddress"></TextField>
           </FormItem>
-          <FormItem label="实习时间：" prop="startTime" :rules="internshipTimeRules">
-            <DateInput style='width:40%;margin-right:15px;' :value="startTimeText" :max-date="new Date()" @change="changeStartTime" no-display view-type="list" container="bottomSheet"></DateInput>
+          <FormItem label="实习时间：" prop="startTime"  :rules="internshipTimeRules">
+            <DateInput style='width:40%;margin-right:15px;' disabled :value="startTimeText" :max-date="new Date()" @change="changeStartTime" no-display view-type="list" container="bottomSheet"></DateInput>
             至
-            <DateInput style='width:40%;margin-left:15px' :value="endTimeText" :max-date="new Date()" @change="changeEndTime" no-display view-type="list" container="bottomSheet"></DateInput>
+            <DateInput style='width:40%;margin-left:15px' disabled :value="endTimeText" :max-date="new Date()" @change="changeEndTime" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
           <FormItem label="实习部门">
             <TextField class="read-only" readonly v-model="internshipCompanyInfo.department"></TextField>
@@ -77,14 +77,16 @@ export default {
         max: 6,
       form: {
         internshipStart: Date.parse(
-          moment()
-            .add('day', 0)
-            .format('YYYY-MM-DD')
+          // moment()
+          //   .add('day', 0)
+          //   .format('YYYY-MM-DD')
+            moment().startOf('week')
         ),
         internshipEnd: Date.parse(
-          moment()
-            .add('day', 6)
-            .format('YYYY-MM-DD')
+          // moment()
+          //   .add('day', 6)
+          //   .format('YYYY-MM-DD')
+          moment().endOf('week')
         ),
         workContent: '',
         reward: ''

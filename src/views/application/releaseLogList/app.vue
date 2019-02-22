@@ -1,5 +1,8 @@
 <template>
   <div class="content">
+     <div class="tip">
+      <Icon value=":el-icon-warning"></Icon> 2018年10月22 至 2018年10月28 周记未填写，去补记
+    </div>
     <!-- <Tabs :value="active" inverse indicator-color="#009688" color="#009688" text-color="rgba(0, 0, 0, .54)" full-width>
       <Tab v-for="(messageList,index) in lists" :key="index" @click="changeTab(index)">
         {{messageList.name}}
