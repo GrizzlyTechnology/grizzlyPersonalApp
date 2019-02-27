@@ -6,30 +6,17 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form" label-position="top" label-width="120">
-          <FormItem label="实习单位">
-            <TextField class="read-only" readonly v-model="internshipCompanyInfo.companyName"></TextField>
+          <FormItem label="实习时间：" prop="startTime">
+            <DateInput  :value="startTimeText" :max-date="new Date()" @change="changeStartTime" no-display view-type="list" container="bottomSheet"></DateInput>
+            <!-- 至 -->
+            <DateInput style='width:0%;margin-left:15px;height:0px;'  disabled :value="endTimeText" :max-date="new Date()" @change="changeEndTime" no-display view-type="list" container="bottomSheet"></DateInput>
           </FormItem>
-          <FormItem label="实习地点">
-            <TextField class="read-only" readonly v-model="internshipCompanyInfo.internshipAddress"></TextField>
-          </FormItem>
-          <FormItem label="实习时间：" prop="startTime"  :rules="internshipTimeRules">
-            <DateInput style='width:40%;margin-right:15px;' disabled :value="startTimeText" :max-date="new Date()" @change="changeStartTime" no-display view-type="list" container="bottomSheet"></DateInput>
-            至
-            <DateInput style='width:40%;margin-left:15px' disabled :value="endTimeText" :max-date="new Date()" @change="changeEndTime" no-display view-type="list" container="bottomSheet"></DateInput>
-          </FormItem>
-          <FormItem label="实习部门">
-            <TextField class="read-only" readonly v-model="internshipCompanyInfo.department"></TextField>
-          </FormItem>
-          <FormItem label="实习岗位">
-            <TextField class="read-only" readonly v-model="internshipCompanyInfo.group"></TextField>
-          </FormItem>
-
           <!-- <div class='tips'>本月已写周志<span> 3 </span>次</div> -->
+           <FormItem label="周志主题：" prop="title" :rules='rewardRules'>
+            <TextField  v-model="form.reward" :max-length="255" :rows="5" :rows-max="5"></TextField>
+          </FormItem>
           <FormItem label="本周工作内容：" prop="title" :rules='workContentRules'>
             <TextField multi-line v-model="form.workContent" :max-length="255" :rows="5" :rows-max="5"></TextField>
-          </FormItem>
-          <FormItem label="本周收获：" prop="title" :rules='rewardRules'>
-            <TextField multi-line v-model="form.reward" :max-length="255" :rows="5" :rows-max="5"></TextField>
           </FormItem>
           <FormItem label="上传图片" prop="resids" >
              <div class="picList">
@@ -40,6 +27,18 @@
               </div>
             </div>
           </FormItem>
+          <!-- <FormItem label="实习单位"> -->
+            <TextField class="read-only w0" readonly v-model="internshipCompanyInfo.companyName"></TextField>
+          <!-- </FormItem> -->
+          <!-- <FormItem label="实习地点"> -->
+            <TextField class="read-only w0"  readonly v-model="internshipCompanyInfo.internshipAddress"></TextField>
+          <!-- </FormItem> -->
+           <!-- <FormItem label="实习部门"> -->
+            <TextField class="read-only w0"  readonly v-model="internshipCompanyInfo.department"></TextField>
+          <!-- </FormItem> -->
+          <!-- <FormItem label="实习岗位"> -->
+            <TextField class="read-only w0"  readonly v-model="internshipCompanyInfo.group"></TextField>
+          <!-- </FormItem> -->
         </Form>
       </div>
     </div>
@@ -82,11 +81,11 @@ export default {
           //   .format('YYYY-MM-DD')
             moment().startOf('week')
         ),
-        internshipEnd: Date.parse(
+         internshipEnd: Date.parse(
           // moment()
-          //   .add('day', 6)
-          //   .format('YYYY-MM-DD')
-          moment().endOf('week')
+            // .add('day', 0)
+            // .format('YYYY-MM-DD')
+            moment().endOf('week')
         ),
         workContent: '',
         reward: ''
@@ -99,12 +98,6 @@ export default {
         department: window.api ? window.api.pageParam.department : '-',
         group: window.api ? window.api.pageParam.group : ''
       },
-      internshipTimeRules: [
-        {
-          validate: val => this.form.internshipStart <= this.form.internshipEnd,
-          message: '开始时间不能在结束时间之后'
-        }
-      ],
       workContentRules: [
         {
           validate: val => this.form.workContent.length > 0,
@@ -114,7 +107,7 @@ export default {
       rewardRules: [
         {
           validate: val => this.form.reward.length > 0,
-          message: '必须填写本周收获'
+          message: '必须填写周志主题'
         }
       ]
     };
@@ -232,6 +225,10 @@ export default {
 </script>
 <style lang="less">
 @import url("../../../assets/css/base.less");
+.w0{
+  width: 0px;
+  height: 0px;
+}
 .content {
   height: 100%;
   display: flex;
