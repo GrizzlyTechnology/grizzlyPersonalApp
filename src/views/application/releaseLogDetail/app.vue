@@ -12,13 +12,13 @@
         <span class="ucCellLabel">{{internshipAddress}}</span>
       </div>
     </Cell> -->
-    <Cell class="ucCell">
+    <!--<Cell class="ucCell">
       <div class="ucCellCon">
         <span class="ucCellTitle">实习时间</span>
         <span class="ucCellLabel">{{head}}</span>
       </div>
     </Cell>
-    <!-- <Cell class="ucCell">
+     <Cell class="ucCell">
       <div class="ucCellCon">
         <span class="ucCellTitle">实习部门</span>
         <span class="ucCellLabel">{{department}}</span>
@@ -29,7 +29,7 @@
         <span class="ucCellTitle">实习岗位</span>
         <span class="ucCellLabel">{{group}}</span>
       </div>
-    </Cell> -->
+    </Cell> 
     <Panel title="周志主题">
       <div
         class="introduction"
@@ -41,20 +41,31 @@
         class="introduction"
         v-html="workContentText"
       />
-    </Panel>
-    <Panel title="图片" v-if='reslist.length>0'>
+    </Panel>-->
+  <Card style="width: 100%; max-width: 96%; margin: 0 auto;">
+    <CardTitle :title="rewardText" :sub-title="head"></CardTitle>
+    <CardText>
+      {{workContentText}}
+    </CardText>
+  </Card>
+  <Card style="width: 100%; max-width: 96%; margin: 10px auto;" v-if='reslist.length>0'>
+    <CardTitle title="实习照片" :sub-title="head"></CardTitle>
+    <CardText >
       <div class="picList">
       <div class="picCon" v-for="(file,index) in reslist">
         <div class="con" @click="imagesPopupOpen(reslist,index,'')" :style="{backgroundImage:'url('+file.coverUrl+')'}" />
       </div>
     </div>
-    </Panel>
-    <ImagesPopup ref="imagesPopup" :urlList="urlList" :index="urlListIndex" :description="description"></ImagesPopup>
+    </CardText>
+  </Card>
+      <ImagesPopup ref="imagesPopup" :urlList="urlList" :index="urlListIndex" :description="description"></ImagesPopup>
   </div>
 </template>
 
 <script>
 import { Cell } from 'mint-ui';
+import { Card } from 'muse-ui';
+import { CardTitle , CardText } from 'muse-ui/lib/Card';
 import Panel from 'components/Panel';
 import ImagesPopup from 'components/ImagesPopup';
 export default {
@@ -78,6 +89,9 @@ export default {
   },
   components: {
     Cell,
+    Card,
+    CardText,
+    CardTitle,
     Panel,
     ImagesPopup
   },
@@ -174,8 +188,6 @@ export default {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   font-size: 0;
-  margin: -5px -5px 15px;
-  padding: 15px 15px;
   .picCon {
     width: 50%;
     padding-top: 50%;

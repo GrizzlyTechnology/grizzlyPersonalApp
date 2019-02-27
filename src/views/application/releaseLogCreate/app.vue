@@ -6,17 +6,17 @@
     <div class="bodyer">
       <div style="padding:15px">
         <Form ref="form" :model="form" label-position="top" label-width="120">
-          <FormItem label="实习时间：" prop="startTime">
-            <DateInput  :value="startTimeText" :max-date="new Date()" @change="changeStartTime" no-display view-type="list" container="bottomSheet"></DateInput>
-            <!-- 至 -->
-            <DateInput style='width:0%;margin-left:15px;height:0px;'  disabled :value="endTimeText" :max-date="new Date()" @change="changeEndTime" no-display view-type="list" container="bottomSheet"></DateInput>
+          <FormItem  prop="startTime">
+            <DateInput prefix="实习时间："  :value="startTimeText" :max-date="new Date()" @change="changeStartTime" no-display view-type="list" container="bottomSheet"></DateInput>
+          <div style="font-size:10px; text-align:right; width:100%">已选周时间段：{{myhead()}}</div>
           </FormItem>
+          
           <!-- <div class='tips'>本月已写周志<span> 3 </span>次</div> -->
-           <FormItem label="周志主题：" prop="title" :rules='rewardRules'>
-            <TextField  v-model="form.reward" :max-length="255" :rows="5" :rows-max="5"></TextField>
+           <FormItem prop="title" :rules='rewardRules'>
+            <TextField prefix="主题："  v-model="form.reward" :max-length="50" ></TextField>
           </FormItem>
           <FormItem label="本周工作内容：" prop="title" :rules='workContentRules'>
-            <TextField multi-line v-model="form.workContent" :max-length="255" :rows="5" :rows-max="5"></TextField>
+            <TextField multi-line v-model="form.workContent" :max-length="500" :rows="10" :rows-max="15"></TextField>
           </FormItem>
           <FormItem label="上传图片" prop="resids" >
              <div class="picList">
@@ -59,6 +59,7 @@ import { Form, FormItem } from 'muse-ui/lib/Form';
 export default {
   data () {
     return {
+      selectTime:new Date(),
       companyId: window.api ? window.api.pageParam.companyId : '',
       uploaderList:[],
        actionUrl: 'http://' + (process.env === 'production' ? hostList.pro : hostList.test) + '/api/Userresources/create',
@@ -75,18 +76,8 @@ export default {
        maxSize: 10,
         max: 6,
       form: {
-        internshipStart: Date.parse(
-          // moment()
-          //   .add('day', 0)
-          //   .format('YYYY-MM-DD')
-            moment().startOf('week')
-        ),
-         internshipEnd: Date.parse(
-          // moment()
-            // .add('day', 0)
-            // .format('YYYY-MM-DD')
-            moment().endOf('week')
-        ),
+        internshipStart:0,
+        internshipEnd:0,
         workContent: '',
         reward: ''
       },
@@ -124,7 +115,7 @@ export default {
   },
   computed: {
     startTimeText () {
-      return new Date(this.form.internshipStart);
+      return new Date(this.selectTime);
     },
     endTimeText () {
       return new Date(this.form.internshipEnd);
@@ -152,11 +143,16 @@ export default {
           break;
       }
     },
-    changeStartTime (date) {
-      this.form.internshipStart = date.valueOf();
+    myhead(){
+      return moment(this.form.internshipStart).format('M月D日')+' - '+moment(this.form.internshipEnd).format('M月D日');
     },
-    changeEndTime (date) {
-      this.form.internshipEnd = date.valueOf();
+    changeStartTime (date) {
+      this.selectTime=date.valueOf();
+      var nows=date.valueOf();
+      var noww=new Date(date).getDay();
+      noww=noww?noww:7;
+      this.form.internshipStart=nows-1000*60*60*24*(noww-1);
+      this.form.internshipEnd=nows+1000*60*60*24*(7-noww);
     },
 
      change (file) {
@@ -220,7 +216,9 @@ export default {
       });
     }
   },
-  mounted () {}
+  mounted () {
+    this.changeStartTime(new Date(new Date()))
+  }
 };
 </script>
 <style lang="less">
