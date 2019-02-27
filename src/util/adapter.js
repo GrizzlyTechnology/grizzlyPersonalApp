@@ -172,7 +172,7 @@ adapter.releaseLogAdapter = function (data) {
 
   return {
     // head: moment(data.internshipStart).format('YYYY年MM月DD日') + ' 至 ' + moment(data.internshipEnd).format('YYYY年MM月DD日'),
-    head: moment(data.internshipStart).format('YYYY年MM月DD日') ,
+    head: moment(data.internshipStart).format('YYYY年MM月DD日') + ' - ' + moment(data.internshipEnd).format('YYYY年MM月DD日') ,
     title: content.length > 50 ? content.substring(0, 47) + '...' : content,
     info: '创建日期：' + moment(data.createTime * 1000).format('YYYY年MM月DD日'),
     workContentText: data.workContent.replace(/\n|\r\n/g, '<br/>'),
