@@ -1,8 +1,8 @@
 <template>
   <div class="content">
-     <div class="tip">
+     <!-- <div class="tip">
       <Icon value=":el-icon-warning"></Icon> 2018年10月22 至 2018年10月28 周记未填写，去补记
-    </div>
+    </div> -->
     <!-- <Tabs :value="active" inverse indicator-color="#009688" color="#009688" text-color="rgba(0, 0, 0, .54)" full-width>
       <Tab v-for="(messageList,index) in lists" :key="index" @click="changeTab(index)">
         {{messageList.name}}
@@ -76,7 +76,7 @@ import service from "service";
 // import moment from 'moment';
 import tools from "util/tools";
 import adapter from "util/adapter";
-import { LoadMore, Button } from "muse-ui";
+import { LoadMore, Button,Icon } from "muse-ui";
 // import { Tabs, LoadMore } from 'muse-ui';
 // import { Tab } from 'muse-ui/lib/Tabs';
 // import { TabContainer, TabContainerItem } from 'mint-ui';
@@ -95,27 +95,27 @@ export default {
           loading: false,
           page: 1,
           list: [
-            {
-              id: 0,
-              head: "2017年6月8日-2017年6月15日",
-              title:
-                "本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板",
-              info: "创建日期：2017年6月15日",
-              reslist: [
-                // {"id":448,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":32,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"},
-                // {"id":449,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":33,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"},
-                // {"id":450,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":34,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"},
-                // {"id":451,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":35,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"}
-              ]
-            },
-            {
-              id: 1,
-              head: "2017年6月8日-2017年6月15日",
-              title:
-                "本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板",
-              info: "创建日期：2017年6月15日",
-              reslist: []
-            }
+            // {
+            //   id: 0,
+            //   head: "2017年6月8日-2017年6月15日",
+            //   title:
+            //     "本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板",
+            //   info: "创建日期：2017年6月15日",
+            //   reslist: [
+            //     // {"id":448,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":32,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"},
+            //     // {"id":449,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":33,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"},
+            //     // {"id":450,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":34,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"},
+            //     // {"id":451,"resources":"20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","uid":35,"size":"1387542.00","type":2,"url":"http://test.mangotmall.com/uploads/resources/20190213/3b898f90f60d9a2ba1f914aafa595d31.jpeg","coverUrl":"http://test.mangotmall.com/uploads/resources/20190213/450_3b898f90f60d9a2ba1f914aafa595d31.jpeg"}
+            //   ]
+            // },
+            // {
+            //   id: 1,
+            //   head: "2017年6月8日-2017年6月15日",
+            //   title:
+            //     "本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板本周在师傅指导下，学会留言板",
+            //   info: "创建日期：2017年6月15日",
+            //   reslist: []
+            // }
           ]
         }
       ]
@@ -125,7 +125,8 @@ export default {
     // Tabs,
     // Tab,
     LoadMore,
-    Button
+    Button,
+Icon
     // TabContainer,
     // TabContainerItem
   },
@@ -140,14 +141,13 @@ export default {
         companyId: this.companyId,
         page: this.lists[active].page
       });
-      // console.log(JSON.stringify(response));
+
       if (this.lists[active].page === 1) {
         this.lists[active].refreshing = false;
       }
       if (this.lists[active].page > 1) {
         this.lists[active].loading = false;
       }
-      // console.log(JSON.stringify(response));
       switch (response.code) {
         case 0:
           if (this.lists[active].page === 1) {
@@ -335,5 +335,10 @@ export default {
 }
 .stepConTitle:active {
   color: @primary;
+}
+.tip {
+  padding: 10px;
+  background-color: #d6ebff;
+  color: #409eff;
 }
 </style>

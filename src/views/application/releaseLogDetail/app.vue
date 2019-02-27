@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Cell class="ucCell">
+    <!-- <Cell class="ucCell">
       <div class="ucCellCon">
         <span class="ucCellTitle">实行单位</span>
         <span class="ucCellLabel">{{companyName}}</span>
@@ -11,14 +11,14 @@
         <span class="ucCellTitle">实习地点</span>
         <span class="ucCellLabel">{{internshipAddress}}</span>
       </div>
-    </Cell>
+    </Cell> -->
     <Cell class="ucCell">
       <div class="ucCellCon">
         <span class="ucCellTitle">实习时间</span>
         <span class="ucCellLabel">{{head}}</span>
       </div>
     </Cell>
-    <Cell class="ucCell">
+    <!-- <Cell class="ucCell">
       <div class="ucCellCon">
         <span class="ucCellTitle">实习部门</span>
         <span class="ucCellLabel">{{department}}</span>
@@ -29,24 +29,23 @@
         <span class="ucCellTitle">实习岗位</span>
         <span class="ucCellLabel">{{group}}</span>
       </div>
-    </Cell>
-
+    </Cell> -->
+    <Panel title="周志主题">
+      <div
+        class="introduction"
+        v-html="rewardText"
+      />
+    </Panel>
     <Panel title="本周工作内容">
       <div
         class="introduction"
         v-html="workContentText"
       />
     </Panel>
-    <Panel title="本周收获">
-      <div
-        class="introduction"
-        v-html="rewardText"
-      />
-    </Panel>
-    <Panel title="图片">
+    <Panel title="图片" v-if='reslist.length>0'>
       <div class="picList">
       <div class="picCon" v-for="(file,index) in reslist">
-        <div class="con" @click="imagesPopupOpen(reslist,index,'')" :style="{backgroundImage:'url('+file.url+')'}" />
+        <div class="con" @click="imagesPopupOpen(reslist,index,'')" :style="{backgroundImage:'url('+file.coverUrl+')'}" />
       </div>
     </div>
     </Panel>
@@ -83,6 +82,19 @@ export default {
     ImagesPopup
   },
   methods:{
+    coverUrl(){
+      if(this.reslist.length>0){
+        this.reslist = this.reslist.map(row => {
+          const urlAry = row.url.split('/');
+          urlAry[urlAry.length - 1] = '255_' + urlAry[urlAry.length - 1];
+          return ({
+            url: row.url,
+            coverUrl: urlAry.join('/'),
+            id: row.id
+          });
+        });
+      }
+    },
      imagesPopupOpen (list, index, description) {
       this.urlList = list.map((r, i) => {
         this.description[i] = description.replace(/\n|\r\n/g, '<br/>');
@@ -93,7 +105,7 @@ export default {
     }
   },
   mounted () {
-
+    this.coverUrl();
   }
 };
 </script>
