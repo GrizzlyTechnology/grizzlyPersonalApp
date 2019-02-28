@@ -1,33 +1,31 @@
 <template>
   <Container>
     <div class="border">
-      <div
-        v-if='companys.length>0'
-        v-for='company in companys'
-      >
-        <Card>
-          <Avatar>
+      <div v-if='companys.length>0'>
+        <div v-for='company in companys'>
+          <Card @click='Internship(company.id,company.companyName,company.department,company.group)'>
+            <Avatar>
               <img :src="company.logo">
             </Avatar>
-          <CardHeader
-            :title="company.companyName"
-            :sub-title="company.group + '  ' +company.practiceTime"
-          >
+            <CardHeader
+              :title="company.companyName"
+              :sub-title="company.group + '  ' +company.practiceTime"
+            >
 
-            <div>
-              <span class='status'>{{company.practicesStatus}}</span>
-              <Icon
-                class='iconfont icon-jinru'
-                right
-                size="12"
-                value=":mudocs-icon-communication-voicemail"
-              ></Icon>
-            </div>
+              <div>
+                <span class='status'>{{company.practicesStatus}}</span>
+                <Icon
+                  class='iconfont icon-jinru'
+                  right
+                  size="12"
+                  value=":mudocs-icon-communication-voicemail"
+                ></Icon>
+              </div>
 
-          </CardHeader>
+            </CardHeader>
 
-        </Card>
-        <!-- <Card>
+          </Card>
+          <!-- <Card>
           <Avatar
             :slot="avatar"
             :style="{width:'70px',height:'60px'}"
@@ -42,13 +40,14 @@
           </CardHeader>
           <p>{{company.practiceTime}}</p>
         </Card> -->
-        <!-- <span class='status'>{{company.practicesStatus}}</span>
+          <!-- <span class='status'>{{company.practicesStatus}}</span>
         <Icon
           class='iconfont icon-jinru'
           right
           size="12"
           value=":mudocs-icon-communication-voicemail"
         ></Icon> -->
+        </div>
       </div>
       <div
         v-else
@@ -66,7 +65,9 @@
           点击刷新
         </div>
       </div>
+
     </div>
+
     <!-- <Stepper
       :active-step="0"
       orientation="vertical"
@@ -131,8 +132,7 @@ export default {
         //   group: "实习店长",
         //   practicesStatus: "实习中"
         // }
-      ],
-      companyImgSrc: ""
+      ]
     };
   },
   components: {
@@ -204,8 +204,8 @@ export default {
 </script>
 <style lang="less">
 @import url("../../../assets/css/base.less");
-.mu-card{
- display: flex;
+.mu-card {
+  display: flex;
   align-items: center;
   margin-top: 15px;
 }
@@ -213,23 +213,27 @@ export default {
 .mu-card-header {
   display: flex;
   justify-content: space-between;
-   align-items: center;
-   width: 90%;
+  align-items: center;
+  width: 90%;
 }
 
-.mu-card-header-title{
+.mu-card-header-title {
   padding-right: 5px;
 }
 
-.mu-avatar{
+.mu-avatar {
   margin: 0 0 0 15px;
 }
 
-.mu-avatar img{
+.mu-avatar img {
   border-radius: 8px;
-  border:1px solid #efefef
-
+  border: 1px solid #efefef;
 }
+
+.notJoined {
+  padding: 50px 20px 30px;
+}
+
 .status,
 .refreshBtn {
   color: #009688;
