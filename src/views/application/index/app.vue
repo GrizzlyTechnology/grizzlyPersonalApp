@@ -4,9 +4,15 @@
       <template v-for='company in companys'>
         <Step :key='company.id' @click='Internship(company.id,company.companyName,company.department,company.group)'>
           <StepLabel  class='comStepper'>
+            <Avatar :slot="avatar" :style="{width:'70px',height:'60px'}">
+                  <img :src="company.logo">
+                </Avatar>
             <Card>
+
+               <CardHeader :title="company.companyName" :sub-title="company.department + '  ' +company.group">
+
+              </CardHeader>
               <p>{{company.practiceTime}}</p>
-              <CardHeader :title="company.companyName" :sub-title="company.department + '  ' +company.group"></CardHeader>
             </Card>
             <span class='status'>{{company.practicesStatus}}</span>
             <Icon class='iconfont icon-jinru' right size="12" value=":mudocs-icon-communication-voicemail"></Icon>
@@ -24,7 +30,7 @@
   </Container>
 </template>
 <script>
-import { Card, Icon, Button } from 'muse-ui';
+import { Card, Icon, Button,Avatar } from 'muse-ui';
 import { CardHeader } from 'muse-ui/lib/Card';
 import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
 import { Container } from 'muse-ui/lib/Grid';
@@ -34,7 +40,10 @@ import { Toast } from 'mint-ui';
 export default {
   data () {
     return {
-      companys: []
+      companys: [
+        {"id":3,"practiceTime":"2019.02—至今","companyName":"百度","logo":"http://www.mangotmall.com/uploads/enterpriselogo/20181221/3bb2b6bac50e9a263e049ac42a0b5d5f.jpg","department":"实习部门","group":"实习店长","practicesStatus":"实习中"}
+      ],
+      companyImgSrc:''
     };
   },
   components: {
@@ -45,7 +54,8 @@ export default {
     Step,
     StepLabel,
     Icon,
-    Button
+    Button,
+    Avatar
   },
   methods: {
     // 列表数据
@@ -54,6 +64,7 @@ export default {
       switch (response.code) {
         case 0:
           this.companys = response.result.lists;
+          console.log(JSON.stringify(this.companys))
           break;
         default:
           Toast({
@@ -98,7 +109,7 @@ export default {
     }
   },
   mounted () {
-    this.listsData();
+    // this.listsData();
   }
 };
 </script>
@@ -107,7 +118,7 @@ export default {
 .mu-card {
   box-shadow: none;
   background: none;
-  width: 75%;
+  width: 65%;
 }
 
 .mu-card-header-title {
@@ -118,6 +129,17 @@ export default {
   width: 15%;
   color: #999;
 }
+
+.mu-avatar{
+  // border-radius: 0;
+  border:1px dotted #ccc;
+  margin-left: 2%;
+  width: 16%;
+}
+
+// .mu-avatar img{
+//   border-radius: 0;
+// }
 
 .mu-stepper{
   background:#fff;

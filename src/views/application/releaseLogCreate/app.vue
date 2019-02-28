@@ -250,6 +250,17 @@ export default {
   padding-top: 15px;
   width: 100%;
 }
+
+// .el-upload--picture-card{
+//   width: 50%;
+//   height: 50%;
+// }
+// .el-upload-list--picture-card{
+//   width: 100%;
+// }
+// .el-upload-list--picture-card li{
+//   width: 50%;
+// }
 .picCon {
   width: 50%;
   padding-top: 50%;
