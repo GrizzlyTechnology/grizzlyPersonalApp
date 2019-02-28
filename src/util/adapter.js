@@ -168,13 +168,13 @@ adapter.deliveryStatusColor = function (status) {
 };
 
 adapter.releaseLogAdapter = function (data) {
-  const content = data.workContent.replace(/\n|\r\n/g, '');
+  const content = data.reward.replace(/\n|\r\n/g, '');
 
   return {
     // head: moment(data.internshipStart).format('YYYY年MM月DD日') + ' 至 ' + moment(data.internshipEnd).format('YYYY年MM月DD日'),
     head: moment(data.internshipStart).format('YYYY年MM月DD日') + ' - ' + moment(data.internshipEnd).format('YYYY年MM月DD日') ,
     title: content.length > 50 ? content.substring(0, 47) + '...' : content,
-    info: '创建日期：' + moment(data.createTime * 1000).format('YYYY年MM月DD日'),
+    info: '实习日期：' + moment(data.selectTime * 1000).format('YYYY年MM月DD日'),
     workContentText: data.workContent.replace(/\n|\r\n/g, '<br/>'),
     rewardText: data.reward.replace(/\n|\r\n/g, '<br/>'),
     ...data
