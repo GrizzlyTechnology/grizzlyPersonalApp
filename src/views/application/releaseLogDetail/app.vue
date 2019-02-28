@@ -29,7 +29,7 @@
         <span class="ucCellTitle">实习岗位</span>
         <span class="ucCellLabel">{{group}}</span>
       </div>
-    </Cell> 
+    </Cell>
     <Panel title="周志主题">
       <div
         class="introduction"
@@ -49,7 +49,7 @@
     </CardText>
   </Card>
   <Card style="width: 100%; max-width: 96%; margin: 10px auto;" v-if='reslist.length>0'>
-    <CardTitle title="实习照片" :sub-title="head"></CardTitle>
+    <CardTitle title="实习照片"></CardTitle>
     <CardText >
       <div class="picList">
       <div class="picCon" v-for="(file,index) in reslist">
@@ -207,7 +207,7 @@ export default {
       top: 5px;
       bottom: 5px;
       right: 5px;
-      background-size: contain;
+      background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-color: #eee;

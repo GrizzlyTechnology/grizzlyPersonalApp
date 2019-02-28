@@ -10,7 +10,7 @@
             <DateInput prefix="实习时间："  :value="startTimeText" :max-date="new Date()" @change="changeStartTime" no-display view-type="list" container="bottomSheet"></DateInput>
           <div style="font-size:10px; text-align:right; width:100%">已选周时间段：{{myhead()}}</div>
           </FormItem>
-          
+
           <!-- <div class='tips'>本月已写周志<span> 3 </span>次</div> -->
            <FormItem prop="title" :rules='rewardRules'>
             <TextField prefix="主题："  v-model="form.reward" :max-length="50" ></TextField>
@@ -59,7 +59,6 @@ import { Form, FormItem } from 'muse-ui/lib/Form';
 export default {
   data () {
     return {
-      selectTime:new Date(),
       companyId: window.api ? window.api.pageParam.companyId : '',
       uploaderList:[],
        actionUrl: 'http://' + (process.env === 'production' ? hostList.pro : hostList.test) + '/api/Userresources/create',
@@ -78,6 +77,7 @@ export default {
       form: {
         internshipStart:0,
         internshipEnd:0,
+        selectTime:new Date(),
         workContent: '',
         reward: ''
       },
@@ -115,7 +115,7 @@ export default {
   },
   computed: {
     startTimeText () {
-      return new Date(this.selectTime);
+      return new Date(this.form.selectTime);
     },
     endTimeText () {
       return new Date(this.form.internshipEnd);
@@ -147,7 +147,7 @@ export default {
       return moment(this.form.internshipStart).format('M月D日')+' - '+moment(this.form.internshipEnd).format('M月D日');
     },
     changeStartTime (date) {
-      this.selectTime=date.valueOf();
+      this.form.selectTime=date.valueOf();
       var nows=date.valueOf();
       var noww=new Date(date).getDay();
       noww=noww?noww:7;
@@ -245,7 +245,8 @@ export default {
 
 .picList {
   font-size: 0;
-  margin: -5px;
+  // margin: -5px;
+  margin-left: 5%;
   padding-top: 15px;
   width: 100%;
 }
