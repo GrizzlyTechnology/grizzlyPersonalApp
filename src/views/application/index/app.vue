@@ -2,7 +2,7 @@
   <Container>
     <div class="border">
       <div v-if='companys.length>0'>
-        <div v-for='company in companys'>
+        <div v-for='company in companys' :key='company.id'>
           <Card @click='Internship(company.id,company.companyName,company.department,company.group)'>
             <Avatar>
               <img :src="company.logo">
@@ -111,15 +111,15 @@
   </Container>
 </template>
 <script>
-import { Card, Icon, Button, Avatar } from "muse-ui";
-import { CardHeader } from "muse-ui/lib/Card";
-import { Stepper, Step, StepLabel } from "muse-ui/lib/Stepper";
-import { Container } from "muse-ui/lib/Grid";
-import tool from "util/tools";
-import service from "service";
-import { Toast } from "mint-ui";
+import { Card, Icon, Button, Avatar } from 'muse-ui';
+import { CardHeader } from 'muse-ui/lib/Card';
+import { Stepper, Step, StepLabel } from 'muse-ui/lib/Stepper';
+import { Container } from 'muse-ui/lib/Grid';
+import tool from 'util/tools';
+import service from 'service';
+import { Toast } from 'mint-ui';
 export default {
-  data() {
+  data () {
     return {
       companys: [
         // {
@@ -148,28 +148,27 @@ export default {
   },
   methods: {
     // 列表数据
-    async listsData() {
+    async listsData () {
       const response = await service.internshipCompany({});
       switch (response.code) {
         case 0:
           this.companys = response.result.lists;
-          console.log(JSON.stringify(this.companys));
           break;
         default:
           Toast({
-            position: "top",
-            message: "加载失败，请稍后重试！！"
+            position: 'top',
+            message: '加载失败，请稍后重试！！'
           });
           break;
       }
     },
-    Internship(id, companyName, department, group) {
+    Internship (id, companyName, department, group) {
       tool.openWin({
-        name: "Internship_" + id,
-        url: "../win.html",
-        title: "校外实习",
-        fname: "Internship_f_" + id,
-        furl: "./application/Internship.html",
+        name: 'Internship_' + id,
+        url: '../win.html',
+        title: '校外实习',
+        fname: 'Internship_f_' + id,
+        furl: './application/Internship.html',
         hasLeft: 1,
         data: {
           companyId: id,
@@ -179,13 +178,13 @@ export default {
         }
       });
     },
-    hotJobListAll() {
+    hotJobListAll () {
       tool.openWin({
-        name: "jobSearchList",
-        url: "../win.html",
-        title: "热门职位",
-        fname: "jobSearchList_f",
-        furl: "./hr/jobSearchList.html",
+        name: 'jobSearchList',
+        url: '../win.html',
+        title: '热门职位',
+        fname: 'jobSearchList_f',
+        furl: './hr/jobSearchList.html',
         hasLeft: 1,
         hasRight: 0,
         data: {
@@ -193,11 +192,11 @@ export default {
         }
       });
     },
-    refresh() {
+    refresh () {
       this.listsData();
     }
   },
-  mounted() {
+  mounted () {
     this.listsData();
   }
 };
