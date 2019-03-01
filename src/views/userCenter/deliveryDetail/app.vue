@@ -14,14 +14,14 @@
     <div class="history">
       <StepVertical :data="delivery.list" />
     </div>
-    <div v-if="delivery.status===1" class="footer">
+    <!-- <div v-if="delivery.status===1" class="footer">
       <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large @click="doChoice(statusMap.agreeInterview)">同意面试</Button>
       <Button color="#f75c5d" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large @click="doChoice(statusMap.refuseInterview)">拒绝面试</Button>
-    </div>
-    <div v-if="delivery.status===3" class="footer">
+    </div> -->
+    <!-- <div v-if="delivery.status===3" class="footer">
       <Button color="#009688" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large @click="doChoice(statusMap.deliveryLeaveSchool)">申请离校</Button>
       <Button color="#f75c5d" textColor="#ffffff" :style="{boxShadow: '0 0 0'}" large @click="doChoice(statusMap.personalRejection)">拒绝入职</Button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -75,7 +75,7 @@ export default {
       tools.hideProgress();
       switch (response.code) {
         case 0:
-          this.delivery = {...response.result, ...this.delivery};
+          this.delivery = { ...response.result, ...this.delivery };
           this.delivery.status = response.result.status;
           this.delivery.list = response.result.list.map(row => adapter.deliveryAdapterListRow(row));
           this.delivery.list.push({
